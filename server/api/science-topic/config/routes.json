@@ -1,0 +1,52 @@
+{
+  "routes": [
+    {
+      "method": "GET",
+      "path": "/science-topics",
+      "handler": "science-topic.find",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/science-topics/count",
+      "handler": "science-topic.count",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/science-topics/:id",
+      "handler": "science-topic.findOne",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "POST",
+      "path": "/science-topics",
+      "handler": "science-topic.create",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "PUT",
+      "path": "/science-topics/:id",
+      "handler": "science-topic.update",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "DELETE",
+      "path": "/science-topics/:id",
+      "handler": "science-topic.delete",
+      "config": {
+        "policies": []
+      }
+    }
+  ]
+}

@@ -13,6 +13,27 @@
     "name": {
       "type": "string",
       "required": true
+    },
+    "description": {
+      "type": "text"
+    },
+    "topics": {
+      "collection": "science-topic",
+      "via": "activities",
+      "dominant": true
+    },
+    "difficulty": {
+      "model": "difficulty"
+    },
+    "models": {
+      "collection": "model",
+      "via": "activities",
+      "dominant": true
+    },
+    "blocks_categories": {
+      "collection": "blocks-category",
+      "via": "activities",
+      "dominant": true
     }
   }
 }

@@ -1,0 +1,29 @@
+{
+  "kind": "collectionType",
+  "connection": "default",
+  "collectionName": "blocks_categories",
+  "info": {
+    "name": "Blocks Category"
+  },
+  "options": {
+    "increments": true,
+    "timestamps": true
+  },
+  "attributes": {
+    "name": {
+      "type": "string"
+    },
+    "definition": {
+      "type": "text"
+    },
+    "blocks": {
+      "collection": "block",
+      "via": "blocks_categories",
+      "dominant": true
+    },
+    "activities": {
+      "via": "blocks_categories",
+      "collection": "activity"
+    }
+  }
+}

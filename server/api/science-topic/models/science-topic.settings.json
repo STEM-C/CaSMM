@@ -1,0 +1,30 @@
+{
+  "kind": "collectionType",
+  "connection": "default",
+  "collectionName": "science_topics",
+  "info": {
+    "name": "Topic"
+  },
+  "options": {
+    "increments": true,
+    "timestamps": true
+  },
+  "attributes": {
+    "name": {
+      "type": "string"
+    },
+    "description": {
+      "type": "text"
+    },
+    "activities": {
+      "via": "topics",
+      "collection": "activity"
+    },
+    "type": {
+      "model": "science-topic-type"
+    },
+    "learning_category": {
+      "model": "learning-category"
+    }
+  }
+}
