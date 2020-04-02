@@ -31,7 +31,9 @@ Coming soon...
 
 ### Git Flow 
 
-Master is locked for direct commits. All commits must be made to a non-protected branch and submitted via a pull request with one approving review.
+![Git Flow](https://nvie.com/img/git-model@2x.png)
+
+Ideally, we want our flow to resemble this. Master and develop are locked for direct commits. All commits must be made to a non-protected branch and submitted via a pull request with one approving review.
 
 ### Branches
 
@@ -44,4 +46,4 @@ Master is locked for direct commits. All commits must be made to a non-protected
 
 ### Pull Requests
 
-Before submitting a pull request, merge the target branch into the working branch to resolve any merge conflicts. Pull requests for the master branch must be approved by one reviewer. 
+Before submitting a pull request, merge the target branch into the working branch to resolve any merge conflicts. Include a description of the changes made.
