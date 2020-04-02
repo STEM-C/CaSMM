@@ -42,7 +42,7 @@ Ideally, we want our flow to resemble this. Master and develop are locked for di
 - `feature/<scaffold>-<feature-name>` - Based off of develop
   - ex. `feature/server-strapi`
 - `hotfix/<scaffold>-<fix-name>` - Based off of master
-  - ex. fotfix/client-cors
+  - ex. hotfix/client-cors
 
 ### Pull Requests
 
