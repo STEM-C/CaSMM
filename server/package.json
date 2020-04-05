@@ -1,0 +1,9 @@
+{
+  "name": "server",
+  "version": "1.0.0",
+
+  "dependencies": {
+    "cross-env": "^7.0.2",
+    "client": "0.1.0"
+  }
+}

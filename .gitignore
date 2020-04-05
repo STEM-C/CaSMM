@@ -1,0 +1,10 @@
+#configuration ignores
+.idea/
+.vscode/
+
+#dependencies
+node_modules/
+yarn-error.log
+
+# production
+/build
