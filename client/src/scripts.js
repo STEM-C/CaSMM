@@ -1,28 +1,30 @@
+import AvrgirlArduino from './avrgirl-arduino';
+
 var workspace = Blockly.inject('blockly-canvas', {toolbox: document.getElementById('toolbox')});
 
-function getJS() {
+export function getJS() {
     // Generates Arduino code to display it.
-    Blockly.JavaScript.INFINITE_LOOP_TRAP = null;
-    var code = Blockly.JavaScript.workspaceToCode(workspace);
+    window.Blockly.JavaScript.INFINITE_LOOP_TRAP = null;
+    var code = window.Blockly.JavaScript.workspaceToCode(workspace);
     return code;
 }
 
-function getArduino() {
+export function getArduino() {
     // Generates Arduino code to display it.
-    Blockly.Arduino.INFINITE_LOOP_TRAP = null;
-    var code = Blockly.Arduino.workspaceToCode(workspace);
+    window.Blockly.Arduino.INFINITE_LOOP_TRAP = null;
+    var code = window.Blockly.Arduino.workspaceToCode(workspace);
     return code;
 }
 
-function compileArduinoCode() {
-    body = {
+export function compileArduinoCode() {
+    let body = {
         "board": "arduino:avr:uno",
         "sketch": getArduino()
     };
 
     // gets compiled hex from server
     let Hex;
-    $.post("http://174.138.32.52:3000/compile", body, (data) => {
+    window.$.post("http://174.138.32.52:3000/compile", body, (data) => {
         // converting base 64 to hex
         Hex = atob(data.hex).toString();
         console.log(Hex);
@@ -46,8 +48,8 @@ function compileArduinoCode() {
 
 }
 
-$(document).ready(function() {
-    $('input[type=radio][name=model-btn]').change(function() {
+window.$(document).ready(function() {
+    window.$('input[type=radio][name=model-btn]').change(function() {
         document.getElementById('model-img').src = `./assets/${this.value}.png`
     });
-})
+});

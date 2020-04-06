@@ -1,38 +1,79 @@
-.App {
-  text-align: center;
+body {
+  margin: 0;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+h3, p {
+  margin: 0;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+.flex {
   display: flex;
+}
+
+.flex-column {
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
+}
+
+.space-between {
+  justify-content: space-between;
+}
+
+#container {
+  height: 100vh;
+  background-color: rgb(241, 241, 241);
+}
+
+.vertical-container {
+  margin: 1.5em;
+}
+
+#nav-container {
+  margin: 0;
+  background-color: rgb(32, 145, 173);
   color: white;
+  align-items: center;
 }
 
-.App-link {
-  color: #61dafb;
+#title {
+  flex: 10;
+  margin: 0.5em;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+#action-btn-container {
+  flex: 1;
+  margin: 1em;
 }
+
+#top-container {
+  flex: 1;
+  margin-bottom: 0.75em
+}
+
+.card {
+  background-color: white;
+  padding: 1em;
+}
+
+#description-container {
+  height: 100%;
+}
+
+#bottom-container {
+  flex: 6;
+  margin-top: 0.75em
+}
+
+#blockly-canvas {
+  flex: 2;
+}
+
+#models-container {
+  flex: 1;
+  margin-left: 1.5em;
+}
+
+#mode-img {
+  width: auto;
+  height: auto;
+}
+
