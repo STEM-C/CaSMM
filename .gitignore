@@ -7,4 +7,4 @@ node_modules/
 yarn-error.log
 
 # production
-/build
+build/

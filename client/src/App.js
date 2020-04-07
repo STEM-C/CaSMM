@@ -1,31 +1,70 @@
-import React, {useState, useRef} from "react";
+import React, {useState, useEffect, useRef} from "react";
+import AvrgirlArduino from './avrgirl-arduino';
 import "./App.css";
-import {getArduino, getJS, compileArduinoCode} from "./scripts";
+
 
 function App() {
-    const [board, updateBoard] = useState("uno");
+    let workspace;
 
-    const alertArduino = () => {
-        alert(getArduino());
+    // If current workspace ref is not set on initial load, set it
+    useEffect(() => {
+        workspace = window.Blockly.inject('blockly-canvas', {toolbox: document.getElementById('toolbox')});
+    },[]);
+
+    // Generates javascript code from blockly canvas
+    const getJS = () => {
+        window.Blockly.JavaScript.INFINITE_LOOP_TRAP = null;
+        let code = window.Blockly.JavaScript.workspaceToCode(workspace);
+        alert(code)
     };
 
-    const alertJS = () => {
-        alert(getJS());
+    // Generates Arduino code from blockly canvas
+    const getArduino = () => {
+        window.Blockly.Arduino.INFINITE_LOOP_TRAP = null;
+        let code = window.Blockly.Arduino.workspaceToCode(workspace);
+        alert(code);
+        return(code);
     };
 
-    const alertCompile = () => {
-        alert(compileArduinoCode());
+    // Sends compiled arduino code to server and returns hex to flash board with
+    const compileArduinoCode = async() => {
+        let body = {
+            "board": "arduino:avr:uno",
+            "sketch": getArduino()
+        };
+
+        // gets compiled hex from server
+        let Hex;
+        window.$.post("http://174.138.32.52:3000/compile", body, (data) => {
+            // converting base 64 to hex
+            Hex = atob(data.hex).toString();
+
+            const avrgirl = new AvrgirlArduino({
+                board: "",
+                debug: true
+            });
+
+            // TODO: Remove hardcoded file path
+            avrgirl.flash(Hex, (err) => {
+                if (err) {
+                    console.log(err);
+                } else {
+                    console.log('done correctly.');
+                }
+            })
+
+        });
     };
 
     return (
-        <body>
+        <div>
         <div id="container" className="flex flex-column">
             <div id="nav-container" className="flex vertical-container space-between">
                 <h1 id="title">STEM+C</h1>
                 <div id="action-btn-container" className="flex space-between">
-                    {/*<i onClick={alertJS} onMouseOver="this.style.cursor='hand'" className={"fab fa-js hvr-grow"}/>*/}
-                    {/*<i onClick={alertArduino} onMouseOver="this.style.cursor='hand'" className="hvr-grow">A</i>*/}
-                    {/*<i onClick={alertCompile} onMouseOver="this.style.cursor='hand'" className="fas fa-play hvr-grow"/>*/}
+                    <i onClick={getJS} className={"fab fa-js hvr-grow"}/>
+                    <i onClick={getArduino} className="hvr-grow">A</i>
+                    <i onClick={compileArduinoCode} className="fas fa-play hvr-grow"/>
                 </div>
             </div>
             <div id="top-container" className="flex flex-column vertical-container">
@@ -46,7 +85,7 @@ function App() {
                     <img src="assets/arduino.png" id="model-img"/>
                     <div id="model-btn-container" className="flex space-between">
 						<span>
-							<input type="radio" value="arduino" name="model-btn" checked/>
+							<input type="radio" value="arduino" name="model-btn" />
 							<label htmlFor="btn-arduino">Arduino</label>
 						</span>
                         <span>
@@ -63,8 +102,7 @@ function App() {
         </div>
 
         {/* This xml is for the blocks' menu we will provide. Here are examples on how to include categories and subcategories */}
-        {/*<xml id="toolbox" style="display: none">
-             Here I input Blockly category and blocks
+        <xml id="toolbox" style={{"display": "none"}}>
             <category name="Conditionals">
                 <category name="Operations">
                     <block type="controls_if"/>
@@ -115,8 +153,8 @@ function App() {
                     </value>
                 </block>
             </category>
-        </xml>*/}
-        </body>
+        </xml>
+        </div>
 );
 
 }
