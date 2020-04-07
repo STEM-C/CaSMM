@@ -16,6 +16,7 @@ function App() {
         window.Blockly.JavaScript.INFINITE_LOOP_TRAP = null;
         let code = window.Blockly.JavaScript.workspaceToCode(workspace);
         alert(code)
+        return(code);
     };
 
     // Generates Arduino code from blockly canvas
