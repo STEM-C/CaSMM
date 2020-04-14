@@ -1,0 +1,36 @@
+{
+  "kind": "collectionType",
+  "connection": "default",
+  "collectionName": "activities",
+  "info": {
+    "name": "activity"
+  },
+  "options": {
+    "increments": true,
+    "timestamps": true
+  },
+  "attributes": {
+    "name": {
+      "type": "string",
+      "required": true
+    },
+    "description": {
+      "type": "text"
+    },
+    "difficulty": {
+      "model": "difficulty"
+    },
+    "models": {
+      "collection": "model"
+    },
+    "blocks_categories": {
+      "collection": "blocks-category"
+    },
+    "learning_category": {
+      "model": "learning-category"
+    },
+    "topic": {
+      "model": "topic"
+    }
+  }
+}
