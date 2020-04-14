@@ -17,11 +17,6 @@
     "description": {
       "type": "text"
     },
-    "topics": {
-      "collection": "science-topic",
-      "via": "activities",
-      "dominant": true
-    },
     "difficulty": {
       "model": "difficulty"
     },
