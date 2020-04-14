@@ -19,9 +19,8 @@
       "plugin": "upload",
       "required": false
     },
-    "activities": {
-      "via": "models",
-      "collection": "activity"
+    "complexity": {
+      "model": "complexity"
     }
   }
 }

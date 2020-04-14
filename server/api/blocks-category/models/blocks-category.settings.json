@@ -17,13 +17,7 @@
       "type": "text"
     },
     "blocks": {
-      "collection": "block",
-      "via": "blocks_categories",
-      "dominant": true
-    },
-    "activities": {
-      "via": "blocks_categories",
-      "collection": "activity"
+      "collection": "block"
     }
   }
 }

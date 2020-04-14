@@ -21,14 +21,16 @@
       "model": "difficulty"
     },
     "models": {
-      "collection": "model",
-      "via": "activities",
-      "dominant": true
+      "collection": "model"
     },
     "blocks_categories": {
-      "collection": "blocks-category",
-      "via": "activities",
-      "dominant": true
+      "collection": "blocks-category"
+    },
+    "learning_category": {
+      "model": "learning-category"
+    },
+    "topic": {
+      "model": "topic"
     }
   }
 }

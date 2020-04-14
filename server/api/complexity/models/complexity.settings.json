@@ -1,9 +1,9 @@
 {
   "kind": "collectionType",
   "connection": "default",
-  "collectionName": "blocks",
+  "collectionName": "complexities",
   "info": {
-    "name": "Block"
+    "name": "Complexity"
   },
   "options": {
     "increments": true,
@@ -11,10 +11,9 @@
   },
   "attributes": {
     "name": {
-      "type": "string"
-    },
-    "definition": {
-      "type": "text"
+      "type": "string",
+      "required": true,
+      "unique": true
     }
   }
 }

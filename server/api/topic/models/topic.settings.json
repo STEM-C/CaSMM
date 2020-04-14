@@ -1,9 +1,9 @@
 {
   "kind": "collectionType",
   "connection": "default",
-  "collectionName": "learning_categories",
+  "collectionName": "topics",
   "info": {
-    "name": "Learning Category"
+    "name": "Topic"
   },
   "options": {
     "increments": true,
@@ -14,6 +14,14 @@
       "type": "string",
       "required": true,
       "unique": true
+    },
+    "description": {
+      "type": "text",
+      "unique": false,
+      "required": true
+    },
+    "type": {
+      "model": "type"
     }
   }
 }

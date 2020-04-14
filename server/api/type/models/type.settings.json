@@ -1,9 +1,9 @@
 {
   "kind": "collectionType",
   "connection": "default",
-  "collectionName": "blocks",
+  "collectionName": "types",
   "info": {
-    "name": "Block"
+    "name": "Type"
   },
   "options": {
     "increments": true,
@@ -11,10 +11,9 @@
   },
   "attributes": {
     "name": {
-      "type": "string"
-    },
-    "definition": {
-      "type": "text"
+      "type": "string",
+      "unique": true,
+      "required": true
     }
   }
 }
