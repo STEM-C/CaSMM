@@ -32,7 +32,7 @@ Built with [Node](https://nodejs.org/en/), [Koa](https://github.com/koajs/koa#re
 
 The content available via the API is modeled as follows. 
 
-![](/Users/nicholasionata/Dropbox/School/S20/Research/STEM+C/server/er_diagram.png)
+![ER Digram](er_diagram.png)
 
 ### Endpoints
 
