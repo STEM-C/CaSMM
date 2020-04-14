@@ -4,6 +4,18 @@
     "default": {
       "connector": "bookshelf",
       "settings": {
+        "client": "mysql",
+        "host": "127.0.0.1",
+        "port": "3306",
+        "database": "strapi",
+        "username": "root",
+        "password": "pass"
+      },
+      "options": {}
+    },
+    "sqlite3": {
+      "connector": "bookshelf",
+      "settings": {
         "client": "sqlite",
         "filename": ".tmp/data.db"
       },
