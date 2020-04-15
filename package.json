@@ -1,5 +1,0 @@
-{
-  "private": true,
-  "workspaces": ["client", "server"],
-  "author": "Dakota Rennemann, Nicholas Ionata"
-}
