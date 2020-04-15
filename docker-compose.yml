@@ -1,15 +1,15 @@
 version: '3'
 
 services:
-  api:
-    container_name: sc-api-dev
+  cms:
+    container_name: sc-cms-dev
     image: strapi/strapi
     networks:
       - backend
     ports:
       - 1337:1337
     volumes:
-      - ./server:/srv/app
+      - ./cms:/srv/app
     depends_on:
       - compile
       - db
@@ -32,7 +32,7 @@ services:
       MYSQL_ROOT_PASSWORD: pass
     volumes:
       - /var/lib/mysql
-      - ./server/strapi.sql:/docker-entrypoint-initdb.d/strapi.sql
+      - ./cms/strapi.sql:/docker-entrypoint-initdb.d/strapi.sql
     ports:
       - 3306:3306
     security_opt:
