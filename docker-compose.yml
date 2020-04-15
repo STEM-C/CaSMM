@@ -1,0 +1,43 @@
+version: '3'
+
+services:
+  api:
+    container_name: sc-api-dev
+    image: strapi/strapi
+    networks:
+      - backend
+    ports:
+      - 1337:1337
+    volumes:
+      - ./server:/srv/app
+    depends_on:
+      - compile
+      - db
+  compile:
+    container_name: sc-compile-dev
+    image: sc-compile
+    networks:
+      - backend
+    restart: always
+    ports:
+      - 3000:3000
+  db:
+    container_name: sc-db-dev
+    image: mysql
+    networks:
+      - backend
+    restart: always
+    command: --default-authentication-plugin=mysql_native_password
+    environment:
+      MYSQL_ROOT_PASSWORD: pass
+    volumes:
+      - /var/lib/mysql
+      - ./server/strapi.sql:/docker-entrypoint-initdb.d/strapi.sql
+    ports:
+      - 3306:3306
+    security_opt:
+      - seccomp:unconfined
+
+networks:
+  frontend:
+  backend:

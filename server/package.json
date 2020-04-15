@@ -4,7 +4,7 @@
   "version": "0.1.0",
   "description": "A Strapi application",
   "scripts": {
-    "develop": "docker start strapi-dev && strapi develop",
+    "develop": "strapi develop",
     "start": "strapi start",
     "build": "strapi build",
     "strapi": "strapi"
@@ -13,7 +13,7 @@
   "dependencies": {
     "knex": "<0.20.0",
     "mysql": "latest",
-    "sqlite3": "latest",
+    "sqlite3": "^4.1.1",
     "strapi": "3.0.0-beta.19.4",
     "strapi-admin": "3.0.0-beta.19.4",
     "strapi-connector-bookshelf": "^3.0.0-beta.19.5",

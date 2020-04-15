@@ -3,6 +3,7 @@ node_modules
 
 # Environment
 .env
+strapi.sql
 
 # OS
 .DS_Store

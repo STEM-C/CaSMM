@@ -1,3 +1,0 @@
-# Ignore these when building the image
-node_modules
-npm-debug.log
