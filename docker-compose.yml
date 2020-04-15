@@ -15,7 +15,7 @@ services:
       - db
   compile:
     container_name: sc-compile-dev
-    image: sc-compile
+    build: ./compile
     networks:
       - backend
     restart: always
