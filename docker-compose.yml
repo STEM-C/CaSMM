@@ -4,6 +4,8 @@ services:
   cms:
     container_name: sc-cms-dev
     image: strapi/strapi
+    environment: 
+      - DATABASE_HOST=db
     networks:
       - backend
     ports:
