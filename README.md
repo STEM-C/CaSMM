@@ -1,31 +1,49 @@
 # STEM+C
 
-
+<br/>
 
 ## Scaffolds
 
-### Project
+### `/`  
 
-#### Client
-The [frontend](https://github.com/EngagingLearningLab/STEM-C/tree/master/client#client) is built on top of [React](https://reactjs.org/) and [Blockly](https://developers.google.com/blockly). It will be deployed in the cloud and distributed with a CDN.
+- #### `client/` 
+  [Client](/client/#client) is the frontend of the applcation. It built on top of [React](https://reactjs.org/) and [Blockly](https://developers.google.com/blockly).
 
-#### Server
+  <br/>
 
-The [backend](https://github.com/EngagingLearningLab/STEM-C/tree/master/server#server) is built on top of a [headless CMS](https://headlesscms.org/). It will be deployed in the cloud and utilize various services.
+- #### `cms/`
 
+  [Cms](/cms#cms) is the REST API and admin portal that defines the backend.
 
+  <br/>
+
+- #### `compile/`
+
+  [Compile](/compile/#compile) is a service that runs in the backend.
+
+  <br/>
 
 ## Environments
 
 ### Development
 
-Coming soon...
+The development environment is setup with docker compose as three services.
+
+* `sc-cms-dev` => localhost:1337
+* `sc-compile-dev` => localhost:3000
+* `sc-db-dev` => localhost:3306
+
+To get started, simply 
+
+1. Download [docker](https://docs.docker.com/get-docker/)
+2. Add strapi.sql to cms/
+3. Run `docker-compose up` 
 
 ### Deployment
 
-Coming soon...
+TODO
 
-
+<br/>
 
 ## Contributing
 
