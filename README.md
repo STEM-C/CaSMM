@@ -6,26 +6,23 @@
 
 ### Project
 
+ 
 #### Client
 The [frontend](https://github.com/EngagingLearningLab/STEM-C/tree/master/client#client) is built on top of [React](https://reactjs.org/) and [Blockly](https://developers.google.com/blockly). It will be deployed in the cloud and distributed with a CDN.
 
 #### Server
-
 The [backend](https://github.com/EngagingLearningLab/STEM-C/tree/master/server#server) is built on top of a [headless CMS](https://headlesscms.org/). It will be deployed in the cloud and utilize various services.
-
 
 
 ## Environments
 
 ### Development
-
-Coming soon...
+This project's dependencies are managed through [yarn](https://classic.yarnpkg.com/en/docs/install/#mac-stable)
+The following are the available scripts we can use with the client and server: 
 
 ### Deployment
 
 Coming soon...
-
-
 
 ## Contributing
 
