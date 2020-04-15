@@ -9,13 +9,9 @@
 - #### `client/` 
   [Client](/client/#client) is the frontend of the applcation. It built on top of [React](https://reactjs.org/) and [Blockly](https://developers.google.com/blockly).
 
-  <br/>
-
 - #### `cms/`
 
   [Cms](/cms#cms) is the REST API and admin portal that defines the backend.
-
-  <br/>
 
 - #### `compile/`
 
