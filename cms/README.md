@@ -1,6 +1,6 @@
-# Server
+# Cms
 
-The server is composed of two parts: the admin panel and the api. It is built on top of [Strapi](https://strapi.io/documentation/3.0.0-beta.x/getting-started/introduction.html), a headless content management system. The file structure is documented [here](https://strapi.io/documentation/3.0.0-beta.x/concepts/file-structure.html#files-structure).
+The cms is composed of two parts: the admin panel and the api. It is built on top of [Strapi](https://strapi.io/documentation/3.0.0-beta.x/getting-started/introduction.html), a headless content management system. The file structure is documented [here](https://strapi.io/documentation/3.0.0-beta.x/concepts/file-structure.html#files-structure).
 
 <br/>
 

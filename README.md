@@ -31,7 +31,7 @@ The development environment is setup with docker compose as three services.
 
 To get started, simply 
 
-1. Download [docker](https://docs.docker.com/get-docker/)
+1. Install [docker](https://docs.docker.com/get-docker/)
 2. Add strapi.sql to cms/
 3. Run `docker-compose up` 
 
