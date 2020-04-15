@@ -1,22 +1,42 @@
 # Compile
 
-
+Arduino compilier service
 
 <br/>
 
 ## Setup
 
+To run Compile with the rest of the application, see the project [development](../#development) setup.
+
+### Development
+
 1. Install [docker](https://docs.docker.com/get-docker/)
-2. Build the image `npm run build` 
-3. Run an instance `npm run new`
+2. Build the Compile image `npm run build` 
+3. Start a new container from the image `npm run new`
+
+Additional scripts:
+
+* Start an existing container `npm run start`
+* Connect to the running container's bash `npm run bash` 
 
 <br/>
 
-## Using
+## API
 
-**Request**
+The interface for this service is simple. There are three informational endpoints and one endpoint for compiling arduino code.
 
-`POST http://localhost:3000`
+| Method | Path       | Description                                   |
+| ------ | ---------- | --------------------------------------------- |
+| GET    | /version   | Get the service version                       |
+| GET    | /boards    | Get the supported boards                      |
+| GET    | /libraries | Get the installed libraries                   |
+| POST   | /compile   | Compile the arduino code for a specific board |
+
+### Example Compilation
+
+#### Request
+
+`POST http://localhost:8080/compile`
 
 ```json
 {
@@ -25,7 +45,7 @@
 }
 ```
 
-**Response**
+#### Response
 
 ```json
 {
@@ -41,8 +61,6 @@
 ## Notes
 
 This project was forked from spaceneedle's [Chromeduino](https://github.com/spaceneedle/Chromeduino) project. 
-
-<br/>
 
 ### Notice of Non-Affiliation and Disclaimer:
 

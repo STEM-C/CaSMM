@@ -1,31 +1,25 @@
 # Cms
 
-The cms is composed of two parts: the admin panel and the api. It is built on top of [Strapi](https://strapi.io/documentation/3.0.0-beta.x/getting-started/introduction.html), a headless content management system. The file structure is documented [here](https://strapi.io/documentation/3.0.0-beta.x/concepts/file-structure.html#files-structure).
+REST API and admin portal that powers the backend. It is powered by [Node](https://nodejs.org/en/) and [Strapi](https://strapi.io/documentation/3.0.0-beta.x/getting-started/introduction.html). The file structure is defined by Strapi and is documented [here](https://strapi.io/documentation/3.0.0-beta.x/concepts/file-structure.html#files-structure).
 
 <br/>
 
 ## Setup
 
-### Installation
+To run Cms with the rest of the application, see the project [development](../#development) setup.
 
-#### Server
+### Development
 
-`yarn install`
+1. Install [docker](https://docs.docker.com/get-docker/)
+2. Add strapi.sql to `/`
+3. Start a new db container from MySQL `yarn run make-db`
+4. Install dependencies `yarn install`
+5. Start the development server `yarn develop`
 
-#### Database 
+Additional scripts:
 
-1. Create a new container for the db `docker run --name strapi-dev -p 3306:3306 -e MYSQL_ROOT_PASSWORD=pass -d mysql:latest  `
-
-2. Login to the running instance `docker exec -it strapi-dev bin/bash`
-3. Login to MySQL `mysql -u root -p` 
-4. Alter the connection settings `ALTER USER 'root' IDENTIFIED WITH mysql_native_password BY 'pass';`
-5. Create the database `create database strapi;`
-6. Exit out to the host terminal `exit` (twice)
-7. Import the database `docker exec -i strapi-dev mysql -uroot -ppass strapi < /Path/to/file/strapi.sql`
-
-### Developing
-
-`yarn develop`
+* Start an existing db container `yarn db`
+* Connect to the MySQL bash `yarn db-bash`
 
 <br/>
 

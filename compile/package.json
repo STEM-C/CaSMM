@@ -1,13 +1,13 @@
 {
-  "name": "compile-service",
+  "name": "compile",
   "version": "0.0.1",
-  "description": "Service compiles arduino code",
+  "description": "Arduino compilier service",
   "main": "app.js",
   "scripts": {
-    "build": "docker build -t sc-compile .",
-    "new": "docker run --name sc-compile-dev -p 3000:3000 -d sc-compile",
-    "start": "docker start sc-compile-dev",
-    "ssh": "docker exec -it sc-compile-dev /bin/bash"
+    "build": "docker build -t compile .",
+    "new": "docker run --name compile-dev -p 8080:8080 -d compile",
+    "start": "docker start compile-dev",
+    "bash": "docker exec -it compile-dev /bin/bash"
   },
   "author": "Fraser Bullock",
   "license": "MIT",
