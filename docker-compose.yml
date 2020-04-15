@@ -20,7 +20,7 @@ services:
       - backend
     restart: always
     ports:
-      - 3000:3000
+      - 8080:8080
   db:
     container_name: sc-db-dev
     image: mysql

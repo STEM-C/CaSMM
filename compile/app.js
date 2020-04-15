@@ -30,4 +30,4 @@ app.post('/compile', (req, res) => {
     arduino.compile(req.body.sketch, req.body.board).catch(console.error).then(data=>res.json(data));
 });
 
-app.listen(port, () => console.log(`Example app listening on port ${port}!`));
+app.listen(port, () => console.log(`Compile service listening on port ${port}!`));
