@@ -12,6 +12,11 @@ yarn-error.log*
 .env
 strapi.sql
 
+# Packages
+*.zip
+*.tar
+*.gz
+
 # OS
 .DS_Store
 .tmp
