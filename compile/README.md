@@ -6,7 +6,7 @@ Arduino compilier service
 
 ## Setup
 
-To run Compile with the rest of the application, see the project [development](../#development) setup.
+To run Compile with the rest of the application, see the project [development](#development) setup.
 
 ### Development
 

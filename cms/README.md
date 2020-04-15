@@ -6,7 +6,7 @@ REST API and admin portal that powers the backend. It is powered by [Node](https
 
 ## Setup
 
-To run Cms with the rest of the application, see the project [development](../#development) setup.
+To run Cms with the rest of the application, see the project [development](#development) setup.
 
 ### Development
 
