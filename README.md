@@ -7,26 +7,26 @@
 ### `/`  
 
 - #### `client/` 
-  [Client](/client/#client) is the frontend of the applcation. It built on top of [React](https://reactjs.org/) and [Blockly](https://developers.google.com/blockly).
+  [Client](/client/#client) is the frontend of the applcation. It is powered by [React](https://reactjs.org/) and [Blockly](https://developers.google.com/blockly).
 
 - #### `cms/`
 
-  [Cms](/cms#cms) is the REST API and admin portal that defines the backend.
+  [Cms](/cms#cms) is the REST API and admin portal that powers the backend. It is powered by [Node](https://nodejs.org/en/) and [Strapi]().
 
 - #### `compile/`
 
-  [Compile](/compile/#compile) is a service that runs in the backend.
+  [Compile](/compile/#compile) is an arduino compilier service. It is an unofficial fork of [Chromeduino](https://github.com/spaceneedle/Chromeduino).
 
   <br/>
 
-## Environments
+## Setup
 
 ### Development
 
-The development environment is setup with docker compose as three services.
+The development environment is comprised of three services managed by docker compose.
 
 * `sc-cms-dev` => localhost:1337
-* `sc-compile-dev` => localhost:3000
+* `sc-compile-dev` => localhost:8080
 * `sc-db-dev` => localhost:3306
 
 To get started, simply 
