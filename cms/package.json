@@ -1,8 +1,8 @@
 {
-  "name": "api",
+  "name": "sc-cms",
   "private": true,
   "version": "0.1.0",
-  "description": "A Strapi application",
+  "description": "A REST API and admin portal",
   "scripts": {
     "develop": "strapi develop",
     "start": "strapi start",
@@ -25,7 +25,7 @@
     "strapi-utils": "3.0.0-beta.19.4"
   },
   "author": {
-    "name": "A Strapi developer"
+    "name": "Nicholas Ionata"
   },
   "strapi": {
     "uuid": "d9c4d9b6-4733-4e82-80ee-0a812c951edb"
