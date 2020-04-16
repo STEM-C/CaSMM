@@ -1,0 +1,5 @@
+build:
+  docker:
+      compile: Dockerfile
+run:
+    compile: ["node", "app.js"]

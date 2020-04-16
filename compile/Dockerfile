@@ -15,7 +15,7 @@ RUN curl https://downloads.arduino.cc/arduino-1.8.5-linux64.tar.xz | tar -xJ
 COPY . .
 
 # Port mapping
-EXPOSE 3000
+EXPOSE 8080
 
 # Run when container is started
-CMD node app.js
+CMD ["node", "app.js"]

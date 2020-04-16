@@ -2,7 +2,7 @@ const express = require('express');
 const app = express();
 const bodyParser = require("body-parser");
 const config = require('./config.json');
-const port = !isNaN(Number(process.argv[2])) ? Number(process.argv[2]) : config.port;
+const port = process.env.PORT || config.port;
 const { name , version } = require('./package.json');
 const arduino_dir = __dirname + "/arduino-1.8.5";
 const arduino = new (require("./arduino.js"))(arduino_dir);
@@ -29,5 +29,7 @@ app.post('/compile', (req, res) => {
         return res.json({success: false, msg: "invalid parameters passed"});
     arduino.compile(req.body.sketch, req.body.board).catch(console.error).then(data=>res.json(data));
 });
+
+app.get('*', (req, res) => res.status(404).send("Not found"));
 
 app.listen(port, () => console.log(`Compile service listening on port ${port}!`));
