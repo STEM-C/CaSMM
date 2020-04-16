@@ -1,5 +1,5 @@
 build:
   docker:
-      compile: Dockerfile
+      web: Dockerfile
 run:
-    compile: ["node", "app.js"]
+    web: ["node", "app.js"]
