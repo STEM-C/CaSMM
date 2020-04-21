@@ -1,5 +1,6 @@
-# Node
-node_modules
+#configuration ignores
+.idea/
+.vscode/
 
 # Logs
 logs

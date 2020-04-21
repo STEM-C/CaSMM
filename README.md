@@ -22,6 +22,8 @@
 ## Setup
 
 ### Development
+This project's dependencies are managed through [yarn](https://classic.yarnpkg.com/en/docs/install/#mac-stable)
+The following are the available scripts we can use with the client and server: 
 
 The development environment is comprised of three services managed by docker compose.
 
