@@ -21,3 +21,6 @@ strapi.sql
 # OS
 .DS_Store
 .tmp
+
+# node
+node_modules/

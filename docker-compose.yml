@@ -1,6 +1,18 @@
 version: '3'
 
 services:
+  client:
+    container_name: sc-client-dev
+    build: ./client
+    networks:
+      - frontend
+    ports:
+      - '5000:5000'
+    volumes:
+      - /app:/usr/src/app
+    depends_on:
+      - cms
+      - compile
   cms:
     container_name: sc-cms-dev
     image: strapi/strapi
