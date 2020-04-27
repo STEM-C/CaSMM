@@ -4,12 +4,11 @@ services:
   client:
     container_name: sc-client-dev
     build: ./client
-    networks:
-      - frontend
     ports:
-      - '5000:5000'
+      - '3000:3000'
     volumes:
-      - /app:/usr/src/app
+      - ./client:/usr/src/app
+    stdin_open: true
     depends_on:
       - cms
       - compile
@@ -18,28 +17,21 @@ services:
     image: strapi/strapi
     environment: 
       - DATABASE_HOST=db
-    networks:
-      - backend
     ports:
       - 1337:1337
     volumes:
       - ./cms:/srv/app
     depends_on:
-      - compile
       - db
   compile:
     container_name: sc-compile-dev
     build: ./compile
-    networks:
-      - backend
     restart: always
     ports:
       - 8080:8080
   db:
     container_name: sc-db-dev
     image: mysql
-    networks:
-      - backend
     restart: always
     command: --default-authentication-plugin=mysql_native_password
     environment:
@@ -51,7 +43,3 @@ services:
       - 3306:3306
     security_opt:
       - seccomp:unconfined
-
-networks:
-  frontend:
-  backend:

@@ -1,16 +1,16 @@
 # Start from the node image
 FROM node:latest
 
-# Create app directory
+# Create app directory for volume
 WORKDIR /usr/src/app
-
-# Install app dependencies
-COPY package*.json ./
-COPY yarn.lock ./
-RUN yarn install
+VOLUME /usr/src/app
 
 # Port mapping
-EXPOSE 5000
+EXPOSE 3000
+
+# Run script 
+COPY docker-entrypoint.sh /usr/local/bin/
+ENTRYPOINT ["docker-entrypoint.sh"]
 
 # Run when the container is started
-CMD ["yarn", "run", "start"]
+CMD ["yarn", "start"]
