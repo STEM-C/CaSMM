@@ -27,6 +27,7 @@ The following are the available scripts we can use with the client and server:
 
 The development environment is comprised of three services managed by docker compose.
 
+* `sc-client-dev` => localhost:3000
 * `sc-cms-dev` => localhost:1337
 * `sc-compile-dev` => localhost:8080
 * `sc-db-dev` => localhost:3306
