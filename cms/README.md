@@ -1,28 +1,27 @@
-# Server
+# Cms
 
-The server is composed of two parts: the admin panel and the api. It is built on top of [Strapi](https://strapi.io/documentation/3.0.0-beta.x/getting-started/introduction.html), a headless content management system. The file structure is documented [here](https://strapi.io/documentation/3.0.0-beta.x/concepts/file-structure.html#files-structure).
+REST API and admin portal that powers the backend. It is powered by [Node](https://nodejs.org/en/) and [Strapi](https://strapi.io/documentation/3.0.0-beta.x/getting-started/introduction.html). The file structure is defined by Strapi and is documented [here](https://strapi.io/documentation/3.0.0-beta.x/concepts/file-structure.html#files-structure).
 
-
+<br/>
 
 ## Setup
 
-### Installation
+To run Cms with the rest of the application, see the project [development](../README.md#development) setup.
 
-`yarn install`
+### Development
 
-### Developing
+1. Install [docker](https://docs.docker.com/get-docker/)
+2. Add strapi.sql to `/`
+3. Start a new db container from MySQL `yarn run make-db`
+4. Install dependencies `yarn install`
+5. Start the development server `yarn develop`
 
-`yarn develop`
+Additional scripts:
 
+* Start an existing db container `yarn db`
+* Connect to the MySQL bash `yarn db-bash`
 
-
-## Admin Panel `/admin`
-
-Built with [React](https://reactjs.org/) and served by [Node](https://nodejs.org/en/), the admin panel allows for full customization of the server. Here you can create new content types and their corresponding endpoints, configure roles and permissions, and much more. The interface itself can be customized and configured as needed.
-
-Read the full [documentation](https://strapi.io/documentation/3.0.0-beta.x/admin-panel/customization.html) on the admin panel.
-
-
+<br/>
 
 ## API `/`
 
@@ -63,3 +62,10 @@ Each and every endpoint can be interacted with by using the following method and
 
 Read the full [documentation](https://strapi.io/documentation/3.0.0-beta.x/content-api/api-endpoints.html#api-endpoints) on the api endpoints.
 
+<br/>
+
+## Admin Panel `/admin`
+
+Built with [React](https://reactjs.org/) and served by [Node](https://nodejs.org/en/), the admin panel allows for full customization of the server. Here you can create new content types and their corresponding endpoints, configure roles and permissions, and much more. The interface itself can be customized and configured as needed.
+
+Read the full [documentation](https://strapi.io/documentation/3.0.0-beta.x/admin-panel/customization.html) on the admin panel.

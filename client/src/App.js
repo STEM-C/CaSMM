@@ -2,6 +2,7 @@ import React, {useState, useEffect, useRef} from "react";
 import AvrgirlArduino from './avrgirl-arduino';
 import "./App.css";
 
+import {cms, compile} from './config/development.json'
 
 function App() {
     let workspace;
@@ -36,7 +37,7 @@ function App() {
 
         // gets compiled hex from server
         let Hex;
-        window.$.post("http://174.138.32.52:3000/compile", body, (data) => {
+        window.$.post(`${compile}/compile`, body, (data) => {
             // converting base 64 to hex
             Hex = atob(data.hex).toString();
 

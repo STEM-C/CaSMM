@@ -2,9 +2,25 @@
 .idea/
 .vscode/
 
-#dependencies
-node_modules/
-yarn-error.log
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
 
-# production
-build/
+# Environment
+.env
+strapi.sql
+
+# Packages
+*.zip
+*.tar
+*.gz
+
+# OS
+.DS_Store
+.tmp
+
+# node
+node_modules/

@@ -1,0 +1,41 @@
+{
+  "name": "cms",
+  "private": true,
+  "version": "0.1.0",
+  "description": "A REST API and admin portal",
+  "scripts": {
+    "develop": "strapi develop",
+    "start": "strapi start",
+    "build": "strapi build",
+    "strapi": "strapi",
+    "make-db": "docker run --name cms-db-dev -p 3306:3306 -e MYSQL_ROOT_PASSWORD=pass -v /var/lib/mysql -v `pwd`/strapi.sql:/docker-entrypoint-initdb.d/strapi.sql -d mysql:latest --default-authentication-plugin=mysql_native_password",
+    "db": "docker start cms-db-dev",
+    "db-bash": "docker exec -it cms-db-dev mysql -uroot -ppass"
+  },
+  "devDependencies": {},
+  "dependencies": {
+    "knex": "<0.20.0",
+    "mysql": "latest",
+    "sqlite3": "^4.1.1",
+    "strapi": "3.0.0-beta.19.4",
+    "strapi-admin": "3.0.0-beta.19.4",
+    "strapi-connector-bookshelf": "^3.0.0-beta.19.5",
+    "strapi-plugin-content-manager": "3.0.0-beta.19.4",
+    "strapi-plugin-content-type-builder": "3.0.0-beta.19.4",
+    "strapi-plugin-email": "3.0.0-beta.19.4",
+    "strapi-plugin-upload": "3.0.0-beta.19.4",
+    "strapi-plugin-users-permissions": "3.0.0-beta.19.4",
+    "strapi-utils": "3.0.0-beta.19.4"
+  },
+  "author": {
+    "name": "Nicholas Ionata"
+  },
+  "strapi": {
+    "uuid": "d9c4d9b6-4733-4e82-80ee-0a812c951edb"
+  },
+  "engines": {
+    "node": ">=10.0.0",
+    "npm": ">=6.0.0"
+  },
+  "license": "MIT"
+}

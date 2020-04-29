@@ -1,28 +1,48 @@
 # STEM+C
 
-
+<br/>
 
 ## Scaffolds
 
-### Project
+### `/`  
 
- 
-#### Client
-The [frontend](https://github.com/EngagingLearningLab/STEM-C/tree/master/client#client) is built on top of [React](https://reactjs.org/) and [Blockly](https://developers.google.com/blockly). It will be deployed in the cloud and distributed with a CDN.
+- #### `client/` 
+  [Client](/client/#client) is the frontend of the applcation. It is powered by [React](https://reactjs.org/) and [Blockly](https://developers.google.com/blockly).
 
-#### Server
-The [backend](https://github.com/EngagingLearningLab/STEM-C/tree/master/server#server) is built on top of a [headless CMS](https://headlesscms.org/). It will be deployed in the cloud and utilize various services.
+- #### `cms/`
 
+  [Cms](/cms#cms) is the REST API and admin portal that powers the backend. It is powered by [Node](https://nodejs.org/en/) and [Strapi]().
 
-## Environments
+- #### `compile/`
+
+  [Compile](/compile/#compile) is an arduino compilier service. It is an unofficial fork of [Chromeduino](https://github.com/spaceneedle/Chromeduino).
+
+  <br/>
+
+## Setup
 
 ### Development
 This project's dependencies are managed through [yarn](https://classic.yarnpkg.com/en/docs/install/#mac-stable)
 The following are the available scripts we can use with the client and server: 
 
+The development environment is comprised of three services managed by docker compose.
+
+* `sc-client-dev` => localhost:3000
+* `sc-cms-dev` => localhost:1337
+* `sc-compile-dev` => localhost:8080
+* `sc-db-dev` => localhost:3306
+
+To get started, simply 
+
+1. Install [docker](https://docs.docker.com/get-docker/)
+2. Add strapi.sql to cms/
+3. Run `docker-compose up` 
+
 ### Deployment
 
-Coming soon...
+TODO
+
+<br/>
 
 ## Contributing
 
