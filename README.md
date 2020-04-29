@@ -25,7 +25,7 @@
 This project's dependencies are managed through [yarn](https://classic.yarnpkg.com/en/docs/install/#mac-stable)
 The following are the available scripts we can use with the client and server: 
 
-The development environment is comprised of three services managed by docker compose.
+The development environment is comprised of four servers managed by docker compose.
 
 * `sc-client-dev` => localhost:3000
 * `sc-cms-dev` => localhost:1337
@@ -57,7 +57,7 @@ Ideally, we want our flow to resemble this. Master and develop are locked for di
 - `master` - Deployed version of the application 
 - `develop` - Working version of the application
 - `feature/<scaffold>-<feature-name>` - Based off of develop
-  - ex. `feature/server-strapi`
+  - ex. `feature/cms-strapi`
 - `hotfix/<scaffold>-<fix-name>` - Based off of master
   - ex. hotfix/client-cors
 
