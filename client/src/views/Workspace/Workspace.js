@@ -1,4 +1,5 @@
 import React, { useEffect} from "react";
+import {Link} from "react-router-dom";
 import AvrgirlArduino from '../../assets/avrgirl-arduino';
 import "./Workspace.css";
 
@@ -61,7 +62,7 @@ function App(props) {
         <div>
             <div id="container" className="flex flex-column">
                 <div id="nav-container" className="flex vertical-container space-between">
-                    <h1 id="title">STEM+C</h1>
+                    <h1 id="title"><Link to={"/Home"}>STEM+C</Link></h1>
                     <div id="action-btn-container" className="flex space-between">
                         <i onClick={getJS} className={"fab fa-js hvr-grow"}/>
                         <i onClick={getArduino} className="hvr-grow">A</i>

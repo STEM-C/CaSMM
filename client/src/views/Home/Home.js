@@ -19,16 +19,12 @@ function Home(props) {
         fetchActivities();
     }, [])
 
-    const updateActivity = (value) => {
-        props.setSelectedActivity(value);
-    }
-
     return (
         <div className="cardList">
             {
                 activities.map((activity, i) => {
                     return (
-                        <Link to={`Home/${activities[i].name}`} key={activities[i].id} onClick={() => updateActivity(activities[i])}>
+                        <Link to={`Home/${activities[i].name}`} className="card" key={activities[i].id} onClick={() => props.setSelectedActivity(activities[i])}>
                             {activities[i].name}
                         </Link>
                     );
