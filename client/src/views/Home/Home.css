@@ -1,0 +1,22 @@
+/* SAPA Card Styling */
+.profileCard{
+    background: #000;
+}
+h3{
+    margin: 0;
+    border: 0;
+    font-style: italic;
+}
+.cardList{
+    display:flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    width: 85%;
+    flex-wrap: wrap;
+    min-height: 600px;
+    max-height: 700px
+}
+.cardNews{
+    display:flex;
+    flex-direction: row;
+}

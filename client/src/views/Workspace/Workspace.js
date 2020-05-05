@@ -1,10 +1,10 @@
-import React, {useState, useEffect, useRef} from "react";
-import AvrgirlArduino from '../assets/avrgirl-arduino';
-import "./App.css";
+import React, { useEffect} from "react";
+import AvrgirlArduino from '../../assets/avrgirl-arduino';
+import "./Workspace.css";
 
-import {cms, compile} from '../config/development.json'
+import {compile} from '../../config/development.json'
 
-function App() {
+function App(props) {
     let workspace;
 
     // If current workspace ref is not set on initial load, set it
@@ -70,7 +70,7 @@ function App() {
                 </div>
                 <div id="top-container" className="flex flex-column vertical-container">
                     <div id="description-container" className="flex flex-column card">
-                        <h3>Maker Activity X</h3>
+                        <h3>Maker Activity {props.selectedActivity.name}</h3>
                         <p><b>Instructions / Science Brief: </b>
                             Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt
                             ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco
