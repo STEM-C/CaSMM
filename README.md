@@ -7,7 +7,7 @@
 ### `/`  
 
 - #### `client/` 
-  [Client](/client/#client) is the frontend of the applcation. It is powered by [React](https://reactjs.org/) and [Blockly](https://developers.google.com/blockly).
+  [Client](/client/#client) is the frontend of the application. It is powered by [React](https://reactjs.org/) and [Blockly](https://developers.google.com/blockly).
 
 - #### `cms/`
 
@@ -15,7 +15,7 @@
 
 - #### `compile/`
 
-  [Compile](/compile/#compile) is an arduino compilier service. It is an unofficial fork of [Chromeduino](https://github.com/spaceneedle/Chromeduino).
+  [Compile](/compile/#compile) is an arduino compiler service. It is an unofficial fork of [Chromeduino](https://github.com/spaceneedle/Chromeduino).
 
   <br/>
 
@@ -25,7 +25,7 @@
 This project's dependencies are managed through [yarn](https://classic.yarnpkg.com/en/docs/install/#mac-stable)
 The following are the available scripts we can use with the client and server: 
 
-The development environment is comprised of three services managed by docker compose.
+The development environment is comprised of four servers managed by docker compose.
 
 * `sc-client-dev` => localhost:3000
 * `sc-cms-dev` => localhost:1337
@@ -57,7 +57,7 @@ Ideally, we want our flow to resemble this. Master and develop are locked for di
 - `master` - Deployed version of the application 
 - `develop` - Working version of the application
 - `feature/<scaffold>-<feature-name>` - Based off of develop
-  - ex. `feature/server-strapi`
+  - ex. `feature/cms-strapi`
 - `hotfix/<scaffold>-<fix-name>` - Based off of master
   - ex. hotfix/client-cors
 

@@ -7,7 +7,7 @@ if [ ! -d "node_modules" ]; then
     yarn install
 fi
 
-echo "Starting the client developement server"
+echo "Starting the client development server"
 
 # Run the rest of the commands
 exec "$@"
