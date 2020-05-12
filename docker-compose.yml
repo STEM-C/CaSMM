@@ -1,17 +1,6 @@
 version: '3'
 
 services:
-  client:
-    container_name: sc-client-dev
-    build: ./client
-    ports:
-      - '3000:3000'
-    volumes:
-      - ./client:/usr/src/app
-    stdin_open: true
-    depends_on:
-      - cms
-      - compile
   cms:
     container_name: sc-cms-dev
     image: strapi/strapi
