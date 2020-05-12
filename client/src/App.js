@@ -1,5 +1,5 @@
 import React, {useState, useEffect, useRef} from "react";
-import AvrgirlArduino from './avrgirl-arduino';
+import * as AvrgirlArduino from './avrgirl-arduino';
 import "./App.css";
 
 import {cms, compile} from './config/development.json'
