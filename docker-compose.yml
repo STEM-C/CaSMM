@@ -20,15 +20,13 @@ services:
       - 8080:8080
   db:
     container_name: stem-c-db-dev
-    image: mysql
+    image: postgres
     restart: always
-    command: --default-authentication-plugin=mysql_native_password
-    environment:
-      MYSQL_ROOT_PASSWORD: pass
-    volumes:
-      - /var/lib/mysql
-      - ./cms/strapi.sql:/docker-entrypoint-initdb.d/strapi.sql
     ports:
-      - 3306:3306
-    security_opt:
-      - seccomp:unconfined
+      - 5432:5432
+    volumes:
+      - /var/lib/postgresql/data
+    environment:
+      POSTGRES_DB: strapi
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
