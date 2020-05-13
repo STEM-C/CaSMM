@@ -26,7 +26,7 @@ The project is divided into three conceptual environments.
 
 #### Structure
 
-The development environment is comprised of four servers managed by [docker compose](https://docs.docker.com/compose/).
+The development environment is composed of four servers. The first one is run with the [Create React App](https://create-react-app.dev/docs/getting-started/) dev server. The later three are containerized with docker and run with [docker compose](https://docs.docker.com/compose/).
 
 * `stem-c-client-dev` - localhost:3000
 * `stem-c-cms-dev` - localhost:1337
@@ -42,15 +42,19 @@ The development environment is comprised of four servers managed by [docker comp
 
 `stem-c-client-dev`
 
-1. Run `cd client`
-2. Run `yarn install`
-3. Run `yarn start`
+1. Run the following commands sequentially
+
+```powershell
+cd client
+yarn install
+yarn start
+```
 
 ### Staging
 
 #### Structure
 
-The staging environment is deployed on Heroku. It is comprised of one app running a Heroku Postgres instance and a web container.
+The staging environment is deployed on Heroku. It is composed of one app running a Heroku Postgres instance and a web container.
 
 * `stem-c-staging` - [stem-c-staging.herokuapp.com](https://stem-c-staging.herokuapp.com/)
   * The web container attached to this Heroku app runs `cms` and serves static `client` build files
@@ -58,13 +62,13 @@ The staging environment is deployed on Heroku. It is comprised of one app runnin
 
 #### Running
 
-`stem-c-staging` is automatically built from the latest commits to `develop` . Heroku runs the container orchestration from there.
+`stem-c-staging` is automatically built from the latest commits to `develop`. Heroku runs the container orchestration from there.
 
 ### Production
 
 #### Structure
 
-The production environment is deployed on Heroku. It is comprised of two apps. One is running a Heroku Postgres instance and a web container and the other is running just a web container.
+The production environment is deployed on Heroku. It is composed of two apps. One is running a Heroku Postgres instance and a web container and the other is running just a web container.
 
 * `stem-c` - [stem-c.herokuapp.com](https://stem-c.herokuapp.com/)
   * The web container attached to this Heroku app runs `cms` and serves static `client` build files
@@ -76,12 +80,12 @@ The production environment is deployed on Heroku. It is comprised of two apps. O
 
 `stem-c` is automatically built from the latest commits to `master`. Heroku runs the container orchestration from there.
 
-`stem-c-compile` is manually deployed through the Heroku CLI.
+`stem-c-compile` is manually deployed through the [Container Registry](https://devcenter.heroku.com/articles/container-registry-and-runtime) and [Heroku CLI](https://devcenter.heroku.com/articles/heroku-cli).
 
-1. Download [Heroku CLI](https://devcenter.heroku.com/articles/heroku-cli)
+1. Install [Heroku CLI](https://devcenter.heroku.com/articles/heroku-cli)
 2. Run the following commands sequentially
 
-```bash
+```powershell
 heroku login
 heroku git:remote -a stem-c-compile
 heroku container:login
