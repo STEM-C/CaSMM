@@ -16,6 +16,7 @@
   "dependencies": {
     "knex": "<0.20.0",
     "mysql": "latest",
+    "pg": "^8.1.0",
     "strapi": "3.0.0-beta.20.3",
     "strapi-admin": "3.0.0-beta.20.3",
     "strapi-connector-bookshelf": "3.0.0-beta.20.3",
