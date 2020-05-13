@@ -73,7 +73,7 @@ h3, p {
 }
 
 #model-img {
-  width:fit-content;
-  height:fit-content;
+  width:auto;
+  height:100%;
 }
 

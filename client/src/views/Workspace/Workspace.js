@@ -1,6 +1,6 @@
 import React, { useEffect, useState} from "react";
 import {Link} from "react-router-dom";
-import AvrgirlArduino from '../../assets/avrgirl-arduino';
+import * as AvrgirlArduino from '../../assets/avrgirl-arduino';
 import "./Workspace.css";
 
 import {compile, cms} from '../../config/development.json'
@@ -117,7 +117,6 @@ function App(props) {
                                 props.selectedActivity.blocks.map((chunk, i) => {
                                     if(chunk.name.toLowerCase().includes(activity.name.toLowerCase()))
                                             return <block type={props.selectedActivity.blocks[i].name} is="Blockly block"/>
-
                                 })
                             }
                         </category>

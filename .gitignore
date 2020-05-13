@@ -24,3 +24,4 @@ strapi.sql
 
 # node
 node_modules/
+build/
