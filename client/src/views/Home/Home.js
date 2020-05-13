@@ -20,16 +20,20 @@ function Home(props) {
     }, [])
 
     return (
-        <div className="cardList">
-            {
-                activities.map((activity, i) => {
-                    return (
-                        <Link to={`Home/${activities[i].name}`} className="cardActivity" key={activities[i].id} onClick={() => props.setSelectedActivity(activities[i])}>
-                            {activities[i].name}
-                        </Link>
-                    );
-                })
-            }
+        <div>
+
+            <div className="cardList">
+                <h2 className="cardHeader">Activity List</h2>
+                {
+                    activities.map((activity, i) => {
+                        return (
+                            <Link to={`Home/${activities[i].name}`} className="cardActivity" key={activities[i].id} onClick={() => props.setSelectedActivity(activities[i])}>
+                                {activities[i].name}
+                            </Link>
+                        );
+                    })
+                }
+            </div>
         </div>
     )
 }

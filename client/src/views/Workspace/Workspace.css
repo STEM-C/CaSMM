@@ -72,8 +72,8 @@ h3, p {
   margin-left: 1.5em;
 }
 
-#mode-img {
-  width: auto;
-  height: auto;
+#model-img {
+  width:fit-content;
+  height:fit-content;
 }
 

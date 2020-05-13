@@ -1,11 +1,13 @@
-import React, { useEffect} from "react";
+import React, { useEffect, useState} from "react";
 import {Link} from "react-router-dom";
 import AvrgirlArduino from '../../assets/avrgirl-arduino';
 import "./Workspace.css";
 
-import {compile} from '../../config/development.json'
+import {compile, cms} from '../../config/development.json'
 
 function App(props) {
+    const [selectedModel, setSelectedModel] = useState(0);
+
     let workspace;
 
     // If current workspace ref is not set on initial load, set it
@@ -85,18 +87,18 @@ function App(props) {
                     <div id="blockly-canvas" style={{"height": "800px", "width": "100%"}}/>
                     <div id="models-container" className="flex flex-column card space-between">
                         <h3>Activity Models</h3>
-                        <img src="assets/arduino.png" id="model-img"/>
+                        <img src={cms + props.selectedActivity.models[selectedModel].representation.url} alt={`model ${selectedModel}`} id="model-img"/>
                         <div id="model-btn-container" className="flex space-between">
 						<span>
-							<input type="radio" value="arduino" name="model-btn" />
+							<input type="radio" value={selectedModel} onClick={() => setSelectedModel(0)} name="model-btn" />
 							<label htmlFor="btn-arduino">Arduino</label>
 						</span>
                             <span>
-							<input type="radio" value="maker" name="model-btn"/>
+							<input type="radio" value={selectedModel} onClick={() => setSelectedModel(1)} name="model-btn"/>
 							<label htmlFor="btn-maker">Maker</label>
 						</span>
                             <span>
-							<input type="radio" value="science" name="model-btn"/>
+							<input type="radio" value={selectedModel} onClick={() => setSelectedModel(2)} name="model-btn"/>
 							<label htmlFor="btn-science">Science</label>
 						</span>
                         </div>
