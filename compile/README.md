@@ -1,6 +1,6 @@
 # Compile
 
-Arduino compilier service
+Arduino compilier server.
 
 <br/>
 

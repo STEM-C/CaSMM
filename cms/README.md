@@ -1,31 +1,30 @@
 # Cms
 
-REST API and admin portal that powers the backend. It is powered by [Node](https://nodejs.org/en/) and [Strapi](https://strapi.io/documentation/3.0.0-beta.x/getting-started/introduction.html). The file structure is defined by Strapi and is documented [here](https://strapi.io/documentation/3.0.0-beta.x/concepts/file-structure.html#files-structure).
+REST API and admin portal that comprise the backend. It is powered by [Node](https://nodejs.org/en/), [Strapi](https://strapi.io/documentation/3.0.0-beta.x/getting-started/introduction.html), and [PostgreSQL](https://www.postgresql.org/). The file structure is defined by Strapi and is documented [here](https://strapi.io/documentation/3.0.0-beta.x/concepts/file-structure.html#files-structure).
 
 <br/>
 
 ## Setup
 
-To run Cms with the rest of the application, see the project [development](../README.md#development) setup.
+**RECOMMENDED:** To run Cms with the rest of the application, see the project [development](../README.md#development) setup.
 
 ### Development
 
 1. Install [docker](https://docs.docker.com/get-docker/)
-2. Add strapi.sql to `/`
-3. Start a new db container from MySQL `yarn run make-db`
+3. Start a new docker container running postgres `yarn run make-db`
 4. Install dependencies `yarn install`
 5. Start the development server `yarn develop`
 
 Additional scripts:
 
-* Start an existing db container `yarn db`
-* Connect to the MySQL bash `yarn db-bash`
+* Start an existing db container `yarn db-start`
+* Connect to the postgres bash `yarn db-bash`
 
 <br/>
 
 ## API `/`
 
-Built with [Node](https://nodejs.org/en/), [Koa](https://github.com/koajs/koa#readme), and [Bookshelf](https://bookshelfjs.org/), the REST API enables CRUD functionality with the application's content. Authentication is enabled via JWTs. The current database is sqlite3 running locally.
+Built with [Node](https://nodejs.org/en/), [Koa](https://github.com/koajs/koa#readme), and [Bookshelf](https://bookshelfjs.org/), the REST API enables CRUD functionality with the application's content. Authentication is enabled via JWTs. The dbms is [PostgreSQL](https://www.postgresql.org/).
 
 ### Entity Relationships
 

@@ -6,41 +6,88 @@
 
 ### `/`  
 
-- #### `client/` 
-  [Client](/client/#client) is the frontend of the applcation. It is powered by [React](https://reactjs.org/) and [Blockly](https://developers.google.com/blockly).
+#### `client/` 
+[Client](/client/#client) is the frontend of the application. It is powered by [React](https://reactjs.org/) and [Blockly](https://developers.google.com/blockly).
 
-- #### `cms/`
+#### `cms/`
 
-  [Cms](/cms#cms) is the REST API and admin portal that powers the backend. It is powered by [Node](https://nodejs.org/en/) and [Strapi]().
+[Cms](/cms#cms) is the REST API and admin portal that powers the backend. It is powered by [Node](https://nodejs.org/en/) and [Strapi]().
 
-- #### `compile/`
+#### `compile/`
 
-  [Compile](/compile/#compile) is an arduino compilier service. It is an unofficial fork of [Chromeduino](https://github.com/spaceneedle/Chromeduino).
+[Compile](/compile/#compile) is an arduino compiler service. It is an unofficial fork of [Chromeduino](https://github.com/spaceneedle/Chromeduino).
 
-  <br/>
+<br/>
 
-## Setup
+## Environments
 
+The project is divided into three conceptual environments.
 ### Development
-This project's dependencies are managed through [yarn](https://classic.yarnpkg.com/en/docs/install/#mac-stable)
-The following are the available scripts we can use with the client and server: 
 
-The development environment is comprised of four servers managed by docker compose.
+#### Structure
 
-* `sc-client-dev` => localhost:3000
-* `sc-cms-dev` => localhost:1337
-* `sc-compile-dev` => localhost:8080
-* `sc-db-dev` => localhost:3306
+The development environment is comprised of four servers managed by [docker compose](https://docs.docker.com/compose/).
 
-To get started, simply 
+* `stem-c-client-dev` - localhost:3000
+* `stem-c-cms-dev` - localhost:1337
+* `stem-c-compile-dev` - localhost:8080
+* `stem-c-db-dev` - localhost:5432
+
+#### Running
+
+`stem-c-cms-dev`, `stem-c-compile-dev`, and `stem-c-db-dev`
 
 1. Install [docker](https://docs.docker.com/get-docker/)
-2. Add strapi.sql to cms/
 3. Run `docker-compose up` 
 
-### Deployment
+`stem-c-client-dev`
 
-TODO
+1. Run `cd client`
+2. Run `yarn install`
+3. Run `yarn start`
+
+### Staging
+
+#### Structure
+
+The staging environment is deployed on Heroku. It is comprised of one app running a Heroku Postgres instance and a web container.
+
+* `stem-c-staging` - [stem-c-staging.herokuapp.com](https://stem-c-staging.herokuapp.com/)
+  * The web container attached to this Heroku app runs `cms` and serves static `client` build files
+  * The Heroku Postgres instance is attached as an add-on
+
+#### Running
+
+`stem-c-staging` is automatically built from the latest commits to `develop` . Heroku runs the container orchestration from there.
+
+### Production
+
+#### Structure
+
+The production environment is deployed on Heroku. It is comprised of two apps. One is running a Heroku Postgres instance and a web container and the other is running just a web container.
+
+* `stem-c` - [stem-c.herokuapp.com](https://stem-c.herokuapp.com/)
+  * The web container attached to this Heroku app runs `cms` and serves static `client` build files
+  * The Heroku Postgres instance is attached as an add-on
+* `stem-c-compile` - [stem-c-compile.herokuapp.com](https://stem-c-compile.herokuapp.com/)
+  * The web container attached to this Heroku app runs `compile`
+
+#### Running
+
+`stem-c` is automatically built from the latest commits to `master`. Heroku runs the container orchestration from there.
+
+`stem-c-compile` is manually deployed through the Heroku CLI.
+
+1. Download [Heroku CLI](https://devcenter.heroku.com/articles/heroku-cli)
+2. Run the following commands sequentially
+
+```bash
+heroku login
+heroku git:remote -a stem-c-compile
+heroku container:login
+heroku container:push web
+heroku container:release web
+```
 
 <br/>
 
@@ -54,7 +101,8 @@ Ideally, we want our flow to resemble this. Master and develop are locked for di
 
 ### Branches
 
-- `master` - Deployed version of the application 
+- `master` - Production application
+- `release/<version>` - Staged version
 - `develop` - Working version of the application
 - `feature/<scaffold>-<feature-name>` - Based off of develop
   - ex. `feature/cms-strapi`
