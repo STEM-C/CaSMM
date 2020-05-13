@@ -16,16 +16,15 @@
   "dependencies": {
     "knex": "<0.20.0",
     "mysql": "latest",
-    "sqlite3": "^4.1.1",
-    "strapi": "3.0.0-beta.19.4",
-    "strapi-admin": "3.0.0-beta.19.4",
-    "strapi-connector-bookshelf": "^3.0.0-beta.19.5",
-    "strapi-plugin-content-manager": "3.0.0-beta.19.4",
-    "strapi-plugin-content-type-builder": "3.0.0-beta.19.4",
-    "strapi-plugin-email": "3.0.0-beta.19.4",
-    "strapi-plugin-upload": "3.0.0-beta.19.4",
-    "strapi-plugin-users-permissions": "3.0.0-beta.19.4",
-    "strapi-utils": "3.0.0-beta.19.4"
+    "strapi": "3.0.0-beta.20.3",
+    "strapi-admin": "3.0.0-beta.20.3",
+    "strapi-connector-bookshelf": "3.0.0-beta.20.3",
+    "strapi-plugin-content-manager": "3.0.0-beta.20.3",
+    "strapi-plugin-content-type-builder": "3.0.0-beta.20.3",
+    "strapi-plugin-email": "3.0.0-beta.20.3",
+    "strapi-plugin-upload": "3.0.0-beta.20.3",
+    "strapi-plugin-users-permissions": "3.0.0-beta.20.3",
+    "strapi-utils": "3.0.0-beta.20.3"
   },
   "author": {
     "name": "Nicholas Ionata"
