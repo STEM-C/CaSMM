@@ -4,7 +4,7 @@ import "./App.css";
 
 // import {cms, compile} from './config/staging.json'
 
-import { cms, compile } from './HostsHelper'
+import { cms, compile } from './Hosts'
 
 function App() {
     let workspace;
