@@ -10,10 +10,5 @@ const getHosts = () => {
     return production
 }
 
-export const cms = () => {
-    return getHosts().cms
-}
-
-export const compile = () => {
-    return getHosts().compile
-}
+export const cms = getHosts().cms
+export const compile = getHosts().compile
