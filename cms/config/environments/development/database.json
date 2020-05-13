@@ -12,16 +12,6 @@
         "password": "pass"
       },
       "options": {}
-    },
-    "sqlite3": {
-      "connector": "bookshelf",
-      "settings": {
-        "client": "sqlite",
-        "filename": ".tmp/data.db"
-      },
-      "options": {
-        "useNullAsDefault": true
-      }
     }
   }
 }
