@@ -31,6 +31,9 @@
     },
     "topic": {
       "model": "topic"
+    },
+    "blocks": {
+      "collection": "block"
     }
   }
 }
