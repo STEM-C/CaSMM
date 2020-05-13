@@ -1,8 +1,10 @@
 import React, {useState, useEffect, useRef} from "react";
-import * as AvrgirlArduino from './avrgirl-arduino';
+// import * as AvrgirlArduino from './avrgirl-arduino';
 import "./App.css";
 
-import {cms, compile} from './config/development.json'
+// import {cms, compile} from './config/staging.json'
+
+import { cms, compile } from './HostsHelper'
 
 function App() {
     let workspace;
@@ -41,19 +43,21 @@ function App() {
             // converting base 64 to hex
             Hex = atob(data.hex).toString();
 
-            const avrgirl = new AvrgirlArduino({
-                board: "",
-                debug: true
-            });
+            console.log(Hex);
+
+            // const avrgirl = new AvrgirlArduino({
+            //     board: "",
+            //     debug: true
+            // });
 
             // TODO: Remove hardcoded file path
-            avrgirl.flash(Hex, (err) => {
-                if (err) {
-                    console.log(err);
-                } else {
-                    console.log('done correctly.');
-                }
-            })
+            // avrgirl.flash(Hex, (err) => {
+            //     if (err) {
+            //         console.log(err);
+            //     } else {
+            //         console.log('done correctly.');
+            //     }
+            // })
 
         });
     };
