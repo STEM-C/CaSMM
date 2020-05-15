@@ -4,23 +4,21 @@
     "default": {
       "connector": "bookshelf",
       "settings": {
-        "client": "mysql",
+        "client": "postgres",
         "host": "${process.env.DATABASE_HOST || '127.0.0.1'}",
-        "port": "3306",
+        "port": "5432",
         "database": "strapi",
-        "username": "root",
-        "password": "pass"
-      },
-      "options": {}
-    },
-    "sqlite3": {
-      "connector": "bookshelf",
-      "settings": {
-        "client": "sqlite",
-        "filename": ".tmp/data.db"
+        "username": "postgres",
+        "password": "postgres"
       },
       "options": {
-        "useNullAsDefault": true
+        "pool": {
+          "min": 0,
+          "max": 15,
+          "idleTimeoutMillis": 30000,
+          "createTimeoutMillis": 30000,
+          "acquireTimeoutMillis": 30000
+        }
       }
     }
   }

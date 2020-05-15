@@ -1,0 +1,7 @@
+# Directories
+*/node_modules
+cms/.tmp
+
+# Data
+cms/er_diagram.png
+cms/strapi.sql
