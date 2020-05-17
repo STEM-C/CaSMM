@@ -32,7 +32,6 @@ function App(props) {
     const getArduino = () => {
         window.Blockly.Arduino.INFINITE_LOOP_TRAP = null;
         let code = window.Blockly.Arduino.workspaceToCode(workspace);
-        alert(code);
         return(code);
     };
 
@@ -111,12 +110,12 @@ function App(props) {
                 {
                     // Maps out block categories
                     props.selectedActivity.blocks_categories.map((activity, i) => (
-                        <category name={activity.name} is="Blockly category">
+                        <category name={activity.name} is="Blockly category" key={activity.name}>
                             {
                                 // maps out blocks in category
                                 props.selectedActivity.blocks.map((chunk, i) => {
                                     if(chunk.name.toLowerCase().includes(activity.name.toLowerCase()))
-                                            return <block type={props.selectedActivity.blocks[i].name} is="Blockly block"/>
+                                            return <block type={props.selectedActivity.blocks[i].name} is="Blockly block" key={activity.name + i}/>
                                 })
                             }
                         </category>
