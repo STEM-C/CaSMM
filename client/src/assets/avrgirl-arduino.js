@@ -3826,6 +3826,7 @@ THE SOFTWARE.
 
         /**
          * Opens and parses a given hex file
+         * (STEM+C) edited to take in raw hex instead of a file
          */
         tools._parseHex = function(file) {
           try {
@@ -18058,25 +18059,26 @@ THE SOFTWARE.
             that.run();
           },
 
-          fuseCheck :  fuseCheck = function(fn) {
-            this.options.debug && console.log('checking fuses');
-            // fuse check
-            this.c('F')
-                .c('F')
-                .c('F')
-                .c('N')
-                .c('N')
-                .c('N')
-                .c('Q')
-                .c('Q')
-                .c('Q')
-                .c('L')
-                .c('E');
-
-            this.run(function() {
-              fn();
-            });
-          }
+          // (STEM+C) the following code has been commented out in an attempt to fix https://github.com/STEM-C/STEM-C/issues/18
+          // fuseCheck :  fuseCheck = function(fn) {
+          //   this.options.debug && console.log('checking fuses');
+          //   // fuse check
+          //   this.c('F')
+          //       .c('F')
+          //       .c('F')
+          //       .c('N')
+          //       .c('N')
+          //       .c('N')
+          //       .c('Q')
+          //       .c('Q')
+          //       .c('Q')
+          //       .c('L')
+          //       .c('E');
+          //
+          //   this.run(function() {
+          //     fn();
+          //   });
+          // }
         };
 
         out.init = function(serialport, options, fn) {
