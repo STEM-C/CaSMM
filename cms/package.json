@@ -8,24 +8,23 @@
     "start": "strapi start",
     "build": "strapi build",
     "strapi": "strapi",
-    "make-db": "docker run --name cms-db-dev -p 3306:3306 -e MYSQL_ROOT_PASSWORD=pass -v /var/lib/mysql -v `pwd`/strapi.sql:/docker-entrypoint-initdb.d/strapi.sql -d mysql:latest --default-authentication-plugin=mysql_native_password",
-    "db": "docker start cms-db-dev",
-    "db-bash": "docker exec -it cms-db-dev mysql -uroot -ppass"
+    "db-make": "docker run --name stem-c-db-dev -p 5432:5432 -e POSTGRES_DB=strapi -e POSTGRES_USER=postgres -e POSTGRES_PASSWORD=postgres -v /var/lib/postgresql/data -d postgres",
+    "db-start": "docker start stem-c-db-dev",
+    "db-bash": "docker exec -it stem-c-db-dev psql strapi postgres"
   },
   "devDependencies": {},
   "dependencies": {
     "knex": "<0.20.0",
-    "mysql": "latest",
-    "sqlite3": "^4.1.1",
-    "strapi": "3.0.0-beta.19.4",
-    "strapi-admin": "3.0.0-beta.19.4",
-    "strapi-connector-bookshelf": "^3.0.0-beta.19.5",
-    "strapi-plugin-content-manager": "3.0.0-beta.19.4",
-    "strapi-plugin-content-type-builder": "3.0.0-beta.19.4",
-    "strapi-plugin-email": "3.0.0-beta.19.4",
-    "strapi-plugin-upload": "3.0.0-beta.19.4",
-    "strapi-plugin-users-permissions": "3.0.0-beta.19.4",
-    "strapi-utils": "3.0.0-beta.19.4"
+    "pg": "^8.1.0",
+    "strapi": "3.0.0-beta.20.3",
+    "strapi-admin": "3.0.0-beta.20.3",
+    "strapi-connector-bookshelf": "3.0.0-beta.20.3",
+    "strapi-plugin-content-manager": "3.0.0-beta.20.3",
+    "strapi-plugin-content-type-builder": "3.0.0-beta.20.3",
+    "strapi-plugin-email": "3.0.0-beta.20.3",
+    "strapi-plugin-upload": "3.0.0-beta.20.3",
+    "strapi-plugin-users-permissions": "3.0.0-beta.20.3",
+    "strapi-utils": "3.0.0-beta.20.3"
   },
   "author": {
     "name": "Nicholas Ionata"

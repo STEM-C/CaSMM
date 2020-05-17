@@ -1,19 +1,8 @@
 version: '3'
 
 services:
-  client:
-    container_name: sc-client-dev
-    build: ./client
-    ports:
-      - '3000:3000'
-    volumes:
-      - ./client:/usr/src/app
-    stdin_open: true
-    depends_on:
-      - cms
-      - compile
   cms:
-    container_name: sc-cms-dev
+    container_name: stem-c-cms-dev
     image: strapi/strapi
     environment: 
       - DATABASE_HOST=db
@@ -24,22 +13,20 @@ services:
     depends_on:
       - db
   compile:
-    container_name: sc-compile-dev
+    container_name: stem-c-compile-dev
     build: ./compile
     restart: always
     ports:
       - 8080:8080
   db:
-    container_name: sc-db-dev
-    image: mysql
+    container_name: stem-c-db-dev
+    image: postgres
     restart: always
-    command: --default-authentication-plugin=mysql_native_password
-    environment:
-      MYSQL_ROOT_PASSWORD: pass
-    volumes:
-      - /var/lib/mysql
-      - ./cms/strapi.sql:/docker-entrypoint-initdb.d/strapi.sql
     ports:
-      - 3306:3306
-    security_opt:
-      - seccomp:unconfined
+      - 5432:5432
+    volumes:
+      - /var/lib/postgresql/data
+    environment:
+      POSTGRES_DB: strapi
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
