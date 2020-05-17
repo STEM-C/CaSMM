@@ -3,7 +3,7 @@ import {Link} from "react-router-dom";
 import * as AvrgirlArduino from '../../assets/avrgirl-arduino';
 import "./Workspace.css";
 
-import {compile, cms} from '../../config/development.json'
+import {compile, cms} from '../../hosts.js'
 
 function App(props) {
     const [selectedModel, setSelectedModel] = useState(0);
