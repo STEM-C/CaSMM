@@ -113,13 +113,13 @@ heroku container:release web
 > Locked for direct commits — all commits must be made from a non-protected branch and submitted via a pull request with one approving review
 
 - **master** - Production application
-- **develop** - Working version of the application
 
 #### Non-protected
 
 > Commits can be made directly to the branch
 
 - **release** - Staging application
+- **develop** - Working version of the application
 - **feature/<`scaffold`>-<`feature-name`>** - Based off of develop
   - ex. **feature/cms-strapi**
 - **hotfix/<`scaffold`>-<`fix-name`>** - Based off of master
