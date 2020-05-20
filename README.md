@@ -1,5 +1,7 @@
 # STEM+C
 
+> Cloud-based programming interface
+
 <br/>
 
 ## Scaffolds
@@ -21,7 +23,8 @@
 
 ## Environments
 
-The project is divided into three conceptual environments.
+> The project is divided into three conceptual environments.
+
 ### Development
 
 #### Structure
@@ -62,7 +65,7 @@ The staging environment is deployed on Heroku. It is composed of one app running
 
 #### Running
 
-`stem-c-staging` is automatically built from the latest commits to `develop`. Heroku runs the container orchestration from there.
+`stem-c-staging` is automatically built from the latest commits to `release`. Heroku runs the container orchestration from there.
 
 ### Production
 
@@ -99,20 +102,33 @@ heroku container:release web
 
 ### Git Flow 
 
-![Git Flow](https://nvie.com/img/git-model@2x.png)
+> We will follow this git flow for the most part — instead of individual release branches, we will have one to streamline staging deployment 
 
-Ideally, we want our flow to resemble this. Master and develop are locked for direct commits. All commits must be made to a non-protected branch and submitted via a pull request with one approving review.
+![Git Flow](https://nvie.com/img/git-model@2x.png)
 
 ### Branches
 
-- `master` - Production application
-- `release/<version>` - Staged version
-- `develop` - Working version of the application
-- `feature/<scaffold>-<feature-name>` - Based off of develop
-  - ex. `feature/cms-strapi`
-- `hotfix/<scaffold>-<fix-name>` - Based off of master
-  - ex. hotfix/client-cors
+#### Protected
+
+> Locked for direct commits — all commits must be made from a non-protected branch and submitted via a pull request with one approving review
+
+- **master** - Production application
+- **develop** - Working version of the application
+
+#### Non-protected
+
+> Commits can be made directly to the branch
+
+- **release** - Staging application
+- **feature/<`scaffold`>-<`feature-name`>** - Based off of develop
+  - ex. **feature/cms-strapi**
+- **hotfix/<`scaffold`>-<`fix-name`>** - Based off of master
+  - ex. **hotfix/client-cors**
 
 ### Pull Requests
+
+> PRs to **master** should squash and merge
+>
+> PRs to all other branches should create a merge commit
 
 Before submitting a pull request, merge the target branch into the working branch to resolve any merge conflicts. Include a description of the changes made.
