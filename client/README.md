@@ -1,6 +1,6 @@
 # Client
 
-[React.js](https://reactjs.org/) application which represents the entire browserside client. File structure is standard for a [create-react-app](https://github.com/facebook/create-react-app) application with some minor changes. Any component which represents an entire page is categorized under the [views](/client/src/views) folder.
+> [React.js](https://reactjs.org/) application which represents the entire browser-side client. File structure is standard for a [create-react-app](https://github.com/facebook/create-react-app) application with some minor changes. Any component which represents an entire page is categorized under the [views](/client/src/views) folder.
 
 <br />
 

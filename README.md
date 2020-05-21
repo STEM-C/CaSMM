@@ -6,8 +6,8 @@
 
 ### `/`  
 
-- #### `client/` 
-  [Client](/client#client) is the frontend of the application. It is powered by [React](https://reactjs.org/) and [Blockly](https://developers.google.com/blockly).
+#### `client/` 
+[Client](/client#client) is the frontend of the application. It is powered by [React](https://reactjs.org/) and [Blockly](https://developers.google.com/blockly).
 
 #### `cms/`
 
