@@ -1,16 +1,17 @@
-import React, { useEffect, useState} from "react";
+import React, { useEffect} from "react";
 import {Link} from "react-router-dom";
 import * as AvrgirlArduino from '../../assets/avrgirl-arduino';
 import "./Workspace.css";
 
-import {compile, cms} from '../../hosts.js'
+import {compile} from '../../hosts.js'
 
 function App(props) {
-    const [selectedModel, setSelectedModel] = useState(0);
-
     let workspace;
 
-    // If current workspace ref is not set on initial load, set it
+    // If current workspace ref is not set on initial load, set it, otherwise set as prop value
+    const data = localStorage.getItem("my-activity");
+    const selectedActivity = (data && !props.selectedActivity) ? JSON.parse(data) : props.selectedActivity;
+
     useEffect(() => {
         workspace = window.Blockly.inject('blockly-canvas', {toolbox: document.getElementById('toolbox')});
 
@@ -19,6 +20,11 @@ function App(props) {
             workspace.dispose();
         }
     },[]);
+
+    // saves activity in localstorage
+    useEffect(() => {
+        localStorage.setItem("my-activity", JSON.stringify(selectedActivity));
+    });
 
     // Generates javascript code from blockly canvas
     const getJS = () => {
@@ -77,31 +83,13 @@ function App(props) {
                 </div>
                 <div id="top-container" className="flex flex-column vertical-container">
                     <div id="description-container" className="flex flex-column card">
-                        <h3>Maker Activity {props.selectedActivity.name}</h3>
+                        <h3>Maker Activity {selectedActivity.name}</h3>
                         <p><b>Instructions / Science Brief: </b>
-                            {props.selectedActivity.description}</p>
+                            {selectedActivity.description}</p>
                     </div>
                 </div>
                 <div id="bottom-container" className="flex vertical-container">
                     <div id="blockly-canvas" style={{"height": "800px", "width": "100%"}}/>
-                    <div id="models-container" className="flex flex-column card space-between">
-                        <h3>Activity Models</h3>
-                        <img src={cms + props.selectedActivity.models[selectedModel].representation.url} alt={`model ${selectedModel}`} id="model-img"/>
-                        <div id="model-btn-container" className="flex space-between">
-						<span>
-							<input type="radio" value={selectedModel} onClick={() => setSelectedModel(0)} name="model-btn" />
-							<label htmlFor="btn-arduino">Arduino</label>
-						</span>
-                            <span>
-							<input type="radio" value={selectedModel} onClick={() => setSelectedModel(1)} name="model-btn"/>
-							<label htmlFor="btn-maker">Maker</label>
-						</span>
-                            <span>
-							<input type="radio" value={selectedModel} onClick={() => setSelectedModel(2)} name="model-btn"/>
-							<label htmlFor="btn-science">Science</label>
-						</span>
-                        </div>
-                    </div>
                 </div>
             </div>
 
@@ -109,13 +97,13 @@ function App(props) {
             <xml id="toolbox" style={{"display": "none"}} is="Blockly tag">
                 {
                     // Maps out block categories
-                    props.selectedActivity.blocks_categories.map((activity, i) => (
+                    selectedActivity.blocks_categories.map((activity, i) => (
                         <category name={activity.name} is="Blockly category" key={activity.name}>
                             {
                                 // maps out blocks in category
-                                props.selectedActivity.blocks.map((chunk, i) => {
+                                selectedActivity.blocks.map((chunk, i) => {
                                     if(chunk.name.toLowerCase().includes(activity.name.toLowerCase()))
-                                            return <block type={props.selectedActivity.blocks[i].name} is="Blockly block" key={activity.name + i}/>
+                                            return <block type={selectedActivity.blocks[i].name} is="Blockly block" key={activity.name + i}/>
                                 })
                             }
                         </category>
