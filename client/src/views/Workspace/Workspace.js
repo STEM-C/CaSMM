@@ -1,4 +1,4 @@
-import React, { useEffect} from "react";
+import React, { useEffect, useState} from "react";
 import {Link} from "react-router-dom";
 import * as AvrgirlArduino from '../../assets/avrgirl-arduino';
 import "./Workspace.css";
@@ -6,6 +6,10 @@ import "./Workspace.css";
 import {compile} from '../../hosts.js'
 
 function App(props) {
+    const [hoverJS, setHoverJS] = useState(false);
+    const [hoverArduino, setHoverArduino] = useState(false);
+    const [hoverCompile, setHoverCompile] = useState(false);
+
     let workspace;
 
     // If current workspace ref is not set on initial load, set it, otherwise set as prop value
@@ -76,9 +80,15 @@ function App(props) {
                 <div id="nav-container" className="flex vertical-container space-between">
                     <h1 id="title"><Link to={"/Home"}>STEM+C</Link></h1>
                     <div id="action-btn-container" className="flex space-between">
-                        <i onClick={getJS} className={"fab fa-js hvr-grow"}/>
-                        <i onClick={getArduino} className="hvr-grow">A</i>
-                        <i onClick={compileArduinoCode} className="fas fa-play hvr-grow"/>
+                        <i onClick={getJS} className="fab fa-js hvr-info" onMouseEnter={() => setHoverJS(true)}
+                           onMouseLeave={() => setHoverJS(false)}/>
+                        {hoverJS && <div className="popup JS">Shows Javascript Code</div>}
+                        <i onClick={getArduino} className="hvr-info" onMouseEnter={() => setHoverArduino(true)}
+                           onMouseLeave={() => setHoverArduino(false)}>A</i>
+                        {hoverArduino && <div className="popup Arduino">Shows Arduino Code</div>}
+                        <i onClick={compileArduinoCode} className="fas fa-play hvr-info" onMouseEnter={() => setHoverCompile(true)}
+                           onMouseLeave={() => setHoverCompile(false)}/>
+                        {hoverCompile && <div className="popup Compile">Run Program</div>}
                     </div>
                 </div>
                 <div id="top-container" className="flex flex-column vertical-container">
