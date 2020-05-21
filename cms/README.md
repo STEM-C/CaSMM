@@ -33,7 +33,7 @@ The frontend (**public/frontend**) is served this way with a slight twist. Due t
 
 > As routes are added to react router, they will need to be added to the config
 
-```json
+```
 // middlewares/frontend/defaults.json
 
 {
