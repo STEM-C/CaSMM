@@ -9,7 +9,7 @@ RUN yarn install
 
 # Build client
 COPY ./client .
-RUN yarn build
+RUN PUBLIC_URL=/frontend yarn build
 
 WORKDIR /usr/src/app
 
