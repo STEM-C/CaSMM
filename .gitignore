@@ -25,3 +25,4 @@ strapi.sql
 # node
 node_modules/
 build/
+cms/public/frontend
