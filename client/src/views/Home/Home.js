@@ -3,7 +3,7 @@ import {Link} from "react-router-dom";
 import axios from 'axios'
 import './Home.css'
 
-import {cms} from '../../config/development.json'
+import {cms} from '../../hosts'
 
 function Home(props) {
     const [activities, setActivities] = useState([]);
