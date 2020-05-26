@@ -22,6 +22,10 @@
     },
     "type": {
       "model": "type"
+    },
+    "activities": {
+      "collection": "activity",
+      "via": "topic"
     }
   }
 }
