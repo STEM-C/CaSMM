@@ -1,5 +1,6 @@
 import React, { useEffect, useState} from "react";
 import {Link} from "react-router-dom";
+import axios from 'axios';
 import * as AvrgirlArduino from '../../assets/avrgirl-arduino';
 import "./Workspace.css";
 
@@ -70,15 +71,40 @@ function App(props) {
                     console.log('done correctly.');
                 }
             })
-
         });
     };
+
+    /*
+    const compileArduinoCode = async() => {
+        let body = {
+            "board": "arduino:avr:uno",
+            "sketch": getArduino()
+        };
+
+        // gets compiled hex from server
+        let Hex = await axios.post(`${compile}/compile`, body);
+        Hex = atob(Hex).toString();
+
+        const avrgirl = new AvrgirlArduino({
+            board: "",
+            debug: true
+        });
+
+        avrgirl.flash(Hex, (err) => {
+            if (err) {
+                console.log(err);
+            } else {
+                console.log('done correctly.');
+            }
+        })
+    };
+    */
 
     return (
         <div>
             <div id="container" className="flex flex-column">
                 <div id="nav-container" className="flex vertical-container space-between">
-                    <h1 id="title"><Link to={"/Home"}>STEM+C</Link></h1>
+                    <h1 id="title"><Link to={"/"}>STEM+C</Link></h1>
                     <div id="action-btn-container" className="flex space-between">
                         <i onClick={getJS} className="fab fa-js hvr-info" onMouseEnter={() => setHoverJS(true)}
                            onMouseLeave={() => setHoverJS(false)}/>

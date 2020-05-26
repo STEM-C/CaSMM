@@ -13,11 +13,8 @@ const App = () => {
     return(
         <div>
             <Switch>
-                <Route exact path={"/Home"} render={(props) => <Home setSelectedActivity={setSelectedActivity} /> } />
-                <Route exact path ="/" >
-                    <Redirect to={"/Home"} />
-                </Route>
-                <Route path={"/Home/:projectId"} render = { (props) => <Workspace selectedActivity={selectedActivity} /> } />
+                <Route exact path={"/"} render={(props) => <Home setSelectedActivity={setSelectedActivity} /> } />
+                <Route path={"/:projectId"} render = { (props) => <Workspace selectedActivity={selectedActivity} /> } />
                 <Route component={NotFound} />
             </Switch>
         </div>

@@ -27,7 +27,7 @@ function Home(props) {
                 {
                     activities.map((activity, i) => {
                         return (
-                            <Link to={`Home/${activities[i].name}`} className="cardActivity" key={activities[i].id} onClick={() => props.setSelectedActivity(activities[i])}>
+                            <Link to={`${activities[i].name}`} className="cardActivity" key={activities[i].id} onClick={() => props.setSelectedActivity(activities[i])}>
                                 {activities[i].name}
                             </Link>
                         );
