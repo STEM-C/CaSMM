@@ -42,15 +42,8 @@ The development environment is composed of four servers. The first one is run wi
 
 `stem-c-client-dev`
 
-1. Install [Node](https://nodejs.org/en/) and [Yarn](https://classic.yarnpkg.com/en/docs/install#windows-stable)
-
-2. Run the following commands sequentially
-
-   ```Bash
-   cd client
-   yarn install
-   yarn start
-   ```
+1. Follow the [client](/client#setup) setup
+2. Run `yarn start`
 
 `stem-c-cms-dev`, `stem-c-compile-dev`, and `stem-c-db-dev`
 
