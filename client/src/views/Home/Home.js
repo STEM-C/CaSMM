@@ -1,5 +1,5 @@
-import React, {useState, useEffect} from "react";
-import {Link} from "react-router-dom";
+import React, {useState, useEffect} from "react"
+import {Link} from "react-router-dom"
 import axios from 'axios'
 import './Home.css'
 
@@ -27,7 +27,7 @@ function Home(props) {
                 {
                     activities.map((activity, i) => {
                         return (
-                            <Link to={`Home/${activities[i].name}`} className="cardActivity" key={activities[i].id} onClick={() => props.setSelectedActivity(activities[i])}>
+                            <Link to="/workspace" className="cardActivity" key={activities[i].id} onClick={() => props.setSelectedActivity(activities[i])}>
                                 {activities[i].name}
                             </Link>
                         );

@@ -40,20 +40,20 @@ The development environment is composed of four servers. The first one is run wi
 
 #### Running
 
+`stem-c-client-dev`
+
+1. Follow the [client](/client#setup) setup
+2. Run `yarn start`
+
 `stem-c-cms-dev`, `stem-c-compile-dev`, and `stem-c-db-dev`
 
 1. Install [docker](https://docs.docker.com/get-docker/)
-3. Run `docker-compose up` 
 
-`stem-c-client-dev`
+   > If you do not meet these [requirements](https://docs.docker.com/toolbox/toolbox_install_windows/) docker desktop will not initialize popery. There are some unofficial modifications, however, we recommend installing the docker [toolbox](https://docs.docker.com/toolbox/toolbox_install_windows/) 
 
-1. Run the following commands sequentially
+2. Run `docker-compose up` 
 
-```powershell
-cd client
-yarn install
-yarn start
-```
+   > Grant **cms** permission if it prompts you
 
 ### Staging
 
@@ -129,8 +129,8 @@ heroku container:release web
 
 ### Pull Requests
 
-> PRs to **master** should squash and merge
->
-> PRs to all other branches should create a merge commit
-
 Before submitting a pull request, merge the target branch into the working branch to resolve any merge conflicts. Include a description of the changes made.
+
+- PRs to **master** should squash and merge
+- PRs to all other branches should create a merge commit
+

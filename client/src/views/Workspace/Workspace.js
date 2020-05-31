@@ -1,27 +1,26 @@
-import React, { useEffect, useState} from "react";
-import {Link} from "react-router-dom";
-import * as AvrgirlArduino from '../../assets/avrgirl-arduino';
-import "./Workspace.css";
-
+import React, { useEffect, useState, useRef} from "react"
+import {Link} from "react-router-dom"
+//import * as AvrgirlArduino from '../../assets/avrgirl-arduino'
+import "./Workspace.css"
 import {compile} from '../../hosts.js'
+const AvrboyArduino = window.AvrgirlArduino;
 
 function App(props) {
     const [hoverJS, setHoverJS] = useState(false);
     const [hoverArduino, setHoverArduino] = useState(false);
     const [hoverCompile, setHoverCompile] = useState(false);
-
-    let workspace;
+    let workspaceRef = useRef(null);
 
     // If current workspace ref is not set on initial load, set it, otherwise set as prop value
     const data = localStorage.getItem("my-activity");
     const selectedActivity = (data && !props.selectedActivity) ? JSON.parse(data) : props.selectedActivity;
 
     useEffect(() => {
-        workspace = window.Blockly.inject('blockly-canvas', {toolbox: document.getElementById('toolbox')});
+        workspaceRef.current = window.Blockly.inject('blockly-canvas', {toolbox: document.getElementById('toolbox')});
 
         // removes blockly div from DOM
         return () => {
-            workspace.dispose();
+            workspaceRef.current.dispose();
         }
     },[]);
 
@@ -33,15 +32,15 @@ function App(props) {
     // Generates javascript code from blockly canvas
     const getJS = () => {
         window.Blockly.JavaScript.INFINITE_LOOP_TRAP = null;
-        let code = window.Blockly.JavaScript.workspaceToCode(workspace);
-        alert(code)
+        let code = window.Blockly.JavaScript.workspaceToCode(workspaceRef.current);
+        alert(code);
         return(code);
     };
 
     // Generates Arduino code from blockly canvas
     const getArduino = () => {
         window.Blockly.Arduino.INFINITE_LOOP_TRAP = null;
-        let code = window.Blockly.Arduino.workspaceToCode(workspace);
+        let code = window.Blockly.Arduino.workspaceToCode(workspaceRef.current);
         return(code);
     };
 
@@ -58,8 +57,8 @@ function App(props) {
             // converting base 64 to hex
             Hex = atob(data.hex).toString();
 
-            const avrgirl = new AvrgirlArduino({
-                board: "",
+            const avrgirl = new AvrboyArduino({
+                board: "uno",
                 debug: true
             });
 
@@ -70,7 +69,6 @@ function App(props) {
                     console.log('done correctly.');
                 }
             })
-
         });
     };
 
@@ -78,7 +76,7 @@ function App(props) {
         <div>
             <div id="container" className="flex flex-column">
                 <div id="nav-container" className="flex vertical-container space-between">
-                    <h1 id="title"><Link to={"/Home"}>STEM+C</Link></h1>
+                    <h1 id="title"><Link to={"/"}>STEM+C</Link></h1>
                     <div id="action-btn-container" className="flex space-between">
                         <i onClick={getJS} className="fab fa-js hvr-info" onMouseEnter={() => setHoverJS(true)}
                            onMouseLeave={() => setHoverJS(false)}/>
@@ -111,6 +109,7 @@ function App(props) {
                         <category name={activity.name} is="Blockly category" key={activity.name}>
                             {
                                 // maps out blocks in category
+                                // eslint-disable-next-line
                                 selectedActivity.blocks.map((chunk, i) => {
                                     if(chunk.name.toLowerCase().includes(activity.name.toLowerCase()))
                                             return <block type={selectedActivity.blocks[i].name} is="Blockly block" key={activity.name + i}/>
