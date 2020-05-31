@@ -14,7 +14,7 @@ const App = () => {
         <div>
             <Switch>
                 <Route exact path={"/"} render={(props) => <Home setSelectedActivity={setSelectedActivity} /> } />
-                <Route path={"/:projectId"} render = { (props) => <Workspace selectedActivity={selectedActivity} /> } />
+                <Route path={"/workspace"} render = { (props) => <Workspace selectedActivity={selectedActivity} /> } />
                 <Route component={NotFound} />
             </Switch>
         </div>

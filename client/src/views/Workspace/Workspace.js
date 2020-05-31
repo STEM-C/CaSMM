@@ -1,10 +1,9 @@
-import React, { useEffect, useState, useRef} from "react";
-import {Link} from "react-router-dom";
-//import * as AvrgirlArduino from '../../assets/avrgirl-arduino';
-const AvrboyArduino = window.AvrgirlArduino;
-import "./Workspace.css";
-
+import React, { useEffect, useState, useRef} from "react"
+import {Link} from "react-router-dom"
+//import * as AvrgirlArduino from '../../assets/avrgirl-arduino'
+import "./Workspace.css"
 import {compile} from '../../hosts.js'
+const AvrboyArduino = window.AvrgirlArduino;
 
 function App(props) {
     const [hoverJS, setHoverJS] = useState(false);
@@ -110,8 +109,8 @@ function App(props) {
                         <category name={activity.name} is="Blockly category" key={activity.name}>
                             {
                                 // maps out blocks in category
+                                // eslint-disable-next-line
                                 selectedActivity.blocks.map((chunk, i) => {
-                                    // eslint-disable-next-line
                                     if(chunk.name.toLowerCase().includes(activity.name.toLowerCase()))
                                             return <block type={selectedActivity.blocks[i].name} is="Blockly block" key={activity.name + i}/>
                                 })
