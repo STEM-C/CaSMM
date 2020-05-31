@@ -1,10 +1,10 @@
 import React, { useEffect, useState, useRef} from "react";
 import {Link} from "react-router-dom";
 //import * as AvrgirlArduino from '../../assets/avrgirl-arduino';
+const AvrboyArduino = window.AvrgirlArduino;
 import "./Workspace.css";
 
 import {compile} from '../../hosts.js'
-const AvrboyArduino = window.AvrgirlArduino;
 
 function App(props) {
     const [hoverJS, setHoverJS] = useState(false);
@@ -28,10 +28,6 @@ function App(props) {
     // saves activity in localstorage
     useEffect(() => {
         localStorage.setItem("my-activity", JSON.stringify(selectedActivity));
-        if(window.Blockly.mainWorkspace.getAllBlocks().length > 0) {
-            console.log("More than zero blocks");
-            localStorage.setItem("my-workspace", window.Blockly.Xml.domToText(window.Blockly.Xml.workspaceToDom(workspaceRef.current)));
-        }
     });
 
     // Generates javascript code from blockly canvas
