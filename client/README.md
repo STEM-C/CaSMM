@@ -6,7 +6,9 @@
 
 ## Setup
 
-The only setup required is running `yarn` to install project dependencies
+1. Run `yarn` to install project dependencies
+2. Create a new file named `.env`
+3. Copy the contents of `.env-example` into `.env`
 
 <br />
 
