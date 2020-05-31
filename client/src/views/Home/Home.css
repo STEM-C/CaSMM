@@ -1,0 +1,46 @@
+/* SAPA Card Styling */
+.profileCard{
+    background: #000;
+}
+h3{
+    margin: 0;
+    border: 0;
+    font-style: italic;
+}
+.cardList{
+    display:flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    width: 85%;
+    flex-wrap: wrap;
+    min-height: 600px;
+    max-height: 700px
+}
+.cardActivity {
+    color: #fff !important;
+    text-transform: uppercase;
+    text-decoration: none;
+    background: #60a3bc;
+    padding: 20px;
+    margin: 10px;
+    border-radius: 50px;
+    display: inline-block;
+    border: none;
+    transition: all 0.4s ease 0s;
+    width: 10vw;
+    text-align: center;
+}
+
+.cardActivity:hover {
+    text-shadow: 0px 0px 6px rgba(255, 255, 255, 1);
+    -webkit-box-shadow: 0px 5px 40px -10px rgba(0,0,0,0.57);
+    -moz-box-shadow: 0px 5px 40px -10px rgba(0,0,0,0.57);
+    transition: all 0.4s ease 0s;
+}
+
+.cardHeader {
+    padding: 20px;
+    margin: 10px;
+    text-align: center;
+    width: 10vw;
+}

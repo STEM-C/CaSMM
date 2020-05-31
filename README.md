@@ -9,7 +9,7 @@
 ### `/`  
 
 #### `client/` 
-[Client](/client/#client) is the frontend of the application. It is powered by [React](https://reactjs.org/) and [Blockly](https://developers.google.com/blockly).
+[Client](/client#client) is the frontend of the application. It is powered by [React](https://reactjs.org/) and [Blockly](https://developers.google.com/blockly).
 
 #### `cms/`
 
@@ -17,7 +17,7 @@
 
 #### `compile/`
 
-[Compile](/compile/#compile) is an arduino compiler service. It is an unofficial fork of [Chromeduino](https://github.com/spaceneedle/Chromeduino).
+  [Compile](/compile#compile) is an arduino compiler service. It is an unofficial fork of [Chromeduino](https://github.com/spaceneedle/Chromeduino).
 
 <br/>
 
@@ -26,6 +26,8 @@
 > The project is divided into three conceptual environments.
 
 ### Development
+This project's dependencies are managed through [yarn](https://classic.yarnpkg.com/en/docs/install/#mac-stable). This effectively replaces npm and should be used in place of npm everywhere except sc-compile-dev.
+The following are the available scripts we can use with the client and server: 
 
 #### Structure
 
@@ -40,15 +42,8 @@ The development environment is composed of four servers. The first one is run wi
 
 `stem-c-client-dev`
 
-1. Install [Node](https://nodejs.org/en/) and [Yarn](https://classic.yarnpkg.com/en/docs/install#windows-stable)
-
-2. Run the following commands sequentially
-
-   ```Bash
-   cd client
-   yarn install
-   yarn start
-   ```
+1. Follow the [client](/client#setup) setup
+2. Run `yarn start`
 
 `stem-c-cms-dev`, `stem-c-compile-dev`, and `stem-c-db-dev`
 

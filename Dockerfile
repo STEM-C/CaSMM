@@ -9,7 +9,7 @@ RUN yarn install
 
 # Build client
 COPY ./client .
-RUN yarn build
+RUN PUBLIC_URL=/frontend yarn build
 
 WORKDIR /usr/src/app
 
@@ -20,7 +20,7 @@ RUN yarn install
 
 # Bundle app source
 COPY ./cms .
-RUN mv ./client/build/* ./public && rm -r ./client
+RUN mv ./client/build/* ./public/frontend && rm -r ./client
 
 # Set the env to prod for build
 ENV NODE_ENV production

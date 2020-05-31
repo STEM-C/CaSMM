@@ -11,7 +11,9 @@
   },
   "attributes": {
     "name": {
-      "type": "string"
+      "type": "string",
+      "required": true,
+      "unique": true
     },
     "definition": {
       "type": "text"

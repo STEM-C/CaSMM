@@ -27,6 +27,34 @@ h3, p {
   margin: 1.5em;
 }
 
+.hvr-info {
+  cursor: pointer;
+}
+
+.popup {
+  color: black;
+  background-color: white;
+  padding: 10px;
+  border: 1px solid #888;
+  position: fixed;
+  z-index: 1;
+}
+
+.JS {
+  right: 10vw;
+  top: 4.5vh;
+}
+
+.Arduino {
+  right: 6.25vw;
+  top: 4.5vh;
+}
+
+.Compile {
+  right: 3vw;
+  top: 4.5vh;
+}
+
 #nav-container {
   margin: 0;
   background-color: rgb(32, 145, 173);
@@ -72,8 +100,8 @@ h3, p {
   margin-left: 1.5em;
 }
 
-#mode-img {
-  width: auto;
-  height: auto;
+#model-img {
+  width:auto;
+  height:100%;
 }
 
