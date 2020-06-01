@@ -1,6 +1,5 @@
 import React, { useEffect, useState, useRef} from "react"
 import {Link} from "react-router-dom"
-//import * as AvrgirlArduino from '../../assets/avrgirl-arduino'
 import "./Workspace.css"
 import {compile} from '../../hosts.js'
 const AvrboyArduino = window.AvrgirlArduino;
@@ -105,14 +104,13 @@ function App(props) {
             <xml id="toolbox" style={{"display": "none"}} is="Blockly tag">
                 {
                     // Maps out block categories
-                    selectedActivity.blocks_categories.map((activity, i) => (
-                        <category name={activity.name} is="Blockly category" key={activity.name}>
+                    selectedActivity.toolbox.map(([activity, blocks]) => (
+                        <category name={activity} is="Blockly category" key={activity}>
                             {
                                 // maps out blocks in category
                                 // eslint-disable-next-line
-                                selectedActivity.blocks.map((chunk, i) => {
-                                    if(chunk.name.toLowerCase().includes(activity.name.toLowerCase()))
-                                            return <block type={selectedActivity.blocks[i].name} is="Blockly block" key={activity.name + i}/>
+                                blocks.map((block) => {
+                                    return <block type={block.name} is="Blockly block" key={block.name}/>
                                 })
                             }
                         </category>
