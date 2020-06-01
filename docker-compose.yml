@@ -26,6 +26,7 @@ services:
       - 5432:5432
     volumes:
       - /var/lib/postgresql/data
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
     environment:
       POSTGRES_DB: strapi
       POSTGRES_USER: postgres

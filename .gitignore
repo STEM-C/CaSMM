@@ -11,7 +11,7 @@ yarn-error.log*
 
 # Environment
 .env
-strapi.sql
+*.sql
 
 # Packages
 *.zip
