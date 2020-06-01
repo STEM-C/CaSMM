@@ -18,7 +18,7 @@ export const getArduino = (workspaceRef) => {
 };
 
 // Sends compiled arduino code to server and returns hex to flash board with
-export const compileArduinoCode = async(workspaceRef) => {
+export const compileArduinoCode = async (workspaceRef) => {
     let body = {
         "board": "arduino:avr:uno",
         "sketch": getArduino(workspaceRef)
