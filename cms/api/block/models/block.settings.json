@@ -15,12 +15,12 @@
       "required": true,
       "unique": true
     },
-    "definition": {
+    "description": {
       "type": "text"
     },
     "blocks_category": {
-      "model": "blocks-category",
-      "via": "blocks"
+      "via": "blocks",
+      "model": "blocks-category"
     }
   }
 }
