@@ -1,8 +1,7 @@
 import React, { useEffect, useState, useRef} from "react"
 import {Link} from "react-router-dom"
 import "./Workspace.css"
-import {compile} from '../../hosts.js'
-const AvrboyArduino = window.AvrgirlArduino;
+import {getJS, getArduino, compileArduinoCode} from './helpers.js'
 
 function App(props) {
     const [hoverJS, setHoverJS] = useState(false);
@@ -28,62 +27,19 @@ function App(props) {
         localStorage.setItem("my-activity", JSON.stringify(selectedActivity));
     });
 
-    // Generates javascript code from blockly canvas
-    const getJS = () => {
-        window.Blockly.JavaScript.INFINITE_LOOP_TRAP = null;
-        let code = window.Blockly.JavaScript.workspaceToCode(workspaceRef.current);
-        alert(code);
-        return(code);
-    };
-
-    // Generates Arduino code from blockly canvas
-    const getArduino = () => {
-        window.Blockly.Arduino.INFINITE_LOOP_TRAP = null;
-        let code = window.Blockly.Arduino.workspaceToCode(workspaceRef.current);
-        return(code);
-    };
-
-    // Sends compiled arduino code to server and returns hex to flash board with
-    const compileArduinoCode = async() => {
-        let body = {
-            "board": "arduino:avr:uno",
-            "sketch": getArduino()
-        };
-
-        // gets compiled hex from server
-        let Hex;
-        window.$.post(`${compile}/compile`, body, (data) => {
-            // converting base 64 to hex
-            Hex = atob(data.hex).toString();
-
-            const avrgirl = new AvrboyArduino({
-                board: "uno",
-                debug: true
-            });
-
-            avrgirl.flash(Hex, (err) => {
-                if (err) {
-                    console.log(err);
-                } else {
-                    console.log('done correctly.');
-                }
-            })
-        });
-    };
-
     return (
         <div>
             <div id="container" className="flex flex-column">
                 <div id="nav-container" className="flex vertical-container space-between">
                     <h1 id="title"><Link to={"/"}>STEM+C</Link></h1>
                     <div id="action-btn-container" className="flex space-between">
-                        <i onClick={getJS} className="fab fa-js hvr-info" onMouseEnter={() => setHoverJS(true)}
+                        <i onClick={() => getJS(workspaceRef.current)} className="fab fa-js hvr-info" onMouseEnter={() => setHoverJS(true)}
                            onMouseLeave={() => setHoverJS(false)}/>
                         {hoverJS && <div className="popup JS">Shows Javascript Code</div>}
-                        <i onClick={getArduino} className="hvr-info" onMouseEnter={() => setHoverArduino(true)}
+                        <i onClick={() => getArduino(workspaceRef.current)} className="hvr-info" onMouseEnter={() => setHoverArduino(true)}
                            onMouseLeave={() => setHoverArduino(false)}>A</i>
                         {hoverArduino && <div className="popup Arduino">Shows Arduino Code</div>}
-                        <i onClick={compileArduinoCode} className="fas fa-play hvr-info" onMouseEnter={() => setHoverCompile(true)}
+                        <i onClick={() => compileArduinoCode(workspaceRef.current)} className="fas fa-play hvr-info" onMouseEnter={() => setHoverCompile(true)}
                            onMouseLeave={() => setHoverCompile(false)}/>
                         {hoverCompile && <div className="popup Compile">Run Program</div>}
                     </div>
@@ -101,7 +57,7 @@ function App(props) {
             </div>
 
             {/* This xml is for the blocks' menu we will provide. Here are examples on how to include categories and subcategories */}
-            <xml id="toolbox" style={{"display": "none"}} is="Blockly tag">
+            <xml id="toolbox" style={{"display": "none"}} is="Blockly workspace">
                 {
                     // Maps out block categories
                     selectedActivity.toolbox.map(([activity, blocks]) => (
