@@ -5,14 +5,15 @@ import "./Workspace.css"
 import { getActivityToolbox } from "../../dataaccess/requests.js"
 
 function App(props) {
+
     const [ activity, setActivity ] = useState({})
     const [ hoverJS, setHoverJS ] = useState(false)
     const [ hoverArduino, setHoverArduino ] = useState(false)
     const [ hoverCompile, setHoverCompile ] = useState(false)
+
     let workspaceRef = useRef(null)
-
     const setWorkspace = () => workspaceRef.current = window.Blockly.inject('blockly-canvas', {toolbox: document.getElementById('toolbox')})
-
+    
     useEffect(() => {
         const localActivity = localStorage.getItem("my-activity")
         const { selectedActivity } = props
@@ -23,7 +24,6 @@ function App(props) {
             console.log('Workspace: loading local activity', loadedActivity)
 
             setActivity(loadedActivity)
-            setWorkspace()
         } else if (selectedActivity) {
 
             getActivityToolbox(selectedActivity.id).then(response => {
@@ -33,7 +33,6 @@ function App(props) {
 
                 localStorage.setItem("my-activity", JSON.stringify(loadedActivity))
                 setActivity(loadedActivity)
-                setWorkspace()
             })
         } else {
 
@@ -46,10 +45,12 @@ function App(props) {
         return () => {
             workspaceRef.current.dispose()
         }
-    },[props])
+    }, [props])
 
     useEffect(() => {
-        // console.log(activity)
+
+        // once the activity is set, set the workspace
+        if (Object.keys(activity).length) setWorkspace()
     })
 
     return (
