@@ -17,6 +17,7 @@
       "type": "text"
     },
     "blocks": {
+      "via": "blocks_category",
       "collection": "block"
     }
   }

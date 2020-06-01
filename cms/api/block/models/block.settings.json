@@ -17,6 +17,10 @@
     },
     "definition": {
       "type": "text"
+    },
+    "blocks_category": {
+      "model": "blocks-category",
+      "via": "blocks"
     }
   }
 }
