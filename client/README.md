@@ -13,6 +13,12 @@
 
 <br />
 
+## Routing
+
+All client routes must be registered in the cms frontend middleware to ensure they are handled by react. Additional information and implementation instructions are in the [cms](/cms#static-assets) documentation.
+
+<br/>
+
 ## Available Scripts
 
 In the project directory, you can run:
