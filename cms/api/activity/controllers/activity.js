@@ -40,7 +40,10 @@ module.exports = {
             activities = await strapi.services.activity.search(ctx.query)
         } else {
             activities = await strapi.services.activity.find(ctx.query, [
-                "blocks.blocks_category"
+                "blocks.blocks_category",
+                "difficulty",
+                "learning_category",
+                "topic"
             ])
         }
 
