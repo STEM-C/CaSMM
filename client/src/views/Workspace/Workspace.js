@@ -1,31 +1,56 @@
 import React, { useEffect, useState, useRef} from "react"
-import {Link} from "react-router-dom"
+import { Link } from "react-router-dom"
+import { getJS, getArduino, compileArduinoCode } from './helpers.js'
 import "./Workspace.css"
-import {getJS, getArduino, compileArduinoCode} from './helpers.js'
+import { getActivityToolbox } from "../../dataaccess/activities.js"
 
 function App(props) {
-    const [hoverJS, setHoverJS] = useState(false);
-    const [hoverArduino, setHoverArduino] = useState(false);
-    const [hoverCompile, setHoverCompile] = useState(false);
-    let workspaceRef = useRef(null);
+    const [ activity, setActivity ] = useState({})
+    const [ hoverJS, setHoverJS ] = useState(false)
+    const [ hoverArduino, setHoverArduino ] = useState(false)
+    const [ hoverCompile, setHoverCompile ] = useState(false)
+    let workspaceRef = useRef(null)
 
-    // If current workspace ref is not set on initial load, set it, otherwise set as prop value
-    const data = localStorage.getItem("my-activity");
-    const selectedActivity = (data && !props.selectedActivity) ? JSON.parse(data) : props.selectedActivity;
+    const setWorkspace = () => workspaceRef.current = window.Blockly.inject('blockly-canvas', {toolbox: document.getElementById('toolbox')})
 
     useEffect(() => {
-        workspaceRef.current = window.Blockly.inject('blockly-canvas', {toolbox: document.getElementById('toolbox')});
+        const localActivity = localStorage.getItem("my-activity")
+        const { selectedActivity } = props
 
-        // removes blockly div from DOM
-        return () => {
-            workspaceRef.current.dispose();
+        if (localActivity && !selectedActivity) {
+
+            let loadedActivity = JSON.parse(localActivity)
+            console.log('Workspace: loading local activity', loadedActivity)
+
+            setActivity(loadedActivity)
+            setWorkspace()
+        } else if (selectedActivity) {
+
+            getActivityToolbox(selectedActivity.id).then(response => {
+
+                let loadedActivity = { ...selectedActivity, toolbox: response.toolbox }
+                console.log('Workspace: loading selected activity', loadedActivity)
+
+                localStorage.setItem("my-activity", JSON.stringify(loadedActivity))
+                setActivity(loadedActivity)
+                setWorkspace()
+            })
+        } else {
+
+            console.log('Workspace: missing activity, sending home')
+
+            window.location = '/' // this should probably use the react router dom to add to history stack
         }
-    },[]);
 
-    // saves activity in localstorage
+        // clean up - removes blockly div from DOM 
+        return () => {
+            workspaceRef.current.dispose()
+        }
+    },[props])
+
     useEffect(() => {
-        localStorage.setItem("my-activity", JSON.stringify(selectedActivity));
-    });
+        // console.log(activity)
+    })
 
     return (
         <div>
@@ -46,9 +71,9 @@ function App(props) {
                 </div>
                 <div id="top-container" className="flex flex-column vertical-container">
                     <div id="description-container" className="flex flex-column card">
-                        <h3>Maker Activity {selectedActivity.name}</h3>
+                        <h3>Maker Activity {activity.name}</h3>
                         <p><b>Instructions / Science Brief: </b>
-                            {selectedActivity.description}</p>
+                            {activity.description}</p>
                     </div>
                 </div>
                 <div id="bottom-container" className="flex vertical-container">
@@ -60,8 +85,8 @@ function App(props) {
             <xml id="toolbox" style={{"display": "none"}} is="Blockly workspace">
                 {
                     // Maps out block categories
-                    selectedActivity.toolbox.map(([activity, blocks]) => (
-                        <category name={activity} is="Blockly category" key={activity}>
+                    activity.toolbox && activity.toolbox.map(([ category, blocks ]) => (
+                        <category name={category} is="Blockly category" key={category}>
                             {
                                 // maps out blocks in category
                                 // eslint-disable-next-line

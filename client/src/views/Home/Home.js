@@ -1,23 +1,30 @@
-import React, {useState, useEffect} from "react"
-import {Link} from "react-router-dom"
-import axios from 'axios'
+import React, { useState, useEffect } from "react"
+import { Link } from "react-router-dom"
+import { getTopics } from "../../dataaccess/topics"
 import './Home.css'
 
-import {cms} from '../../hosts'
-
 function Home(props) {
-    const [activities, setActivities] = useState([]);
 
-    // grab list of activities on component mount and assign to state activities
+    const [ topics, setTopics ] = useState([])
+    const [ activities, setActivities ] = useState([]) // temporary - eventually topics should render their activities
+
     useEffect( () => {
-        const fetchActivities = async () => {
-            const response = await axios.get(`${cms}/activities`);
-            console.log('The list of activities are: ', response.data);
 
-            await setActivities(response.data);
-        }
-        fetchActivities();
+        getTopics().then(topics => {
+
+            // temporary - put all the activities into one arrary for current rendering
+            let activities = []
+            topics.forEach(topic => activities = activities.concat(topic.activities))
+
+            setTopics(topics)
+            setActivities(activities)
+        })
     }, [])
+
+    useEffect(() => {
+        console.log(topics)
+        console.log(activities)
+    })
 
     return (
         <div>
@@ -25,10 +32,10 @@ function Home(props) {
             <div className="cardList">
                 <h2 className="cardHeader">Activity List</h2>
                 {
-                    activities.map((activity, i) => {
+                    activities.map(activity => {
                         return (
-                            <Link to="/workspace" className="cardActivity" key={activities[i].id} onClick={() => props.setSelectedActivity(activities[i])}>
-                                {activities[i].name}
+                            <Link to="/workspace" className="cardActivity" key={activity.id} onClick={() => props.setSelectedActivity(activity)}>
+                                {activity.name}
                             </Link>
                         );
                     })
