@@ -13,12 +13,9 @@
     "name": {
       "type": "string"
     },
-    "definition": {
-      "type": "text"
-    },
     "blocks": {
-      "via": "blocks_category",
-      "collection": "block"
+      "collection": "block",
+      "via": "blocks_category"
     }
   }
 }
