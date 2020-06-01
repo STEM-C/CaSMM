@@ -1,18 +1,18 @@
-import React, { useState, useEffect } from "react"
+import React, { useEffect, useState } from "react"
 import { Link } from "react-router-dom"
 import { getTopics } from "../../dataaccess/requests"
 import './Home.css'
 
 function Home(props) {
 
-    const [ topics, setTopics ] = useState([])
-    const [ activities, setActivities ] = useState([]) // temporary - eventually topics should render their activities
+    const [topics, setTopics] = useState([])
+    const [activities, setActivities] = useState([]) // temporary - eventually topics should render their activities
 
-    useEffect( () => {
+    useEffect(() => {
 
         getTopics().then(topics => {
 
-            // temporary - put all the activities into one arrary for current rendering
+            // temporary - put all the activities into one array for current rendering
             let activities = []
             topics.forEach(topic => activities = activities.concat(topic.activities))
 
@@ -20,11 +20,6 @@ function Home(props) {
             setActivities(activities)
         })
     }, [])
-
-    useEffect(() => {
-        console.log(topics)
-        console.log(activities)
-    })
 
     return (
         <div>

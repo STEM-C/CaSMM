@@ -1,107 +1,107 @@
 body {
-  margin: 0;
+    margin: 0;
 }
 
 h3, p {
-  margin: 0;
+    margin: 0;
 }
 
 .flex {
-  display: flex;
+    display: flex;
 }
 
 .flex-column {
-  flex-direction: column;
+    flex-direction: column;
 }
 
 .space-between {
-  justify-content: space-between;
+    justify-content: space-between;
 }
 
 #container {
-  height: 100vh;
-  background-color: rgb(241, 241, 241);
+    height: 100vh;
+    background-color: rgb(241, 241, 241);
 }
 
 .vertical-container {
-  margin: 1.5em;
+    margin: 1.5em;
 }
 
 .hvr-info {
-  cursor: pointer;
+    cursor: pointer;
 }
 
 .popup {
-  color: black;
-  background-color: white;
-  padding: 10px;
-  border: 1px solid #888;
-  position: fixed;
-  z-index: 1;
+    color: black;
+    background-color: white;
+    padding: 10px;
+    border: 1px solid #888;
+    position: fixed;
+    z-index: 1;
 }
 
 .JS {
-  right: 10vw;
-  top: 4.5vh;
+    right: 10vw;
+    top: 4.5vh;
 }
 
 .Arduino {
-  right: 6.25vw;
-  top: 4.5vh;
+    right: 6.25vw;
+    top: 4.5vh;
 }
 
 .Compile {
-  right: 3vw;
-  top: 4.5vh;
+    right: 3vw;
+    top: 4.5vh;
 }
 
 #nav-container {
-  margin: 0;
-  background-color: rgb(32, 145, 173);
-  color: white;
-  align-items: center;
+    margin: 0;
+    background-color: rgb(32, 145, 173);
+    color: white;
+    align-items: center;
 }
 
 #title {
-  flex: 10;
-  margin: 0.5em;
+    flex: 10;
+    margin: 0.5em;
 }
 
 #action-btn-container {
-  flex: 1;
-  margin: 1em;
+    flex: 1;
+    margin: 1em;
 }
 
 #top-container {
-  flex: 1;
-  margin-bottom: 0.75em
+    flex: 1;
+    margin-bottom: 0.75em
 }
 
 .card {
-  background-color: white;
-  padding: 1em;
+    background-color: white;
+    padding: 1em;
 }
 
 #description-container {
-  height: 100%;
+    height: 100%;
 }
 
 #bottom-container {
-  flex: 6;
-  margin-top: 0.75em
+    flex: 6;
+    margin-top: 0.75em
 }
 
 #blockly-canvas {
-  flex: 2;
+    flex: 2;
 }
 
 #models-container {
-  flex: 1;
-  margin-left: 1.5em;
+    flex: 1;
+    margin-left: 1.5em;
 }
 
 #model-img {
-  width:auto;
-  height:100%;
+    width: auto;
+    height: 100%;
 }
 

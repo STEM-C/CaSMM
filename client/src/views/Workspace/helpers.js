@@ -7,14 +7,14 @@ export const getJS = (workspaceRef) => {
     window.Blockly.JavaScript.INFINITE_LOOP_TRAP = null;
     let code = window.Blockly.JavaScript.workspaceToCode(workspaceRef);
     alert(code);
-    return(code);
+    return (code);
 };
 
 // Generates Arduino code from blockly canvas
 export const getArduino = (workspaceRef) => {
     window.Blockly.Arduino.INFINITE_LOOP_TRAP = null;
     let code = window.Blockly.Arduino.workspaceToCode(workspaceRef);
-    return(code);
+    return (code);
 };
 
 // Sends compiled arduino code to server and returns hex to flash board with
