@@ -11,6 +11,7 @@ module.exports = {
             entities = await strapi.services.topic.search(ctx.query)
         } else {
             entities = await strapi.services.topic.find(ctx.query, [
+                "type",
                 "activities.difficulty",
                 "activities.learning_category"
             ])
