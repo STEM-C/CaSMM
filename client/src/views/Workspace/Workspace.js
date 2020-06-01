@@ -2,7 +2,7 @@ import React, { useEffect, useState, useRef} from "react"
 import { Link } from "react-router-dom"
 import { getJS, getArduino, compileArduinoCode } from './helpers.js'
 import "./Workspace.css"
-import { getActivityToolbox } from "../../dataaccess/activities.js"
+import { getActivityToolbox } from "../../dataaccess/requests.js"
 
 function App(props) {
     const [ activity, setActivity ] = useState({})

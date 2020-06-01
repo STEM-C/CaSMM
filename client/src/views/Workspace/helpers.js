@@ -1,4 +1,5 @@
-import {compile} from '../../hosts.js'
+import { compileCode } from "../../dataaccess/requests";
+
 const AvrboyArduino = window.AvrgirlArduino;
 
 // Generates javascript code from blockly canvas
@@ -24,22 +25,39 @@ export const compileArduinoCode = async(workspaceRef) => {
     };
 
     // gets compiled hex from server
-    let Hex;
-    window.$.post(`${compile}/compile`, body, (data) => {
-        // converting base 64 to hex
-        Hex = atob(data.hex).toString();
+    let response = await compileCode(body)
 
-        const avrgirl = new AvrboyArduino({
-            board: "uno",
-            debug: true
-        });
+    // converting base 64 to hex
+    let Hex = atob(response.hex).toString();
 
-        avrgirl.flash(Hex, (err) => {
-            if (err) {
-                console.log(err);
-            } else {
-                console.log('done correctly.');
-            }
-        })
+    const avrgirl = new AvrboyArduino({
+        board: "uno",
+        debug: true
     });
+
+    avrgirl.flash(Hex, (err) => {
+        if (err) {
+            console.log(err);
+        } else {
+            console.log('done correctly.');
+        }
+    })
+
+    // window.$.post(`${compile}/compile`, body, (data) => {
+    //     // converting base 64 to hex
+    //     Hex = atob(data.hex).toString();
+
+    //     const avrgirl = new AvrboyArduino({
+    //         board: "uno",
+    //         debug: true
+    //     });
+
+    //     avrgirl.flash(Hex, (err) => {
+    //         if (err) {
+    //             console.log(err);
+    //         } else {
+    //             console.log('done correctly.');
+    //         }
+    //     })
+    // });
 };
