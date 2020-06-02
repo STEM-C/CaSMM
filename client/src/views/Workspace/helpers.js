@@ -14,6 +14,7 @@ export const getJS = (workspaceRef) => {
 export const getArduino = (workspaceRef) => {
     window.Blockly.Arduino.INFINITE_LOOP_TRAP = null;
     let code = window.Blockly.Arduino.workspaceToCode(workspaceRef);
+    alert(code);
     return (code);
 };
 
@@ -42,22 +43,4 @@ export const compileArduinoCode = async (workspaceRef) => {
             console.log('done correctly.');
         }
     })
-
-    // window.$.post(`${compile}/compile`, body, (data) => {
-    //     // converting base 64 to hex
-    //     Hex = atob(data.hex).toString();
-
-    //     const avrgirl = new AvrboyArduino({
-    //         board: "uno",
-    //         debug: true
-    //     });
-
-    //     avrgirl.flash(Hex, (err) => {
-    //         if (err) {
-    //             console.log(err);
-    //         } else {
-    //             console.log('done correctly.');
-    //         }
-    //     })
-    // });
 };

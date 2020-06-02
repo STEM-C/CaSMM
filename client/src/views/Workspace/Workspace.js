@@ -44,9 +44,9 @@ function App(props) {
 
     useEffect(() => {
 
-        // once the activity is set, set the workspace
-        if (Object.keys(activity).length) setWorkspace()
-    })
+        // once the activity state is set, set the workspace
+        if (Object.keys(activity).length && !workspaceRef.current) setWorkspace()
+    }, [activity])
 
     return (
         <div>
