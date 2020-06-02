@@ -42,22 +42,4 @@ export const compileArduinoCode = async (workspaceRef) => {
             console.log('done correctly.');
         }
     })
-
-    // window.$.post(`${compile}/compile`, body, (data) => {
-    //     // converting base 64 to hex
-    //     Hex = atob(data.hex).toString();
-
-    //     const avrgirl = new AvrboyArduino({
-    //         board: "uno",
-    //         debug: true
-    //     });
-
-    //     avrgirl.flash(Hex, (err) => {
-    //         if (err) {
-    //             console.log(err);
-    //         } else {
-    //             console.log('done correctly.');
-    //         }
-    //     })
-    // });
 };
