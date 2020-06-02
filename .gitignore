@@ -13,6 +13,7 @@ yarn-error.log*
 .env
 *.sql
 .cache/
+*.dump
 
 # Packages
 *.zip
