@@ -14,6 +14,7 @@ export const getJS = (workspaceRef) => {
 export const getArduino = (workspaceRef) => {
     window.Blockly.Arduino.INFINITE_LOOP_TRAP = null;
     let code = window.Blockly.Arduino.workspaceToCode(workspaceRef);
+    alert(code);
     return (code);
 };
 
