@@ -51,9 +51,13 @@ The development environment is composed of four servers. The first one is run wi
 
    > If you do not meet these [requirements](https://docs.docker.com/toolbox/toolbox_install_windows/) docker desktop will not initialize popery. There are some unofficial modifications, however, we recommend installing the docker [toolbox](https://docs.docker.com/toolbox/toolbox_install_windows/) 
 
-2. Run `docker-compose up` 
+2. Add **dev_db.dump** to `scripts/`
 
-   > Grant **cms** permission if it prompts you
+   > Pinned in the #dev channel
+
+3. Run `docker-compose up` 
+
+   > Grant permission to the **scripts** and **cms** directories if you are prompted
 
 ### Staging
 
