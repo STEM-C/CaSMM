@@ -1,4 +1,4 @@
 {
-    "cms": "http://localhost:1337",
-    "compile": "http://localhost:8080"
+  "cms": "http://localhost:1337",
+  "compile": "http://localhost:8080"
 }

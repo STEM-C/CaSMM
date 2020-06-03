@@ -1,22 +1,24 @@
-import React, {useState, useEffect} from "react"
-import {Link} from "react-router-dom"
-import axios from 'axios'
+import React, { useEffect, useState } from "react"
+import { Link } from "react-router-dom"
+import { getTopics } from "../../dataaccess/requests"
 import './Home.css'
 
-import {cms} from '../../hosts'
-
 function Home(props) {
-    const [activities, setActivities] = useState([]);
 
-    // grab list of activities on component mount and assign to state activities
-    useEffect( () => {
-        const fetchActivities = async () => {
-            const response = await axios.get(`${cms}/activities`);
-            console.log('The list of activities are: ', response.data);
+    const [topics, setTopics] = useState([])
+    const [activities, setActivities] = useState([]) // temporary - eventually topics should render their activities
 
-            await setActivities(response.data);
-        }
-        fetchActivities();
+    useEffect(() => {
+
+        getTopics().then(topics => {
+
+            // temporary - put all the activities into one array for current rendering
+            let activities = []
+            topics.forEach(topic => activities = activities.concat(topic.activities))
+
+            setTopics(topics)
+            setActivities(activities)
+        })
     }, [])
 
     return (
@@ -25,10 +27,10 @@ function Home(props) {
             <div className="cardList">
                 <h2 className="cardHeader">Activity List</h2>
                 {
-                    activities.map((activity, i) => {
+                    activities.map(activity => {
                         return (
-                            <Link to="/workspace" className="cardActivity" key={activities[i].id} onClick={() => props.setSelectedActivity(activities[i])}>
-                                {activities[i].name}
+                            <Link to="/workspace" className="cardActivity" key={activity.id} onClick={() => props.setSelectedActivity(activity)}>
+                                {activity.name}
                             </Link>
                         );
                     })

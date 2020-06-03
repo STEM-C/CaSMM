@@ -11,7 +11,7 @@
     "db-make": "docker run --name stem-c-db-dev -p 5432:5432 -e POSTGRES_DB=strapi -e POSTGRES_USER=postgres -e POSTGRES_PASSWORD=postgres -v /var/lib/postgresql/data -d postgres",
     "db-start": "docker start stem-c-db-dev",
     "db-bash": "docker exec -it stem-c-db-dev psql strapi postgres",
-    "build-frontend": "rm -rf ./public/frontend/* && cd ../client && yarn build && mv ./build/* ../cms/public/frontend"
+    "build-frontend": "rm -rf ./public/frontend/* && cd ../client && env PUBLIC_URL=/frontend yarn build && mv ./build/* ../cms/public/frontend"
   },
   "devDependencies": {},
   "dependencies": {

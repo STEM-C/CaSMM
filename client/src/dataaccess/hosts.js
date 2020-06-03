@@ -1,6 +1,6 @@
-import development from './config/development.json'
-import staging from './config/staging.json'
-import production from './config/production.json'
+import development from '../config/development.json'
+import staging from '../config/staging.json'
+import production from '../config/production.json'
 
 const getHosts = () => {
     const { hostname } = window.location

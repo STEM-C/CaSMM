@@ -23,9 +23,6 @@
     "models": {
       "collection": "model"
     },
-    "blocks_categories": {
-      "collection": "blocks-category"
-    },
     "learning_category": {
       "model": "learning-category"
     },

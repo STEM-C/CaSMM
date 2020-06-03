@@ -8,8 +8,6 @@
 
 1. Install [Node](https://nodejs.org/en/) and [Yarn](https://classic.yarnpkg.com/en/docs/install#windows-stable)
 2. Run `yarn` to install project dependencies
-3. Create a new file named `.env`
-4. Copy the contents of `.env-example` into `.env`
 
 <br />
 
