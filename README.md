@@ -43,19 +43,19 @@ The development environment is composed of four servers. The first one is run wi
 `stem-c-client-dev`
 
 1. Follow the [client](/client#setup) setup
-2. Run `yarn start`
+2. Run `yarn start` from `/client`
 
 `stem-c-cms-dev`, `stem-c-compile-dev`, and `stem-c-db-dev`
 
 1. Install [docker](https://docs.docker.com/get-docker/)
 
-   > If you do not meet these [requirements](https://docs.docker.com/toolbox/toolbox_install_windows/) docker desktop will not initialize popery. There are some unofficial modifications, however, we recommend installing the docker [toolbox](https://docs.docker.com/toolbox/toolbox_install_windows/) 
+   > If you do not meet these [requirements](https://docs.docker.com/toolbox/toolbox_install_windows/) docker desktop will not initialize properly. There are some unofficial modifications, however, we recommend installing the docker [toolbox](https://docs.docker.com/toolbox/toolbox_install_windows/) 
 
 2. Add **dev_db.dump** to `scripts/`
 
    > Pinned in the #dev channel
 
-3. Run `docker-compose up` 
+3. Run `docker-compose up` from `/`
 
    > Grant permission to the **scripts** and **cms** directories if you are prompted
 

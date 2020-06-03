@@ -17,9 +17,10 @@
 
 Additional scripts:
 
-* Start an existing db container `yarn db-start`
-* Connect to the postgres bash `yarn db-bash`
-* Build and add the client  `yarn build-frontend`
+* `yarn db-start` - Start an existing db container
+* `yarn db-bash` - Connect to the postgres bash 
+* `yarn build-frontend` - Build and add the client  to
+* `yarn build` - Build the strapi admin panel
 
 <br/>
 
@@ -96,6 +97,8 @@ Read the full [documentation](https://strapi.io/documentation/3.0.0-beta.x/conte
 ## Admin Panel `/admin`
 
 Built with [React](https://reactjs.org/) and served by [Node](https://nodejs.org/en/), the admin panel allows for full customization of the server. Here you can create new content types and their corresponding endpoints, configure roles and permissions, and much more. The interface itself can be customized and configured as needed.
+
+> In some cases /admin may be blank, in this case `yarn build` needs to be run from the docker container
 
 Read the full [documentation](https://strapi.io/documentation/3.0.0-beta.x/admin-panel/customization.html) on the admin panel.
 
