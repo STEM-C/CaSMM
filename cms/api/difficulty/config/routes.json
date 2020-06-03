@@ -1,0 +1,52 @@
+{
+  "routes": [
+    {
+      "method": "GET",
+      "path": "/difficulties",
+      "handler": "difficulty.find",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/difficulties/count",
+      "handler": "difficulty.count",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/difficulties/:id",
+      "handler": "difficulty.findOne",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "POST",
+      "path": "/difficulties",
+      "handler": "difficulty.create",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "PUT",
+      "path": "/difficulties/:id",
+      "handler": "difficulty.update",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "DELETE",
+      "path": "/difficulties/:id",
+      "handler": "difficulty.delete",
+      "config": {
+        "policies": []
+      }
+    }
+  ]
+}
