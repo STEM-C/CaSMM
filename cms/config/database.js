@@ -29,11 +29,12 @@ module.exports = ({ env }) => ({
 				username: env('DATABASE_USERNAME', 'postgres'),
 				password: env('DATABASE_PASSWORD', 'postgres'),
 				schema: 'public',
-				ssl: {
-					'rejectUnauthorized': false
-				}
+				ssl: env('DATABASE_SSL', false)
 			},
 			options: {
+				// ssl: {
+				// 	'rejectUnauthorized': false
+				// }
 				'pool': {
 					'min': 0,
 					'max': 15,
