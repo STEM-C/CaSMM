@@ -1,0 +1,13 @@
+{
+    "frontend": {
+      "enabled": true,
+      "path": "./public/frontend",
+      "routes": [
+        "/",
+        "/login",
+        "/register", 
+        "/teacher*",
+        "/workspace*"
+      ]
+    }
+}

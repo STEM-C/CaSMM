@@ -1,0 +1,31 @@
+#configuration ignores
+.idea/
+.vscode/
+
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Environment
+.env
+*.sql
+.cache/
+*.dump
+
+# Packages
+*.zip
+*.tar
+*.gz
+
+# OS
+.DS_Store
+.tmp
+
+# node
+node_modules/
+build/
+cms/public/frontend/*
+!cms/public/frontend/.gitkeep

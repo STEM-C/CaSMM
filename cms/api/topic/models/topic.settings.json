@@ -1,0 +1,31 @@
+{
+  "kind": "collectionType",
+  "connection": "default",
+  "collectionName": "topics",
+  "info": {
+    "name": "Topic"
+  },
+  "options": {
+    "increments": true,
+    "timestamps": true
+  },
+  "attributes": {
+    "name": {
+      "type": "string",
+      "required": true,
+      "unique": true
+    },
+    "description": {
+      "type": "text",
+      "unique": false,
+      "required": true
+    },
+    "type": {
+      "model": "type"
+    },
+    "activities": {
+      "collection": "activity",
+      "via": "topic"
+    }
+  }
+}
