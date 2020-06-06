@@ -3,6 +3,17 @@ import { compileCode } from "../../dataaccess/requests";
 const AvrboyArduino = window.AvrgirlArduino;
 
 // Generates javascript code from blockly canvas
+export const getXml = (workspaceRef) => {
+    
+    const { Blockly } = window 
+
+    let xml = Blockly.Xml.workspaceToDom(workspaceRef)
+    let xml_text = Blockly.Xml.domToText(xml)
+    alert(xml_text);
+    return (xml_text);
+};
+
+// Generates javascript code from blockly canvas
 export const getJS = (workspaceRef) => {
     window.Blockly.JavaScript.INFINITE_LOOP_TRAP = null;
     let code = window.Blockly.JavaScript.workspaceToCode(workspaceRef);

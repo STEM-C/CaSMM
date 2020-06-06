@@ -1,12 +1,13 @@
 import React, { useEffect, useRef, useState } from "react"
 import { Link } from "react-router-dom"
-import { compileArduinoCode, getArduino, getJS } from './helpers.js'
+import { compileArduinoCode, getArduino, getJS, getXml } from './helpers.js'
 import "./Workspace.css"
 import { getActivityToolbox } from "../../dataaccess/requests.js"
 
 function App(props) {
 
     const [activity, setActivity] = useState({})
+    const [hoverXml, setHoverXml] = useState(false)
     const [hoverJS, setHoverJS] = useState(false)
     const [hoverArduino, setHoverArduino] = useState(false)
     const [hoverCompile, setHoverCompile] = useState(false)
@@ -45,7 +46,14 @@ function App(props) {
     useEffect(() => {
 
         // once the activity state is set, set the workspace
-        if (Object.keys(activity).length && !workspaceRef.current) setWorkspace()
+        if (Object.keys(activity).length && !workspaceRef.current) {
+            setWorkspace()
+
+            if (activity.template) {
+                let xml = window.Blockly.Xml.textToDom(activity.template)
+                window.Blockly.Xml.domToWorkspace(xml, workspaceRef.current)
+            }
+        }
     }, [activity])
 
     return (
@@ -54,6 +62,10 @@ function App(props) {
                 <div id="nav-container" className="flex vertical-container space-between">
                     <h1 id="title"><Link to={"/"}>STEM+C</Link></h1>
                     <div id="action-btn-container" className="flex space-between">
+                        <i onClick={() => getXml(workspaceRef.current)} className="fas fa-code hvr-info"
+                           onMouseEnter={() => setHoverXml(true)}
+                           onMouseLeave={() => setHoverXml(false)}/>
+                        {hoverXml && <div className="popup JS">Shows Xml Code</div>}
                         <i onClick={() => getJS(workspaceRef.current)} className="fab fa-js hvr-info"
                            onMouseEnter={() => setHoverJS(true)}
                            onMouseLeave={() => setHoverJS(false)}/>
