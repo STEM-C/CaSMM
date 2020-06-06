@@ -1,7 +1,6 @@
 {
     "name": "STEM-C",
-    "description": "Web Blockly IDE for Arduino",
-    "repository": "https://github.com/STEM-C/STEM-C",
+    "stack": "container",
     "addons": [
         {
           "plan": "heroku-postgresql",
