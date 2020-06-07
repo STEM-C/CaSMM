@@ -1,6 +1,6 @@
 # Cms
 
-> REST API and admin portal that comprise the backend. It is powered by [Node](https://nodejs.org/en/), [Strapi](https://strapi.io/documentation/3.0.0-beta.x/getting-started/introduction.html), and [PostgreSQL](https://www.postgresql.org/). The file structure is defined by Strapi and is documented [here](https://strapi.io/documentation/3.0.0-beta.x/concepts/file-structure.html#files-structure).
+> REST API and admin portal that comprise the backend. It is powered by [Node](https://nodejs.org/en/), [Strapi](https://strapi.io/documentation/v3.x/getting-started/introduction.html), and [PostgreSQL](https://www.postgresql.org/). The file structure is defined by Strapi and is documented [here](https://strapi.io/documentation/3.0.0-beta.x/concepts/file-structure.html#files-structure).
 
 <br/>
 
@@ -102,5 +102,5 @@ Built with [React](https://reactjs.org/) and served by [Node](https://nodejs.org
 
 > In some cases /admin may be blank, in this case `yarn build` needs to be run from the docker container
 
-Read the full [documentation](https://strapi.io/documentation/3.0.0-beta.x/admin-panel/customization.html) on the admin panel.
+Read the full [documentation](https://strapi.io/documentation/v3.x/admin-panel/customization.html) on the admin panel.
 
