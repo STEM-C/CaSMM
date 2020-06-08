@@ -1,0 +1,104 @@
+name: build and test
+
+on: 
+  push:
+    branches: [ feature/ci, develop, release, master ]
+
+    # build and run on PRs
+    # release on push
+
+jobs:
+  # build:
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - uses: actions/checkout@v2
+  #     # - name: Login to Heroku Container Registry
+  #     #   env:
+  #     #     HEROKU_API_KEY: ${{ secrets.HEROKU_TOKEN }}
+  #     #   run: heroku container:login
+
+  #     # heroku build
+  #     # - name: Build and push cms image
+  #     #   env:
+  #     #     HEROKU_API_KEY: ${{ secrets.HEROKU_TOKEN }}
+  #     #   run: heroku container:push -a stem-c-staging web
+  #     # - name: Build and push compile image 
+  #     #   env:
+  #     #     HEROKU_API_KEY: ${{ secrets.HEROKU_TOKEN }}
+  #     #   run: cd compile && heroku container:push -a stem-c-compile web
+
+  #     # docker build
+  #     - name: Build and push cms image
+  #       uses: docker/build-push-action@v1
+  #       with:
+  #         username: ${{ secrets.HEROKU_LOGIN }}
+  #         password: ${{ secrets.HEROKU_TOKEN }}
+  #         registry: registry.heroku.com
+  #         repository: stem-c-staging/web
+  #         tags: latest
+  #         cache_froms: stem-c-staging/web:latest
+  #         build_args: BUILDKIT_INLINE_CACHE=1
+  #     - name: Build and push compile image
+  #       uses: docker/build-push-action@v1
+  #       with:
+  #         username: ${{ secrets.HEROKU_LOGIN }}
+  #         password: ${{ secrets.HEROKU_TOKEN }}
+  #         registry: registry.heroku.com
+  #         repository: stem-c-compile/web
+  #         tags: latest
+  #         cache_froms: stem-c-compile/web:latest
+  #         build_args: BUILDKIT_INLINE_CACHE=1
+  #         dockerfile: ./compile
+
+  test:
+    runs-on: ubuntu-latest
+    # needs: build
+    # services:
+    #   db: 
+    #     image: postgres
+    #     ports:
+    #       - 5432:5432
+    #     volumes:
+    #       - /var/lib/postgresql/data
+    #       - ./scripts:/docker-entrypoint-initdb.d
+    #     env:
+    #       POSTGRES_DB: strapi
+    #       POSTGRES_USER: postgres
+    #       POSTGRES_PASSWORD: postgres
+    #       APP_ENVIRONMENT: ${APP_ENVIRONMENT}
+    #   cms:
+    #     image: registry.heroku.com/stem-c-staging/web
+    #     ports:
+    #       - 1337:1337
+    #     env: 
+    #       DATABASE_HOST: db
+    #   compile:
+    #     image: registry.heroku.com/stem-c-compile/web
+    #     ports:
+    #       - 8080:8080
+    steps:
+      - uses: actions/checkout@v2
+      - name: Login to Heroku Container Registry
+        env:
+          HEROKU_API_KEY: ${{ secrets.HEROKU_TOKEN }}
+        run: heroku container:login
+      - name: Build containers
+        env:
+          APP_ENVIRONMENT: test
+        run: docker-compose -f docker-compose.test.yml up
+      - name: Build testing harness 
+        run: cd test && yarn
+      - name: Run tests
+        run: cd test && yarn test
+        env:
+          APP_ENVIRONMENT: test
+      # - name: Run tests
+      #   run: cd test && yarn test
+
+
+
+# Release
+      # - name: Release cms container
+      #   run: heroku container:release -a stem-c-staging web
+      # - name: Release compile container
+      #   run: heroku container:release -a stem-c-compile web

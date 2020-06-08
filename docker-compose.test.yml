@@ -3,19 +3,15 @@ version: '3'
 services:
   cms:
     container_name: stem-c-cms-prod
-    build: .
-    image: registry.heroku.com/stem-c-${APP_ENVIRONMENT}/web
+    image: registry.heroku.com/stem-c-staging/web
     environment: 
       - DATABASE_HOST=db
     ports:
       - 1337:1337
-    volumes:
-      - ./cms:/srv/app
     depends_on:
       - db
   compile:
     container_name: stem-c-compile-prod
-    build: ./compile
     image: registry.heroku.com/stem-c-compile/web
     restart: always
     ports:

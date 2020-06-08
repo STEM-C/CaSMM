@@ -10,7 +10,7 @@ else
     dump=""
     if [ "${APP_ENVIRONMENT}" == "development" ] ; then
         dump="dev_db.dump"
-    elif [ "${APP_ENVIRONMENT}" == "staging" ] || [ "${APP_ENVIRONMENT}" == "production" ]; then
+    elif [ "${APP_ENVIRONMENT}" == "test" ]; then
         dump="test_db.dump"
     fi
 
