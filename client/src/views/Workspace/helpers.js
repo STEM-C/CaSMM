@@ -31,10 +31,10 @@ export const getJS = (workspaceRef) => {
 };
 
 // Generates Arduino code from blockly canvas
-export const getArduino = (workspaceRef) => {
+export const getArduino = (workspaceRef, alert = true) => {
     window.Blockly.Arduino.INFINITE_LOOP_TRAP = null;
     let code = window.Blockly.Arduino.workspaceToCode(workspaceRef);
-    alert(code);
+    if(alert) alert(code);
     return (code);
 };
 
@@ -42,7 +42,7 @@ export const getArduino = (workspaceRef) => {
 export const compileArduinoCode = async (workspaceRef) => {
     let body = {
         "board": "arduino:avr:uno",
-        "sketch": getArduino(workspaceRef)
+        "sketch": getArduino(workspaceRef, false)
     };
 
     // gets compiled hex from server

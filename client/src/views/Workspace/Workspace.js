@@ -23,14 +23,11 @@ function App(props) {
         const {selectedActivity} = props
 
         if (localActivity && !selectedActivity) {
-
             let loadedActivity = JSON.parse(localActivity)
             setActivity(loadedActivity)
 
         } else if (selectedActivity) {
-
             getActivityToolbox(selectedActivity.id).then(response => {
-
                 let loadedActivity = {...selectedActivity, toolbox: response.toolbox}
 
                 localStorage.setItem("my-activity", JSON.stringify(loadedActivity))
