@@ -2,7 +2,16 @@ import { compileCode } from "../../dataaccess/requests";
 
 const AvrboyArduino = window.AvrgirlArduino;
 
-// Generates javascript code from blockly canvas
+export const setLocalActivity = (workspaceRef) => {
+    let workspaceDom = window.Blockly.Xml.workspaceToDom(workspaceRef)
+    let workspaceText = window.Blockly.Xml.domToText(workspaceDom)
+    const localActivity = JSON.parse(localStorage.getItem("my-activity"))
+
+    let lastActivity = {...localActivity, template: workspaceText}
+    localStorage.setItem("my-activity", JSON.stringify(lastActivity))
+}
+
+// Generates xml from blockly canvas
 export const getXml = (workspaceRef) => {
     
     const { Blockly } = window 
