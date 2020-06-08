@@ -8,6 +8,6 @@
         }
     ],
     "scripts": {
-      "postdeploy": "psql $DATABASE_URL < ./scripts/test_db.dump"
+      "postdeploy": "psql --quiet $DATABASE_URL < ./scripts/test_db.dump > output.txt"
     }
   }
