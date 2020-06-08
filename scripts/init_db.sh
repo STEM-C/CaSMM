@@ -5,6 +5,11 @@ set -e
 if [ -z "${APP_ENVIRONMENT}" ]; then
 
     echo "No app environment set. Building database from scratch."
+elif [ "${APP_ENVIRONMENT}" == "review" ]; then
+
+    echo "Heroku review app - ${DATABASE_URL} - ${APP_ENVIRONMENT}" 
+    psql ${DATABASE_URL} < ./test_db.dump > output.txt
+    echo "Successfully imported test_db.dump in the ${APP_ENVIRONMENT} environment."
 else
 
     dump=""

@@ -8,6 +8,9 @@
         }
     ],
     "scripts": {
-      "postdeploy": "psql --quiet $DATABASE_URL < ./scripts/test_db.dump > output.txt"
+      "postdeploy": "./scripts/init_db.sh"
+    },
+    "env": {
+      "APP_ENVIRONMENT": "review"
     }
   }
