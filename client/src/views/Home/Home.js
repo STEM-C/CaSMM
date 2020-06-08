@@ -9,6 +9,7 @@ function Home(props) {
     const [activities, setActivities] = useState([]) // temporary - eventually topics should render their activities
 
     useEffect(() => {
+        localStorage.clear()
 
         getTopics().then(topics => {
 
