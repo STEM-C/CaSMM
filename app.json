@@ -11,6 +11,9 @@
       "postdeploy": "./scripts/init_db.sh"
     },
     "env": {
-      "APP_ENVIRONMENT": "review"
+      "APP_ENVIRONMENT": "review",
+      "DATABASE_URL": {
+        "required": true
+      }
     }
-  }
+}
