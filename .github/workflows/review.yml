@@ -1,0 +1,26 @@
+name: Create and delete review apps on prs
+on: 
+  pull_request:
+    branches: [ develop, release, master ]
+    types: [ opened, reopened, closed ]
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Create or delete review app
+        id: app
+        uses: STEM-C/auto/review@v0.1
+        with: 
+          pipeline: ${{ secrets.pipeline_id }}
+          HEROKU_TOKEN: ${{ secrets.HEROKU_TOKEN }}
+      - name: Import test database
+        run: psql ${{ steps.app.outputs.DATABASE_URL }} < ./scripts/test_db.dump
+      # - name: Login to Heroku Container Registry
+      #   env:
+      #     HEROKU_API_KEY: ${{ secrets.HEROKU_TOKEN }}
+      #   run: heroku container:login
+      # - name: Release container
+      #   run: heroku container:release -a <app_name>
+
+
