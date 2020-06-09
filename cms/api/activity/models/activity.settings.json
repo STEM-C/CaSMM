@@ -26,11 +26,11 @@
     "learning_category": {
       "model": "learning-category"
     },
-    "topic": {
-      "model": "topic"
-    },
     "blocks": {
       "collection": "block"
+    },
+    "template": {
+      "type": "text"
     }
   }
 }

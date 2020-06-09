@@ -13,7 +13,7 @@
 
 #### `cms/`
 
-[Cms](/cms#cms) is the REST API and admin portal that powers the backend. It is powered by [Node](https://nodejs.org/en/) and [Strapi]().
+[Cms](/cms#cms) is the REST API and admin portal that powers the backend. It is powered by [Node](https://nodejs.org/en/) and [Strapi](https://strapi.io/documentation/v3.x/getting-started/introduction.html).
 
 #### `compile/`
 
