@@ -10,12 +10,13 @@ jobs:
       - uses: actions/checkout@v2
       - name: Create or delete review app
         id: app
-        uses: STEM-C/auto/review@v0.1.2
+        uses: STEM-C/auto/review@v0.2.1
         with: 
+          base: casmm
           pipeline: ${{ secrets.PIPELINE_ID }}
-          HEROKU_TOKEN: ${{ secrets.HEROKU_TOKEN }}
+          token: ${{ secrets.HEROKU_TOKEN }}
       - name: Import test database
-        run: psql ${{ steps.app.outputs.DATABASE_URL }} < ./scripts/test_db.dump
+        run: psql ${{ steps.app.outputs.database_url }} < ./scripts/test_db.dump
       # - name: Login to Heroku Container Registry
       #   env:
       #     HEROKU_API_KEY: ${{ secrets.HEROKU_TOKEN }}
