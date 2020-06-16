@@ -5,12 +5,12 @@ export const options = {
   duration: '1m',
   vus: 50,
   thresholds: {
-    http_req_duration: ['p(95)<500'],
+    http_req_duration: ['p(95)<2500'],
   },
 }
 
 export default function () {
-  const res = http.get('https://stem-c-staging.herokuapp.com')
-  const res2 = http.get('https://stem-c-staging.herokuapp.com/activities/toolbox/1')
+  http.get('https://stem-c-staging.herokuapp.com/topics')
+  http.get('https://stem-c-staging.herokuapp.com/activities/toolbox/1')
   sleep(1)
 }
