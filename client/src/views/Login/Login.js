@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { setUserSession, postUser } from "../../Utils/AuthRequests";
 import './Login.css'
+import { Link } from "react-router-dom";
 
 function Login(props) {
     const email = useFormInput('');
@@ -25,13 +26,16 @@ function Login(props) {
     }
 
     return (
-        <form className="box">
-            <h1>Login</h1>
-            <input type="email" {...email} placeholder="Email" autoComplete="new-password"/>
-            <input type="password" {...password} placeholder="Password" autoComplete="new-password"/>
-            {error && <><div style={{ color: 'red' }}>{error}</div><br /></>}<br />
-            <input type="button" value={loading ? 'Loading...' : 'Login'} onClick={handleLogin} disabled={loading}/>
-        </form>
+        <div>
+            <form className="box">
+                <h1>Teacher/Mentor Login</h1>
+                <input type="email" {...email} placeholder="Email" autoComplete="new-password"/>
+                <input type="password" {...password} placeholder="Password" autoComplete="new-password"/>
+                {error && <><div style={{ color: 'red' }}>{error}</div><br /></>}<br />
+                <input type="button" value={loading ? 'Loading...' : 'Login'} onClick={handleLogin} disabled={loading}/>
+                <Link to={'/'}>Click here if you are not a teacher</Link>
+            </form>
+        </div>
     )
 }
 

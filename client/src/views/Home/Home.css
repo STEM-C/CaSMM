@@ -21,7 +21,7 @@ body{
     font-weight: 500;
 }
 
-.box input[type = "email"],.box input[type = "password"] {
+.box input[type = "text"] {
     border: 0;
     background: none;
     display: block;
@@ -35,19 +35,6 @@ body{
     transition: 0.25s;
 }
 
-.box input[type = "email"]:focus,.box input[type = "password"]:focus {
+.box input[type = "email"]:focus{
     width: 280px;
-}
-
-.box input[type = "button"] {
-    background: none;
-    display: block;
-    margin: 20px auto;
-    border: 2px solid #414141;
-    padding: 14px 40px;
-    outline: none;
-    color: white;
-    border-radius: 24px;
-    transition: 1.25s;
-    cursor: pointer;
 }

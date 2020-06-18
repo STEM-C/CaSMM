@@ -1,10 +1,12 @@
 import React from 'react';
 import { Link } from "react-router-dom";
+import './Home.css'
 
 function Home() {
     return(
-        <div>
-            This is where student code junk is going to go <br />
+        <div className="box">
+            <h1>Welcome to STEM+C</h1>
+            <input type="text" placeholder="Join Code" /><br />
             <Link to={'/login'}>Click here if you are a teacher</Link>
         </div>
     )

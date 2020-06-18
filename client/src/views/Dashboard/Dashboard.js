@@ -4,6 +4,8 @@ import { getTopics } from "../../Utils/requests"
 import { removeUserSession, getUser } from "../../Utils/AuthRequests";
 import './Dashboard.css'
 
+import Header from '../../components/Header.js'
+
 function Dashboard(props) {
     const [activities, setActivities] = useState([]) // temporary - eventually topics should render their activities
     const user = getUser();
@@ -27,8 +29,7 @@ function Dashboard(props) {
 
     return (
         <div>
-            Welcome {user.username}! <br />
-            <input type='button' onClick={handleLogout} value="Logout" />
+            <Header user={user.username} handleLogout={handleLogout}/>
             <div className="cardList">
                 <h2 className="cardHeader">Activity List</h2>
                 {
