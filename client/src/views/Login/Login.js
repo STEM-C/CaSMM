@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { setUserSession, postUser } from "../../Utils/AuthRequests";
 
 function Login(props) {
     const email = useFormInput('');
@@ -7,7 +8,18 @@ function Login(props) {
     const [loading, setLoading] = useState(false);
 
     const handleLogin = () => {
-        props.history.push('/dashboard');
+        setError(null);
+        setLoading(true);
+        let body = { identifier: email.value, password: password.value};
+
+        postUser(body).then(response => {
+            setLoading(false);
+            setUserSession(response.data.jwt, response.data.user)
+            props.history.push('/dashboard');
+        }).catch(error => {
+            setLoading(false);
+            error.response.status === 400 ? setError(error.response.data.message) : setError("Something went wrong. Please try again later.");
+        });
     }
 
     return (

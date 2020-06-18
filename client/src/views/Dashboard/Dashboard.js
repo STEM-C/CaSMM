@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from "react"
 import { Link } from "react-router-dom"
-import { getTopics } from "../../dataaccess/requests"
+import { getTopics } from "../../Utils/requests"
+import { removeUserSession, getUser } from "../../Utils/AuthRequests";
 import './Dashboard.css'
 
 function Dashboard(props) {
     const [topics, setTopics] = useState([])
     const [activities, setActivities] = useState([]) // temporary - eventually topics should render their activities
+    const user = getUser();
 
     useEffect(() => {
         localStorage.clear()
@@ -21,11 +23,13 @@ function Dashboard(props) {
     }, [])
 
     const handleLogout = () => {
-        props.history.push('/login')
+        removeUserSession();
+        props.history.push('/');
     }
 
     return (
         <div>
+            Welcome {user}! <br />
             <input type='button' onClick={handleLogout} value="Logout" />
             <div className="cardList">
                 <h2 className="cardHeader">Activity List</h2>

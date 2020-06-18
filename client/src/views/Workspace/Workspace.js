@@ -2,8 +2,8 @@ import React, { useEffect, useRef, useState } from "react"
 import { Link } from "react-router-dom"
 import { compileArduinoCode, getArduino, getJS, getXml, setLocalActivity } from './helpers.js'
 import "./Workspace.css"
-import { getActivityToolbox } from "../../dataaccess/requests.js"
-import { useHistory } from "react-router-dom"
+import { getActivityToolbox } from "../../Utils/requests.js"
+
 
 function App(props) {
 
@@ -13,7 +13,6 @@ function App(props) {
     const [hoverArduino, setHoverArduino] = useState(false)
     const [hoverCompile, setHoverCompile] = useState(false)
 
-    let history = useHistory()
     let workspaceRef = useRef(null)
 
     const setWorkspace = () => workspaceRef.current = window.Blockly.inject('blockly-canvas', { toolbox: document.getElementById('toolbox') })
@@ -34,16 +33,14 @@ function App(props) {
                 setActivity(loadedActivity)
             })
         } else {
-            window.location = '/' // this should probably use the react router dom to add to history stack
+            props.history.push('/') // this should probably use the react router dom to add to history stack
         }
 
         // clean up - removes blockly div from DOM
         return () => {
-            if (workspaceRef.current) {
-                workspaceRef.current.dispose()
-            }
+            if (workspaceRef.current) workspaceRef.current.dispose()
         }
-    }, [props, history])
+    }, [props])
 
     useEffect(() => {
         // once the activity state is set, set the workspace
@@ -62,7 +59,7 @@ function App(props) {
         <div>
             <div id="container" className="flex flex-column">
                 <div id="nav-container" className="flex vertical-container space-between">
-                    <h1 id="title"><Link to={"/"}>STEM+C</Link></h1>
+                    <h1 id="title"><Link to={"/dashboard"}>STEM+C</Link></h1>
                     <div id="action-btn-container" className="flex space-between">
                         <i onClick={() => getXml(workspaceRef.current)} className="fas fa-code hvr-info"
                            onMouseEnter={() => setHoverXml(true)}
