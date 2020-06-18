@@ -29,7 +29,7 @@ function Dashboard(props) {
 
     return (
         <div>
-            Welcome {user}! <br />
+            Welcome {user.username}! <br />
             <input type='button' onClick={handleLogout} value="Logout" />
             <div className="cardList">
                 <h2 className="cardHeader">Activity List</h2>

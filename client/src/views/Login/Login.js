@@ -14,7 +14,8 @@ function Login(props) {
 
         postUser(body).then(response => {
             setLoading(false);
-            setUserSession(response.data.jwt, response.data.user)
+            setUserSession(response.data.jwt, JSON.stringify(response.data.user));
+            console.log(response.data);
             props.history.push('/dashboard');
         }).catch(error => {
             setLoading(false);
@@ -27,7 +28,7 @@ function Login(props) {
             <h1>Login</h1>
             <input type="email" {...email} placeholder="Email" autoComplete="new-password"/>
             <input type="password" {...password} autoComplete="new-password"/>
-            {error && <><small style={{ color: 'red' }}>{error}</small><br /></>}<br />
+            {error && <><div style={{ color: 'red' }}>{error}</div><br /></>}<br />
             <input type="button" value={loading ? 'Loading...' : 'Login'} onClick={handleLogin} disabled={loading}/>
         </div>
     )
@@ -45,4 +46,4 @@ const useFormInput = initialValue => {
     }
 }
 
-export default Login
+export default Login;

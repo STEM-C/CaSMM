@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import { Route, Switch, useHistory } from 'react-router-dom'
+import PrivateRoute from './Utils/PrivateRoute';
 
 import Login from "./views/Login/Login"
 import Home from "./views/Home/Home"
@@ -16,7 +17,7 @@ const App = () => {
             <Switch>
                 <Route exact path={"/"} render={(props) => <Home history={history} />}/>
                 <Route exact path={"/login"} render={(props) => <Login history={history} />}/>
-                <Route exact path={"/dashboard"} render={() => <Dashboard setSelectedActivity={setSelectedActivity} history={history}/>}/>
+                <PrivateRoute path ={"/dashboard"} component={Dashboard} setSelectedActivity={setSelectedActivity} history={history}/>
                 <Route path={"/workspace"} render={() => <Workspace selectedActivity={selectedActivity} history={history}/>}/>
                 <Route component={NotFound}/>
             </Switch>
