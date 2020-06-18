@@ -64,7 +64,7 @@ function App(props) {
                         <i onClick={() => getXml(workspaceRef.current)} className="fas fa-code hvr-info"
                            onMouseEnter={() => setHoverXml(true)}
                            onMouseLeave={() => setHoverXml(false)}/>
-                        {hoverXml && <div className="popup JS">Shows Xml Code</div>}
+                        {hoverXml && <div className="popup XML">Shows Xml Code</div>}
                         <i onClick={() => getJS(workspaceRef.current)} className="fab fa-js hvr-info"
                            onMouseEnter={() => setHoverJS(true)}
                            onMouseLeave={() => setHoverJS(false)}/>
@@ -87,7 +87,7 @@ function App(props) {
                     </div>
                 </div>
                 <div id="bottom-container" className="flex vertical-container">
-                    <div id="blockly-canvas" style={{ "height": "800px", "width": "100%" }} onChange={() => setLocalActivity(workspaceRef.current)}/>
+                    <div id="blockly-canvas" style={{ "height": "100%", "width": "100%" }} onChange={() => setLocalActivity(workspaceRef.current)}/>
                 </div>
             </div>
 

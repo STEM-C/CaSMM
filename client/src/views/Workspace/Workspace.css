@@ -20,7 +20,7 @@ h3, p {
 
 #container {
     height: 100vh;
-    background-color: rgb(241, 241, 241);
+    background-color: #3D5C82;
 }
 
 .vertical-container {
@@ -41,23 +41,28 @@ h3, p {
 }
 
 .JS {
-    right: 10vw;
+    right: 7vw;
     top: 4.5vh;
 }
 
 .Arduino {
-    right: 6.25vw;
+    right: 4.25vw;
     top: 4.5vh;
 }
 
 .Compile {
-    right: 3vw;
+    right: 1.75vw;
+    top: 4.5vh;
+}
+
+.XML {
+    right: 9.75vw;
     top: 4.5vh;
 }
 
 #nav-container {
     margin: 0;
-    background-color: rgb(32, 145, 173);
+    background-color: #5BABDE;
     color: white;
     align-items: center;
 }
