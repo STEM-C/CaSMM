@@ -17,7 +17,7 @@ const App = () => {
             <Switch>
                 <Route exact path={"/"} render={(props) => <Home history={history} />}/>
                 <Route exact path={"/login"} render={(props) => <Login history={history} />}/>
-                <PrivateRoute path ={"/dashboard"} component={Dashboard} setSelectedActivity={setSelectedActivity} history={history}/>
+                <PrivateRoute exact path={"/dashboard"} render={() => <Dashboard setSelectedActivity={setSelectedActivity} history={history}/>}/>
                 <Route path={"/workspace"} render={() => <Workspace selectedActivity={selectedActivity} history={history}/>}/>
                 <Route component={NotFound}/>
             </Switch>

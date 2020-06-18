@@ -5,7 +5,6 @@ import { removeUserSession, getUser } from "../../Utils/AuthRequests";
 import './Dashboard.css'
 
 function Dashboard(props) {
-    const [topics, setTopics] = useState([])
     const [activities, setActivities] = useState([]) // temporary - eventually topics should render their activities
     const user = getUser();
 
@@ -17,7 +16,6 @@ function Dashboard(props) {
             let activities = []
             topics.forEach(topic => activities = activities.concat(topic.activities))
 
-            setTopics(topics)
             setActivities(activities)
         })
     }, [])
