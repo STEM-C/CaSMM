@@ -10,7 +10,7 @@ jobs:
       - uses: actions/checkout@v2
       - name: Create or delete review app
         id: app
-        uses: STEM-C/auto/review@v0.3
+        uses: STEM-C/auto/review@v0.3.1
         with: 
           base: casmm
           pipeline: ${{ secrets.PIPELINE_ID }}
