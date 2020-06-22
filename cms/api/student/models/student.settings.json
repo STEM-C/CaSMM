@@ -1,0 +1,27 @@
+{
+  "kind": "collectionType",
+  "collectionName": "students",
+  "info": {
+    "name": "Student"
+  },
+  "options": {
+    "increments": true,
+    "timestamps": true
+  },
+  "attributes": {
+    "name": {
+      "type": "string"
+    },
+    "character": {
+      "type": "string"
+    },
+    "classroom": {
+      "model": "classroom",
+      "via": "students"
+    },
+    "submissions": {
+      "via": "student",
+      "collection": "submission"
+    }
+  }
+}
