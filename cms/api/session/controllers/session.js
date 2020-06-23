@@ -9,6 +9,10 @@ const getRandomCode = () => {
     return now.substr(len - 4, len)
 }
 
+const formatError = error => [
+    { messages: [{ id: error.id, message: error.message, field: error.field }] },
+]
+
 module.exports = {
 
     /**
@@ -58,28 +62,52 @@ module.exports = {
     /**
      * Returns the student
      * 
-     * @param {Integer} classroom – id of the classroom
      * @param {Integer} studentId – id of an existing student
      * @param {String} name - name of a new student
      * @param {String} character - character of a new student
+     * @param {Integer} classroom – id of the classroom of a new student
      * 
      * @return {Object}
      */
     async join(ctx) {
 
-        const { classroom, studentId, name, character } = ctx.request.body
+        const { studentId, name, character, classroom } = ctx.request.body
 
-        let student
-
-        if (!studentId) {
-
-            student = await strapi.services.student.create({ name, character, classroom })
-        } else {
-
-            student = await strapi.services.student.find({ id: studentId })
+        // Check that either a studentId was sent or
+        // a name, character, and classroom was sent
+        if (!(studentId || (name && character && classroom))) {
+            return ctx.badRequest(
+                null,
+                formatError({
+                  id: 'Session.join.body.invalid',
+                  message: 'Must provide either a studentId or a name, character, and classroom!',
+                })
+            )
         }
 
-        return sanitizeEntity(student, { model: strapi.models.student })
+        let student
+        if (!studentId) {
+            student = await strapi.services.student.create({ name, character, classroom })
+        } else {
+            student = await strapi.services.student.findOne({ id: studentId })
+            if (!student) return ctx.badRequest(
+                null,
+                formatError({
+                  id: 'Session.join.student.id.invalid',
+                  message: 'The id provided does not correspond to a valid student!',
+                })
+            )
+        }
+
+        return {
+            jwt: strapi.plugins['users-permissions'].services.jwt.issue({
+                id: 1, // Use a deignated student user for roles and permissions
+                studentId: student.id
+            }),
+            student: sanitizeEntity(student, { 
+                model: strapi.models.student 
+            })
+        }
     }
 }
 
