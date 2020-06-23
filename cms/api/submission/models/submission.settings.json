@@ -13,8 +13,7 @@
       "type": "string"
     },
     "session": {
-      "model": "session",
-      "via": "submissions"
+      "model": "session"
     },
     "student": {
       "model": "student",

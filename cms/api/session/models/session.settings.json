@@ -27,10 +27,6 @@
     },
     "code": {
       "type": "integer"
-    },
-    "submissions": {
-      "via": "session",
-      "collection": "submission"
     }
   }
 }
