@@ -16,25 +16,46 @@ body{
 }
 
 .box h1{
-    color:white;
+    color: #414141;
     text-transform: uppercase;
     font-weight: 500;
 }
 
-.box input[type = "text"] {
-    border: 0;
-    background: none;
+.box input[type = "text"], input[type = "email"],.box input[type = "password"] {
     display: block;
+    background: none;
     margin: 20px auto;
     border: 2px solid #414141;
     padding: 14px 10px;
     width: 200px;
     outline: none;
-    color: white;
+    color: #414141;
     border-radius: 24px;
     transition: 0.25s;
 }
 
-.box input[type = "email"]:focus{
+.box input[type = "email"]:focus, input[type = "email"]:focus,.box input[type = "password"]:focus{
     width: 280px;
+}
+
+.box input[type = "button"] {
+    background: none;
+    display: block;
+    margin: 20px auto;
+    border: 2px solid #414141;
+    padding: 14px 40px;
+    outline: none;
+    color: #414141;
+    border-radius: 24px;
+    transition: 1.25s;
+    cursor: pointer;
+}
+
+.boxLink {
+    color: #414141;
+    transition: 0.25s;
+}
+
+.boxLink:hover {
+    color: white;
 }

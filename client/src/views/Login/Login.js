@@ -33,7 +33,7 @@ function Login(props) {
                 <input type="password" {...password} placeholder="Password" autoComplete="new-password"/>
                 {error && <><div style={{ color: 'red' }}>{error}</div><br /></>}<br />
                 <input type="button" value={loading ? 'Loading...' : 'Login'} onClick={handleLogin} disabled={loading}/>
-                <Link to={'/'}>Click here if you are not a teacher</Link>
+                <Link to={'/'} className="boxLink">Click here if you are not a teacher</Link>
             </form>
         </div>
     )
