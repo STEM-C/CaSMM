@@ -23,6 +23,10 @@
       "collection": "classroom",
       "via": "mentors",
       "dominant": true
+    },
+    "user": {
+      "plugin": "users-permissions",
+      "model": "user"
     }
   }
 }
