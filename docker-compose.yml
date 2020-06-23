@@ -31,3 +31,6 @@ services:
       POSTGRES_DB: strapi
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
+      ENVIRONMENT: development
+      DATABASE_URL: strapi
+      SCRIPT_PATH: /docker-entrypoint-initdb.d

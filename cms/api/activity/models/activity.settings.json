@@ -31,6 +31,10 @@
     },
     "template": {
       "type": "text"
+    },
+    "topic": {
+      "via": "activities",
+      "model": "topic"
     }
   }
 }

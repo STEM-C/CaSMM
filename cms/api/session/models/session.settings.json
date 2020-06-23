@@ -1,0 +1,36 @@
+{
+  "kind": "collectionType",
+  "collectionName": "sessions",
+  "info": {
+    "name": "Session"
+  },
+  "options": {
+    "increments": true,
+    "timestamps": true
+  },
+  "attributes": {
+    "name": {
+      "type": "string"
+    },
+    "description": {
+      "type": "string"
+    },
+    "activity": {
+      "model": "activity"
+    },
+    "classroom": {
+      "model": "classroom",
+      "via": "sessions"
+    },
+    "active": {
+      "type": "boolean"
+    },
+    "code": {
+      "type": "integer"
+    },
+    "submissions": {
+      "via": "session",
+      "collection": "submission"
+    }
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "kind": "collectionType",
+  "collectionName": "submissions",
+  "info": {
+    "name": "Submission"
+  },
+  "options": {
+    "increments": true,
+    "timestamps": true
+  },
+  "attributes": {
+    "definition": {
+      "type": "string"
+    },
+    "session": {
+      "model": "session",
+      "via": "submissions"
+    },
+    "student": {
+      "model": "student",
+      "via": "submissions"
+    }
+  }
+}
