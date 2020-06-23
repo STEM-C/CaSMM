@@ -10,7 +10,7 @@
   },
   "attributes": {
     "definition": {
-      "type": "string"
+      "type": "text"
     },
     "session": {
       "model": "session"
@@ -18,6 +18,13 @@
     "student": {
       "model": "student",
       "via": "submissions"
+    },
+    "status": {
+      "type": "string",
+      "default": "PENDING"
+    },
+    "result": {
+      "type": "text"
     }
   }
 }
