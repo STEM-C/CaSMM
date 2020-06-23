@@ -87,6 +87,15 @@ module.exports = {
 
         let student
         if (!studentId) {
+            let classroomExists = await strapi.services.classroom.findOne({ id: classroom })
+            if (!classroomExists) return ctx.badRequest(
+                null,
+                formatError({
+                  id: 'Session.join.classroom.invalid',
+                  message: 'The id provided does not correspond to a valid classroom!',
+                })
+            )
+
             student = await strapi.services.student.create({ name, character, classroom })
         } else {
             student = await strapi.services.student.findOne({ id: studentId })
