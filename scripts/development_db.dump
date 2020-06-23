@@ -1570,7 +1570,7 @@ COPY public.blocks_categories (id, name, created_at, updated_at) FROM stdin;
 --
 
 COPY public.classrooms (id, name, teacher, school, created_at, updated_at) FROM stdin;
-1	My Science Classroom	Mr. Ionata	1	2020-06-22 22:39:02.503+00	2020-06-22 22:39:28.505+00
+1	My Science Classroom	Dr. Quek	1	2020-06-22 22:39:02.503+00	2020-06-23 14:57:23.637+00
 \.
 
 
@@ -1679,7 +1679,7 @@ COPY public.learning_categories (id, name, created_at, updated_at) FROM stdin;
 --
 
 COPY public.mentors (id, first_name, last_name, school, created_at, updated_at, "user") FROM stdin;
-1	Nick	Mentor	1	2020-06-23 11:46:10.126+00	2020-06-23 11:46:10.147+00	1
+1	Default	Mentor	1	2020-06-23 14:57:53.988+00	2020-06-23 14:58:41.296+00	2
 \.
 
 
@@ -1696,7 +1696,7 @@ COPY public.models (id, name, complexity, created_at, updated_at) FROM stdin;
 --
 
 COPY public.schools (id, name, county, state, created_at, updated_at) FROM stdin;
-1	University of Florida	Alachua 	Florida	2020-06-22 22:39:28.483+00	2020-06-22 22:39:28.483+00
+1	Texas A&M University	Brazos 	Texas	2020-06-22 22:39:28.483+00	2020-06-23 14:57:23.607+00
 \.
 
 
@@ -1705,7 +1705,6 @@ COPY public.schools (id, name, county, state, created_at, updated_at) FROM stdin
 --
 
 COPY public.sessions (id, name, description, activity, classroom, active, code, created_at, updated_at) FROM stdin;
-37	Second session	today we learn!	1	1	t	9234	2020-06-23 12:42:39.251+00	2020-06-23 12:42:39.264+00
 \.
 
 
@@ -1731,8 +1730,6 @@ COPY public.strapi_webhooks (id, name, url, headers, events, enabled) FROM stdin
 --
 
 COPY public.students (id, name, "character", classroom, created_at, updated_at) FROM stdin;
-1	\N	\N	\N	2020-06-23 12:43:52.026+00	2020-06-23 12:43:52.026+00
-2	nick	bob	1	2020-06-23 12:45:15.731+00	2020-06-23 12:45:15.75+00
 \.
 
 
@@ -1899,6 +1896,7 @@ COPY public."users-permissions_permission" (id, type, controller, action, enable
 366	application	blocks-category	findone	f		2
 369	application	classroom	count	f		1
 370	application	classroom	count	f		2
+717	application	school	create	f		3
 457	application	session	delete	t		1
 381	application	complexity	count	f		1
 383	application	complexity	create	f		1
@@ -1914,6 +1912,7 @@ COPY public."users-permissions_permission" (id, type, controller, action, enable
 412	application	learning-category	findone	f		1
 413	application	learning-category	find	f		1
 422	application	mentor	delete	f		2
+718	application	school	update	f		3
 428	application	mentor	update	f		2
 437	application	model	findone	f		1
 439	application	model	update	f		1
@@ -2113,6 +2112,168 @@ COPY public."users-permissions_permission" (id, type, controller, action, enable
 657	users-permissions	userspermissions	updaterole	f		1
 646	users-permissions	userspermissions	index	f		2
 647	users-permissions	userspermissions	init	t		1
+659	application	mentor	find	f		3
+661	application	mentor	count	f		3
+662	application	mentor	create	f		3
+663	application	mentor	update	f		3
+664	application	blocks-category	find	f		3
+665	application	mentor	delete	f		3
+666	application	blocks-category	findone	f		3
+667	application	blocks-category	count	f		3
+668	application	blocks-category	create	f		3
+669	application	blocks-category	update	f		3
+660	application	mentor	findone	f		3
+671	application	model	find	f		3
+672	application	model	findone	f		3
+670	application	blocks-category	delete	f		3
+673	application	model	count	f		3
+674	application	model	create	f		3
+675	application	model	update	f		3
+676	application	model	delete	f		3
+677	application	submission	find	f		3
+678	application	submission	findone	f		3
+679	application	submission	count	f		3
+680	application	submission	create	f		3
+681	application	submission	update	f		3
+682	application	submission	delete	f		3
+683	application	block	find	f		3
+684	application	block	findone	f		3
+685	application	block	count	f		3
+686	application	block	create	f		3
+687	application	block	update	f		3
+688	application	block	delete	f		3
+689	application	learning-category	find	f		3
+690	application	learning-category	findone	f		3
+691	application	learning-category	count	f		3
+692	application	learning-category	create	f		3
+693	application	learning-category	update	f		3
+694	application	learning-category	delete	f		3
+695	application	topic	find	f		3
+696	application	topic	findone	f		3
+697	application	topic	count	f		3
+698	application	topic	create	f		3
+699	application	topic	update	f		3
+700	application	topic	delete	f		3
+701	application	activity	find	f		3
+702	application	activity	findone	f		3
+703	application	activity	count	f		3
+704	application	activity	create	f		3
+705	application	activity	update	f		3
+706	application	activity	delete	f		3
+707	application	activity	toolbox	t		3
+708	application	classroom	find	f		3
+709	application	classroom	findone	f		3
+710	application	classroom	count	f		3
+711	application	classroom	create	f		3
+712	application	classroom	update	f		3
+713	application	classroom	delete	f		3
+714	application	school	find	f		3
+715	application	school	findone	f		3
+716	application	school	count	f		3
+722	application	session	count	f		3
+737	application	student	update	f		3
+752	content-manager	components	findcomponent	f		3
+767	content-type-builder	componentcategories	editcategory	f		3
+782	upload	upload	upload	f		3
+797	users-permissions	user	find	f		3
+812	users-permissions	userspermissions	getproviders	f		3
+723	application	session	create	f		3
+739	application	difficulty	find	f		3
+753	content-manager	components	updatecomponent	f		3
+768	content-type-builder	componentcategories	deletecategory	f		3
+783	upload	upload	getsettings	f		3
+798	users-permissions	user	me	f		3
+813	users-permissions	userspermissions	updateemailtemplate	f		3
+724	application	session	update	f		3
+738	application	student	delete	f		3
+754	content-manager	contentmanager	checkuidavailability	f		3
+769	content-type-builder	components	getcomponents	f		3
+784	upload	upload	updatesettings	f		3
+799	users-permissions	user	count	f		3
+814	users-permissions	userspermissions	updateadvancedsettings	f		3
+725	application	session	delete	f		3
+740	application	difficulty	findone	f		3
+755	content-manager	contentmanager	update	f		3
+770	content-type-builder	components	getcomponent	f		3
+785	upload	upload	find	f		3
+800	users-permissions	user	findone	f		3
+816	users-permissions	userspermissions	init	f		3
+726	application	session	join	t		3
+741	application	difficulty	count	f		3
+757	content-manager	contentmanager	delete	f		3
+772	content-type-builder	components	updatecomponent	f		3
+786	upload	upload	findone	f		3
+802	users-permissions	user	update	f		3
+817	users-permissions	userspermissions	index	f		3
+727	application	type	find	f		3
+742	application	difficulty	create	f		3
+756	content-manager	contentmanager	deletemany	f		3
+771	content-type-builder	components	createcomponent	f		3
+787	upload	upload	count	f		3
+801	users-permissions	user	create	f		3
+815	users-permissions	userspermissions	getpermissions	f		3
+728	application	type	findone	f		3
+743	application	difficulty	update	f		3
+758	content-manager	contentmanager	findone	f		3
+773	content-type-builder	components	deletecomponent	f		3
+788	upload	upload	destroy	f		3
+803	users-permissions	user	destroy	f		3
+818	users-permissions	userspermissions	createrole	f		3
+729	application	type	count	f		3
+744	application	difficulty	delete	f		3
+759	content-manager	contentmanager	count	f		3
+774	content-type-builder	connections	getconnections	f		3
+789	upload	upload	search	f		3
+804	users-permissions	user	destroyall	f		3
+819	users-permissions	userspermissions	updateproviders	f		3
+730	application	type	create	f		3
+746	application	complexity	findone	f		3
+761	content-manager	contentmanager	generateuid	f		3
+775	content-type-builder	contenttypes	getcontenttypes	f		3
+790	users-permissions	auth	callback	f		3
+805	users-permissions	userspermissions	getemailtemplate	f		3
+820	users-permissions	userspermissions	getadvancedsettings	f		3
+731	application	type	update	f		3
+747	application	complexity	count	f		3
+762	content-manager	contentmanager	create	f		3
+777	content-type-builder	contenttypes	createcontenttype	f		3
+791	users-permissions	auth	resetpassword	f		3
+807	users-permissions	userspermissions	getroutes	f		3
+821	users-permissions	userspermissions	deleteprovider	f		3
+732	application	type	delete	f		3
+745	application	complexity	find	f		3
+760	content-manager	contentmanager	find	f		3
+776	content-type-builder	contenttypes	getcontenttype	f		3
+792	users-permissions	auth	connect	f		3
+806	users-permissions	userspermissions	searchusers	f		3
+822	users-permissions	userspermissions	updaterole	f		3
+719	application	school	delete	f		3
+734	application	student	findone	f		3
+749	application	complexity	update	f		3
+764	content-manager	contenttypes	findcontenttype	f		3
+779	content-type-builder	contenttypes	deletecontenttype	f		3
+794	users-permissions	auth	register	f		3
+809	users-permissions	userspermissions	getpolicies	f		3
+733	application	student	find	f		3
+748	application	complexity	create	f		3
+763	content-manager	contenttypes	listcontenttypes	f		3
+778	content-type-builder	contenttypes	updatecontenttype	f		3
+793	users-permissions	auth	forgotpassword	f		3
+808	users-permissions	userspermissions	deleterole	f		3
+720	application	session	find	f		3
+735	application	student	count	f		3
+750	application	complexity	delete	f		3
+765	content-manager	contenttypes	updatecontenttype	f		3
+780	email	email	send	f		3
+795	users-permissions	auth	emailconfirmation	f		3
+810	users-permissions	userspermissions	getroles	f		3
+721	application	session	findone	t		3
+736	application	student	create	f		3
+751	content-manager	components	listcomponents	f		3
+766	content-type-builder	builder	getreservednames	f		3
+781	upload	proxy	uploadproxy	f		3
+796	users-permissions	auth	sendemailconfirmation	f		3
+811	users-permissions	userspermissions	getrole	f		3
 \.
 
 
@@ -2123,6 +2284,7 @@ COPY public."users-permissions_permission" (id, type, controller, action, enable
 COPY public."users-permissions_role" (id, name, description, type) FROM stdin;
 2	Public	Role for unauthenticated requests	public
 1	Mentor	Role for mentor users	authenticated
+3	Student	Role for a student user	student
 \.
 
 
@@ -2131,7 +2293,8 @@ COPY public."users-permissions_role" (id, name, description, type) FROM stdin;
 --
 
 COPY public."users-permissions_user" (id, username, email, provider, password, "resetPasswordToken", confirmed, blocked, role, created_at, updated_at) FROM stdin;
-1	mymentor1	mentor@mail.com	local	$2a$10$ScFBvxpaIdEWtfax922Y/OUcKXXlr7dizuZ7NHRYanLH3RAmTkCo.	\N	f	f	1	2020-06-23 11:45:44.765+00	2020-06-23 11:45:44.78+00
+1	STUDENT	student@mail.com	local	$2a$10$RENrE5I6NhLpXI9OVGM.feTFnjXNifwhQvGssvTj6/.87a.SH1ZfS	\N	f	f	3	2020-06-23 14:35:39.929+00	2020-06-23 14:35:39.936+00
+2	defaultmentor	mentor@mail.com	local	$2a$10$LcdcH/gHlb1Yer8pIi0agO9jtjcR0.Sgge51rivsGuQq9lfCpROmW	\N	f	f	1	2020-06-23 14:58:22.681+00	2020-06-23 14:58:31.631+00
 \.
 
 
@@ -2216,7 +2379,7 @@ SELECT pg_catalog.setval('public.classrooms_id_seq', 1, true);
 -- Name: classrooms_mentors__mentors_classrooms_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.classrooms_mentors__mentors_classrooms_id_seq', 1, true);
+SELECT pg_catalog.setval('public.classrooms_mentors__mentors_classrooms_id_seq', 2, true);
 
 
 --
@@ -2279,7 +2442,7 @@ SELECT pg_catalog.setval('public.learning_categories_id_seq1', 1, false);
 -- Name: mentors_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.mentors_id_seq', 1, true);
+SELECT pg_catalog.setval('public.mentors_id_seq', 2, true);
 
 
 --
@@ -2412,7 +2575,7 @@ SELECT pg_catalog.setval('public.upload_file_morph_id_seq1', 1, false);
 -- Name: users-permissions_permission_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public."users-permissions_permission_id_seq"', 658, true);
+SELECT pg_catalog.setval('public."users-permissions_permission_id_seq"', 822, true);
 
 
 --
@@ -2433,7 +2596,7 @@ SELECT pg_catalog.setval('public."users-permissions_role_id_seq"', 2, true);
 -- Name: users-permissions_role_id_seq1; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public."users-permissions_role_id_seq1"', 2, true);
+SELECT pg_catalog.setval('public."users-permissions_role_id_seq1"', 3, true);
 
 
 --
@@ -2447,7 +2610,7 @@ SELECT pg_catalog.setval('public."users-permissions_user_id_seq"', 1, false);
 -- Name: users-permissions_user_id_seq1; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public."users-permissions_user_id_seq1"', 1, true);
+SELECT pg_catalog.setval('public."users-permissions_user_id_seq1"', 3, true);
 
 
 --
