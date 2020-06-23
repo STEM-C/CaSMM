@@ -23,14 +23,11 @@
       "via": "sessions"
     },
     "active": {
-      "type": "boolean"
+      "type": "boolean",
+      "default": true
     },
     "code": {
       "type": "integer"
-    },
-    "submissions": {
-      "via": "session",
-      "collection": "submission"
     }
   }
 }
