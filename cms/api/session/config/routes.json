@@ -18,7 +18,7 @@
     },
     {
       "method": "GET",
-      "path": "/sessions/:id",
+      "path": "/sessions/:code",
       "handler": "session.findOne",
       "config": {
         "policies": []
@@ -28,6 +28,14 @@
       "method": "POST",
       "path": "/sessions",
       "handler": "session.create",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "POST",
+      "path": "/sessions/join",
+      "handler": "session.join",
       "config": {
         "policies": []
       }

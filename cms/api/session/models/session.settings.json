@@ -23,7 +23,8 @@
       "via": "sessions"
     },
     "active": {
-      "type": "boolean"
+      "type": "boolean",
+      "default": true
     },
     "code": {
       "type": "integer"
