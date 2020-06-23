@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from "react"
 import { Link } from "react-router-dom"
 import { compileArduinoCode, getArduino, getJS, getXml, setLocalActivity } from './helpers.js'
-import "./Workspace.css"
+import "./Workspace.less"
 import { getActivityToolbox } from "../../dataaccess/requests.js"
 import { useHistory } from "react-router-dom"
 
