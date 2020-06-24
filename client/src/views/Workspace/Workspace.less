@@ -8,6 +8,11 @@ h3, p {
     margin: 0;
 }
 
+i {
+  color: #colors[primary];
+  font-size: 16px;
+}
+
 .flex {
     display: flex;
 }
@@ -16,13 +21,23 @@ h3, p {
     flex-direction: column;
 }
 
+.flex-row {
+  flex-direction: row;
+}
+
 .space-between {
     justify-content: space-between;
 }
 
+.justify-end {
+  justify-content: flex-end;
+}
+
 #container {
     height: 100%;
+    width: 100%;
     background-color: #colors[primary];
+    min-height: 100vh;
 }
 
 .vertical-container {
@@ -76,7 +91,8 @@ h3, p {
 
 #top-container {
     flex: 1;
-    margin-bottom: 0.75em
+    margin-bottom: 0.75em;
+    height: 100px;
 }
 
 .card {
@@ -87,15 +103,34 @@ h3, p {
 #description-container {
     height: 100%;
     border-radius: 10px;
+    align-items: center;
+}
+
+.overflow-visible {
+  overflow: visible;
 }
 
 #bottom-container {
     flex: 6;
     margin-top: 0.75em;
+    background-color: white;
+    border-radius: 10px;
+    min-height: 100%;
+    height: 800px;
 }
 
 #blockly-canvas {
     flex: 2;
+    margin: 1em;
+    width: 90%;
+    height: 100%;
+}
+
+#diagram {
+    flex: 2;
+    margin: 1em;
+    width: 90%;
+    height: auto;
 }
 
 #models-container {
@@ -108,3 +143,10 @@ h3, p {
     height: 100%;
 }
 
+#logo {
+  max-width: 200px;
+  height: auto;
+  position: absolute;
+  left: 10px;
+  top: 8px;
+}
