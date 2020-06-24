@@ -122,10 +122,10 @@ i {
 #bottom-container {
     flex: 6;
     margin-top: 1.5em;
-    background-color: white;
+    background-color: #colors[tertiary];
     border-radius: 10px;
     min-height: 100%;
-    height: 800px;
+    height: 90vh;
 }
 
 #blockly-canvas {
@@ -137,9 +137,9 @@ i {
 
 #diagram {
     flex: 2;
-    margin: 1em;
-    width: 90%;
-    height: auto;
+    margin: auto;
+    height: 100%;
+    width: auto;
 }
 
 #models-container {
@@ -157,7 +157,7 @@ i {
   height: auto;
   position: absolute;
   left: 10px;
-  top: 14px;
+  top: 15px;
 }
 
 #section-header {
@@ -196,4 +196,25 @@ i {
   margin-left: 1.5em;
   margin-right: 1.5em;
   margin-bottom: 1.5em;
+}
+
+.ant-carousel .slick-slide {
+  height: 100%;
+  overflow: hidden;
+  background-color: #colors[tertiary];
+  border-radius: 20px;
+}
+
+.ant-carousel .slick-dots li button {
+  background: #colors[secondary];
+  opacity: 0.4;
+}
+
+.ant-carousel .slick-dots li.slick-active button {
+  opacity: 1;
+  background: #colors[secondary];
+}
+
+.margin-auto {
+  margin: auto;
 }

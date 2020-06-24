@@ -5,7 +5,10 @@ import "./Workspace.less"
 import { getActivityToolbox } from "../../dataaccess/requests.js"
 import { useHistory } from "react-router-dom"
 import Logo from "../../assets/casmm_logo.png"
-import PlaceHolderImg from "../../assets/science.png"
+import PlaceHolderImg1 from "../../assets/science.png"
+import PlaceHolderImg2 from "../../assets/arduino.png"
+import PlaceHolderImg3 from "../../assets/maker.png"
+import { Carousel } from 'antd';
 
 function App(props) {
 
@@ -78,9 +81,20 @@ function App(props) {
                         </div>
                         <p id="section-text">{activity.description}</p>
                         <div id="secondary-section-header">
-                                See the different parts of the activity...
+                            See the different parts of the activity...
                         </div>
-                        <img id="diagram" src={PlaceHolderImg}/>
+                        {/* Example implementation of image Carousel */}
+                        <Carousel dotPosition={"left"}>
+                            <div id="diagram-container">
+                                <img id="diagram" src={PlaceHolderImg1}/>
+                            </div>
+                            <div id="diagram-container">
+                                <img id="diagram" src={PlaceHolderImg2}/>
+                            </div>
+                            <div id="diagram-container">
+                                <img id="diagram" src={PlaceHolderImg3}/>
+                            </div>
+                        </Carousel>
                     </div>
                 </div>
                 <div id="horizontal-container" className="flex flex-column">
