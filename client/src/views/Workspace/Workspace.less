@@ -33,11 +33,27 @@ i {
   justify-content: flex-end;
 }
 
+.justify-center {
+  justify-content: center;
+}
+
+.zoom {
+  zoom: 70%;
+}
+
 #container {
     height: 100%;
     width: 100%;
     background-color: #colors[primary];
     min-height: 100vh;
+}
+
+#horizontal-container {
+  height: 100%;
+  width: 100%;
+  min-width: 40vw;
+  background-color: #colors[primary];
+  min-height: 100vh;
 }
 
 .vertical-container {
@@ -72,13 +88,6 @@ i {
     top: 4.5vh;
 }
 
-#nav-container {
-    margin: 0;
-    background-color: #colors[secondary];
-    color: #colors[text-secondary];
-    align-items: center;
-}
-
 #title {
     flex: 10;
     margin: 0.5em;
@@ -91,13 +100,13 @@ i {
 
 #top-container {
     flex: 1;
-    margin-bottom: 0.75em;
-    height: 100px;
+    margin-bottom: 0.60em;
+    height: 70px;
 }
 
 .card {
     background-color: #colors[tertiary];
-    padding: 1em;
+    padding: .7em;
 }
 
 #description-container {
@@ -112,7 +121,7 @@ i {
 
 #bottom-container {
     flex: 6;
-    margin-top: 0.75em;
+    margin-top: 1.5em;
     background-color: white;
     border-radius: 10px;
     min-height: 100%;
@@ -122,7 +131,7 @@ i {
 #blockly-canvas {
     flex: 2;
     margin: 1em;
-    width: 90%;
+    width: 95%;
     height: 100%;
 }
 
@@ -144,9 +153,47 @@ i {
 }
 
 #logo {
-  max-width: 200px;
+  max-width: 150px;
   height: auto;
   position: absolute;
   left: 10px;
-  top: 8px;
+  top: 14px;
+}
+
+#section-header {
+  background-color: #colors[secondary];
+  border-radius: 80px;
+  width: 40%;
+  min-height: 8%;
+  color: #colors[text-secondary];
+  font-size: 1.2em;
+  font-weight: bold;
+  position: relative;
+  top: -10px;
+  left: -10px;
+  line-height: 60px;
+  text-align: center;
+}
+
+#secondary-section-header {
+  background-color: #colors[secondary];
+  border-radius: 80px;
+  color: #colors[text-secondary];
+  width: 45%;
+  min-height: 5%;
+  font-size: .8em;
+  font-weight: bold;
+  position: relative;
+  left: -10px;
+  line-height: 40px;
+  text-align: center;
+}
+
+#section-text {
+  font-size: 1em;
+  font-weight: bold;
+  color: #colors[text-primary];
+  margin-left: 1.5em;
+  margin-right: 1.5em;
+  margin-bottom: 1.5em;
 }

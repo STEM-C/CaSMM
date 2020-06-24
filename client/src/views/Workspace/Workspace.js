@@ -63,29 +63,27 @@ function App(props) {
     return (
         <div>
             <div id="container" className="flex flex-row">
-                <div id="container" className="flex flex-column">
+                <div id="horizontal-container" className="flex flex-column">
                     <div id="top-container" className="flex flex-column vertical-container">
-                        <div id="description-container" className="flex flex-row justify-end card overflow-visible">
+                        <div id="description-container"
+                             className="flex flex-row justify-end card overflow-visible"
+                             style={{"margin-left": "70px"}}>
                             <img id="logo" src={Logo}/>
-                            <h1>Maker Activity {activity.name}</h1>
+                            <h2>Maker Activity {activity.name}</h2>
                         </div>
                     </div>
-                    <div id="bottom-container" className="flex flex-column vertical-container">
-                        <div>
-                            <h2>
+                    <div id="bottom-container" className="flex flex-column vertical-container overflow-visible">
+                        <div id="section-header">
                                 Learn about the activity...
-                            </h2>
                         </div>
-                        <p>{activity.description}</p>
-                        <div>
-                            <h3>
+                        <p id="section-text">{activity.description}</p>
+                        <div id="secondary-section-header">
                                 See the different parts of the activity...
-                            </h3>
                         </div>
                         <img id="diagram" src={PlaceHolderImg}/>
                     </div>
                 </div>
-                <div id="container" className="flex flex-column">
+                <div id="horizontal-container" className="flex flex-column">
                     <div id="top-container" className="flex flex-column vertical-container">
                         <div id="description-container" className="flex flex-row space-between card">
                             <Link to={"/"} className="flex flex-column">
@@ -115,11 +113,9 @@ function App(props) {
                             </div>
                         </div>
                     </div>
-                    <div id="bottom-container" className="flex flex-column vertical-container">
-                        <div>
-                            <h2>
+                    <div id="bottom-container" className="flex flex-column vertical-container overflow-visible">
+                        <div id="section-header">
                                 Program your Arduino...
-                            </h2>
                         </div>
                         <div id="blockly-canvas"
                              onChange={() => setLocalActivity(workspaceRef.current)}/>
