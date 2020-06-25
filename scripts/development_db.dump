@@ -2470,7 +2470,7 @@ SELECT pg_catalog.setval('public.schools_id_seq', 1, true);
 -- Name: sessions_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.sessions_id_seq', 37, true);
+SELECT pg_catalog.setval('public.sessions_id_seq', 1, true);
 
 
 --
