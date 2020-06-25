@@ -70,7 +70,7 @@ function App(props) {
                     <div id="top-container" className="flex flex-column vertical-container">
                         <div id="description-container"
                              className="flex flex-row justify-end card overflow-visible"
-                             style={{"margin-left": "70px"}}>
+                             style={{"marginLeft": "70px"}}>
                             <img id="logo" src={Logo}/>
                             <h2>Maker Activity {activity.name}</h2>
                         </div>
@@ -84,6 +84,7 @@ function App(props) {
                             See the different parts of the activity...
                         </div>
                         {/* Example implementation of image Carousel */}
+                        <div id="carousel-container">
                         <Carousel dotPosition={"left"}>
                             <div id="diagram-container">
                                 <img id="diagram" src={PlaceHolderImg1}/>
@@ -95,13 +96,14 @@ function App(props) {
                                 <img id="diagram" src={PlaceHolderImg3}/>
                             </div>
                         </Carousel>
+                        </div>
                     </div>
                 </div>
                 <div id="horizontal-container" className="flex flex-column">
                     <div id="top-container" className="flex flex-column vertical-container">
                         <div id="description-container" className="flex flex-row space-between card">
                             <Link to={"/"} className="flex flex-column">
-                                <i className="fa fa-home" style={{"font-size": "32px"}}/>
+                                <i className="fa fa-home" style={{"fontSize": "32px"}}/>
                                 Home
                             </Link>
                             <div style={{"width": "25%"}}>
