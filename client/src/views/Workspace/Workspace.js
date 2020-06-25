@@ -1,32 +1,33 @@
 import React, { useEffect, useRef, useState } from "react"
 import { Link } from "react-router-dom"
-import { compileArduinoCode, getArduino, getJS } from './helpers.js'
+import { compileArduinoCode, getArduino, getJS, getXml, setLocalActivity } from './helpers.js'
 import "./Workspace.css"
 import { getActivityToolbox } from "../../dataaccess/requests.js"
+import { useHistory } from "react-router-dom"
 
 function App(props) {
 
-    const [activity, setActivity] = useState({})
+    const [activity, setActivity] = useState({} )
+    const [hoverXml, setHoverXml] = useState(false)
     const [hoverJS, setHoverJS] = useState(false)
     const [hoverArduino, setHoverArduino] = useState(false)
     const [hoverCompile, setHoverCompile] = useState(false)
 
+    let history = useHistory()
     let workspaceRef = useRef(null)
-    const setWorkspace = () => workspaceRef.current = window.Blockly.inject('blockly-canvas', {toolbox: document.getElementById('toolbox')})
+
+    const setWorkspace = () => workspaceRef.current = window.Blockly.inject('blockly-canvas', { toolbox: document.getElementById('toolbox') })
 
     useEffect(() => {
         const localActivity = localStorage.getItem("my-activity")
         const {selectedActivity} = props
 
         if (localActivity && !selectedActivity) {
-
             let loadedActivity = JSON.parse(localActivity)
             setActivity(loadedActivity)
 
         } else if (selectedActivity) {
-
             getActivityToolbox(selectedActivity.id).then(response => {
-
                 let loadedActivity = {...selectedActivity, toolbox: response.toolbox}
 
                 localStorage.setItem("my-activity", JSON.stringify(loadedActivity))
@@ -36,16 +37,25 @@ function App(props) {
             window.location = '/' // this should probably use the react router dom to add to history stack
         }
 
-        // clean up - removes blockly div from DOM 
+        // clean up - removes blockly div from DOM
         return () => {
-            workspaceRef.current.dispose()
+            if (workspaceRef.current) {
+                workspaceRef.current.dispose()
+            }
         }
-    }, [props])
+    }, [props, history])
 
     useEffect(() => {
-
         // once the activity state is set, set the workspace
-        if (Object.keys(activity).length && !workspaceRef.current) setWorkspace()
+        if (Object.keys(activity).length && !workspaceRef.current) {
+            setWorkspace()
+            workspaceRef.current.addChangeListener(() => setLocalActivity(workspaceRef.current))
+
+            if (activity.template) {
+                let xml = window.Blockly.Xml.textToDom(activity.template)
+                window.Blockly.Xml.domToWorkspace(xml, workspaceRef.current)
+            }
+        }
     }, [activity])
 
     return (
@@ -54,6 +64,10 @@ function App(props) {
                 <div id="nav-container" className="flex vertical-container space-between">
                     <h1 id="title"><Link to={"/"}>STEM+C</Link></h1>
                     <div id="action-btn-container" className="flex space-between">
+                        <i onClick={() => getXml(workspaceRef.current)} className="fas fa-code hvr-info"
+                           onMouseEnter={() => setHoverXml(true)}
+                           onMouseLeave={() => setHoverXml(false)}/>
+                        {hoverXml && <div className="popup JS">Shows Xml Code</div>}
                         <i onClick={() => getJS(workspaceRef.current)} className="fab fa-js hvr-info"
                            onMouseEnter={() => setHoverJS(true)}
                            onMouseLeave={() => setHoverJS(false)}/>
@@ -76,12 +90,12 @@ function App(props) {
                     </div>
                 </div>
                 <div id="bottom-container" className="flex vertical-container">
-                    <div id="blockly-canvas" style={{"height": "800px", "width": "100%"}}/>
+                    <div id="blockly-canvas" style={{ "height": "800px", "width": "100%" }} onChange={() => setLocalActivity(workspaceRef.current)}/>
                 </div>
             </div>
 
             {/* This xml is for the blocks' menu we will provide. Here are examples on how to include categories and subcategories */}
-            <xml id="toolbox" style={{"display": "none"}} is="Blockly workspace">
+            <xml id="toolbox" style={{ "display": "none" }} is="Blockly workspace">
                 {
                     // Maps out block categories
                     activity.toolbox && activity.toolbox.map(([category, blocks]) => (
