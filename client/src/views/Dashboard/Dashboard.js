@@ -4,7 +4,7 @@ import { getTopics, getSchools, getClassrooms } from "../../Utils/requests"
 import { removeUserSession, getUser } from "../../Utils/AuthRequests";
 import { List, ListItem, ListItemText, makeStyles, createStyles, Dialog, DialogTitle, DialogContent, Typography, Switch, FormControlLabel, Fab } from '@material-ui/core'
 import AddIcon from '@material-ui/icons/Close';
-import './Dashboard.css'
+import './Dashboard.less'
 
 import Header from '../../components/Header.js'
 

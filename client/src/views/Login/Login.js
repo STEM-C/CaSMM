@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { setUserSession, postUser } from "../../Utils/AuthRequests";
-import './Login.css'
+import './Login.less'
 import { Link } from "react-router-dom";
 
 function Login(props) {
@@ -26,7 +26,7 @@ function Login(props) {
     }
 
     return (
-        <div>
+        <div id="container">
             <form className="box">
                 <h1>Teacher/Mentor Login</h1>
                 <input type="email" {...email} placeholder="Email" autoComplete="new-password"/>
