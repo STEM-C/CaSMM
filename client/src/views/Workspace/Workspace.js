@@ -39,7 +39,7 @@ function App(props) {
                 setActivity(loadedActivity)
             })
         } else {
-            props.history.push('/') // this should probably use the react router dom to add to history stack
+            props.history.push('/')
         }
 
         // clean up - removes blockly div from DOM
@@ -134,9 +134,6 @@ function App(props) {
                         <div id="blockly-canvas"
                              onChange={() => setLocalActivity(workspaceRef.current)}/>
                     </div>
-                </div>
-                <div id="bottom-container" className="flex vertical-container">
-                    <div id="blockly-canvas" style={{ "height": "800px", "width": "100%" }} onChange={() => setLocalActivity(workspaceRef.current)}/>
                 </div>
             </div>
 
