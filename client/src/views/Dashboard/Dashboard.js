@@ -21,16 +21,15 @@ function Dashboard(props) {
     const classes = useStyles();
 
     useEffect(() => {
-        localStorage.clear()
 
-        getTopics().then(topics => {
+        getTopics(sessionStorage.getItem('token')).then(topics => {
             // temporary - put all the activities into one array for current rendering
             let activities = []
             topics.forEach(topic => activities = activities.concat(topic.activities))
 
             setActivities(activities)
         })
-        getSchools().then(schoolArray => {
+        getSchools(sessionStorage.getItem('token')).then(schoolArray => {
             setSchools(schoolArray)
         })
     }, [])
@@ -43,7 +42,7 @@ function Dashboard(props) {
 
         console.log(selectedSchool)
         if(selectedSchool) {
-            getClassrooms(selectedSchool.id).then(classroomArray => {
+            getClassrooms(selectedSchool.id, sessionStorage.getItem('token')).then(classroomArray => {
                 setClassrooms(classroomArray)
             })
         }
@@ -117,9 +116,6 @@ function Dashboard(props) {
                     }
 
                 </div>
-                <Fab size="medium" color="secondary" aria-label="add" >
-                    <AddIcon />
-                </Fab>
 
             </div>
         </div>
