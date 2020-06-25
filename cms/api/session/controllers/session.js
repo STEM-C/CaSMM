@@ -1,6 +1,6 @@
 'use strict'
 
-const { parseMultipartData, sanitizeEntity } = require('strapi-utils')
+const { sanitizeEntity } = require('strapi-utils')
 
 const getRandomCode = () => {
 
@@ -26,8 +26,13 @@ module.exports = {
 
         if (ctx.is('multipart')) {
 
-            const { data, files } = parseMultipartData(ctx)
-            entity = await strapi.services.session.create(data, { files })
+            return ctx.badRequest(
+                null,
+                formatError({
+                  id: 'Session.create.format.invalid',
+                  message: 'Multipart requests are not accepted!',
+                })
+            )
         } else {
 
             let code, exists
@@ -47,16 +52,27 @@ module.exports = {
     },
 
     /**
-     * Retrieve a session by code
+     * Retrieve a list of students with a valid session code
      *
      * @return {Object}
      */
-    async findOne(ctx) {
+    async findCode(ctx) {
 
-        const { code } = ctx.params;
+        const { code } = ctx.params
 
-        const entity = await strapi.services.session.findOne({ code })
-        return sanitizeEntity(entity, { model: strapi.models.session })
+        let resp = await strapi.services.session.findOne({ code })
+
+        // if a session is found, return list of students
+        if (resp) {
+            const students = await strapi.services.student.find({ classroom: resp.classroom.id })
+            resp = students.map(student => { return { 
+                id: student.id, 
+                name: student.name,
+                character: student.character
+            }})
+        }
+
+        return resp
     },
 
     /**
