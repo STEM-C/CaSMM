@@ -1,8 +1,14 @@
 import React, { useEffect, useRef, useState } from "react"
 import { Link } from "react-router-dom"
 import { compileArduinoCode, getArduino, getJS, getXml, setLocalActivity } from './helpers.js'
-import "./Workspace.css"
+import "./Workspace.less"
 import { getActivityToolbox } from "../../Utils/requests.js"
+import { useHistory } from "react-router-dom"
+import Logo from "../../assets/casmm_logo.png"
+import PlaceHolderImg1 from "../../assets/science.png"
+import PlaceHolderImg2 from "../../assets/arduino.png"
+import { Carousel } from 'antd';
+import PlaceHolderImg3 from "../../assets/maker.png"
 
 
 function App(props) {
@@ -57,37 +63,80 @@ function App(props) {
 
     return (
         <div>
-            <div id="container" className="flex flex-column">
-                <div id="nav-container" className="flex vertical-container space-between">
-                    <h1 id="title"><Link to={"/dashboard"}>STEM+C</Link></h1>
-                    <div id="action-btn-container" className="flex space-between">
-                        <i onClick={() => getXml(workspaceRef.current)} className="fas fa-code hvr-info"
-                           onMouseEnter={() => setHoverXml(true)}
-                           onMouseLeave={() => setHoverXml(false)}/>
-                        {hoverXml && <div className="popup XML">Shows Xml Code</div>}
-                        <i onClick={() => getJS(workspaceRef.current)} className="fab fa-js hvr-info"
-                           onMouseEnter={() => setHoverJS(true)}
-                           onMouseLeave={() => setHoverJS(false)}/>
-                        {hoverJS && <div className="popup JS">Shows Javascript Code</div>}
-                        <i onClick={() => getArduino(workspaceRef.current)} className="hvr-info"
-                           onMouseEnter={() => setHoverArduino(true)}
-                           onMouseLeave={() => setHoverArduino(false)}>A</i>
-                        {hoverArduino && <div className="popup Arduino">Shows Arduino Code</div>}
-                        <i onClick={() => compileArduinoCode(workspaceRef.current)} className="fas fa-play hvr-info"
-                           onMouseEnter={() => setHoverCompile(true)}
-                           onMouseLeave={() => setHoverCompile(false)}/>
-                        {hoverCompile && <div className="popup Compile">Run Program</div>}
+            <div id="container" className="flex flex-row">
+                <div id="horizontal-container" className="flex flex-column">
+                    <div id="top-container" className="flex flex-column vertical-container">
+                        <div id="description-container"
+                             className="flex flex-row justify-end card overflow-visible"
+                             style={{"marginLeft": "70px"}}>
+                            <img id="logo" src={Logo}/>
+                            <h2>Maker Activity {activity.name}</h2>
+                        </div>
+                    </div>
+                    <div id="bottom-container" className="flex flex-column vertical-container overflow-visible">
+                        <div id="section-header">
+                                Learn about the activity...
+                        </div>
+                        <p id="section-text">{activity.description}</p>
+                        <div id="secondary-section-header">
+                            See the different parts of the activity...
+                        </div>
+                        {/* Example implementation of image Carousel */}
+                        <div id="carousel-container">
+                        <Carousel dotPosition={"left"}>
+                            <div id="diagram-container">
+                                <img id="diagram" src={PlaceHolderImg1}/>
+                            </div>
+                            <div id="diagram-container">
+                                <img id="diagram" src={PlaceHolderImg2}/>
+                            </div>
+                            <div id="diagram-container">
+                                <img id="diagram" src={PlaceHolderImg3}/>
+                            </div>
+                        </Carousel>
+                        </div>
                     </div>
                 </div>
-                <div id="top-container" className="flex flex-column vertical-container">
-                    <div id="description-container" className="flex flex-column card">
-                        <h3>Maker Activity {activity.name}</h3>
-                        <p><b>Instructions / Science Brief: </b>
-                            {activity.description}</p>
+                <div id="horizontal-container" className="flex flex-column">
+                    <div id="top-container" className="flex flex-column vertical-container">
+                        <div id="description-container" className="flex flex-row space-between card">
+                            <Link to={"/"} className="flex flex-column">
+                                <i className="fa fa-home" style={{"fontSize": "32px"}}/>
+                                Home
+                            </Link>
+                            <div style={{"width": "25%"}}>
+                                <div id="action-btn-container" className="flex space-between">
+                                    <i onClick={() => getXml(workspaceRef.current)} className="fas fa-code hvr-info"
+                                       onMouseEnter={() => setHoverXml(true)}
+                                       onMouseLeave={() => setHoverXml(false)}/>
+                                    {hoverXml && <div className="popup JS">Shows Xml Code</div>}
+                                    <i onClick={() => getJS(workspaceRef.current)} className="fab fa-js hvr-info"
+                                       onMouseEnter={() => setHoverJS(true)}
+                                       onMouseLeave={() => setHoverJS(false)}/>
+                                    {hoverJS && <div className="popup JS">Shows Javascript Code</div>}
+                                    <i onClick={() => getArduino(workspaceRef.current)} className="hvr-info"
+                                       onMouseEnter={() => setHoverArduino(true)}
+                                       onMouseLeave={() => setHoverArduino(false)}>A</i>
+                                    {hoverArduino && <div className="popup Arduino">Shows Arduino Code</div>}
+                                    <i onClick={() => compileArduinoCode(workspaceRef.current)}
+                                       className="fas fa-play hvr-info"
+                                       onMouseEnter={() => setHoverCompile(true)}
+                                       onMouseLeave={() => setHoverCompile(false)}/>
+                                    {hoverCompile && <div className="popup Compile">Run Program</div>}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="bottom-container" className="flex flex-column vertical-container overflow-visible">
+                        <div id="section-header">
+                                Program your Arduino...
+                        </div>
+                        <div id="blockly-canvas"
+                             onChange={() => setLocalActivity(workspaceRef.current)}/>
                     </div>
                 </div>
                 <div id="bottom-container" className="flex vertical-container">
-                    <div id="blockly-canvas" style={{ "height": "100%", "width": "100%" }} onChange={() => setLocalActivity(workspaceRef.current)}/>
+                    <div id="blockly-canvas" style={{ "height": "800px", "width": "100%" }} onChange={() => setLocalActivity(workspaceRef.current)}/>
                 </div>
             </div>
 
