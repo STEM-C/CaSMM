@@ -15,8 +15,8 @@
     "description": {
       "type": "string"
     },
-    "activity": {
-      "model": "activity"
+    "activities": {
+      "collection": "activity"
     },
     "classroom": {
       "model": "classroom",
