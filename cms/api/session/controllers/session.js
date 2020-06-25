@@ -87,6 +87,7 @@ module.exports = {
 
         let student
         if (!studentId) {
+            // Join as a new student
             let classroomExists = await strapi.services.classroom.findOne({ id: classroom })
             if (!classroomExists) return ctx.badRequest(
                 null,
@@ -98,6 +99,7 @@ module.exports = {
 
             student = await strapi.services.student.create({ name, character, classroom })
         } else {
+            // Join as an existing student
             student = await strapi.services.student.findOne({ id: studentId })
             if (!student) return ctx.badRequest(
                 null,

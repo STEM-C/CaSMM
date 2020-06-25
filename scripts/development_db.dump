@@ -2442,7 +2442,7 @@ SELECT pg_catalog.setval('public.learning_categories_id_seq1', 1, false);
 -- Name: mentors_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.mentors_id_seq', 2, true);
+SELECT pg_catalog.setval('public.mentors_id_seq', 1, true);
 
 
 --
@@ -2463,14 +2463,7 @@ SELECT pg_catalog.setval('public.models_id_seq1', 1, true);
 -- Name: schools_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.schools_id_seq', 1, true);
-
-
---
--- Name: sessions_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('public.sessions_id_seq', 1, true);
+SELECT pg_catalog.setval('public.schools_id_seq', 1, true);∂
 
 
 --
@@ -2499,13 +2492,6 @@ SELECT pg_catalog.setval('public.strapi_webhooks_id_seq', 1, false);
 --
 
 SELECT pg_catalog.setval('public.strapi_webhooks_id_seq1', 1, false);
-
-
---
--- Name: students_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('public.students_id_seq', 2, true);
 
 
 --
