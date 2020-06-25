@@ -28,6 +28,10 @@
     },
     "code": {
       "type": "integer"
+    },
+    "students": {
+      "via": "sessions",
+      "collection": "student"
     }
   }
 }

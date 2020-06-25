@@ -18,6 +18,11 @@
     "classroom": {
       "model": "classroom",
       "via": "students"
+    },
+    "sessions": {
+      "collection": "session",
+      "via": "students",
+      "dominant": true
     }
   }
 }
