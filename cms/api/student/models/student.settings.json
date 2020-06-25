@@ -18,10 +18,6 @@
     "classroom": {
       "model": "classroom",
       "via": "students"
-    },
-    "submissions": {
-      "via": "student",
-      "collection": "submission"
     }
   }
 }
