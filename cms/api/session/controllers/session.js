@@ -1,6 +1,6 @@
 'use strict'
 
-const { parseMultipartData, sanitizeEntity } = require('strapi-utils')
+const { sanitizeEntity } = require('strapi-utils')
 
 const getRandomCode = () => {
 
@@ -12,6 +12,8 @@ const getRandomCode = () => {
 const formatError = error => [
     { messages: [{ id: error.id, message: error.message, field: error.field }] },
 ]
+
+const getSessionByCode = (code) => strapi.services.session.findOne({ code })
 
 module.exports = {
 
@@ -26,8 +28,13 @@ module.exports = {
 
         if (ctx.is('multipart')) {
 
-            const { data, files } = parseMultipartData(ctx)
-            entity = await strapi.services.session.create(data, { files })
+            return ctx.badRequest(
+                null,
+                formatError({
+                  id: 'Session.create.format.invalid',
+                  message: 'Multipart requests are not accepted!',
+                })
+            )
         } else {
 
             let code, exists
@@ -47,16 +54,27 @@ module.exports = {
     },
 
     /**
-     * Retrieve a session by code
+     * Retrieve a list of students with a valid session code
      *
      * @return {Object}
      */
-    async findOne(ctx) {
+    async findCode(ctx) {
 
-        const { code } = ctx.params;
+        const { code } = ctx.params
 
-        const entity = await strapi.services.session.findOne({ code })
-        return sanitizeEntity(entity, { model: strapi.models.session })
+        let resp = await getSessionByCode(code)
+
+        // if a session is found, return list of students
+        if (resp) {
+            const students = await strapi.services.student.find({ classroom: resp.classroom.id })
+            resp = students.map(student => { return { 
+                id: student.id, 
+                name: student.name,
+                character: student.character
+            }})
+        }
+
+        return resp
     },
 
     /**
@@ -71,47 +89,55 @@ module.exports = {
      */
     async join(ctx) {
 
-        const { studentId, name, character, classroom } = ctx.request.body
+        const { studentId, code } = ctx.request.body
 
-        // Check that either a studentId was sent or
-        // a name, character, and classroom was sent
-        if (!(studentId || (name && character && classroom))) {
-            return ctx.badRequest(
-                null,
-                formatError({
-                  id: 'Session.join.body.invalid',
-                  message: 'Must provide either a studentId or a name, character, and classroom!',
-                })
-            )
-        }
+        // validate the request
+        if (!studentId || !code) return ctx.badRequest(
+            null,
+            formatError({
+              id: 'Session.join.body.invalid',
+              message: 'Must provide a studentId and code!',
+            })
+        )
 
-        let student
-        if (!studentId) {
-            let classroomExists = await strapi.services.classroom.findOne({ id: classroom })
-            if (!classroomExists) return ctx.badRequest(
-                null,
-                formatError({
-                  id: 'Session.join.classroom.invalid',
-                  message: 'The id provided does not correspond to a valid classroom!',
-                })
-            )
+        // make sure the code is valid 
+        // and the session is active
+        const session = await getSessionByCode(code)
+        if (!session || !session.active) return ctx.badRequest(
+            null,
+            formatError({
+                id: 'Session.join.code.invalid',
+                message: 'The code provided does not correspond to a valid session!',
+            })
+        )
 
-            student = await strapi.services.student.create({ name, character, classroom })
-        } else {
+        // first look for the student in the session
+        let student = session.students.find(student => student.id === studentId)
+        if (!student) {
+
+            // check that the student exists and belongs to the classroom
             student = await strapi.services.student.findOne({ id: studentId })
-            if (!student) return ctx.badRequest(
+            if (!student || !student.classroom || student.classroom.id !== session.classroom.id) return ctx.badRequest(
                 null,
                 formatError({
-                  id: 'Session.join.student.id.invalid',
-                  message: 'The id provided does not correspond to a valid student!',
+                    id: 'Session.join.studentId.invalid',
+                    message: 'The studentId provided does not correspond to a real student or the student is not in the classroom!',
                 })
             )
+
+            // add the student to the session 
+            student = await strapi.services.student.update({ id: student.id }, { sessions: [session.id] })
+            delete student.sessions
         }
+
+        // fill out the classroom field
+        student.classroom = session.classroom
 
         return {
             jwt: strapi.plugins['users-permissions'].services.jwt.issue({
                 id: 1, // Use a deignated student user for roles and permissions
-                studentId: student.id
+                studentId: student.id,
+                sessionId: session.id
             }),
             student: sanitizeEntity(student, { 
                 model: strapi.models.student 

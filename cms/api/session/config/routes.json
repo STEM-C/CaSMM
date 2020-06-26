@@ -18,8 +18,16 @@
     },
     {
       "method": "GET",
-      "path": "/sessions/:code",
+      "path": "/sessions/:id",
       "handler": "session.findOne",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/sessions/code/:code",
+      "handler": "session.findCode",
       "config": {
         "policies": []
       }

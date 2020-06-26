@@ -19,9 +19,10 @@
       "model": "classroom",
       "via": "students"
     },
-    "submissions": {
-      "via": "student",
-      "collection": "submission"
+    "sessions": {
+      "collection": "session",
+      "via": "students",
+      "dominant": true
     }
   }
 }
