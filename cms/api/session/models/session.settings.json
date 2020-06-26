@@ -10,10 +10,12 @@
   },
   "attributes": {
     "name": {
-      "type": "string"
+      "type": "string",
+      "required": true
     },
     "description": {
-      "type": "string"
+      "type": "string",
+      "required": true
     },
     "activities": {
       "collection": "activity"
@@ -24,14 +26,16 @@
     },
     "active": {
       "type": "boolean",
-      "default": true
+      "default": true,
+      "required": true
     },
     "code": {
-      "type": "integer"
+      "type": "integer",
+      "required": true
     },
     "students": {
-      "via": "sessions",
-      "collection": "student"
+      "collection": "student",
+      "via": "sessions"
     }
   }
 }

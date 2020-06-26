@@ -9,48 +9,71 @@ const getRandomCode = () => {
     return now.substr(len - 4, len)
 }
 
-const formatError = error => [
-    { messages: [{ id: error.id, message: error.message, field: error.field }] },
-]
-
 const getSessionByCode = (code) => strapi.services.session.findOne({ code })
 
 module.exports = {
 
     /**
      * Create a new session with a unqiue active code
+     * 
+     * @param {String} name
+     * @param {String} description
+     * @param {Array<Integer>} activities
+     * @param {Integer} classroom
      *
-     * @return {Object}
+     * @return {Session} 
      */
     async create(ctx) {
 
-        let entity
+        // ensure request was not sent as formdata
+        if (ctx.is('multipart')) return ctx.badRequest(
+            'Multipart requests are not accepted!',
+            { id: 'Session.create.format.invalid', error: 'ValidationError' }
+        )
 
-        if (ctx.is('multipart')) {
+        // make sure a classroom and at least
+        // one activity was provided
+        const { activities, classroom } = ctx.request.body
+        if ( !activities || !Array.isArray(activities) || activities.length == 0 || !classroom) return ctx.badRequest(
+            'A classroom and at least one activity must be provided!',
+            { id: 'Session.create.body.invalid', error: 'ValidationError' }
+        )
 
-            return ctx.badRequest(
-                null,
-                formatError({
-                  id: 'Session.create.format.invalid',
-                  message: 'Multipart requests are not accepted!',
-                })
-            )
-        } else {
+        // make sure the classroom is valid
+        const classroomExists = await strapi.services.classroom.findOne({ id: classroom })
+        if (!classroomExists) return ctx.badRequest(
+            'The classroom id provided does not correspond to a valid classroom!',
+            { id: 'Session.create.classroom.invalid', error: 'ValidationError' }
+        )
 
-            let code, exists
+        // make sure the activities are valid
+        const invalidActivities = (await Promise.all(activities.map( 
+            async activity => strapi.services.activity.findOne({ id: activity })
+            ))).filter(activity => activity === null)
+        if (invalidActivities.length) return ctx.badRequest(
+            'The activity ids provided are not valid!',
+            { id: 'Session.create.activities.invalid', error: 'ValidationError' }
+        )
 
-            do {
-                code = getRandomCode()
-                let matches = await strapi.services.session.find({ code, active: true })
-                exists = matches.length > 0
-            }
-            while (exists)
+        // TODO: add a maximum number of tries
+        // generate a code that is unique amongst active sessions
+        let code, codeExists
+        do {
+            // get a four digit code
+            code = getRandomCode()
 
-            ctx.request.body.code = code
-            entity = await strapi.services.session.create(ctx.request.body)
+            // check if an active session is using the code
+            const sessions = await strapi.services.session.findOne({ code, active: true })
+            codeExists = sessions !== null
         }
+        while (codeExists)
 
-        return sanitizeEntity(entity, { model: strapi.models.session })
+        // add the code to the request body
+        ctx.request.body.code = code
+
+        // remove private fields and return the new session
+        const session = await strapi.services.session.create(ctx.request.body)
+        return sanitizeEntity(session, { model: strapi.models.session })
     },
 
     /**
