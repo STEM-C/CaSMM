@@ -3,7 +3,6 @@ import { Link } from "react-router-dom"
 import { compileArduinoCode, getArduino, getJS, getXml, setLocalActivity } from './helpers.js'
 import "./Workspace.less"
 import { getActivityToolbox } from "../../Utils/requests.js"
-import { useHistory } from "react-router-dom"
 import Logo from "../../assets/casmm_logo.png"
 import PlaceHolderImg1 from "../../assets/science.png"
 import PlaceHolderImg2 from "../../assets/arduino.png"
@@ -69,7 +68,7 @@ function App(props) {
                         <div id="description-container"
                              className="flex flex-row justify-end card overflow-visible"
                              style={{"marginLeft": "70px"}}>
-                            <img id="logo" src={Logo}/>
+                            <img id="logo" src={Logo} alt="Maker activity"/>
                             <h2>Maker Activity {activity.name}</h2>
                         </div>
                     </div>
@@ -85,13 +84,13 @@ function App(props) {
                         <div id="carousel-container">
                         <Carousel dotPosition={"left"}>
                             <div id="diagram-container">
-                                <img id="diagram" src={PlaceHolderImg1}/>
+                                <img id="diagram" src={PlaceHolderImg1} alt="First diagram in carousel"/>
                             </div>
                             <div id="diagram-container">
-                                <img id="diagram" src={PlaceHolderImg2}/>
+                                <img id="diagram" src={PlaceHolderImg2} alt="Second diagram in carousel"/>
                             </div>
                             <div id="diagram-container">
-                                <img id="diagram" src={PlaceHolderImg3}/>
+                                <img id="diagram" src={PlaceHolderImg3} alt="Third diagram in carousel"/>
                             </div>
                         </Carousel>
                         </div>

@@ -1,9 +1,7 @@
 import React, { useEffect, useState, useRef } from "react"
-import { Link } from "react-router-dom"
 import { getTopics, getSchools, getClassrooms } from "../../Utils/requests"
 import { removeUserSession, getUser } from "../../Utils/AuthRequests";
-import { List, ListItem, ListItemText, makeStyles, createStyles, Dialog, DialogTitle, DialogContent, Typography, Switch, FormControlLabel, Fab } from '@material-ui/core'
-import AddIcon from '@material-ui/icons/Close';
+import { List, ListItem, ListItemText, makeStyles, createStyles, Dialog, DialogTitle, DialogContent, Typography, Switch, FormControlLabel } from '@material-ui/core'
 import './Dashboard.css'
 
 import Header from '../../components/Header.js'
