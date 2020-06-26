@@ -5,18 +5,23 @@ const { sanitizeEntity } = require('strapi-utils')
 module.exports = {
     async find(ctx) {
 
-        let entities;
+        // nested fields that we want 
+        // to populate in the queries
+        const populate = [
+            "type",
+            "activities.difficulty",
+            "activities.learning_category"
+        ]
 
+        let topics
         if (ctx.query._q) {
-            entities = await strapi.services.topic.search(ctx.query)
+            // perform a search of all fields that allow it
+            topics = await strapi.services.topic.search(ctx.query, populate)
         } else {
-            entities = await strapi.services.topic.find(ctx.query, [
-                "type",
-                "activities.difficulty",
-                "activities.learning_category"
-            ])
+            topics = await strapi.services.topic.find(ctx.query, populate)
         }
     
-        return entities.map(entity => sanitizeEntity(entity, { model: strapi.models.topic }))
+        // remove private fields from the response
+        return topics.map(topic => sanitizeEntity(topic, { model: strapi.models.topic }))
     },
 }
