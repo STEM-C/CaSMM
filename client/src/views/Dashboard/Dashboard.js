@@ -1,24 +1,39 @@
-import React, { useEffect, useState, useRef } from "react"
-import { Link } from "react-router-dom"
+import React, { useEffect, useState } from "react"
 import { getTopics, getSchools, getClassrooms } from "../../Utils/requests"
 import { removeUserSession, getUser } from "../../Utils/AuthRequests";
-import { List, ListItem, ListItemText, makeStyles, createStyles, Dialog, DialogTitle, DialogContent, Typography, Switch, FormControlLabel, Fab } from '@material-ui/core'
-import AddIcon from '@material-ui/icons/Close';
+import { Table } from 'antd';
 import './Dashboard.less'
 
 import Header from '../../components/Header.js'
 
-function Dashboard(props) {
+export default function Dashboard(props) {
     const [activities, setActivities] = useState([])
-    const [schools, setSchools] = useState([])
-    const [classrooms, setClassrooms] = useState([])
-    const [selectedSchool, setSelectedSchool] = useState("")
-    const [selectedSession, setSelectedSession] = useState([])
-    const [open, setOpen] = useState(false);
+    const [tableData, setTableData] = useState([])
+    const [selectedRowKeys, setSelectedRowKeys] = useState([])
     const user = getUser();
-    const didMount = useRef(false);
 
-    const classes = useStyles();
+    const columns = [
+        {
+            title: 'Classroom',
+            dataIndex: 'classroom',
+            key: 'classroom'
+        },
+        {
+            title: 'Session Name',
+            dataIndex: 'session',
+            key: 'session'
+        },
+        {
+            title: 'Description',
+            dataIndex: 'description',
+            key: 'description'
+        },
+        {
+            title: 'Join Code',
+            dataIndex: 'code',
+            key: 'code'
+        }
+    ];
 
     useEffect(() => {
 
@@ -30,23 +45,25 @@ function Dashboard(props) {
             setActivities(activities)
         })
         getSchools(sessionStorage.getItem('token')).then(schoolArray => {
-            setSchools(schoolArray)
+            let data = [];
+            schoolArray.map( school => {
+                getClassrooms(school.id, sessionStorage.getItem('token')).then(classroomArray => {
+                    classroomArray.map( classroom => {
+                        classroom.sessions.map( session => {
+                            data.push({
+                                key: session.code,
+                                classroom: classroom.name,
+                                session: session.name,
+                                description: session.description,
+                                code: session.code
+                            })
+                        })
+                    });
+                    setTableData(data)
+                })
+            })
         })
     }, [])
-
-    useEffect(() => {
-        if (!didMount.current) {
-            didMount.current = true;
-            return;
-        }
-
-        console.log(selectedSchool)
-        if(selectedSchool) {
-            getClassrooms(selectedSchool.id, sessionStorage.getItem('token')).then(classroomArray => {
-                setClassrooms(classroomArray)
-            })
-        }
-    }, [selectedSchool])
 
     const handleLogout = () => {
         removeUserSession();
@@ -54,91 +71,11 @@ function Dashboard(props) {
     }
 
     return (
-        <div>
+        <div id={"container"}>
             <Header user={user.username} handleLogout={handleLogout}/>
-
-            <div className={classes.root}>
-                <List component="nav" disablePadding className={classes.schoolList}>
-                    <h2>School List</h2>
-                    {
-                        schools.map(school => {
-                            return(
-                                <ListItem button className={classes.menuItem} onClick={() => setSelectedSchool(school)}>
-                                    <ListItemText primary={school.name} />
-                                </ListItem>
-                            )
-                        })
-                    }
-                </List>
-
-                 <List component="nav" disablePadding className={classes.schoolList}>
-                    <h2>Classroom List</h2>
-                    {
-                        classrooms.map(classroom => {
-                            return(
-                                <ListItem button className={classes.menuItem} onClick={() => setSelectedSession(classroom.sessions)}>
-                                    <ListItemText primary={classroom.name} />
-                                </ListItem>
-                            )
-                        })
-                    }
-                </List>
-
-                <div className={classes.schoolList}>
-                    <h2>Session List</h2>
-                    {
-                        selectedSession.map(session => {
-                            return(
-                                <div>
-                                    <button type="button" onClick={() => setOpen(true)}> { session.name } </button>
-                                    <Dialog
-                                        open={open}
-                                        onClose={() => setOpen(false)}
-                                        aria-labelledby="customized-dialog-title"
-                                    >
-                                        <DialogTitle id="customized-dialog-title" onClose={() => setOpen(false)}>
-                                            {session.name} <br/>
-                                            Join Code: {session.code}
-                                        </DialogTitle>
-                                        <DialogContent dividers>
-                                            <Typography gutterBottom>
-                                                Current Students:
-                                            </Typography>
-                                            <FormControlLabel
-                                                control={<Switch checked={selectedSession.active} onChange={selectedSession.active = !selectedSession.active} name="gilad" />}
-                                                label="Enable/Disable Activity"
-                                            />
-                                        </DialogContent>
-                                    </Dialog>
-                                </div>
-                            )
-                        })
-                    }
-
-                </div>
-
+            <div id='table-container'>
+                <Table rowSelection={selectedRowKeys} columns={columns} dataSource={tableData}/>
             </div>
         </div>
     )
 }
-
-const useStyles = makeStyles(theme =>
-    createStyles({
-        root: {
-          display: 'flex'
-        },
-        schoolList: {
-            background: "grey",
-            width: '20%',
-        },
-        menuItem: {
-            width: 240,
-        },
-        content: {
-            background: 'grey',
-            width: '60%'
-        },
-    }),
-)
-
-export default Dashboard;
