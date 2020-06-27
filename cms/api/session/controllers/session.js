@@ -149,14 +149,16 @@ module.exports = {
         // return a jwt for future requests and the student
         return {
             jwt: strapi.plugins['users-permissions'].services.jwt.issue({
-                id: 1, // Use a deignated student user for roles and permissions
-                studentId: student.id,
-                sessionId: session.id
+                id: student.id,
+                sessionId: session.id,
+                isStudent: true
             }),
             student: sanitizeEntity(student, { 
                 model: strapi.models.student 
             })
         }
+        // this bypasses the local authentication and requires custom
+        // handling of the resulting token in the permissions policy
     },
 
     /**
@@ -166,14 +168,14 @@ module.exports = {
      * @param {Integer} studentId
      * @param {Integer} code
      * 
-     * @return {JWT, Student}
+     * @return {Activities}
      */
     async getStudentActivities(ctx) {
 
         // get the activities from the 
         // students current session
-        const { student } = ctx.state
-        const { activities } = await strapi.services.session.findOne({ id: student.sessionId })
+        const { user } = ctx.state
+        const { activities } = await strapi.services.session.findOne({ id: user.sessionId })
 
         // remove private fields and return the new activities
         return activities.map(activity => sanitizeEntity(activity, {

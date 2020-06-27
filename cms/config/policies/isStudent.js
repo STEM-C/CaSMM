@@ -1,5 +1,5 @@
 module.exports = async (ctx, next) => {
-    if (ctx.state.student) {
+    if (ctx.state.user.isStudent) {
         // Go to next policy or 
         // the controller
         return await next()

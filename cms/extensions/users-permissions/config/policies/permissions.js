@@ -6,7 +6,7 @@ module.exports = async (ctx, next) => {
 
   if (ctx.request && ctx.request.header && ctx.request.header.authorization) {
     try {
-      const { id, isAdmin = false, studentId, sessionId } = await strapi.plugins[
+      const { id, isAdmin = false, isStudent = false, sessionId = null } = await strapi.plugins[
         'users-permissions'
       ].services.jwt.getToken(ctx)
 
@@ -16,15 +16,16 @@ module.exports = async (ctx, next) => {
 
       if (isAdmin) {
         ctx.state.admin = await strapi.query('administrator', 'admin').findOne({ id }, [])
+      } else if (isStudent) {
+        //
+        // students do not use the traditional local authentication
+        // their tokens are issued in session.join
+        // we spoof their user object so we can use roles
+        //
+        const role = await strapi.query('role', 'users-permissions').findOne({ type: 'student' }, [])
+        ctx.state.user = { id, sessionId, isStudent, role }
       } else {
         ctx.state.user = await strapi.query('user', 'users-permissions').findOne({ id }, ['role'])
-
-        // if the user is a student,
-        // add them to the ctx state
-        if (ctx.state.user.role.name === 'Student' && studentId && sessionId) {
-            ctx.state.student = await strapi.query('student').findOne({ id: studentId }, [])
-            ctx.state.student.sessionId = sessionId
-        }
       }
     } catch (err) {
       return handleErrors(ctx, err, 'unauthorized')
