@@ -82,7 +82,7 @@ module.exports = {
      *
      * @return {Array<Student>}
      */
-    async findCode(ctx) {
+    async findByCode(ctx) {
 
         const { code } = ctx.params
         let resp = await getSessionByCode(code)
@@ -157,6 +157,28 @@ module.exports = {
                 model: strapi.models.student 
             })
         }
+    },
+
+    /**
+     * Get a list of session activities
+     * for the current student user
+     * 
+     * @param {Integer} studentId
+     * @param {Integer} code
+     * 
+     * @return {JWT, Student}
+     */
+    async getStudentActivities(ctx) {
+
+        // get the activities from the 
+        // students current session
+        const { student } = ctx.state
+        const { activities } = await strapi.services.session.findOne({ id: student.sessionId })
+
+        // remove private fields and return the new activities
+        return activities.map(activity => sanitizeEntity(activity, {
+            model: strapi.models.activity
+        }))
     }
 }
 
