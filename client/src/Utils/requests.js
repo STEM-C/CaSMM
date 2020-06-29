@@ -20,7 +20,14 @@ export const getSchools = async (jwt) => (await axios.get(`${cms}/schools`, {
 
 export const getClassrooms = async (id, jwt) => (await axios.get(`${cms}/classrooms?school=${id}`, {
     headers: {
-        Authorization:
+        'Authorization':
+            `Bearer ${jwt}`
+    }
+})).data
+
+export const getActivities = async (jwt) => (await axios.get(`${cms}/sessions/student/activities`, {
+    headers: {
+        'Authorization':
             `Bearer ${jwt}`
     }
 })).data

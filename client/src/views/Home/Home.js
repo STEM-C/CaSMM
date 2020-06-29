@@ -22,7 +22,7 @@ function Home(props) {
         displayJoin ?
         <HomeJoin joinCode={joinCode} setJoinCode={setJoinCode} handleLogin={handleLogin} />
         :
-            <HomeStudent students={studentList} joinCode={joinCode}/>
+            <HomeStudent students={studentList} joinCode={joinCode} history={props.history}/>
     )
 }
 

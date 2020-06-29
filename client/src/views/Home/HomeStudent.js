@@ -8,6 +8,7 @@ function HomeStudent(props) {
         const response = await postJoin(props.joinCode, id)
         setUserSession(response.jwt, JSON.stringify(response.student))
         console.log(response);
+        props.history.push('/student')
     }
 
     return(
