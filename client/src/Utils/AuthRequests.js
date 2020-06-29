@@ -14,8 +14,9 @@ export const postUser = async (body) => {
 }
 
 // return token from session storage
-export const getToken = () => {
-    return sessionStorage.getItem('token') || null;
+export const getToken = async () => {
+    const response = await sessionStorage.getItem('token') || null;
+    return response;
 }
 
 // remove the token ans user from teh session storage

@@ -31,10 +31,10 @@ export const getJS = (workspaceRef) => {
 };
 
 // Generates Arduino code from blockly canvas
-export const getArduino = (workspaceRef, alert = true) => {
+export const getArduino = (workspaceRef, shouldAlert = true) => {
     window.Blockly.Arduino.INFINITE_LOOP_TRAP = null;
     let code = window.Blockly.Arduino.workspaceToCode(workspaceRef);
-    if (alert) alert(code);
+    if (shouldAlert) alert(code);
     return (code);
 };
 
