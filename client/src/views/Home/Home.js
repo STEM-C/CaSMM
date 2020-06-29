@@ -20,10 +20,14 @@ function Home(props) {
     }
 
     return(
-        displayJoin ?
-        <HomeJoin joinCode={joinCode} setJoinCode={setJoinCode} handleLogin={handleLogin} />
-        :
-            <HomeStudent students={studentList} joinCode={joinCode} history={props.history}/>
+        <div className='container'>
+            {
+                displayJoin ?
+                    <HomeJoin joinCode={joinCode} setJoinCode={setJoinCode} handleLogin={handleLogin}/>
+                    :
+                    <HomeStudent students={studentList} joinCode={joinCode} history={props.history}/>
+            }
+        </div>
     )
 }
 
