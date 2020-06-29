@@ -1,16 +1,16 @@
 import React, {useState, useEffect} from 'react'
-import { getToken } from "../../Utils/AuthRequests"
-import { getActivities} from "../../Utils/requests"
+import {getToken} from "../../Utils/AuthRequests"
+import {getActivities} from "../../Utils/requests"
 
 function Student(props) {
     const [activityList, setActivityList] = useState([])
 
     useEffect(() => {
-        getToken().then(jwt => {
-            getActivities(jwt).then(activity => {
-                setActivityList(activity)
-            })
+        const jwt = getToken()
+        getActivities(jwt).then(activity => {
+            setActivityList(activity)
         })
+
     }, [])
 
     const handleSelection = (activity) => {

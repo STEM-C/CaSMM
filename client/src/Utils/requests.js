@@ -9,7 +9,12 @@ export const getTopics = async (jwt) => (await axios.get(`${cms}/topics`, {
     }
 })).data
 
-export const getActivityToolbox = async (id) => (await axios.get(`${cms}/activities/toolbox/${id}`)).data
+export const getActivityToolbox = async (id, jwt) => (await axios.get(`${cms}/activities/toolbox/${id}`, {
+    headers: {
+        Authorization:
+            `Bearer ${jwt}`
+    }
+})).data
 
 export const getSchools = async (jwt) => (await axios.get(`${cms}/schools`, {
     headers: {

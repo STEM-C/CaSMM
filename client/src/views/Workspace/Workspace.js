@@ -3,6 +3,7 @@ import { Link } from "react-router-dom"
 import { compileArduinoCode, getArduino, getJS, getXml, setLocalActivity } from './helpers.js'
 import "./Workspace.less"
 import { getActivityToolbox } from "../../Utils/requests.js"
+import { getToken } from "../../Utils/AuthRequests"
 import Logo from "../../assets/casmm_logo.png"
 import PlaceHolderImg1 from "../../assets/science.png"
 import PlaceHolderImg2 from "../../assets/arduino.png"
@@ -31,7 +32,7 @@ function App(props) {
             setActivity(loadedActivity)
 
         } else if (selectedActivity) {
-            getActivityToolbox(selectedActivity.id).then(response => {
+            getActivityToolbox(selectedActivity.id, getToken()).then(response => {
                 let loadedActivity = {...selectedActivity, toolbox: response.toolbox}
 
                 localStorage.setItem("my-activity", JSON.stringify(loadedActivity))
@@ -99,7 +100,7 @@ function App(props) {
                 <div id="horizontal-container" className="flex flex-column">
                     <div id="top-container" className="flex flex-column vertical-container">
                         <div id="description-container" className="flex flex-row space-between card">
-                            <Link to={"/"} className="flex flex-column">
+                            <Link to={"/student"} className="flex flex-column">
                                 <i className="fa fa-home" style={{"fontSize": "32px"}}/>
                                 Home
                             </Link>
