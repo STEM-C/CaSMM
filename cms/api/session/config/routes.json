@@ -26,8 +26,16 @@
     },
     {
       "method": "GET",
+      "path": "/sessions/student/activities",
+      "handler": "session.getStudentActivities",
+      "config": {
+        "policies": ["global::isStudent"]
+      }
+    },
+    {
+      "method": "GET",
       "path": "/sessions/code/:code",
-      "handler": "session.findCode",
+      "handler": "session.findByCode",
       "config": {
         "policies": []
       }
