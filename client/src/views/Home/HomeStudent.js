@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React from 'react'
 import { postJoin } from "../../Utils/requests"
 import { setUserSession } from "../../Utils/AuthRequests";
 
@@ -7,7 +7,6 @@ function HomeStudent(props) {
 
         const response = await postJoin(props.joinCode, id)
         setUserSession(response.jwt, JSON.stringify(response.student))
-        console.log(response);
         props.history.push('/student')
     }
 
