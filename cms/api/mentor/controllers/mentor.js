@@ -1,8 +1,16 @@
-'use strict';
+'use strict'
 
-/**
- * Read the documentation (https://strapi.io/documentation/v3.x/concepts/controllers.html#core-controllers)
- * to customize this controller
- */
+const { sanitizeEntity } = require("strapi-utils/lib")
 
-module.exports = {};
+module.exports = {
+
+    async me(ctx) {
+
+        // get the mentor that is currently logged in
+        const { user } = ctx.state
+        const mentor = await strapi.services.mentor.findOne({ user: user.id })
+
+        // remove private fields and return the mentor
+        return sanitizeEntity(mentor, { model: strapi.models.mentor })
+    }
+}

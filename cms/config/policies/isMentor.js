@@ -1,9 +1,8 @@
 //
-// Check if the current user is a student
+// Check if the current user is a mentor
 //
 module.exports = async (ctx, next) => {
-    if (ctx.state.user.isStudent) {
-        // Go to next policy or controller
+    if (ctx.state.user.role.name === 'Mentor') {
         return await next()
     }
   
