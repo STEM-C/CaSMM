@@ -10,6 +10,14 @@
     },
     {
       "method": "GET",
+      "path": "/students/me",
+      "handler": "student.me",
+      "config": {
+        "policies": ["global::isStudent"]
+      }
+    },
+    {
+      "method": "GET",
       "path": "/students/count",
       "handler": "student.count",
       "config": {

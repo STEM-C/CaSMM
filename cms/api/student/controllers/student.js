@@ -1,8 +1,19 @@
-'use strict';
+'use strict'
 
-/**
- * Read the documentation (https://strapi.io/documentation/v3.x/concepts/controllers.html#core-controllers)
- * to customize this controller
- */
+const { sanitizeEntity } = require("strapi-utils/lib")
 
-module.exports = {};
+module.exports = {
+
+    async me(ctx) {
+
+        // get the student that is currently logged in
+        const { user } = ctx.state
+        const student = {
+            ...user,
+            ...await strapi.services.student.findOne({ id: user.id })
+        }
+
+        // remove private fields and return the new activities
+        return sanitizeEntity(student, { model: strapi.models.student })
+    }
+}
