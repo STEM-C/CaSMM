@@ -67,7 +67,7 @@ The latest API documentation is available on [Postman](https://documenter.getpos
 
 Mentors use the `local` provider routes, `/auth/local` and `/auth/local/register`, to login and register. Students login by joining a session with the route `/sessions/join/:code`. In both cases, a JWT will be issued on a successful response. Subsequent requests will need to send this JWT as a `Bearer` token. Read more about that [here](https://strapi.io/documentation/v3.x/plugins/users-permissions.html#authentication).
 
-> The [permissions](/extensions/users-permissions/config/policies/permissions.js) policy is run as a middleware on all requests. It will pull the user and their role, which will be executed against the respective policy. Custom logic has been added to handle student JWTs as student auth is not apart of the `/auth` controller group.
+> The [permissions](/cms/extensions/users-permissions/config/policies/permissions.js) policy is run as a middleware on all requests. It will pull the user and their role, which will be executed against the respective policy. Custom logic has been added to handle student JWTs as student auth is not apart of the `/auth` controller group.
 
 ### Entity Relationships
 
