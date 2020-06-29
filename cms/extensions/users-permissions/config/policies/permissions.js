@@ -22,7 +22,7 @@ module.exports = async (ctx, next) => {
         // their tokens are issued in session.join
         // we spoof their user object so we can use roles
         //
-        const role = await strapi.query('role', 'users-permissions').findOne({ type: 'student' }, [])
+        const role = await strapi.query('role', 'users-permissions').findOne({ name: 'Student' }, [])
         ctx.state.user = { id, sessionId, isStudent, role }
       } else {
         ctx.state.user = await strapi.query('user', 'users-permissions').findOne({ id }, ['role'])

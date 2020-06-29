@@ -8,12 +8,12 @@ module.exports = {
 
         // get the student that is currently logged in
         const { user } = ctx.state
-        const student = {
-            ...user,
-            ...await strapi.services.student.findOne({ id: user.id })
-        }
+        const student = await strapi.services.student.findOne({ id: user.id })
 
-        // remove private fields and return the new activities
+        // add the students current session
+        student.sessionId = user.sessionId
+
+        // remove private fields and return the student
         return sanitizeEntity(student, { model: strapi.models.student })
     }
 }
