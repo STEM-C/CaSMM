@@ -59,9 +59,17 @@ A frontend middleware handles serving **frontend/index.html**, passing off all c
 
 > Built with [Node](https://nodejs.org/en/), [Koa](https://github.com/koajs/koa#readme), and [Bookshelf](https://bookshelfjs.org/), the REST API enables CRUD functionality with the application's content. Authentication is enabled via JWTs. The dbms is [PostgreSQL](https://www.postgresql.org/).
 
-### Entity Relationships
+### Documentation
 
-The content available via the API is modeled as follows. 
+The latest API documentation is available on [Postman](https://documenter.getpostman.com/view/3570478/SztBboUJ). You can view example request/responses and even save the collection to your local Postman workspace. 
+
+### Authentication 
+
+Mentors use the `local` provider routes, `/auth/local` and `/auth/local/register`, to login and register. Students login by joining a session with the route `/sessions/join/:code`. In both cases, a JWT will be issued on a successful response. Subsequent requests will need to send this JWT as a `Bearer` token. Read more about that [here](https://strapi.io/documentation/v3.x/plugins/users-permissions.html#authentication).
+
+> The [permissions](/extensions/users-permissions/config/policies/permissions.js) policy is run as a middleware on all requests. It will pull the user and their role, which will be executed against the respective policy. Custom logic has been added to handle student JWTs as student auth is not apart of the `/auth` controller group.
+
+### Entity Relationships
 
 ![ER Digram](er_diagram.png)
 
@@ -69,17 +77,22 @@ The content available via the API is modeled as follows.
 
 Each endpoint corresponds to an entity from the ER digram, a content type in the admin panel, a folder in the `./api` directory, and a database table. 
 
-| Endpoint            | Note |
-| ------------------- | ---- |
-| activities          |      |
-| blocks              |      |
-| blocks-categories   |      |
-| complexities        |      |
-| difficulties        |      |
-| learning-categories |      |
-| models              |      |
-| topics              |      |
-| types               |      |
+| Endpoint            |
+| ------------------- |
+| activities          |
+| blocks              |
+| blocks-categories   |
+| classrooms          |
+| complexities        |
+| difficulties        |
+| learning-categories |
+| mentors             |
+| models              |
+| schools             |
+| sessions            |
+| students            |
+| topics              |
+| types               |
 
 Each and every endpoint can be interacted with by using the following method and path combinations. 
 
