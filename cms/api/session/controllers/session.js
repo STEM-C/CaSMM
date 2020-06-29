@@ -177,7 +177,7 @@ module.exports = {
         const { user } = ctx.state
         const { activities } = await strapi.services.session.findOne({ id: user.sessionId })
 
-        // remove private fields and return the new activities
+        // remove private fields and return the session's activities
         return activities.map(activity => sanitizeEntity(activity, {
             model: strapi.models.activity
         }))
