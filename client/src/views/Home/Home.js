@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
+import { Link } from "react-router-dom";
+import './Home.less'
 import { getStudents } from "../../Utils/requests"
 import HomeJoin from "./HomeJoin"
 import HomeStudent from "./HomeStudent"
-import './Home.css'
+
 
 function Home(props) {
     const [joinCode, setJoinCode] = useState('')
@@ -23,10 +25,14 @@ function Home(props) {
     }
 
     return(
-        displayJoin ?
-        <HomeJoin joinCode={joinCode} setJoinCode={setJoinCode} handleLogin={handleLogin} error={error}/>
-        :
-            <HomeStudent students={studentList} joinCode={joinCode} history={props.history}/>
+        <div className='container'>
+            {
+                displayJoin ?
+                    <HomeJoin joinCode={joinCode} setJoinCode={setJoinCode} handleLogin={handleLogin}/>
+                    :
+                    <HomeStudent students={studentList} joinCode={joinCode} history={props.history}/>
+            }
+        </div>
     )
 }
 

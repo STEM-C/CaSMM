@@ -41,3 +41,12 @@ export const postJoin = async (code, id) => (await axios.post(`${cms}/sessions/j
 )).data
 
 export const compileCode = async (body) => (await axios.post(`${compile}/compile`, body)).data
+
+export const updateSession = async (id, session, jwt) => (await axios.put(`${cms}/sessions/${id}`, session,
+    {
+        headers: {
+            'Authorization':
+                `Bearer ${jwt}`
+        }
+    }
+)).data
