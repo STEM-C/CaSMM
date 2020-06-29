@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from "react"
-import { getSchools, getClassrooms, updateSession } from "../../Utils/requests"
-import { removeUserSession, getUser } from "../../Utils/AuthRequests";
-import { Table, Switch } from 'antd';
+import React, {useEffect, useState} from "react"
+import {getMentor, getClassroom, updateSession} from "../../Utils/requests"
+import {removeUserSession, getUser, getToken} from "../../Utils/AuthRequests";
+import {Table, Switch} from 'antd';
 import './Dashboard.less'
 
 import Header from '../../components/Header.js'
@@ -14,38 +14,39 @@ export default function Dashboard(props) {
     const user = getUser();
 
     useEffect(() => {
-        getSchools(sessionStorage.getItem('token')).then(schoolArray => {
+        getMentor(sessionStorage.getItem('token')).then(mentor => {
             let data = [];
             let filters = [];
             let sessionData = [];
-            schoolArray.map( school => {
-                getClassrooms(school.id, sessionStorage.getItem('token')).then(classroomArray => {
-                    classroomArray.map(classroom => {
-                        if (classroom.sessions.length > 0) {
-                            filters.push({
-                                text: classroom.name,
-                                value: classroom.name
-                            })
-                        }
-                        classroom.sessions.map( session => {
-                            sessionData.push(session);
-                            data.push({
-                                key: session.id,
-                                classroom: classroom.name,
-                                session: session.name,
-                                description: session.description,
-                                code: session.code,
-                                active: {
-                                    id: session.id,
-                                    active: session.active}
-                            })
+            console.log(mentor)
+            mentor.classrooms.map(classroom => {
+                if (classroom) {
+                    filters.push({
+                        text: classroom.name,
+                        value: classroom.name
+                    })
+                }
+                getClassroom(classroom.id, getToken()).then(fullClassroom => {
+                    console.log(fullClassroom)
+                    fullClassroom.sessions.map(session => {
+                        sessionData.push(session);
+                        data.push({
+                            key: session.id,
+                            classroom: classroom.name,
+                            session: session.name,
+                            description: session.description,
+                            code: session.code,
+                            active: {
+                                id: session.id,
+                                active: session.active
+                            }
                         })
-                    });
-                    setSessions(sessionData);
-                    setClassFilters(filters);
-                    setTableData(data)
+                    })
                 })
-            })
+            });
+            setSessions(sessionData);
+            setClassFilters(filters);
+            setTableData(data)
         })
     }, []);
 
@@ -103,7 +104,9 @@ export default function Dashboard(props) {
             dataIndex: 'active',
             key: 'active',
             align: 'right',
-            render: (active) => (< Switch  onChange={e => {onToggle(active.id, e)}} defaultChecked={active.active} />)
+            render: (active) => (< Switch onChange={e => {
+                onToggle(active.id, e)
+            }} defaultChecked={active.active}/>)
         }
     ];
 

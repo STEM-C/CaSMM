@@ -16,14 +16,14 @@ export const getActivityToolbox = async (id, jwt) => (await axios.get(`${cms}/ac
     }
 })).data
 
-export const getSchools = async (jwt) => (await axios.get(`${cms}/schools`, {
+export const getMentor = async (jwt) => (await axios.get(`${cms}/mentors/me`, {
     headers: {
         Authorization:
             `Bearer ${jwt}`
     }
 })).data
 
-export const getClassrooms = async (id, jwt) => (await axios.get(`${cms}/classrooms?school=${id}`, {
+export const getClassroom = async (id, jwt) => (await axios.get(`${cms}/classrooms/${id}`, {
     headers: {
         'Authorization':
             `Bearer ${jwt}`
