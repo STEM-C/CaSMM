@@ -39,18 +39,11 @@ module.exports = {
             { id: 'Session.create.body.invalid', error: 'ValidationError' }
         )
 
-        // make sure the classroom is valid
-        const classroomExists = await strapi.services.classroom.findOne({ id: classroom })
-        if (!classroomExists) return ctx.badRequest(
-            'The classroom id provided does not correspond to a valid classroom!',
-            { id: 'Session.create.classroom.invalid', error: 'ValidationError' }
-        )
-
         // make sure the activities are valid
         const invalidActivities = (await Promise.all(activities.map( 
             async activity => strapi.services.activity.findOne({ id: activity })
             ))).filter(activity => activity === null)
-        if (invalidActivities.length) return ctx.badRequest(
+        if (invalidActivities.length) return ctx.notFound(
             'The activity ids provided are not valid!',
             { id: 'Session.create.activities.invalid', error: 'ValidationError' }
         )
@@ -122,7 +115,7 @@ module.exports = {
         // make sure the code is valid 
         // and the session is active
         const session = await getSessionByCode(code)
-        if (!session || !session.active) return ctx.badRequest(
+        if (!session || !session.active) return ctx.notFound(
             'The code provided does not correspond to a valid session!',
             { id: 'Session.join.code.invalid', error: 'ValidationError' }
         )
@@ -133,7 +126,7 @@ module.exports = {
             // add the student to the session
             // check that the student exists and belongs to the classroom
             student = await strapi.services.student.findOne({ id: studentId })
-            if (!student || !student.classroom || student.classroom.id !== session.classroom.id) return ctx.badRequest(
+            if (!student || !student.classroom || student.classroom.id !== session.classroom.id) return ctx.notFound(
                 'The studentId provided does not correspond to a real student or the student is not in the classroom!',
                 { id: 'Session.join.studentId.invalid', error: 'ValidationError' }
             )

@@ -45,7 +45,7 @@
       "path": "/sessions",
       "handler": "session.create",
       "config": {
-        "policies": []
+        "policies": ["global::isMentor", "global::hasClassroom"]
       }
     },
     {
