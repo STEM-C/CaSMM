@@ -37,7 +37,7 @@
       "path": "/students",
       "handler": "student.create",
       "config": {
-        "policies": []
+        "policies": ["global::isMentor", "global::hasClassroom"]
       }
     },
     {
