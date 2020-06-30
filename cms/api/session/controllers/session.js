@@ -9,7 +9,7 @@ module.exports = {
      * for the current student user
      * 
      * @param {Integer} studentId
-     * @param {Integer} code
+     * @param {String} code
      * 
      * @return {Activities}
      */
@@ -97,7 +97,7 @@ module.exports = {
      * Log a new or existing student into a session
      * 
      * @param {Integer} studentId
-     * @param {Integer} code
+     * @param {String} code
      * 
      * @return {JWT, Student}
      */

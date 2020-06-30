@@ -29,13 +29,13 @@
       "default": true,
       "required": true
     },
-    "code": {
-      "type": "integer",
-      "required": true
-    },
     "students": {
       "collection": "student",
       "via": "sessions"
+    },
+    "code": {
+      "type": "string",
+      "required": true
     }
   }
 }

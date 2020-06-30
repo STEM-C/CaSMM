@@ -3,6 +3,15 @@
 // find a session by code
 module.exports.findByCode = (code) => strapi.query('session').findOne({ code })
 
+const randomCode = (n) => {
+
+    let code = ''
+    for (n; n > 0; n--) {
+        code += Math.floor(Math.random()*10)
+    }
+    return code
+}
+
 // TODO: add a maximum number of tries
 // generate a code that is unique amongst active sessions
 module.exports.getUniqueCode = async (currentCode = undefined) => {
@@ -15,9 +24,7 @@ module.exports.getUniqueCode = async (currentCode = undefined) => {
         // a new code if it is being used
         if (!code) {
             // get a four digit code
-            const now = Date.now().toString()
-            const len = now.length
-            code = now.substr(len - 4, len)
+            code = randomCode(4)
         }
 
         // check if an active session is using the code
@@ -25,6 +32,5 @@ module.exports.getUniqueCode = async (currentCode = undefined) => {
         codeExists = sessions !== null
     }
     while (codeExists)
-
     return code
 }
