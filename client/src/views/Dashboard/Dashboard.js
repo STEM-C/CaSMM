@@ -44,9 +44,9 @@ export default function Dashboard(props) {
                     })
                 });
                 setTableData(data);
+                setSessions(sessionData);
             });
             setClassFilters(filters);
-            setSessions(sessionData);
         })
     }, []);
 
