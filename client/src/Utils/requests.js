@@ -30,6 +30,8 @@ export const getClassroom = async (id, jwt) => (await axios.get(`${cms}/classroo
     }
 })).data
 
+export const getClassrooms = async (ids, jwt) => ( Promise.all(ids.map( id => getClassroom(id,jwt) )))
+
 export const getActivities = async (jwt) => (await axios.get(`${cms}/sessions/student/activities`, {
     headers: {
         'Authorization':

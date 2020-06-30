@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react"
-import {getMentor, getClassroom, updateSession} from "../../Utils/requests"
+import {getMentor, getClassrooms, updateSession} from "../../Utils/requests"
 import {removeUserSession, getUser, getToken} from "../../Utils/AuthRequests";
 import {Table, Switch} from 'antd';
 import './Dashboard.less'
@@ -13,22 +13,22 @@ export default function Dashboard(props) {
     const [sessions, setSessions] = useState([])
     const user = getUser();
 
-    useEffect(() => {
-        getMentor(sessionStorage.getItem('token')).then(mentor => {
-            let data = [];
-            let filters = [];
-            let sessionData = [];
-            console.log(mentor)
-            mentor.classrooms.map(classroom => {
-                if (classroom) {
-                    filters.push({
-                        text: classroom.name,
-                        value: classroom.name
-                    })
-                }
-                getClassroom(classroom.id, getToken()).then(fullClassroom => {
-                    console.log(fullClassroom)
-                    fullClassroom.sessions.map(session => {
+    useEffect( () => {
+        let data = [];
+        let filters = [];
+        let sessionData = [];
+        let classroomIds = [];
+        getMentor(getToken()).then(mentor => {
+            mentor.classrooms.forEach(classroom => {
+                filters.push({
+                    text: classroom.name,
+                    value: classroom.name
+                });
+                classroomIds.push(classroom.id)
+            });
+            getClassrooms(classroomIds, getToken()).then(classrooms => {
+                classrooms.forEach(classroom => {
+                    classroom.sessions.forEach(session => {
                         sessionData.push(session);
                         data.push({
                             key: session.id,
@@ -42,11 +42,11 @@ export default function Dashboard(props) {
                             }
                         })
                     })
-                })
+                });
+                setTableData(data);
             });
-            setSessions(sessionData);
             setClassFilters(filters);
-            setTableData(data)
+            setSessions(sessionData);
         })
     }, []);
 
@@ -115,6 +115,10 @@ export default function Dashboard(props) {
             <Header user={user.username} handleLogout={handleLogout}/>
             <div className='table-container'>
                 <Table columns={columns} dataSource={tableData} onChange={handleFilterChange}/>
+            </div>
+            <div>
+            {console.log('render')}
+            {console.log(tableData)}
             </div>
         </div>
     )
