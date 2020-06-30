@@ -61,7 +61,7 @@
       "path": "/sessions/:id",
       "handler": "session.update",
       "config": {
-        "policies": []
+        "policies": ["global::isMentor", "global::hasSession"]
       }
     },
     {
