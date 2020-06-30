@@ -1,5 +1,5 @@
 //
-// Check if the current user belongs to this cla
+// Check if the current user belongs to this classroom
 //
 module.exports = async (ctx, next) => {
 
@@ -12,12 +12,11 @@ module.exports = async (ctx, next) => {
     // is in the proper format
     classroom = parseInt(classroom)
 
-    // get the classrooms that the user has
-    const { id: user } = ctx.state
+    // get the classrooms that the user belongs to
+    const { id: user } = ctx.state.user
     const { classrooms } = await strapi.services.mentor.findOne({ user })
 
-    // check if the target classroom
-    // is one of the user's classrooms
+    // check if the target classroom is one of the user's classrooms
     if (classrooms.length && classrooms.find(cr => cr.id === classroom)) {
         return await next()
     }

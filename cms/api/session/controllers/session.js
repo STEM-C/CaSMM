@@ -2,16 +2,54 @@
 
 const { sanitizeEntity } = require('strapi-utils')
 
-const getRandomCode = () => {
-
-    let now = Date.now().toString()
-    let len = now.length
-    return now.substr(len - 4, len)
-}
-
-const getSessionByCode = (code) => strapi.services.session.findOne({ code })
-
 module.exports = {
+
+    /**
+     * Get a list of session activities
+     * for the current student user
+     * 
+     * @param {Integer} studentId
+     * @param {String} code
+     * 
+     * @return {Activities}
+     */
+    async getStudentActivities(ctx) {
+
+        // get the activities from the 
+        // students current session
+        const { user } = ctx.state
+        const { activities } = await strapi.services.session.findOne({ id: user.sessionId })
+
+        // remove private fields and return the session's activities
+        return activities.map(activity => sanitizeEntity(activity, {
+            model: strapi.models.activity
+        }))
+    },
+
+    /**
+     * Get a list of students, with a valid session code, 
+     * that belong to the session's classroom
+     *
+     * @return {Array<Student>}
+     */
+    async findByCode(ctx) {
+
+        const { code } = ctx.params
+        let resp = await strapi.services.session.findByCode(code)
+
+        // check if the session exists
+        if (resp) {
+            // get the students belonging to the session's classroom
+            const students = await strapi.services.student.find({ classroom: resp.classroom.id })
+            resp = students.map(student => { return { 
+                id: student.id, 
+                name: student.name,
+                character: student.character
+            }})
+        }
+
+        return resp
+    },
 
     /**
      * Create a new session with a unqiue active code
@@ -31,8 +69,7 @@ module.exports = {
             { id: 'Session.create.format.invalid', error: 'ValidationError' }
         )
 
-        // make sure a classroom and at least
-        // one activity was provided
+        // make sure a classroom and at least one activity was provided
         const { activities, classroom } = ctx.request.body
         if ( !activities || !Array.isArray(activities) || activities.length == 0 || !classroom) return ctx.badRequest(
             'A classroom and at least one activity must be provided!',
@@ -48,21 +85,8 @@ module.exports = {
             { id: 'Session.create.activities.invalid', error: 'ValidationError' }
         )
 
-        // TODO: add a maximum number of tries
-        // generate a code that is unique amongst active sessions
-        let code, codeExists
-        do {
-            // get a four digit code
-            code = getRandomCode()
-
-            // check if an active session is using the code
-            const sessions = await strapi.services.session.findOne({ code, active: true })
-            codeExists = sessions !== null
-        }
-        while (codeExists)
-
-        // add the code to the request body
-        ctx.request.body.code = code
+        // add a unique code to the request body
+        ctx.request.body.code = await strapi.services.session.getUniqueCode()
 
         // remove private fields and return the new session
         const session = await strapi.services.session.create(ctx.request.body)
@@ -70,35 +94,10 @@ module.exports = {
     },
 
     /**
-     * Get a list of students, with a valid session code, 
-     * that belong to the session's classroom
-     *
-     * @return {Array<Student>}
-     */
-    async findByCode(ctx) {
-
-        const { code } = ctx.params
-        let resp = await getSessionByCode(code)
-
-        // check if the session exists
-        if (resp) {
-            // get the students belonging to the session's classroom
-            const students = await strapi.services.student.find({ classroom: resp.classroom.id })
-            resp = students.map(student => { return { 
-                id: student.id, 
-                name: student.name,
-                character: student.character
-            }})
-        }
-
-        return resp
-    },
-
-    /**
      * Log a new or existing student into a session
      * 
      * @param {Integer} studentId
-     * @param {Integer} code
+     * @param {String} code
      * 
      * @return {JWT, Student}
      */
@@ -114,7 +113,7 @@ module.exports = {
 
         // make sure the code is valid 
         // and the session is active
-        const session = await getSessionByCode(code)
+        const session = await strapi.services.session.findByCode(code)
         if (!session || !session.active) return ctx.notFound(
             'The code provided does not correspond to a valid session!',
             { id: 'Session.join.code.invalid', error: 'ValidationError' }
@@ -155,25 +154,38 @@ module.exports = {
     },
 
     /**
-     * Get a list of session activities
-     * for the current student user
+     * Update a session
+     *
+     * @param {Session}
      * 
-     * @param {Integer} studentId
-     * @param {Integer} code
-     * 
-     * @return {Activities}
+     * @return {Session}
      */
-    async getStudentActivities(ctx) {
+    async update(ctx) {
 
-        // get the activities from the 
-        // students current session
-        const { user } = ctx.state
-        const { activities } = await strapi.services.session.findOne({ id: user.sessionId })
+        // ensure request was not sent as formdata
+        if (ctx.is('multipart')) return ctx.badRequest(
+            'Multipart requests are not accepted!',
+            { id: 'Session.create.format.invalid', error: 'ValidationError' }
+        )
 
-        // remove private fields and return the session's activities
-        return activities.map(activity => sanitizeEntity(activity, {
-            model: strapi.models.activity
-        }))
-    }
+        // ensure the update is not to the code, classroom, or students
+        const { code, classroom, students } = ctx.request.body
+        if (code || classroom || students) return ctx.badRequest(
+            'A session\'s code, classroom, and students can not be updated!',
+            { id: 'Session.update.body.invalid', error: 'ValidationError' }
+        )
+
+        const { id } = ctx.params
+        const { active } = ctx.request.body
+
+        // when reactivating a session, get a new code
+        // in case the original one was issued
+        if (active && active === true) ctx.request.body.code = await strapi.services.session.getUniqueCode()
+
+        // update the session
+        // remove private fields and return the updated session
+        let session = await strapi.services.session.update({ id }, ctx.request.body)
+        return sanitizeEntity(session, { model: strapi.models.session })
+    },
 }
 
