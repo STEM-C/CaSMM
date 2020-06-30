@@ -1,0 +1,36 @@
+version: '3'
+
+services:
+  cms:
+    container_name: stem-c-cms-dev
+    image: strapi/strapi
+    environment: 
+      - DATABASE_HOST=db
+    ports:
+      - 1337:1337
+    volumes:
+      - ./cms:/srv/app
+    depends_on:
+      - db
+  compile:
+    container_name: stem-c-compile-dev
+    build: ./compile
+    restart: always
+    ports:
+      - 8080:8080
+  db:
+    container_name: stem-c-db-dev
+    image: postgres
+    restart: always
+    ports:
+      - 5432:5432
+    volumes:
+      - /var/lib/postgresql/data
+      - ./scripts:/docker-entrypoint-initdb.d
+    environment:
+      POSTGRES_DB: strapi
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      ENVIRONMENT: test
+      DATABASE_URL: strapi
+      SCRIPT_PATH: /docker-entrypoint-initdb.d
