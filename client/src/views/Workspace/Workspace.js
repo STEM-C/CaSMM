@@ -2,13 +2,14 @@ import React, { useEffect, useRef, useState } from "react"
 import { Link } from "react-router-dom"
 import { compileArduinoCode, getArduino, getJS, getXml, setLocalActivity } from './helpers.js'
 import "./Workspace.less"
-import { getActivityToolbox } from "../../dataaccess/requests.js"
-import { useHistory } from "react-router-dom"
+import { getActivityToolbox } from "../../Utils/requests.js"
+import { getToken } from "../../Utils/AuthRequests"
 import Logo from "../../assets/casmm_logo.png"
 import PlaceHolderImg1 from "../../assets/science.png"
 import PlaceHolderImg2 from "../../assets/arduino.png"
 import PlaceHolderImg3 from "../../assets/maker.png"
 import { Carousel } from 'antd';
+
 
 function App(props) {
 
@@ -18,7 +19,6 @@ function App(props) {
     const [hoverArduino, setHoverArduino] = useState(false)
     const [hoverCompile, setHoverCompile] = useState(false)
 
-    let history = useHistory()
     let workspaceRef = useRef(null)
 
     const setWorkspace = () => workspaceRef.current = window.Blockly.inject('blockly-canvas', { toolbox: document.getElementById('toolbox') })
@@ -32,23 +32,21 @@ function App(props) {
             setActivity(loadedActivity)
 
         } else if (selectedActivity) {
-            getActivityToolbox(selectedActivity.id).then(response => {
+            getActivityToolbox(selectedActivity.id, getToken()).then(response => {
                 let loadedActivity = {...selectedActivity, toolbox: response.toolbox}
 
                 localStorage.setItem("my-activity", JSON.stringify(loadedActivity))
                 setActivity(loadedActivity)
             })
         } else {
-            window.location = '/' // this should probably use the react router dom to add to history stack
+            props.history.push('/')
         }
 
         // clean up - removes blockly div from DOM
         return () => {
-            if (workspaceRef.current) {
-                workspaceRef.current.dispose()
-            }
+            if (workspaceRef.current) workspaceRef.current.dispose()
         }
-    }, [props, history])
+    }, [props])
 
     useEffect(() => {
         // once the activity state is set, set the workspace
@@ -65,49 +63,49 @@ function App(props) {
 
     return (
         <div>
-            <div id="container" className="flex flex-row">
-                <div id="horizontal-container" className="flex flex-column">
+            <div className="container flex flex-row">
+                <div className="horizontal-container flex flex-column">
                     <div id="top-container" className="flex flex-column vertical-container">
                         <div id="description-container"
                              className="flex flex-row justify-end card overflow-visible"
                              style={{"marginLeft": "70px"}}>
-                            <img id="logo" src={Logo}/>
+                            <img src={Logo} className='logo' alt="Maker activity"/>
                             <h2>Maker Activity {activity.name}</h2>
                         </div>
                     </div>
-                    <div id="bottom-container" className="flex flex-column vertical-container overflow-visible">
-                        <div id="section-header">
+                    <div className="bottom-container flex flex-column vertical-container overflow-visible">
+                        <div className="section-header">
                                 Learn about the activity...
                         </div>
-                        <p id="section-text">{activity.description}</p>
-                        <div id="secondary-section-header">
+                        <p className="section-text">{activity.description}</p>
+                        <div className="secondary-section-header">
                             See the different parts of the activity...
                         </div>
                         {/* Example implementation of image Carousel */}
-                        <div id="carousel-container">
+                        <div className="carousel-container">
                         <Carousel dotPosition={"left"}>
-                            <div id="diagram-container">
-                                <img id="diagram" src={PlaceHolderImg1}/>
+                            <div className="diagram-container">
+                                <img className="diagram" src={PlaceHolderImg1} alt="First diagram in carousel"/>
                             </div>
-                            <div id="diagram-container">
-                                <img id="diagram" src={PlaceHolderImg2}/>
+                            <div className="diagram-container">
+                                <img className="diagram" src={PlaceHolderImg2} alt="Second diagram in carousel"/>
                             </div>
-                            <div id="diagram-container">
-                                <img id="diagram" src={PlaceHolderImg3}/>
+                            <div className="diagram-container">
+                                <img className="diagram" src={PlaceHolderImg3} alt="Third diagram in carousel"/>
                             </div>
                         </Carousel>
                         </div>
                     </div>
                 </div>
-                <div id="horizontal-container" className="flex flex-column">
-                    <div id="top-container" className="flex flex-column vertical-container">
-                        <div id="description-container" className="flex flex-row space-between card">
-                            <Link to={"/"} className="flex flex-column">
+                <div className="horizontal-container flex flex-column">
+                    <div className="top-container flex flex-column vertical-container">
+                        <div className="description-container flex flex-row space-between card">
+                            <Link to={"/student"} className="flex flex-column">
                                 <i className="fa fa-home" style={{"fontSize": "32px"}}/>
                                 Home
                             </Link>
                             <div style={{"width": "25%"}}>
-                                <div id="action-btn-container" className="flex space-between">
+                                <div className="action-btn-container flex space-between">
                                     <i onClick={() => getXml(workspaceRef.current)} className="fas fa-code hvr-info"
                                        onMouseEnter={() => setHoverXml(true)}
                                        onMouseLeave={() => setHoverXml(false)}/>
@@ -129,8 +127,8 @@ function App(props) {
                             </div>
                         </div>
                     </div>
-                    <div id="bottom-container" className="flex flex-column vertical-container overflow-visible">
-                        <div id="section-header">
+                    <div className="bottom-container flex flex-column vertical-container overflow-visible">
+                        <div className="section-header">
                                 Program your Arduino...
                         </div>
                         <div id="blockly-canvas"
