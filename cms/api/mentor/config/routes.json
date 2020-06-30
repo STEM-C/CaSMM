@@ -37,7 +37,7 @@
       "path": "/mentors",
       "handler": "mentor.create",
       "config": {
-        "policies": []
+        "policies": ["global::isMentor"]
       }
     },
     {
