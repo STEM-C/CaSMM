@@ -11,7 +11,7 @@ import PlaceHolderImg3 from "../../assets/maker.png"
 import { Carousel } from 'antd';
 
 
-function App(props) {
+export default function Workspace(props) {
 
     const [activity, setActivity] = useState({} )
     const [hoverXml, setHoverXml] = useState(false)
@@ -158,5 +158,3 @@ function App(props) {
     );
 
 }
-
-export default App;
