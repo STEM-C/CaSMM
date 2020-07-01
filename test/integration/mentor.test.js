@@ -42,26 +42,24 @@ beforeAll(async () => {
 
 test('an unauthenticated user can register', async () => {
     const response = await publicRequest.post('/auth/local/register', {
-        username: '',
-        email: '',
-        password: ''
+        username: 'testuser',
+        email: 'tu@mail.com',
+        password: '123456'
     })
 
-    console.log(response)
-
-    expect(response.staus).toBe(200)
+    expect(response.status).toBe(200)
     expect(response.data).toHaveProperty('jwt')
     expect(response.data).toHaveProperty('user')
 })
 
 let mentorRequest
 test('an unauthenticated user can login', async () => {
-    const response = publicRequest.post('/auth/local', {
-        identifier: '',
-        password: ''
+    const response = await publicRequest.post('/auth/local', {
+        identifier: 'testuser',
+        password: '123456'
     })
 
-    expect(response.staus).toBe(200)
+    expect(response.status).toBe(200)
     expect(response.data).toHaveProperty('jwt')
     expect(response.data).toHaveProperty('user')
 
@@ -69,13 +67,13 @@ test('an unauthenticated user can login', async () => {
 })
 
 test('an authenticated user can create a mentor profile', async () => {
-    const response = mentorRequest.post('/mentors', {
-        first_name: '',
-        last_name: '',
+    const response = await mentorRequest.post('/mentors', {
+        first_name: 'test',
+        last_name: 'user',
         school: 1
     })
 
-    expect(response.staus).toBe(200)
+    console.log(response)
 
-    console.log(response.data)
+    expect(response.status).toBe(200)
 })
