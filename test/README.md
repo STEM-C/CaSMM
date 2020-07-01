@@ -20,7 +20,7 @@
 
 - Framework – Jest
 - Usage – Test UI w/ snapshots and mocking
-- Run  `coming soon`
+- Run  `yarn functional`
 
 ### Integration
 
@@ -32,7 +32,7 @@
 
 - Framework – K6
 - Usage – Stress and Load test the application
-- Run `coming soon`
+- Run yarn `performance`
 
 
 
