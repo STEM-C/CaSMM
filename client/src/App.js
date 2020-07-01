@@ -7,6 +7,7 @@ import Workspace from "./views/Workspace/Workspace"
 import Dashboard from "./views/Dashboard/Dashboard"
 import Student from "./views/Student/Student"
 import NotFound from "./views/NotFound"
+import StudentLogin from "./views/StudentLogin/StudentLogin";
 
 const App = () => {
     const [selectedActivity, setSelectedActivity] = useState();
@@ -16,7 +17,7 @@ const App = () => {
         <div>
             <Switch>
                 <Route exact path={"/"} render={(props) => <Home setSelectedActivity={setSelectedActivity} history={history} />}/>
-                {/*<Route exact path={"/login"} render={(props) => <Login history={history} />}/>*/}
+                <Route exact path={"/login"} render={(props) => <StudentLogin history={history} />}/>
                 <PrivateRoute exact path={"/dashboard"} render={() => <Dashboard history={history}/>}/>
                 <PrivateRoute exact path={"/student"} render={() => <Student history={history} setSelectedActivity={setSelectedActivity}/> } />
                 <Route path={"/workspace"} render={() => <Workspace selectedActivity={selectedActivity} history={history}/>}/>

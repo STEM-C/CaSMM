@@ -1,6 +1,5 @@
 import React, { useState } from 'react'
 import { setUserSession, postUser } from "../../Utils/AuthRequests";
-import { Link } from "react-router-dom";
 
 export default function TeacherLogin(props) {
     const email = useFormInput('');
@@ -25,7 +24,7 @@ export default function TeacherLogin(props) {
     }
 
     return (
-            <form className="box">
+            <form className="box" onKeyPress={e => {if(e.key === 'Enter') handleLogin()}}>
                 <div className='box-title'>
                     Teacher Login
                 </div>

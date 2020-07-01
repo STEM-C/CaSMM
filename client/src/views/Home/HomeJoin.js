@@ -2,7 +2,8 @@ import React, {useState} from 'react'
 import './Home.less'
 import { getStudents } from "../../Utils/requests";
 
-function HomeJoin(props) {
+export default function HomeJoin(props) {
+    const [joinCode, setJoinCode] = useState('')
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
 
@@ -10,9 +11,10 @@ function HomeJoin(props) {
         setError(null);
         setLoading(true);
 
-        getStudents(props.joinCode).then(students => {
+        getStudents(joinCode).then(students => {
             console.log(students)
             setLoading(false);
+            props.history.push('/login');
         }).catch(err => {
             console.log(err)
             setLoading(false);
@@ -21,12 +23,10 @@ function HomeJoin(props) {
     }
 
     return(
-        <div className="box" onKeyPress={e => {if(e.key === 'Enter') props.handleLogin()}}>
-            <input type="text" value={props.joinCode} placeholder="Join Code" onChange={e => props.setJoinCode(e.target.value)}/>
+        <div className="box" onKeyPress={e => {if(e.key === 'Enter') handleLogin()}}>
+            <input type="text" value={joinCode} placeholder="Join Code" onChange={e => setJoinCode(e.target.value)}/>
             {error && <div style={{ color: 'red' }}>{error}</div>}
             <input type="button" value={loading ? 'Loading...' : 'Join'} onClick={handleLogin} disabled={loading}/>
         </div>
     )
 }
-
-export default HomeJoin

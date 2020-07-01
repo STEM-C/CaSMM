@@ -5,8 +5,7 @@ import HomeJoin from "./HomeJoin"
 import TeacherLogin from "./TeacherLogin"
 
 
-function Home(props) {
-    const [joinCode, setJoinCode] = useState('')
+export default function Home(props) {
 
     const handleLogin = () => {
         /*getStudents(joinCode).then(students => {
@@ -23,7 +22,7 @@ function Home(props) {
         <div className='container'>
             <div className='wrapper'>
                 <img src={Logo} className='casmm-logo'/>
-                <HomeJoin joinCode={joinCode} setJoinCode={setJoinCode}/>
+                <HomeJoin history={props.history}/>
             </div>
             <div className='divider'></div>
             <div className='wrapper'>
@@ -32,5 +31,3 @@ function Home(props) {
         </div>
     )
 }
-
-export default Home;
