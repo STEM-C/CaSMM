@@ -24,9 +24,9 @@ export default function StudentLogin(props) {
     }, []);
 
     const handleLogin = async (studentIds) => {
-        let ids = studentIds.slice(0, numForms)
+        let ids = studentIds.slice(0, numForms);
         const response = await postJoin(props.joinCode, ids);
-        setUserSession(response.jwt, JSON.stringify(response.student));
+        setUserSession(response.jwt, JSON.stringify(response.students));
         props.history.push('/student')
     };
 
@@ -92,7 +92,7 @@ export default function StudentLogin(props) {
                     <a onClick={addStudent}>Add a student</a>
                     <a onClick={removeStudent}>Remove a student</a>
                 </div>
-                <button type='submit' onClick={handleLogin(studentIds)}>Enter</button>
+                <button type='submit' onClick={() => handleLogin(studentIds)}>Enter</button>
             </div>
         </div>
     )
