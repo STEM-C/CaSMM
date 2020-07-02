@@ -1,66 +1,97 @@
 import React, { useState, useEffect } from 'react';
 import './StudentLogin.less'
 import Logo from "../../assets/casmm_logo.png"
-import {getStudents} from "../../Utils/requests";
+import {getStudents, postJoin} from "../../Utils/requests";
 import StudentLoginForm from "./StudentLoginForm";
+import {setUserSession} from "../../Utils/AuthRequests";
 
 
 export default function StudentLogin(props) {
     const [studentList, setStudentList] = useState([]);
-    const [forms, setForms] = useState([(<StudentLoginForm entrNum={1}/>), (<StudentLoginForm entrNum={2}/>)]);
-
+    const [animalList, setAnimalList] = useState([])
+    const [studentIds, setStudentIds] = useState(['', '', '']);
+    const [studentAnimals, setStudentAnimals] = useState(['', '', '']);
+    const [numForms, setNumForms] = useState(2);
 
     useEffect(() => {
         getStudents(props.joinCode).then(studentArray => {
-            setStudentList(studentArray)
+            setStudentList(studentArray);
+            setAnimalList(['Lion', 'Dog', 'Frog', 'Fish', 'Cow']);
+            setForms()
         }).catch(err => {
             console.log(err)
         })
-    })
+    }, []);
+
+    const handleLogin = async (ids) => {
+        const response = await postJoin(props.joinCode, ids)
+        setUserSession(response.jwt, JSON.stringify(response.student))
+        props.history.push('/student')
+    }
+
+    const updateStudentUsers = (studentId, entryNum) => {
+        let ids = [...studentIds];
+        ids[entryNum-1] = studentId;
+        setStudentIds(ids)
+    };
+
+    const updateStudentAnimals = (studentAnimal, entryNum) => {
+        let animals = [...studentAnimals];
+        animals[entryNum-1] = studentAnimal;
+        setStudentAnimals(animals)
+    };
 
     const addStudent = () => {
-        let f = [...forms];
-        if(f.length < 3){
-            f.push((<StudentLoginForm entrNum={f.length+1}/>));
-            console.log(f)
-            setForms(f)
+        if(numForms < 3){
+            setNumForms(numForms+1);
+            setForms()
         }
     };
 
     const removeStudent = () => {
-        let f = [...forms];
-        if (f.length > 1) {
-            f.pop();
-            console.log(f)
-            setForms(f);
+        if(numForms > 1){
+            setNumForms(numForms-1);
+            let ids = [...studentIds];
+            ids[numForms-1] = '';
+            setStudentIds(ids);
+            setForms()
         }
     };
+
+    const setForms = () => {
+        let forms = [];
+        for (let i = 0; i < numForms; i++) {
+            forms.push(
+                <>
+                    {i > 0 ? <div className='form-divider'/> : null}
+                    <div className='wrapper'>
+                        <StudentLoginForm
+                            entryNum={i+1}
+                            updateStudentUsers={updateStudentUsers}
+                            studentList={studentList}
+                            updateStudentAnimals={updateStudentAnimals}
+                            animalList={animalList}
+                        />
+                    </div>
+                </>
+            )
+        }
+        return forms;
+    }
 
 
     return(
         <div className='container'>
             <img src={Logo} className='casmm-logo'/>
             <div className='form-container'>
-                {forms.map((form, index) =>
-                    <>
-                        {index > 0 ? <div className='divider'/> : null}
-                    <div className='wrapper'>
-                        {form}
-                    </div>
-                    </>
+                {setForms().map((form) =>
+                    form
                 )}
-                {/*<div className='wrapper'>
-                    <StudentLoginForm/>
-                </div>
-                <div className='divider'></div>
-                <div className='wrapper'>
-                    <StudentLoginForm/>
-                </div>*/}
                 <div className='link-container'>
-                        <a onClick={removeStudent}>Remove a student</a>
-                    |
-                        <a onClick={addStudent}>Add a student</a>
+                    <a onClick={addStudent}>Add a student</a>
+                    <a onClick={removeStudent}>Remove a student</a>
                 </div>
+                <button type='submit' onClick={console.log('click')}>Enter</button>
             </div>
         </div>
     )

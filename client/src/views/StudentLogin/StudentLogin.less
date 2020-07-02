@@ -15,11 +15,11 @@
 }
 
 .wrapper {
-    margin: 8vh auto;
+    margin: 4vh auto 1vh;
     display: inline-block;
 }
 
-.divider {
+.form-divider {
     height: 100px;
     width: 3px;
     border-radius: 5px;
@@ -38,10 +38,16 @@
     border-color: #colors[secondary];
 }
 
-.box input[type = "text"], input[type = "email"], input[type = "password"]{
+.select-lable {
+  color: #colors[text-primary];
+  font-weight: 550;
+  font-size: 1.1em;
+}
+
+.box select{
     display: block;
     background: none;
-    margin: 20px auto 0px;
+    margin: 5px auto 0px;
     border: 2px solid;
     border-color: #colors[secondary];
     padding: 14px 10px;
@@ -52,7 +58,7 @@
     transition: 0.25s;
 }
 
-.box input[type = "text"]:focus, input[type = "email"]:focus, input[type = "password"]:focus{
+.box select:focus{
     width: 220px;
 }
 
@@ -79,29 +85,51 @@
 }
 
 .casmm-logo {
-    width: 300px;
+    width: 275px;
     height: auto;
     position: relative;
-    bottom: -37.5px;
+    bottom: -10px;
 }
 
 .link-container {
     background-color: #colors[primary];
     color: #colors[text-secondary];
     font-size: 1.4em;
-    height: 0;
+    text-decoration: underline;
     text-align: center;
     position: relative;
-    left: -22px;
+    margin: auto;
 }
 
 a {
     color: #colors[text-secondary];
+    text-decoration: underline;
     transition: 0.25s;
     &:hover {
         color: #colors[secondary];
+        text-decoration: underline;
     }
-    margin: 0 10px;
+    margin: 0 15px;
     display: inline-block;
     font-size: 1.4em;
+}
+
+button {
+  background: darken(#colors[tertiary], 30%);
+  width: 20%;
+  display: block;
+  margin: 20px auto 0px;
+  border: 2px solid;
+  border-color: #colors[secondary];
+  padding: 14px 40px;
+  outline: none;
+  color: #colors[text-secondary];
+  font-size: 1.5em;
+  font-weight: 550;
+  border-radius: 30px;
+  cursor: pointer;
+  transition: 0.25s;
+  &:hover {
+    color: lighten(#colors[secondary], 20%);
+  }
 }

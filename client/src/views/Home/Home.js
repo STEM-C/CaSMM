@@ -22,7 +22,7 @@ export default function Home(props) {
         <div className='container'>
             <div className='wrapper'>
                 <img src={Logo} className='casmm-logo'/>
-                <HomeJoin history={props.history}/>
+                <HomeJoin setJoinCode={props.setJoinCode} joinCode={props.joinCode} history={props.history}/>
             </div>
             <div className='divider'></div>
             <div className='wrapper'>
