@@ -94,22 +94,24 @@ module.exports = {
     },
 
     /**
-     * Log a new or existing student into a session
+     * Log new or existing students into a session
      * 
-     * @param {Integer} studentId
+     * @param {Integer} studentIds
      * @param {String} code
      * 
      * @return {JWT, Student}
      */
     async join(ctx) {
 
-        const { studentId, code } = ctx.request.body
+        const { studentIds, code } = ctx.request.body;
 
         // validate the request
-        if (!studentId || !code) return ctx.badRequest(
-            'Must provide a studentId and code!',
-            { id: 'Session.join.body.invalid', error: 'ValidationError'}
-        )
+        studentIds.forEach(studentId => {
+            if(!studentId || !code) return ctx.badRequest(
+                'Must provide studentIds and a code!',
+                { id: 'Session.join.body.invalid', error: 'ValidationError'}
+            )
+        })
 
         // make sure the code is valid 
         // and the session is active
@@ -119,35 +121,41 @@ module.exports = {
             { id: 'Session.join.code.invalid', error: 'ValidationError' }
         )
 
-        // check if the student has joined this session before
-        let student = session.students.find(student => student.id === studentId)
-        if (!student) {
-            // add the student to the session
-            // check that the student exists and belongs to the classroom
-            student = await strapi.services.student.findOne({ id: studentId })
-            if (!student || !student.classroom || student.classroom.id !== session.classroom.id) return ctx.notFound(
-                'The studentId provided does not correspond to a real student or the student is not in the classroom!',
-                { id: 'Session.join.studentId.invalid', error: 'ValidationError' }
-            )
+        // check if each student has joined this session before
+        let students = [];
+        studentIds.forEach(async studentId => {
+            let student = session.students.find(student => student.id === studentId)
+            if (!student) {
+                // add the student to the session
+                // check that the student exists and belongs to the classroom
+                student = await strapi.services.student.findOne({ id: studentId })
+                if (!student || !student.classroom || student.classroom.id !== session.classroom.id) return ctx.notFound(
+                    'The studentId provided does not correspond to a real student or the student is not in the classroom!',
+                    { id: 'Session.join.studentId.invalid', error: 'ValidationError' }
+                );
 
-            // add the student to the session 
-            student = await strapi.services.student.update({ id: student.id }, { sessions: [session.id] })
-            delete student.sessions
-        }
+                // add the student to the session
+                student = await strapi.services.student.update({ id: student.id }, { sessions: [session.id] })
+                delete student.sessions
+            }
 
-        // fill out the classroom field
-        student.classroom = session.classroom
+            // fill out the classroom field
+            student.classroom = session.classroom
 
-        // return a jwt for future requests and the student
+            students.push(student)
+        });
+
+        // return a jwt for future requests and the students
         return {
             jwt: strapi.plugins['users-permissions'].services.jwt.issue({
-                id: student.id,
+                ids: studentIds,
                 sessionId: session.id,
                 isStudent: true
             }),
-            student: sanitizeEntity(student, { 
-                model: strapi.models.student 
-            })
+            students: students.map(student =>
+                sanitizeEntity(student, {
+                model: strapi.models.student
+            }))
         }
         // this bypasses the local authentication and requires custom
         // handling of the resulting token in the permissions policy

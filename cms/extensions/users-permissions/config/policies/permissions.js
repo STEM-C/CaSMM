@@ -6,11 +6,11 @@ module.exports = async (ctx, next) => {
 
   if (ctx.request && ctx.request.header && ctx.request.header.authorization) {
     try {
-      const { id, isAdmin = false, isStudent = false, sessionId = null } = await strapi.plugins[
+      const { id, ids, isAdmin = false, isStudent = false, sessionId = null } = await strapi.plugins[
         'users-permissions'
       ].services.jwt.getToken(ctx)
 
-      if (id === undefined) {
+      if (id === undefined && ids === undefined) {
         throw new Error('Invalid token: Token did not contain required fields')
       }
 

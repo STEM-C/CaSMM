@@ -23,11 +23,12 @@ export default function StudentLogin(props) {
         })
     }, []);
 
-    const handleLogin = async (ids) => {
-        const response = await postJoin(props.joinCode, ids)
-        setUserSession(response.jwt, JSON.stringify(response.student))
+    const handleLogin = async (studentIds) => {
+        let ids = studentIds.slice(0, numForms)
+        const response = await postJoin(props.joinCode, ids);
+        setUserSession(response.jwt, JSON.stringify(response.student));
         props.history.push('/student')
-    }
+    };
 
     const updateStudentUsers = (studentId, entryNum) => {
         let ids = [...studentIds];
@@ -82,7 +83,7 @@ export default function StudentLogin(props) {
 
     return(
         <div className='container'>
-            <img src={Logo} className='casmm-logo'/>
+            <img src={Logo} className='login-logo'/>
             <div className='form-container'>
                 {setForms().map((form) =>
                     form
@@ -91,7 +92,7 @@ export default function StudentLogin(props) {
                     <a onClick={addStudent}>Add a student</a>
                     <a onClick={removeStudent}>Remove a student</a>
                 </div>
-                <button type='submit' onClick={console.log('click')}>Enter</button>
+                <button type='submit' onClick={handleLogin(studentIds)}>Enter</button>
             </div>
         </div>
     )
