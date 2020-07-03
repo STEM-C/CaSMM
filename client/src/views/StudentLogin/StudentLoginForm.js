@@ -43,12 +43,14 @@ export default function StudentLoginForm(props) {
                 Student {props.entryNum} Name:
             </div>
             <select name='student' onChange={e => props.updateStudentUsers(e.target.value, props.entryNum)}>
+                <option value='default' disabled selected className='disabled-option'>Student Name</option>
                 {setStudentOptions().map(option => option)}
             </select>
             <div className='select-lable'>
                 Student {props.entryNum} Animal:
             </div>
             <select name='animal' onChange={e => props.updateStudentAnimals(e.target.value, props.entryNum)}>
+                <option value='default' disabled selected className='disabled-option'>Student Animal</option>
                 {setAnimalOptions().map(option => option)}
             </select>
             {error && <div style={{ color: 'red' }}>{error}</div>}
