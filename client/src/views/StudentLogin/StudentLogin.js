@@ -12,9 +12,10 @@ export default function StudentLogin(props) {
     const [studentIds, setStudentIds] = useState(['', '', '']);
     const [studentAnimals, setStudentAnimals] = useState(['', '', '']);
     const [numForms, setNumForms] = useState(2);
+    const joinCode = localStorage.getItem('join-code');
 
     useEffect(() => {
-        getStudents(props.joinCode).then(studentArray => {
+        getStudents(joinCode).then(studentArray => {
             setStudentList(studentArray);
             setAnimalList(['Lion', 'Dog', 'Frog', 'Fish', 'Cow']);
             setForms()
@@ -25,7 +26,7 @@ export default function StudentLogin(props) {
 
     const handleLogin = async (studentIds) => {
         let ids = studentIds.slice(0, numForms);
-        const response = await postJoin(props.joinCode, ids);
+        const response = await postJoin(joinCode, ids);
         setUserSession(response.jwt, JSON.stringify(response.students));
         props.history.push('/student')
     };
