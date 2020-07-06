@@ -9,12 +9,12 @@
     text-align: center;
 }
 
-.content-wrapper {
+#content-wrapper {
     margin: 8vh auto;
     display: inline-block;
 }
 
-.divider {
+#divider {
     height: 200px;
     width: 3px;
     border-radius: 5px;
@@ -23,7 +23,7 @@
     display: inline-block;
 }
 
-.box{
+#box{
     width: 300px;
     padding: 40px 20px;
     background-color: #colors[tertiary];
@@ -33,7 +33,7 @@
     border-color: #colors[secondary];
 }
 
-.box-title {
+#box-title {
     background-color: #colors[secondary];
     border-radius: 80px;
     width: 80%;
@@ -48,7 +48,7 @@
     text-align: center;
 }
 
-.box input[type = "text"], input[type = "email"], input[type = "password"]{
+#box input[type = "text"], input[type = "email"], input[type = "password"]{
     display: block;
     background: none;
     margin: 20px auto 0px;
@@ -62,11 +62,11 @@
     transition: 0.25s;
 }
 
-.box input[type = "text"]:focus, input[type = "email"]:focus, input[type = "password"]:focus{
+#box input[type = "text"]:focus, input[type = "email"]:focus, input[type = "password"]:focus{
     width: 220px;
 }
 
-.box input[type = "button"]{
+#box input[type = "button"]{
     background: darken(#colors[tertiary], 30%);
     width: 80%;
     display: block;
@@ -88,17 +88,9 @@
     bottom: -65px;
 }
 
-.casmm-logo {
+#casmm-logo {
     width: 300px;
     height: auto;
     position: relative;
     bottom: -37.5px;
-}
-
-.boxLink {
-    color: #colors[text-primary];
-    transition: 0.25s;
-    &:hover {
-        color: #colors[secondary];
-    }
 }

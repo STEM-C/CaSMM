@@ -24,8 +24,8 @@ export default function TeacherLogin(props) {
     }
 
     return (
-            <form className="box" onKeyPress={e => {if(e.key === 'Enter') handleLogin()}}>
-                <div className='box-title'>
+            <form id="box" onKeyPress={e => {if(e.key === 'Enter') handleLogin()}}>
+                <div id='box-title'>
                     Teacher Login
                 </div>
                 <input type="email" {...email} placeholder="Email" autoComplete="new-password" />

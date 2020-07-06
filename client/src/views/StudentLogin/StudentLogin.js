@@ -65,8 +65,8 @@ export default function StudentLogin(props) {
         for (let i = 0; i < numForms; i++) {
             forms.push(
                 <>
-                    {i > 0 ? <div className='form-divider'/> : null}
-                    <div className='wrapper'>
+                    {i > 0 ? <div id='form-divider'/> : null}
+                    <div id='wrapper'>
                         <StudentLoginForm
                             entryNum={i+1}
                             updateStudentUsers={updateStudentUsers}
@@ -84,12 +84,12 @@ export default function StudentLogin(props) {
 
     return(
         <div className='container'>
-            <img src={Logo} className='login-logo'/>
-            <div className='form-container'>
+            <img src={Logo} id='login-logo'/>
+            <div id='form-container'>
                 {setForms().map((form) =>
                     form
                 )}
-                <div className='link-container'>
+                <div id='link-container'>
                     <a onClick={addStudent}>Add a student</a>
                     <a onClick={removeStudent}>Remove a student</a>
                 </div>

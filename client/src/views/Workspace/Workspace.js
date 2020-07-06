@@ -64,52 +64,52 @@ export default function Workspace(props) {
     return (
         <div>
             <div className="container flex flex-row">
-                <div className="horizontal-container flex flex-column">
+                <div id='horizontal-container' className="flex flex-column">
                     <div id="top-container" className="flex flex-column vertical-container">
                         <div id="description-container"
                              className="flex flex-row justify-end card overflow-visible"
                              style={{"marginLeft": "70px"}}>
-                            <img src={Logo} className='logo' alt="Maker activity"/>
+                            <img src={Logo} id='logo' alt="Maker activity"/>
                             <h2>Maker Activity {activity.name}</h2>
                         </div>
                     </div>
-                    <div className="bottom-container flex flex-column vertical-container overflow-visible">
-                        <div className="section-header">
+                    <div id='bottom-container' className="flex flex-column vertical-container overflow-visible">
+                        <div id="section-header">
                                 Learn about the activity...
                         </div>
-                        <p className="section-text">{activity.description}</p>
-                        <div className="secondary-section-header">
+                        <p id="section-text">{activity.description}</p>
+                        <div id="secondary-section-header">
                             See the different parts of the activity...
                         </div>
                         {/* Example implementation of image Carousel */}
-                        <div className="carousel-container">
+                        <div id="carousel-container">
                         <Carousel dotPosition={"left"}>
-                            <div className="diagram-container">
-                                <img className="diagram" src={PlaceHolderImg1} alt="First diagram in carousel"/>
+                            <div id="diagram-container">
+                                <img id="diagram" src={PlaceHolderImg1} alt="First diagram in carousel"/>
                             </div>
-                            <div className="diagram-container">
-                                <img className="diagram" src={PlaceHolderImg2} alt="Second diagram in carousel"/>
+                            <div id="diagram-container">
+                                <img id="diagram" src={PlaceHolderImg2} alt="Second diagram in carousel"/>
                             </div>
-                            <div className="diagram-container">
-                                <img className="diagram" src={PlaceHolderImg3} alt="Third diagram in carousel"/>
+                            <div id="diagram-container">
+                                <img id="diagram" src={PlaceHolderImg3} alt="Third diagram in carousel"/>
                             </div>
                         </Carousel>
                         </div>
                     </div>
                 </div>
-                <div className="horizontal-container flex flex-column">
-                    <div className="top-container flex flex-column vertical-container">
-                        <div className="description-container flex flex-row space-between card">
-                            <Link to={"/student"} className="flex flex-column">
+                <div id='horizontal-container' className="flex flex-column">
+                    <div id='top-container' className="flex flex-column vertical-container">
+                        <div id='description-container' className="flex flex-row space-between card">
+                            <Link id='link' to={"/student"} className="flex flex-column">
                                 <i className="fa fa-home" style={{"fontSize": "32px"}}/>
                                 Home
                             </Link>
                             <div style={{"width": "25%"}}>
-                                <div className="action-btn-container flex space-between">
+                                <div id='action-btn-container' className="flex space-between">
                                     <i onClick={() => getXml(workspaceRef.current)} className="fas fa-code hvr-info"
                                        onMouseEnter={() => setHoverXml(true)}
                                        onMouseLeave={() => setHoverXml(false)}/>
-                                    {hoverXml && <div className="popup JS">Shows Xml Code</div>}
+                                    {hoverXml && <div className="popup XML">Shows Xml Code</div>}
                                     <i onClick={() => getJS(workspaceRef.current)} className="fab fa-js hvr-info"
                                        onMouseEnter={() => setHoverJS(true)}
                                        onMouseLeave={() => setHoverJS(false)}/>
@@ -127,8 +127,8 @@ export default function Workspace(props) {
                             </div>
                         </div>
                     </div>
-                    <div className="bottom-container flex flex-column vertical-container overflow-visible">
-                        <div className="section-header">
+                    <div id='bottom-container' className="flex flex-column vertical-container overflow-visible">
+                        <div id="section-header">
                                 Program your Arduino...
                         </div>
                         <div id="blockly-canvas"
