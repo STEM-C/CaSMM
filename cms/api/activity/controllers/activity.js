@@ -7,9 +7,7 @@ module.exports = {
         const { id } = ctx.params
 
         // get the blocks 
-        const blocks = id ? 
-            await strapi.services.block.findByActivity(id) : 
-            await strapi.services.block.find()
+        const blocks = await strapi.services.block.findByActivity(id)
 
         // return 404 if blocks is undefined
         // (only the case of an activity not existing)

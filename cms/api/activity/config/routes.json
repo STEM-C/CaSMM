@@ -18,14 +18,6 @@
     },
     {
       "method": "GET",
-      "path": "/sandbox/toolbox",
-      "handler": "activity.toolbox",
-      "config": {
-        "policies": []
-      }
-    },
-    {
-      "method": "GET",
       "path": "/activities/toolbox/:id",
       "handler": "activity.toolbox",
       "config": {
