@@ -9,6 +9,8 @@ export const getTopics = async (jwt) => (await axios.get(`${cms}/topics`, {
     }
 })).data
 
+export const getActivityToolboxAll = async () => (await axios.get(`${cms}/activities/toolbox/all`)).data
+
 export const getActivityToolbox = async (id, jwt) => (await axios.get(`${cms}/activities/toolbox/${id}`, {
     headers: {
         Authorization:

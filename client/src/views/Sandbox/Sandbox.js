@@ -1,14 +1,15 @@
 import React, { useEffect, useRef, useState } from "react"
 import { Link } from "react-router-dom"
-import { compileArduinoCode, getArduino, getJS, getXml, setLocalActivity } from '../Workspace/helpers.js'
+import { compileArduinoCode, getArduino, getJS, getXml } from '../Workspace/helpers.js'
 import "../Workspace/Workspace.less"
-import { getActivityToolbox } from "../../Utils/requests.js"
-import { getToken } from "../../Utils/AuthRequests"
+import { getActivityToolboxAll } from "../../Utils/requests.js"
 import Logo from "../../assets/casmm_logo.png"
-import { Carousel } from 'antd';
+import { setLocalActivity } from "../Workspace/helpers";
+import { getActivityToolbox } from "../../Utils/requests";
+import { getToken } from "../../Utils/AuthRequests";
 
 
-export default function Workspace(props) {
+export default function Workspace() {
 
     const [activity, setActivity] = useState({} )
     const [hoverXml, setHoverXml] = useState(false)
@@ -21,42 +22,41 @@ export default function Workspace(props) {
     const setWorkspace = () => workspaceRef.current = window.Blockly.inject('blockly-canvas', { toolbox: document.getElementById('toolbox') })
 
     useEffect(() => {
-        const localActivity = localStorage.getItem("my-activity")
-        const {selectedActivity} = props
+        const localActivity = localStorage.getItem("sandbox-activity")
 
-        if (localActivity && !selectedActivity) {
+        if (localActivity) {
             let loadedActivity = JSON.parse(localActivity)
             setActivity(loadedActivity)
+        } else {
+            getActivityToolboxAll().then(response => {
+                let loadedActivity = {toolbox: response.toolbox}
 
-        } else if (selectedActivity) {
-            getActivityToolbox(selectedActivity.id, getToken()).then(response => {
-                let loadedActivity = {...selectedActivity, toolbox: response.toolbox}
-
-                localStorage.setItem("my-activity", JSON.stringify(loadedActivity))
+                localStorage.setItem("sandbox-activity", JSON.stringify(loadedActivity))
                 setActivity(loadedActivity)
             })
-        } else {
-            props.history.push('/')
         }
 
         // clean up - removes blockly div from DOM
         return () => {
             if (workspaceRef.current) workspaceRef.current.dispose()
         }
-    }, [props])
+    }, [])
 
     useEffect(() => {
         // once the activity state is set, set the workspace
-        if (Object.keys(activity).length && !workspaceRef.current) {
+        if (!workspaceRef.current) {
             setWorkspace()
-            workspaceRef.current.addChangeListener(() => setLocalActivity(workspaceRef.current))
-
-            if (activity.template) {
-                let xml = window.Blockly.Xml.textToDom(activity.template)
-                window.Blockly.Xml.domToWorkspace(xml, workspaceRef.current)
-            }
         }
     }, [activity])
+
+    const setLocalActivity = (workspaceRef) => {
+        let workspaceDom = window.Blockly.Xml.workspaceToDom(workspaceRef)
+        let workspaceText = window.Blockly.Xml.domToText(workspaceDom)
+        const localActivity = JSON.parse(localStorage.getItem("sandbox-activity"))
+
+        let lastActivity = { ...localActivity, template: workspaceText }
+        localStorage.setItem("sandbox-activity", JSON.stringify(lastActivity))
+    }
 
     return (
         <div>
@@ -64,7 +64,7 @@ export default function Workspace(props) {
                 <div id='horizontal-container' className="flex flex-column">
                     <div id='top-container' className="flex flex-column vertical-container">
                         <div id='description-container' className="flex flex-row space-between card">
-                            <Link id='link' to={"/student"} className="flex flex-column">
+                            <Link id='link' to={"/"} className="flex flex-column">
                                 <i className="fa fa-home" style={{"fontSize": "32px"}}/>
                                 Home
                             </Link>
