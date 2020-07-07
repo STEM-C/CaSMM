@@ -17,8 +17,8 @@ module.exports = {
 
         // get the activities from the 
         // students current session
-        const { sessionId } = ctx.state.user
-        const { activities } = await strapi.services.session.findOne({ id: sessionId })
+        const { session } = ctx.state.user
+        const { activities } = await strapi.services.session.findOne({ id: session })
 
         // remove private fields and return the session's activities
         return activities.map(activity => sanitizeEntity(activity, {
@@ -146,7 +146,7 @@ module.exports = {
         return {
             jwt: strapi.plugins['users-permissions'].services.jwt.issue({
                 ids: students,
-                sessionId: session.id,
+                session: session.id,
                 isStudent: true
             }),
             students: validStudents.map(student => {
