@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useCallback} from 'react';
+import React, {useState, useEffect} from 'react';
 import './StudentLogin.less'
 import Logo from "../../assets/casmm_logo.png"
 import {getStudents, postJoin} from "../../Utils/requests";
