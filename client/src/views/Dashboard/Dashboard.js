@@ -112,14 +112,9 @@ export default function Dashboard(props) {
 
     return (
         <div className="container">
-            {console.log(user)}
             <Header user={user.username} handleLogout={handleLogout}/>
             <div id='table-container'>
                 <Table columns={columns} dataSource={tableData} onChange={handleFilterChange}/>
-            </div>
-            <div>
-            {console.log('render')}
-            {console.log(tableData)}
             </div>
         </div>
     )
