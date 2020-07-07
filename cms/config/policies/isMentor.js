@@ -2,7 +2,7 @@
 // Check if the current user is a mentor
 //
 module.exports = async (ctx, next) => {
-    if (ctx.state.user.role.name === 'Mentor') {
+    if (ctx.state.user && ctx.state.user.role.name === 'Mentor') {
         return await next()
     }
   
