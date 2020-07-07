@@ -40,9 +40,10 @@ function Student(props) {
                 <ul>
                     {
                         activityList.map(activity =>
-                            <div id={selectedActivity.id !== activity.id ? 'list-item-wrapper' : 'selected-activity'}
+                            <div key={activity.id}
+                                 id={selectedActivity.id !== activity.id ? 'list-item-wrapper' : 'selected-activity'}
                                  onClick={() => handleSelection(activity)}>
-                                <li key={activity.id}>
+                                <li>
                                     {activity.name}
                                 </li>
                             </div>

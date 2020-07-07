@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import './Home.less'
 import Logo from "../../assets/casmm_logo.png"
 import HomeJoin from "./HomeJoin"
@@ -9,7 +9,7 @@ export default function Home(props) {
     return(
         <div className='container'>
             <div id='content-wrapper'>
-                <img src={Logo} id='casmm-logo'/>
+                <img src={Logo} alt='logo' id='casmm-logo'/>
                 <HomeJoin history={props.history}/>
             </div>
             <div id='divider'></div>
