@@ -9,7 +9,7 @@ import {setUserSession} from "../../Utils/AuthRequests";
 export default function StudentLogin(props) {
     const [studentList, setStudentList] = useState([]);
     const [animalList, setAnimalList] = useState([])
-    const [studentIds, setStudentIds] = useState(['', '', '']);
+    const [studentIds, setStudentIds] = useState([null, null, null]);
     const [studentAnimals, setStudentAnimals] = useState(['', '', '']);
     const [numForms, setNumForms] = useState(2);
     const joinCode = localStorage.getItem('join-code');
@@ -33,7 +33,7 @@ export default function StudentLogin(props) {
 
     const updateStudentUsers = (studentId, entryNum) => {
         let ids = [...studentIds];
-        ids[entryNum-1] = studentId;
+        ids[entryNum-1] = parseInt(studentId);
         setStudentIds(ids)
     };
 
