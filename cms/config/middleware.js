@@ -11,9 +11,10 @@ module.exports = {
             routes: [
                 '/',
                 '/login',
-                '/register',
-                '/teacher*',
-                '/workspace*'
+                '/dashboard',
+                '/student',
+                '/workspace',
+                '/sandbox'
             ]
         },
         // logger: {
