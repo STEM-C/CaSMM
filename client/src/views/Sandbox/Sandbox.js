@@ -3,10 +3,6 @@ import { Link } from "react-router-dom"
 import { compileArduinoCode, getArduino, getJS, getXml } from '../Workspace/helpers.js'
 import "../Workspace/Workspace.less"
 import { getActivityToolboxAll } from "../../Utils/requests.js"
-import Logo from "../../assets/casmm_logo.png"
-import { setLocalActivity } from "../Workspace/helpers";
-import { getActivityToolbox } from "../../Utils/requests";
-import { getToken } from "../../Utils/AuthRequests";
 
 
 export default function Workspace() {
