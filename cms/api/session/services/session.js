@@ -1,7 +1,17 @@
 'use strict';
 
 // find a session by code
-module.exports.findByCode = (code) => strapi.query('session').findOne({ code })
+module.exports.findByCode = async (code) => {
+
+    // get the whole session model
+    const model = await strapi.query('session').model.where('code', code).fetch()
+
+    // return the model and the session
+    return {
+        model, 
+        session: model ? model.toJSON() : undefined
+    }
+}
 
 const randomCode = (n) => {
 

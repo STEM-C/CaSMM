@@ -9,6 +9,8 @@ export const getTopics = async (jwt) => (await axios.get(`${cms}/topics`, {
     }
 })).data
 
+export const getActivityToolboxAll = async () => (await axios.get(`${cms}/sandbox/toolbox`)).data
+
 export const getActivityToolbox = async (id, jwt) => (await axios.get(`${cms}/activities/toolbox/${id}`, {
     headers: {
         Authorization:
@@ -41,8 +43,8 @@ export const getActivities = async (jwt) => (await axios.get(`${cms}/sessions/st
 
 export const getStudents = async (code) => (await axios.get(`${cms}/sessions/code/${code}`)).data
 
-export const postJoin = async (code, id) => (await axios.post(`${cms}/sessions/join`, {
-        "studentId": id,
+export const postJoin = async (code, ids) => (await axios.post(`${cms}/sessions/join`, {
+        "students": ids,
         "code": code
     }
 )).data

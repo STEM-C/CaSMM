@@ -1,9 +1,12 @@
 import React, {useState, useEffect} from 'react'
 import {getToken} from "../../Utils/AuthRequests"
 import {getActivities} from "../../Utils/requests"
+import './Student.less'
 
 function Student(props) {
-    const [activityList, setActivityList] = useState([])
+    const [activityList, setActivityList] = useState([]);
+    const [error, setError] = useState(null);
+    const {selectedActivity, setSelectedActivity} = props;
 
     useEffect(() => {
         const jwt = getToken()
@@ -14,22 +17,45 @@ function Student(props) {
     }, [])
 
     const handleSelection = (activity) => {
-        props.setSelectedActivity(activity)
-        props.history.push("/workspace")
-    }
+        setSelectedActivity(activity);
+        setError(null);
+    };
+
+    const handleLaunchActivity = (setError) => {
+        if(selectedActivity.id) {
+            props.history.push("/workspace")
+        }
+        else {
+            setError('Please select an activity.')
+            console.log('asldfkasldkfj')
+        }
+    };
 
     return (
-        <div>
-            <h1>Please select the activity to start</h1>
-            <ul>
-                {
-                    activityList.map(activity =>
-                        <li key={activity.id} onClick={() => handleSelection(activity)}>
-                            {activity.name}
-                        </li>
-                    )
-                }
-            </ul>
+        <div className='container flex justify-center'>
+            <div id='activity-container'>
+                <div id='header'>
+                    <h1>Select your Activity</h1>
+                </div>
+                <ul>
+                    {
+                        activityList.map(activity =>
+                            <div key={activity.id}
+                                 id={selectedActivity.id !== activity.id ? 'list-item-wrapper' : 'selected-activity'}
+                                 onClick={() => handleSelection(activity)}>
+                                <li>
+                                    {activity.name}
+                                </li>
+                            </div>
+                        )
+                    }
+                </ul>
+                {error && <div style={{ color: 'red' }}>{error}</div>}
+                <div id='launcher' className='flex flex-column' onClick={() => handleLaunchActivity(setError)}>
+                <i className="fa fa-rocket" aria-hidden="true"/>
+                Launch Activity
+                </div>
+            </div>
         </div>
     )
 }

@@ -6,11 +6,11 @@ module.exports = async (ctx, next) => {
 
   if (ctx.request && ctx.request.header && ctx.request.header.authorization) {
     try {
-      const { id, isAdmin = false, isStudent = false, sessionId = null } = await strapi.plugins[
+      const { id, ids, isAdmin = false, isStudent = false, session = null } = await strapi.plugins[
         'users-permissions'
       ].services.jwt.getToken(ctx)
 
-      if (id === undefined) {
+      if (id === undefined && ids === undefined) {
         throw new Error('Invalid token: Token did not contain required fields')
       }
 
@@ -23,7 +23,7 @@ module.exports = async (ctx, next) => {
         // we spoof their user object so we can use roles
         //
         const role = await strapi.query('role', 'users-permissions').findOne({ name: 'Student' }, [])
-        ctx.state.user = { id, sessionId, isStudent, role }
+        ctx.state.user = { ids, session, isStudent, role }
       } else {
         ctx.state.user = await strapi.query('user', 'users-permissions').findOne({ id }, ['role'])
       }
