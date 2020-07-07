@@ -140,7 +140,7 @@ module.exports = {
         })
 
         // add the new students to the session
-        if (newStudents.length) sessionModel.students().attach(newStudents)
+        if (newStudents.length) await sessionModel.students().attach(newStudents)
 
         // return a jwt for future requests and the students
         return {
