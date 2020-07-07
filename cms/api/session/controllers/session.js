@@ -17,8 +17,8 @@ module.exports = {
 
         // get the activities from the 
         // students current session
-        const { user } = ctx.state
-        const { activities } = await strapi.services.session.findOne({ id: user.sessionId })
+        const { sessionId } = ctx.state.user
+        const { activities } = await strapi.services.session.findOne({ id: sessionId })
 
         // remove private fields and return the session's activities
         return activities.map(activity => sanitizeEntity(activity, {
@@ -35,20 +35,21 @@ module.exports = {
     async findByCode(ctx) {
 
         const { code } = ctx.params
-        let resp = await strapi.services.session.findByCode(code)
+        const { session } = await strapi.services.session.findByCode(code)
 
         // check if the session exists
-        if (resp) {
+        let response
+        if (session) {
             // get the students belonging to the session's classroom
-            const students = await strapi.services.student.find({ classroom: resp.classroom.id })
-            resp = students.map(student => { return { 
+            const students = await strapi.services.student.find({ classroom: session.classroom.id })
+            response = students.map(student => { return { 
                 id: student.id, 
                 name: student.name,
                 character: student.character
             }})
         }
 
-        return resp
+        return response
     },
 
     /**
@@ -69,19 +70,17 @@ module.exports = {
             { id: 'Session.create.format.invalid', error: 'ValidationError' }
         )
 
-        // make sure a classroom and at least one activity was provided
-        const { activities, classroom } = ctx.request.body
-        if ( !activities || !Array.isArray(activities) || activities.length == 0 || !classroom) return ctx.badRequest(
+        // validate the request
+        const { classroom, activities } = ctx.request.body
+        if (!classroom, !strapi.services.validator.isIntArray(activities)) return ctx.badRequest(
             'A classroom and at least one activity must be provided!',
             { id: 'Session.create.body.invalid', error: 'ValidationError' }
         )
 
-        // make sure the activities are valid
-        const invalidActivities = (await Promise.all(activities.map( 
-            async activity => strapi.services.activity.findOne({ id: activity })
-            ))).filter(activity => activity === null)
-        if (invalidActivities.length) return ctx.notFound(
-            'The activity ids provided are not valid!',
+        // ensure the activities are valid
+        const validActivities = await strapi.services.activity.find({ id: activities })
+        if (validActivities.length !== activities.length) return ctx.notFound(
+            'One or more of the activities are invalid!',
             { id: 'Session.create.activities.invalid', error: 'ValidationError' }
         )
 
@@ -96,66 +95,64 @@ module.exports = {
     /**
      * Log new or existing students into a session
      * 
-     * @param {Integer} studentIds
+     * @param {Integer} students
      * @param {String} code
      * 
-     * @return {JWT, Student}
+     * @return {JWT, Students}
      */
     async join(ctx) {
 
-        const { studentIds, code } = ctx.request.body;
+        const { students, code } = ctx.request.body
 
         // validate the request
-        studentIds.forEach(studentId => {
-            if(!studentId || !code) return ctx.badRequest(
-                'Must provide studentIds and a code!',
-                { id: 'Session.join.body.invalid', error: 'ValidationError'}
-            )
-        })
+        if(!code || !strapi.services.validator.isIntArray(students)) return ctx.badRequest(
+            'Must provide a code and at least one integer studentId!',
+            { id: 'Session.join.body.invalid', error: 'ValidationError'}
+        )
 
-        // make sure the code is valid 
-        // and the session is active
-        const session = await strapi.services.session.findByCode(code)
+        // ensure the code corresponds to an active session
+        const { model: sessionModel, session } = await strapi.services.session.findByCode(code)
         if (!session || !session.active) return ctx.notFound(
             'The code provided does not correspond to a valid session!',
             { id: 'Session.join.code.invalid', error: 'ValidationError' }
         )
 
-        // check if each student has joined this session before
-        let students = [];
-        studentIds.forEach(async studentId => {
-            let student = session.students.find(student => student.id === studentId)
-            if (!student) {
-                // add the student to the session
-                // check that the student exists and belongs to the classroom
-                student = await strapi.services.student.findOne({ id: studentId })
-                if (!student || !student.classroom || student.classroom.id !== session.classroom.id) return ctx.notFound(
-                    'The studentId provided does not correspond to a real student or the student is not in the classroom!',
-                    { id: 'Session.join.studentId.invalid', error: 'ValidationError' }
-                );
+        // ensure the students are exist
+        let validStudents = await strapi.services.student.find({ id: students })
+        if (validStudents.length !== students.length) return ctx.notFound(
+            'One or more of the students are invalid!',
+            { id: 'Session.join.students.invalid', error: 'ValidationError' }
+        )
 
-                // add the student to the session
-                student = await strapi.services.student.update({ id: student.id }, { sessions: [session.id] })
-                delete student.sessions
-            }
+        // ensure all the students belong to the classroom
+        let newStudents = []
+        validStudents.forEach(student => {
+            // first check classroom status
+            if (!student.classroom || student.classroom.id !== session.classroom.id) return ctx.notFound(
+                'One or more of the students do not belong to the classroom!',
+                { id: 'Session.join.studentId.invalid', error: 'ValidationError' }
+            )
 
-            // fill out the classroom field
-            student.classroom = session.classroom
+            // mark the students that are new to the session
+            if (session.students.find(existingStudent => 
+                existingStudent.id === student.id) === undefined) 
+                newStudents.push(student.id)
+        })
 
-            students.push(student)
-        });
+        // add the new students to the session
+        if (newStudents.length) sessionModel.students().attach(newStudents)
 
         // return a jwt for future requests and the students
         return {
             jwt: strapi.plugins['users-permissions'].services.jwt.issue({
-                ids: studentIds,
+                ids: students,
                 sessionId: session.id,
                 isStudent: true
             }),
-            students: students.map(student =>
-                sanitizeEntity(student, {
-                model: strapi.models.student
-            }))
+            students: validStudents.map(student => {
+                const { id, name, character } = student
+                return { id, name, character }
+            })
         }
         // this bypasses the local authentication and requires custom
         // handling of the resulting token in the permissions policy
