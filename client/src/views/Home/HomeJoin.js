@@ -12,16 +12,14 @@ export default function HomeJoin(props) {
         setLoading(true);
 
         getStudents(joinCode).then(students => {
-            console.log(students)
             setLoading(false);
-            localStorage.setItem('join-code', joinCode)
+            localStorage.setItem('join-code', joinCode);
             props.history.push('/login');
-        }).catch(err => {
-            console.log(err)
+        }).catch(() => {
             setLoading(false);
             setError("Please input a valid join code")
         });
-    }
+    };
 
     return(
         <div id="box" onKeyPress={e => {if(e.key === 'Enter') handleLogin()}}>

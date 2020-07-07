@@ -15,19 +15,35 @@ export default function StudentLogin(props) {
     //const [error, setError] = useState(null);
     const joinCode = localStorage.getItem('join-code');
 
-    const updateStudentUsers = useCallback((studentId, entryNum) => {
+    useEffect(() => {
+        getStudents(joinCode).then(studentArray => {
+            setStudentList(studentArray);
+            setAnimalList(['Lion', 'Dog', 'Frog', 'Fish', 'Cow']);
+        }).catch(err => {
+            console.log(err)
+        })
+    }, [joinCode]);
+
+    const handleLogin = async (studentIds) => {
+        let ids = studentIds.slice(0, numForms);
+        const response = await postJoin(joinCode, ids);
+        setUserSession(response.jwt, JSON.stringify(response.students));
+        props.history.push('/student')
+    };
+
+    const updateStudentUsers = (studentId, entryNum) => {
         let ids = [...studentIds];
         ids[entryNum-1] = parseInt(studentId);
         setStudentIds(ids)
-    }, [studentIds]);
+    };
 
-    const updateStudentAnimals = useCallback((studentAnimal, entryNum) => {
+    const updateStudentAnimals = (studentAnimal, entryNum) => {
         let animals = [...studentAnimals];
         animals[entryNum-1] = studentAnimal;
         setStudentAnimals(animals)
-    }, [studentAnimals]);
+    };
 
-    const setForms = useCallback(() => {
+    const setForms = () => {
         let forms = [];
         for (let i = 0; i < numForms; i++) {
             forms.push(
@@ -46,23 +62,6 @@ export default function StudentLogin(props) {
             )
         }
         return forms;
-    }, [studentList, animalList, numForms, updateStudentUsers, updateStudentAnimals]);
-
-    useEffect(() => {
-        getStudents(joinCode).then(studentArray => {
-            setStudentList(studentArray);
-            setAnimalList(['Lion', 'Dog', 'Frog', 'Fish', 'Cow']);
-            setForms()
-        }).catch(err => {
-            console.log(err)
-        })
-    }, [joinCode, setForms]);
-
-    const handleLogin = async (studentIds) => {
-        let ids = studentIds.slice(0, numForms);
-        const response = await postJoin(joinCode, ids);
-        setUserSession(response.jwt, JSON.stringify(response.students));
-        props.history.push('/student')
     };
 
     const addStudent = () => {
