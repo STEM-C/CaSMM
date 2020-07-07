@@ -8,8 +8,20 @@
 
 1. Install [Node](https://nodejs.org/en/) and [Yarn](https://classic.yarnpkg.com/en/docs/install#windows-stable)
 2. Run `yarn` to install project dependencies
+3. Run `yarn start` to startup the client (please note that much of the functionality will not work without also starting up the backend services)
 
 <br />
+
+## Project Structure
+
+This react project has the following file structure rules:
+1. Routing is handled from client root in `App.js`, rendered in react by `index.js`
+2. Components which render as a page are generally listed under the `/views` folder
+3. Component styling is placed into a folder under the name of the main component alongside the component and sub-component files. 
+    - As an example the folder `/Home` contains the `Home.js` component, the `Home.css` styling, and a couple of sub-components.
+4. `/Utils` contains additional utility functions like different database requests or authentication handlers
+
+<br/>
 
 ## Routing
 

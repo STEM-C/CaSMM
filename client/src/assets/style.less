@@ -1,0 +1,58 @@
+@import '~antd/dist/antd.less';
+
+
+#colors() {
+    primary: #3D5C82;
+    secondary: #5BABDE;
+    tertiary: #F4F4F5;
+    text-primary: #414141;
+    text-secondary: #FFFFFF;
+}
+
+.flex {
+    display: flex;
+}
+
+.flex-column {
+    flex-direction: column;
+}
+
+.flex-row {
+    flex-direction: row;
+}
+
+.space-between {
+    justify-content: space-between;
+}
+
+.justify-end {
+    justify-content: flex-end;
+}
+
+.justify-center {
+    justify-content: center;
+}
+
+.container {
+    height: 100%;
+    width: 100%;
+    background-color: #colors[primary];
+    min-height: 100vh;
+}
+
+.vertical-container {
+    margin: 1.5em;
+}
+
+.hvr-info {
+    cursor: pointer;
+}
+
+.card {
+    background-color: #colors[tertiary];
+    padding: .7em;
+}
+
+.overflow-visible {
+    overflow: visible;
+}

@@ -24,7 +24,8 @@
       "model": "type"
     },
     "activities": {
-      "collection": "activity"
+      "collection": "activity",
+      "via": "topic"
     }
   }
 }
