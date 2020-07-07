@@ -11,7 +11,7 @@ import { getToken } from "../../Utils/AuthRequests";
 
 export default function Workspace() {
 
-    const [activity, setActivity] = useState({} )
+    const [activity, setActivity] = useState(null )
     const [hoverXml, setHoverXml] = useState(false)
     const [hoverJS, setHoverJS] = useState(false)
     const [hoverArduino, setHoverArduino] = useState(false)
@@ -44,12 +44,19 @@ export default function Workspace() {
 
     useEffect(() => {
         // once the activity state is set, set the workspace
-        if (!workspaceRef.current) {
+        if (!workspaceRef.current && activity) {
             setWorkspace()
+            workspaceRef.current.addChangeListener(() => setLocalActivity(workspaceRef.current))
+
+            if (activity.template) {
+                let xml = window.Blockly.Xml.textToDom(activity.template)
+                window.Blockly.Xml.domToWorkspace(xml, workspaceRef.current)
+            }
         }
     }, [activity])
 
     const setLocalActivity = (workspaceRef) => {
+        console.log("Got here")
         let workspaceDom = window.Blockly.Xml.workspaceToDom(workspaceRef)
         let workspaceText = window.Blockly.Xml.domToText(workspaceDom)
         const localActivity = JSON.parse(localStorage.getItem("sandbox-activity"))
@@ -105,7 +112,7 @@ export default function Workspace() {
             <xml id="toolbox" style={{ "display": "none" }} is="Blockly workspace">
                 {
                     // Maps out block categories
-                    activity.toolbox && activity.toolbox.map(([category, blocks]) => (
+                    activity && activity.toolbox && activity.toolbox.map(([category, blocks]) => (
                         <category name={category} is="Blockly category" key={category}>
                             {
                                 // maps out blocks in category
