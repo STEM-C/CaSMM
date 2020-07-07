@@ -8,18 +8,18 @@
     min-width: 100vw;
 }
 
-.form-container {
+#form-container {
     background-color: #colors[primary];
     min-width: 100vw;
     text-align: center;
 }
 
-.wrapper {
+#wrapper {
     margin: 4vh auto 1vh;
     display: inline-block;
 }
 
-.form-divider {
+#form-divider {
     height: 100px;
     width: 3px;
     border-radius: 5px;
@@ -28,7 +28,7 @@
     display: inline-block;
 }
 
-.box{
+#box{
     width: 300px;
     padding: 40px 20px;
     background-color: #colors[tertiary];
@@ -38,13 +38,13 @@
     border-color: #colors[secondary];
 }
 
-.select-lable {
+#select-lable {
   color: #colors[text-primary];
   font-weight: 550;
   font-size: 1.1em;
 }
 
-.box select{
+#box select{
     display: block;
     background: none;
     margin: 5px auto 0px;
@@ -58,11 +58,11 @@
     transition: 0.25s;
 }
 
-.box select:focus{
+#box select:focus{
     width: 220px;
 }
 
-.box input[type = "button"]{
+#box input[type = "button"]{
     background: darken(#colors[tertiary], 30%);
     width: 80%;
     display: block;
@@ -84,14 +84,14 @@
     bottom: -65px;
 }
 
-.login-logo {
+#login-logo {
     width: 275px;
     height: auto;
     position: relative;
     bottom: -10px;
 }
 
-.link-container {
+#link-container {
     background-color: #colors[primary];
     color: #colors[text-secondary];
     font-size: 1.4em;
@@ -132,4 +132,9 @@ button {
   &:hover {
     color: lighten(#colors[secondary], 20%);
   }
+}
+
+#disabled-option {
+  opacity: .6;
+  background-color: darken(#colors[tertiary], 10%);
 }

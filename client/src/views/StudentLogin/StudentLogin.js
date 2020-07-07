@@ -12,9 +12,10 @@ export default function StudentLogin(props) {
     const [studentIds, setStudentIds] = useState(['', '', '']);
     const [studentAnimals, setStudentAnimals] = useState(['', '', '']);
     const [numForms, setNumForms] = useState(2);
+    const joinCode = localStorage.getItem('join-code');
 
     useEffect(() => {
-        getStudents(props.joinCode).then(studentArray => {
+        getStudents(joinCode).then(studentArray => {
             setStudentList(studentArray);
             setAnimalList(['Lion', 'Dog', 'Frog', 'Fish', 'Cow']);
             setForms()
@@ -25,7 +26,7 @@ export default function StudentLogin(props) {
 
     const handleLogin = async (studentIds) => {
         let ids = studentIds.slice(0, numForms);
-        const response = await postJoin(props.joinCode, ids);
+        const response = await postJoin(joinCode, ids);
         setUserSession(response.jwt, JSON.stringify(response.students));
         props.history.push('/student')
     };
@@ -64,8 +65,8 @@ export default function StudentLogin(props) {
         for (let i = 0; i < numForms; i++) {
             forms.push(
                 <>
-                    {i > 0 ? <div className='form-divider'/> : null}
-                    <div className='wrapper'>
+                    {i > 0 ? <div id='form-divider'/> : null}
+                    <div id='wrapper'>
                         <StudentLoginForm
                             entryNum={i+1}
                             updateStudentUsers={updateStudentUsers}
@@ -83,12 +84,12 @@ export default function StudentLogin(props) {
 
     return(
         <div className='container'>
-            <img src={Logo} className='login-logo'/>
-            <div className='form-container'>
+            <img src={Logo} id='login-logo'/>
+            <div id='form-container'>
                 {setForms().map((form) =>
                     form
                 )}
-                <div className='link-container'>
+                <div id='link-container'>
                     <a onClick={addStudent}>Add a student</a>
                     <a onClick={removeStudent}>Remove a student</a>
                 </div>

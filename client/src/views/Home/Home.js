@@ -8,12 +8,12 @@ import TeacherLogin from "./TeacherLogin"
 export default function Home(props) {
     return(
         <div className='container'>
-            <div className='content-wrapper'>
-                <img src={Logo} className='casmm-logo'/>
-                <HomeJoin setJoinCode={props.setJoinCode} joinCode={props.joinCode} history={props.history}/>
+            <div id='content-wrapper'>
+                <img src={Logo} id='casmm-logo'/>
+                <HomeJoin history={props.history}/>
             </div>
-            <div className='divider'></div>
-            <div className='content-wrapper'>
+            <div id='divider'></div>
+            <div id='content-wrapper'>
                 <TeacherLogin history={props.history}/>
             </div>
         </div>
