@@ -1,44 +1,23 @@
-import React, { useEffect, useState } from "react"
+import React, { useState } from 'react';
 import { Link } from "react-router-dom"
-import { getTopics } from "../../dataaccess/requests"
-import './Home.css'
+import './Home.less'
+import Logo from "../../assets/casmm_logo.png"
+import HomeJoin from "./HomeJoin"
+import TeacherLogin from "./TeacherLogin"
 
-function Home(props) {
 
-    const [topics, setTopics] = useState([])
-    const [activities, setActivities] = useState([]) // temporary - eventually topics should render their activities
-
-    useEffect(() => {
-        localStorage.clear()
-
-        getTopics().then(topics => {
-
-            // temporary - put all the activities into one array for current rendering
-            let activities = []
-            topics.forEach(topic => activities = activities.concat(topic.activities))
-
-            setTopics(topics)
-            setActivities(activities)
-        })
-    }, [])
-
-    return (
-        <div>
-
-            <div className="cardList">
-                <h2 className="cardHeader">Activity List</h2>
-                {
-                    activities.map(activity => {
-                        return (
-                            <Link to="/workspace" className="cardActivity" key={activity.id} onClick={() => props.setSelectedActivity(activity)}>
-                                {activity.name}
-                            </Link>
-                        );
-                    })
-                }
+export default function Home(props) {
+    return(
+        <div className='container'>
+            <Link to={"/sandbox"} id='content-independent'>Go to Block Sandbox</Link>
+            <div id='content-wrapper'>
+                <img src={Logo} id='casmm-logo'/>
+                <HomeJoin history={props.history}/>
+            </div>
+            <div id='divider'></div>
+            <div id='content-wrapper'>
+                <TeacherLogin history={props.history}/>
             </div>
         </div>
     )
 }
-
-export default Home;

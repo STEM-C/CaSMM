@@ -1,11 +1,17 @@
 import React, { useEffect, useRef, useState } from "react"
 import { Link } from "react-router-dom"
 import { compileArduinoCode, getArduino, getJS, getXml, setLocalActivity } from './helpers.js'
-import "./Workspace.css"
-import { getActivityToolbox } from "../../dataaccess/requests.js"
-import { useHistory } from "react-router-dom"
+import "./Workspace.less"
+import { getActivityToolbox } from "../../Utils/requests.js"
+import { getToken } from "../../Utils/AuthRequests"
+import Logo from "../../assets/casmm_logo.png"
+import PlaceHolderImg1 from "../../assets/science.png"
+import PlaceHolderImg2 from "../../assets/arduino.png"
+import PlaceHolderImg3 from "../../assets/maker.png"
+import { Carousel } from 'antd';
 
-function App(props) {
+
+export default function Workspace(props) {
 
     const [activity, setActivity] = useState({} )
     const [hoverXml, setHoverXml] = useState(false)
@@ -13,7 +19,6 @@ function App(props) {
     const [hoverArduino, setHoverArduino] = useState(false)
     const [hoverCompile, setHoverCompile] = useState(false)
 
-    let history = useHistory()
     let workspaceRef = useRef(null)
 
     const setWorkspace = () => workspaceRef.current = window.Blockly.inject('blockly-canvas', { toolbox: document.getElementById('toolbox') })
@@ -27,23 +32,21 @@ function App(props) {
             setActivity(loadedActivity)
 
         } else if (selectedActivity) {
-            getActivityToolbox(selectedActivity.id).then(response => {
+            getActivityToolbox(selectedActivity.id, getToken()).then(response => {
                 let loadedActivity = {...selectedActivity, toolbox: response.toolbox}
 
                 localStorage.setItem("my-activity", JSON.stringify(loadedActivity))
                 setActivity(loadedActivity)
             })
         } else {
-            window.location = '/' // this should probably use the react router dom to add to history stack
+            props.history.push('/')
         }
 
         // clean up - removes blockly div from DOM
         return () => {
-            if (workspaceRef.current) {
-                workspaceRef.current.dispose()
-            }
+            if (workspaceRef.current) workspaceRef.current.dispose()
         }
-    }, [props, history])
+    }, [props])
 
     useEffect(() => {
         // once the activity state is set, set the workspace
@@ -60,37 +63,77 @@ function App(props) {
 
     return (
         <div>
-            <div id="container" className="flex flex-column">
-                <div id="nav-container" className="flex vertical-container space-between">
-                    <h1 id="title"><Link to={"/"}>STEM+C</Link></h1>
-                    <div id="action-btn-container" className="flex space-between">
-                        <i onClick={() => getXml(workspaceRef.current)} className="fas fa-code hvr-info"
-                           onMouseEnter={() => setHoverXml(true)}
-                           onMouseLeave={() => setHoverXml(false)}/>
-                        {hoverXml && <div className="popup JS">Shows Xml Code</div>}
-                        <i onClick={() => getJS(workspaceRef.current)} className="fab fa-js hvr-info"
-                           onMouseEnter={() => setHoverJS(true)}
-                           onMouseLeave={() => setHoverJS(false)}/>
-                        {hoverJS && <div className="popup JS">Shows Javascript Code</div>}
-                        <i onClick={() => getArduino(workspaceRef.current)} className="hvr-info"
-                           onMouseEnter={() => setHoverArduino(true)}
-                           onMouseLeave={() => setHoverArduino(false)}>A</i>
-                        {hoverArduino && <div className="popup Arduino">Shows Arduino Code</div>}
-                        <i onClick={() => compileArduinoCode(workspaceRef.current)} className="fas fa-play hvr-info"
-                           onMouseEnter={() => setHoverCompile(true)}
-                           onMouseLeave={() => setHoverCompile(false)}/>
-                        {hoverCompile && <div className="popup Compile">Run Program</div>}
+            <div className="container flex flex-row">
+                <div id='horizontal-container' className="flex flex-column">
+                    <div id="top-container" className="flex flex-column vertical-container">
+                        <div id="description-container"
+                             className="flex flex-row justify-end card overflow-visible"
+                             style={{"marginLeft": "70px"}}>
+                            <img src={Logo} id='logo' alt="Maker activity"/>
+                            <h2>Maker Activity {activity.name}</h2>
+                        </div>
+                    </div>
+                    <div id='bottom-container' className="flex flex-column vertical-container overflow-visible">
+                        <div id="section-header">
+                                Learn about the activity...
+                        </div>
+                        <p id="section-text">{activity.description}</p>
+                        <div id="secondary-section-header">
+                            See the different parts of the activity...
+                        </div>
+                        {/* Example implementation of image Carousel */}
+                        <div id="carousel-container">
+                        <Carousel dotPosition={"left"}>
+                            <div id="diagram-container">
+                                <img id="diagram" src={PlaceHolderImg1} alt="First diagram in carousel"/>
+                            </div>
+                            <div id="diagram-container">
+                                <img id="diagram" src={PlaceHolderImg2} alt="Second diagram in carousel"/>
+                            </div>
+                            <div id="diagram-container">
+                                <img id="diagram" src={PlaceHolderImg3} alt="Third diagram in carousel"/>
+                            </div>
+                        </Carousel>
+                        </div>
                     </div>
                 </div>
-                <div id="top-container" className="flex flex-column vertical-container">
-                    <div id="description-container" className="flex flex-column card">
-                        <h3>Maker Activity {activity.name}</h3>
-                        <p><b>Instructions / Science Brief: </b>
-                            {activity.description}</p>
+                <div id='horizontal-container' className="flex flex-column">
+                    <div id='top-container' className="flex flex-column vertical-container">
+                        <div id='description-container' className="flex flex-row space-between card">
+                            <Link id='link' to={"/student"} className="flex flex-column">
+                                <i className="fa fa-home" style={{"fontSize": "32px"}}/>
+                                Home
+                            </Link>
+                            <div style={{"width": "25%"}}>
+                                <div id='action-btn-container' className="flex space-between">
+                                    <i onClick={() => getXml(workspaceRef.current)} className="fas fa-code hvr-info"
+                                       onMouseEnter={() => setHoverXml(true)}
+                                       onMouseLeave={() => setHoverXml(false)}/>
+                                    {hoverXml && <div className="popup XML">Shows Xml Code</div>}
+                                    <i onClick={() => getJS(workspaceRef.current)} className="fab fa-js hvr-info"
+                                       onMouseEnter={() => setHoverJS(true)}
+                                       onMouseLeave={() => setHoverJS(false)}/>
+                                    {hoverJS && <div className="popup JS">Shows Javascript Code</div>}
+                                    <i onClick={() => getArduino(workspaceRef.current)} className="hvr-info"
+                                       onMouseEnter={() => setHoverArduino(true)}
+                                       onMouseLeave={() => setHoverArduino(false)}>A</i>
+                                    {hoverArduino && <div className="popup Arduino">Shows Arduino Code</div>}
+                                    <i onClick={() => compileArduinoCode(workspaceRef.current)}
+                                       className="fas fa-play hvr-info"
+                                       onMouseEnter={() => setHoverCompile(true)}
+                                       onMouseLeave={() => setHoverCompile(false)}/>
+                                    {hoverCompile && <div className="popup Compile">Run Program</div>}
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                </div>
-                <div id="bottom-container" className="flex vertical-container">
-                    <div id="blockly-canvas" style={{ "height": "800px", "width": "100%" }} onChange={() => setLocalActivity(workspaceRef.current)}/>
+                    <div id='bottom-container' className="flex flex-column vertical-container overflow-visible">
+                        <div id="section-header">
+                                Program your Arduino...
+                        </div>
+                        <div id="blockly-canvas"
+                             onChange={() => setLocalActivity(workspaceRef.current)}/>
+                    </div>
                 </div>
             </div>
 
@@ -115,5 +158,3 @@ function App(props) {
     );
 
 }
-
-export default App;

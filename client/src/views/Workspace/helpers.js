@@ -1,4 +1,4 @@
-import { compileCode } from "../../dataaccess/requests";
+import { compileCode } from "../../Utils/requests";
 
 const AvrboyArduino = window.AvrgirlArduino;
 
@@ -7,19 +7,19 @@ export const setLocalActivity = (workspaceRef) => {
     let workspaceText = window.Blockly.Xml.domToText(workspaceDom)
     const localActivity = JSON.parse(localStorage.getItem("my-activity"))
 
-    let lastActivity = {...localActivity, template: workspaceText}
+    let lastActivity = { ...localActivity, template: workspaceText }
     localStorage.setItem("my-activity", JSON.stringify(lastActivity))
 }
 
 // Generates xml from blockly canvas
 export const getXml = (workspaceRef) => {
-    
-    const { Blockly } = window 
+
+    const { Blockly } = window
 
     let xml = Blockly.Xml.workspaceToDom(workspaceRef)
     let xml_text = Blockly.Xml.domToText(xml)
-    alert(xml_text);
-    return (xml_text);
+    alert(xml_text)
+    return (xml_text)
 };
 
 // Generates javascript code from blockly canvas
@@ -31,10 +31,10 @@ export const getJS = (workspaceRef) => {
 };
 
 // Generates Arduino code from blockly canvas
-export const getArduino = (workspaceRef, alert = true) => {
+export const getArduino = (workspaceRef, shouldAlert = true) => {
     window.Blockly.Arduino.INFINITE_LOOP_TRAP = null;
     let code = window.Blockly.Arduino.workspaceToCode(workspaceRef);
-    if(alert) alert(code);
+    if (shouldAlert) alert(code);
     return (code);
 };
 
