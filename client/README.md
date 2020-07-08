@@ -9,6 +9,7 @@
 1. Install [Node](https://nodejs.org/en/) and [Yarn](https://classic.yarnpkg.com/en/docs/install#windows-stable)
 2. Run `yarn` to install project dependencies
 3. Run `yarn start` to startup the client (please note that much of the functionality will not work without also starting up the backend services)
+4. Navigate to chrome://flags/ and enable the #enable-experimental-web-platform-features flag (This will provide your browser access to serial ports)
 
 <br />
 
