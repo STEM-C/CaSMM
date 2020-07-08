@@ -49,6 +49,20 @@ It correctly bundles React in production mode and optimizes the build for the be
 
 <br />
 
+## Styling
+
+To maintain a consistant theme the folowing has been implemented in `\client\src\assets\style.less` for import
+
+### Colors
+    
+    primary: #3D5C82;
+    secondary: #5BABDE;
+    tertiary: #F4F4F5;
+    text-primary: #414141;
+    text-secondary: #FFFFFF;
+
+<br />
+
 ### Relevant notes
 
 Section on fixing issue where yarn build does not minify: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
