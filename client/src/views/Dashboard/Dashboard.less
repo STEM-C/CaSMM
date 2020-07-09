@@ -1,13 +1,5 @@
 @import "../../assets/style.less";
 
-.container {
-    min-height: 100vh;
-    min-width: 100vh;
-    height: 100%;
-    width: 100%;
-    background-color: #colors[primary];
-}
-
 #table-container {
     width: 80%;
     padding-top: 5vh;
@@ -16,4 +8,44 @@
 
 .ant-table-row {
     background-color: white;
+}
+
+#page-header {
+    text-align: left;
+}
+
+#card-container {
+    width: 80vw;
+    padding-top: 5vh;
+    margin: auto;
+}
+
+#card {
+    text-align: left;
+    width: 35vw;
+    height: 40vh;
+    margin: 2vw auto 0 auto;
+    background: #colors[tertiary];
+    color: #colors[text-primary];
+    border: solid 4px;
+    border-color: #colors[secondary];
+    border-radius: 10px;
+}
+
+#card-button-container {
+    position: relative;
+    bottom: 0;
+    margin-bottom: 0;
+    button {
+        width: 10vw;
+        font-size: 1em;
+        padding-left: 0;
+        padding-right: 0;
+    }
+}
+
+#card-content-container {
+    position: relative;
+    bottom: 0;
+    margin-bottom: 1vh;
 }
