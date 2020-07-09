@@ -9,7 +9,7 @@ import TeacherLogin from "./TeacherLogin"
 export default function Home(props) {
     return(
         <div className='container'>
-            <Link to={"/sandbox"} id='content-independent'>Go to Block Sandbox</Link>
+            <Link to={"/sandbox"} id='content-independent' className='flex'>Go to Block Sandbox</Link>
             <div id='content-wrapper'>
                 <img src={Logo} id='casmm-logo'/>
                 <HomeJoin history={props.history}/>
