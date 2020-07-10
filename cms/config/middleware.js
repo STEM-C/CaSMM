@@ -14,7 +14,8 @@ module.exports = {
                 '/dashboard',
                 '/student',
                 '/workspace',
-                '/sandbox'
+                '/sandbox',
+                '/roster'
             ]
         },
         // logger: {

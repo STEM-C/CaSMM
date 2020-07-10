@@ -9,6 +9,7 @@ import Student from "./views/Student/Student"
 import NotFound from "./views/NotFound"
 import StudentLogin from "./views/StudentLogin/StudentLogin";
 import Sandbox from "./views/Sandbox/Sandbox"
+import Roster from "./views/Roster/Roster";
 
 const App = () => {
     const [selectedActivity, setSelectedActivity] = useState('');
@@ -23,6 +24,7 @@ const App = () => {
                 <PrivateRoute exact path={"/student"} render={() => <Student history={history} selectedActivity={selectedActivity} setSelectedActivity={setSelectedActivity}/> } />
                 <Route path={"/workspace"} render={() => <Workspace selectedActivity={selectedActivity} history={history}/>}/>
                 <Route path={"/sandbox"} render={() => <Sandbox history={history} />} />
+                <PrivateRoute exact path={"/roster/:id"} render={() => <Roster history={history} />}/>
                 <Route component={NotFound}/>
             </Switch>
         </div>
