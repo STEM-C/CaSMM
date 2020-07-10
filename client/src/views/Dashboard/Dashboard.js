@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from "react"
-import {getMentor, getClassrooms, updateSession} from "../../Utils/requests"
+import {getMentor, getClassrooms} from "../../Utils/requests"
 import {removeUserSession, getUser, getToken} from "../../Utils/AuthRequests";
-import {Table, Switch, Card} from 'antd';
+import {Card} from 'antd';
 import './Dashboard.less'
 
 import Header from '../../components/Header.js'
@@ -17,7 +17,10 @@ export default function Dashboard(props) {
                 classroomIds.push(classroom.id)
             });
             getClassrooms(classroomIds, getToken()).then(classrooms => {
-                setClassrooms(classrooms)
+                let c = classrooms
+                c.push(classrooms[0])
+                c.push(classrooms[0])
+                setClassrooms(c)
             });
         })
     }, []);
@@ -31,7 +34,7 @@ export default function Dashboard(props) {
         <div className="container">
             <Header user={user.username} handleLogout={handleLogout}/>
             <h1 id='page-header'>Your Classrooms:</h1>
-            <div id='card-container' className='flex flex-row'>
+            <div id='card-container'>
                 {console.log(classrooms)}
                 {classrooms.map(classroom =>
                     <Card id='card' title={classroom.name}>
