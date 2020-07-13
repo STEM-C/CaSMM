@@ -7,7 +7,7 @@ export default function CardView(props) {
     return(
         <div id='card-container'>
             {studentData.map(student =>
-                <Card id='card' title={student.name}>
+                <Card id='card' title={student.name} key={student.key}>
                     <div id='card-content-container'>
                         <p>Animal: {student.animal}</p>
                         <p>Number of Submissions: ###</p>

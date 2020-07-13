@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React from 'react';
 import {Form, Input, Popconfirm, Switch, Table} from "antd";
 
 export default function ListView(props) {
@@ -73,7 +73,7 @@ export default function ListView(props) {
                 return editable ? (
                     <span>
             <a
-                href="javascript:"
+                href="/#"
                 onClick={() => save(record.key)}
                 style={{
                     marginRight: 8,
@@ -82,11 +82,11 @@ export default function ListView(props) {
               Save
             </a>
             <Popconfirm title="Are you sure you want to cancel?" onConfirm={cancelEdit}>
-              <a>Cancel</a>
+              <a href='/#'>Cancel</a>
             </Popconfirm>
           </span>
                 ) : (
-                    <a disabled={editingKey !== ''} onClick={() => edit(record)}>
+                    <a href='/#' disabled={editingKey !== ''} onClick={() => edit(record)}>
                         Edit
                     </a>
                 );
@@ -99,7 +99,7 @@ export default function ListView(props) {
             width: '10%',
             align: 'right',
             render: () => (
-                <a href='#'>View</a>
+                <a href='/#'>View</a>
             )
         },
         {

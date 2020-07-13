@@ -23,25 +23,25 @@ export default function MentorSubHeader(props) {
                         <i className="fa fa-home"/>
                     </Link> : null}
                 {addActivityActive ?
-                    <a href='#' id='link'>
+                    <button id='link'>
                         <i className="fa fa-plus-square"/>
-                    </a> : null}
+                    </button> : null}
                 {addUserActive ?
-                    <a href='#' id='link'>
+                    <button id='link'>
                         <i className="fa fa-user-plus"/>
-                    </a> : null}
+                    </button> : null}
                 {cardViewActive ?
-                    <a href='#' onClick={() => setListView(false)} id='link'>
+                    <button onClick={() => setListView(false)} id='link'>
                         <i className="fa fa-th"/>
-                    </a> : null}
+                    </button> : null}
                 {listViewActive ?
-                    <a href='#' onClick={() => setListView(true)} id='link'>
+                    <button onClick={() => setListView(true)} id='link'>
                         <i className="fa fa-list-alt"/>
-                    </a> : null}
-                <a href='#' onClick={handleLogout} id='link'>
+                    </button> : null}
+                <button onClick={handleLogout} id='link'>
                     <i className="fa fa-sign-out-alt"/>
-                </a>
-                </span>
+                </button>
+            </span>
         </div>
     )
 }
