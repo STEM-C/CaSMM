@@ -1,11 +1,9 @@
 import React, {useEffect, useState} from "react"
-import { Link } from "react-router-dom"
 import {getMentor, getClassrooms} from "../../Utils/requests"
-import {removeUserSession, getUser, getToken} from "../../Utils/AuthRequests";
+import {getUser, getToken} from "../../Utils/AuthRequests";
 import {Card} from 'antd';
 import './Dashboard.less'
 
-import Header from '../../components/Header.js'
 import MentorSubHeader from "../../components/MentorSubHeader/MentorSubHeader";
 
 export default function Dashboard(props) {
@@ -38,7 +36,6 @@ export default function Dashboard(props) {
             <div id='main-header'>Welcome {user.username}</div>
             <MentorSubHeader title={'Your Classroom:'} handleLogout={handleLogout}/>
             <div id='card-container'>
-                {console.log(classrooms)}
                 {classrooms.map(classroom =>
                     <Card id='card' title={classroom.name}>
                         <div id='card-content-container'>

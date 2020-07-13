@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Link } from "react-router-dom"
 import './Home.less'
 import Logo from "../../assets/casmm_logo.png"
@@ -11,7 +11,7 @@ export default function Home(props) {
         <div className='container'>
             <Link to={"/sandbox"} id='content-independent' className='flex'>Go to Block Sandbox</Link>
             <div id='content-wrapper'>
-                <img src={Logo} id='casmm-logo'/>
+                <img src={Logo} id='casmm-logo' alt='logo'/>
                 <HomeJoin history={props.history}/>
             </div>
             <div id='divider'></div>

@@ -10,6 +10,7 @@ export default function MentorSubHeader(props) {
         addUserActive,
         cardViewActive,
         listViewActive,
+        setListView,
         handleLogout
     } = props;
 
@@ -30,11 +31,11 @@ export default function MentorSubHeader(props) {
                         <i className="fa fa-user-plus"/>
                     </a> : null}
                 {cardViewActive ?
-                    <a href='#' id='link'>
+                    <a href='#' onClick={() => setListView(false)} id='link'>
                         <i className="fa fa-th"/>
                     </a> : null}
                 {listViewActive ?
-                    <a href='#' id='link'>
+                    <a href='#' onClick={() => setListView(true)} id='link'>
                         <i className="fa fa-list-alt"/>
                     </a> : null}
                 <a href='#' onClick={handleLogout} id='link'>
