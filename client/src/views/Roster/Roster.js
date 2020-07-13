@@ -1,15 +1,17 @@
 import React, {useEffect, useState} from "react";
 import {getClassroom} from "../../Utils/requests";
 import {getToken} from "../../Utils/AuthRequests";
-import {Table, Form, Popconfirm, Input} from 'antd'
+import {Table, Form, Popconfirm, Input, Switch} from 'antd'
 import './Roster.less'
+import {Link} from "react-router-dom";
+import MentorSubHeader from "../../components/MentorSubHeader/MentorSubHeader";
 
 export default function Roster(props) {
     const [form] = Form.useForm();
     const [tableData, setTableData] = useState([]);
     const [classroom, setClassroom] = useState([]);
     const [editingKey, setEditingKey] = useState('');
-    const {history}= props;
+    const {history, handleLogout}= props;
     const path = history.location.pathname.split('/');
     const classroomId = path[path.length-1];
 
@@ -22,6 +24,11 @@ export default function Roster(props) {
                     key: student.id,
                     name: student.name,
                     animal: student.character,
+                    active: {
+                        id: student.id,
+                        // TODO: when student has 'active' status
+                        //  active: student.active
+                    }
                 })
             });
             setTableData(data);
@@ -100,6 +107,10 @@ export default function Roster(props) {
         }
     };
 
+    const onToggle = (id, toggled) => {
+        //TODO: update student 'active' status
+    };
+
     const columns = [
         {
             title: 'Name',
@@ -117,11 +128,14 @@ export default function Roster(props) {
             dataIndex: 'animal',
             key: 'animal',
             editable: true,
-            align: 'right',
+            align: 'left',
         },
         {
-            title: 'operation',
-            dataIndex: 'operation',
+            title: 'Edit',
+            dataIndex: 'edit',
+            key: 'edit',
+            width: '10%',
+            align: 'right',
             render: (_, record) => {
                 const editable = isEditing(record);
                 return editable ? (
@@ -146,19 +160,26 @@ export default function Roster(props) {
                 );
             }
         },
-        /*{
-            title: 'Actions',
-            dataIndex: 'actions',
-            key: 'actions',
+        {
+            title: 'View',
+            dataIndex: 'view',
+            key: 'view',
+            width: '10%',
             align: 'right',
-            render: (active) => (
-                <>
-                    <a onClick={() => edit(record)}>View</a>
-                    <a href='#'>Edit</a>
-                    <a href='#'>Remove</a>
-                </>
+            render: () => (
+                    <a href='#'>View</a>
             )
-        }*/
+        },
+        {
+            title: 'Activate / Deactivate',
+            dataIndex: 'active',
+            key: 'active',
+            width: '10%',
+            align: 'right',
+            render: (active) => (<Switch onChange={e => {
+                onToggle(active.id, e)
+            }} defaultChecked={true}/>)
+        }
     ];
 
     const mergedColumns = columns.map(col => {
@@ -181,8 +202,9 @@ export default function Roster(props) {
 
     return (
         <div className="container">
-            <h1>{classroom.name}</h1>
-            <h2>Your Students:</h2>
+            <div id='main-header'>{classroom.name}</div>
+            <MentorSubHeader title={'Your Students:'} toDashActive={true}
+                             addUserActive={true} cardViewActive={true} handleLogout={handleLogout}/>
             <div id='table-container'>
                 <Form form={form} component={false}>
                     <Table columns={mergedColumns}

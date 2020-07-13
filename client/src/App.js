@@ -10,21 +10,26 @@ import NotFound from "./views/NotFound"
 import StudentLogin from "./views/StudentLogin/StudentLogin";
 import Sandbox from "./views/Sandbox/Sandbox"
 import Roster from "./views/Roster/Roster";
+import {removeUserSession} from "./Utils/AuthRequests";
 
 const App = () => {
     const [selectedActivity, setSelectedActivity] = useState('');
-    let history = useHistory()
+    let history = useHistory();
+    const handleLogout = () => {
+        removeUserSession();
+        history.push('/');
+    };
 
     return (
         <div>
             <Switch>
                 <Route exact path={"/"} render={() => <Home history={history} />}/>
                 <Route exact path={"/login"} render={() => <StudentLogin history={history} />}/>
-                <PrivateRoute exact path={"/dashboard"} render={() => <Dashboard history={history}/>}/>
+                <PrivateRoute exact path={"/dashboard"} render={() => <Dashboard history={history} handleLogout={handleLogout}/>}/>
                 <PrivateRoute exact path={"/student"} render={() => <Student history={history} selectedActivity={selectedActivity} setSelectedActivity={setSelectedActivity}/> } />
                 <Route path={"/workspace"} render={() => <Workspace selectedActivity={selectedActivity} history={history}/>}/>
                 <Route path={"/sandbox"} render={() => <Sandbox history={history} />} />
-                <PrivateRoute exact path={"/roster/:id"} render={() => <Roster history={history} />}/>
+                <PrivateRoute exact path={"/roster/:id"} render={() => <Roster history={history} handleLogout={handleLogout}/>}/>
                 <Route component={NotFound}/>
             </Switch>
         </div>
