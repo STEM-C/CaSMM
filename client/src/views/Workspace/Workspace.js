@@ -30,11 +30,9 @@ export default function Workspace(props) {
     }, [props])
 
     return (
-        <div>
-            <div className="container flex flex-row">
-                    <ActivityInfoPanel activity={activity}/>
-                    <BlocklyCanvasPanel activity={activity} activityType={"my-activity"}/>
-            </div>
+        <div className="container flex flex-row">
+            <ActivityInfoPanel activity={activity}/>
+            <BlocklyCanvasPanel activity={activity} activityType={"my-activity"}/>
         </div>
     );
 
