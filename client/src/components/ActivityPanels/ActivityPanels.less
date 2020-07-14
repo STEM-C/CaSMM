@@ -8,14 +8,6 @@ h3, p {
   margin: 0;
 }
 
-i {
-  color: #colors[primary];
-  font-size: 16px;
-  &:hover {
-    color: #colors[secondary];
-  }
-}
-
 #horizontal-container {
   height: 100%;
   width: 100%;
@@ -57,6 +49,15 @@ i {
 #action-btn-container {
   flex: 1;
   margin: 1em;
+
+  i {
+    color: #colors[primary];
+    font-size: 16px;
+
+    &:hover {
+      color: #colors[secondary];
+    }
+  }
 }
 
 #top-container {
@@ -96,7 +97,7 @@ i {
   height: auto;
   position: absolute;
   left: 10px;
-  top: 15px;
+  top: 16.5px;
 }
 
 #section-header {
@@ -171,11 +172,28 @@ i {
 }
 
 #link {
+  background: none !important;
+  border: none;
+  padding: 0 !important;
   color: #colors[primary];
+  text-align: center;
+  margin: 0 5px 0 15px;
+
+  i {
+    color: #colors[primary];
+    font-size: 32px;
+
+    &:hover {
+      color: #colors[secondary];
+    }
+  }
+
   &:hover {
     i {
       color: #colors[secondary];
+      cursor: pointer;
     }
+
     color: #colors[secondary];
   }
 }

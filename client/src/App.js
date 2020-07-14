@@ -27,8 +27,8 @@ const App = () => {
                 <Route exact path={"/login"} render={() => <StudentLogin history={history} />}/>
                 <PrivateRoute exact path={"/dashboard"} render={() => <Dashboard history={history} handleLogout={handleLogout}/>}/>
                 <PrivateRoute exact path={"/student"} render={() => <Student history={history} selectedActivity={selectedActivity} setSelectedActivity={setSelectedActivity}/> } />
-                <Route path={"/workspace"} render={() => <Workspace selectedActivity={selectedActivity} history={history}/>}/>
-                <Route path={"/sandbox"} render={() => <Sandbox history={history} />} />
+                <Route path={"/workspace"} render={() => <Workspace selectedActivity={selectedActivity} history={history} handleLogout={handleLogout}/>}/>
+                <Route path={"/sandbox"} render={() => <Sandbox history={history}/>} />
                 <PrivateRoute exact path={"/roster/:id"} render={() => <Roster history={history} handleLogout={handleLogout}/>}/>
                 <Route component={NotFound}/>
             </Switch>

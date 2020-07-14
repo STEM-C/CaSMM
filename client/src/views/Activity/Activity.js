@@ -1,4 +1,5 @@
 import React, {useEffect, useState} from "react"
+import "./Workspace.less"
 import {getActivityToolbox} from "../../Utils/requests.js"
 import {getToken} from "../../Utils/AuthRequests"
 import BlocklyCanvasPanel from "../../components/ActivityPanels/BlocklyCanvasPanel";
@@ -7,7 +8,6 @@ import ActivityInfoPanel from "../../components/ActivityPanels/ActivityInfoPanel
 
 export default function Workspace(props) {
     const [activity, setActivity] = useState({})
-    const {handleLogout} = props
 
     useEffect(() => {
         const localActivity = localStorage.getItem("my-activity")
@@ -32,7 +32,7 @@ export default function Workspace(props) {
     return (
         <div className="container flex flex-row">
             <ActivityInfoPanel activity={activity}/>
-            <BlocklyCanvasPanel activity={activity} activityType={"my-activity"} homePath={'/student'} handleLogout={handleLogout}/>
+            <BlocklyCanvasPanel activity={activity} activityType={"my-activity"}/>
         </div>
     );
 
