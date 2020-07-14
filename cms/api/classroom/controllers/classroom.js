@@ -111,12 +111,12 @@ module.exports = {
         )
 
         // ensure all the students belong to the classroom
-        students.forEach(student => {
-            if (classroom.students.find(classroomStudent => classroomStudent.id === student) === undefined) return ctx.notFound(
+        for (let student of students) {
+            if (classroom.students.find(cs => cs.id === student) === undefined) return ctx.notFound(
                 'One or more of the students do not belong to the classroom!',
                 { id: 'Classroom.join.studentId.invalid', error: 'ValidationError' }
             )
-        })
+        }
 
         // create a new session for the students
         const session = await strapi.services.session.create({ classroom: classroom.id, students })
