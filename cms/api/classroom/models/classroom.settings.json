@@ -12,24 +12,29 @@
     "name": {
       "type": "string"
     },
-    "teacher": {
-      "type": "string"
-    },
     "school": {
       "model": "school",
       "via": "classrooms"
     },
     "sessions": {
-      "via": "classroom",
-      "collection": "session"
+      "collection": "session",
+      "via": "classroom"
     },
     "mentors": {
-      "via": "classrooms",
-      "collection": "mentor"
+      "collection": "mentor",
+      "via": "classrooms"
     },
     "students": {
-      "via": "classroom",
-      "collection": "student"
+      "collection": "student",
+      "via": "classroom"
+    },
+    "code": {
+      "type": "string",
+      "required": true
+    },
+    "teachers": {
+      "collection": "teacher",
+      "via": "classrooms"
     }
   }
 }
