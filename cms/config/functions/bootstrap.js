@@ -9,7 +9,7 @@ module.exports = async () => {
     const authenticated = roles.find(role => role.type === 'authenticated')
     if (authenticated.name !== 'Classroom Manager') await strapi.query('role', 'users-permissions').update({ id: authenticated.id }, { name: 'Classroom Manager' })
 
-    // if the student role doesn't exist, create it
+    // if the student role doesn't exist, alert the user
     const student = roles.find(role => role.type === 'student')
-    if (!student) await strapi.query('role', 'users-permissions').create({ name: 'Student', description: 'Default role give to a student user.', type: 'student' })
+    if (!student) console.log('There is currently not a student role! Make sure to make one.')
 }
