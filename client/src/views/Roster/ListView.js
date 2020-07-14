@@ -51,7 +51,7 @@ export default function ListView(props) {
             editable: true,
             align: 'left',
             sorter: {
-                compare: (a, b) => a.session < b.session ? -1 : 1,
+                compare: (a, b) => a.name < b.name ? -1 : 1,
                 multiple: 1
             }
         },

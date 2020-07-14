@@ -37,7 +37,7 @@ export default function Dashboard(props) {
             <MentorSubHeader title={'Your Classroom:'} handleLogout={handleLogout}/>
             <div id='card-container'>
                 {classrooms.map(classroom =>
-                    <Card id='card' title={classroom.name}>
+                    <Card id='class-card' title={classroom.name}>
                         <div id='card-content-container'>
                             <p>Number of students: {classroom.students.length}</p>
                         </div>
