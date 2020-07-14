@@ -128,10 +128,7 @@ module.exports = {
                 session: session.id,
                 isStudent: true
             }),
-            students: validStudents.map(student => {
-                const { id, name, character } = student
-                return { id, name, character }
-            })
+            students
         }
         // this bypasses the local authentication and requires custom
         // handling of the resulting token in the permissions policy
