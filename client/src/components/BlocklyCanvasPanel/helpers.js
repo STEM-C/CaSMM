@@ -2,13 +2,13 @@ import { compileCode } from "../../Utils/requests";
 
 const AvrboyArduino = window.AvrgirlArduino;
 
-export const setLocalActivity = (workspaceRef) => {
+export const setLocalActivity = (workspaceRef, activityType) => {
     let workspaceDom = window.Blockly.Xml.workspaceToDom(workspaceRef)
     let workspaceText = window.Blockly.Xml.domToText(workspaceDom)
-    const localActivity = JSON.parse(localStorage.getItem("my-activity"))
+    const localActivity = JSON.parse(localStorage.getItem(activityType))
 
     let lastActivity = { ...localActivity, template: workspaceText }
-    localStorage.setItem("my-activity", JSON.stringify(lastActivity))
+    localStorage.setItem(activityType, JSON.stringify(lastActivity))
 }
 
 // Generates xml from blockly canvas
