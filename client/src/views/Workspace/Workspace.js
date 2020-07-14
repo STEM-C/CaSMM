@@ -2,12 +2,8 @@ import React, {useEffect, useState} from "react"
 import "./Workspace.less"
 import {getActivityToolbox} from "../../Utils/requests.js"
 import {getToken} from "../../Utils/AuthRequests"
-import Logo from "../../assets/casmm_logo.png"
-import PlaceHolderImg1 from "../../assets/science.png"
-import PlaceHolderImg2 from "../../assets/arduino.png"
-import PlaceHolderImg3 from "../../assets/maker.png"
-import {Carousel} from 'antd';
 import BlocklyCanvasPanel from "../../components/BlocklyCanvasPanel/BlocklyCanvasPanel";
+import ActivityInfoPanel from "../../components/ActivityInfoPanel/ActivityInfoPanel";
 
 
 export default function Workspace(props) {
@@ -37,37 +33,7 @@ export default function Workspace(props) {
         <div>
             <div className="container flex flex-row">
                 <div id='horizontal-container' className="flex flex-column">
-                    <div id="top-container" className="flex flex-column vertical-container">
-                        <div id="description-container"
-                             className="flex flex-row justify-end card overflow-visible"
-                             style={{"marginLeft": "70px"}}>
-                            <img src={Logo} id='logo' alt="Maker activity"/>
-                            <h2>Maker Activity {activity.name}</h2>
-                        </div>
-                    </div>
-                    <div id='bottom-container' className="flex flex-column vertical-container overflow-visible">
-                        <div id="section-header">
-                            Learn about the activity...
-                        </div>
-                        <p id="section-text">{activity.description}</p>
-                        <div id="secondary-section-header">
-                            See the different parts of the activity...
-                        </div>
-                        {/* Example implementation of image Carousel */}
-                        <div id="carousel-container">
-                            <Carousel dotPosition={"left"}>
-                                <div id="diagram-container">
-                                    <img id="diagram" src={PlaceHolderImg1} alt="First diagram in carousel"/>
-                                </div>
-                                <div id="diagram-container">
-                                    <img id="diagram" src={PlaceHolderImg2} alt="Second diagram in carousel"/>
-                                </div>
-                                <div id="diagram-container">
-                                    <img id="diagram" src={PlaceHolderImg3} alt="Third diagram in carousel"/>
-                                </div>
-                            </Carousel>
-                        </div>
-                    </div>
+                    <ActivityInfoPanel activity={activity}/>
                 </div>
                 <div id='horizontal-container' className="flex flex-column">
                     <BlocklyCanvasPanel activity={activity} activityType={"my-activity"}/>
