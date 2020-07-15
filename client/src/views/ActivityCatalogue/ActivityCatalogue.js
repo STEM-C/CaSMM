@@ -33,7 +33,16 @@ export default function ActivityCatalogue(props) {
     };
 
     const onSearch = searchText => {
-        setSearchOptions(getFinishedWords(searchText))
+        let words = getFinishedWords(searchText);
+        setSearchOptions(words);
+        let values = [];
+        words.forEach(word => {
+            values.push(word.value)
+        });
+        let visible = activities.filter(activity => {
+            return values.includes(activity.name)
+        });
+        visible.length > 0 ? setVisibleActivities(visible) : setVisibleActivities(activities)
     };
 
     const onSelect = value => {
@@ -57,9 +66,11 @@ export default function ActivityCatalogue(props) {
             <div className='flex flex-column'>
                 <MentorSubHeader title={'Available Activities:'} toDashActive={true} handleLogout={handleLogout}/>
                 <span id='search'>
-                    <AutoComplete options={searchOptions} style={{width: 200}} onSelect={onSelect} onSearch={onSearch}>
-                        <Input.Search size="large" placeholder="Search activities"/>
-                    </AutoComplete>
+                    <AutoComplete
+                        options={searchOptions}
+                        placeholder="Search activities"
+                        onSelect={onSelect}
+                        onSearch={onSearch}/>
                 </span>
             </div>
             <div id='card-container'>
