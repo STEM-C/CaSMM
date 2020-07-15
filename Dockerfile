@@ -20,7 +20,10 @@ RUN yarn install
 
 # Bundle app source
 COPY ./server .
-RUN mv ./client/build/* ./public/frontend && rm -r ./client
+RUN rm -rf ./public/frontend \
+    mkdir ./public/frontend \
+    mv ./client/build/* ./public/frontend \
+    rm -rf ./client
 
 # Set the env to prod for build
 ENV NODE_ENV production

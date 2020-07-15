@@ -28,5 +28,5 @@ yarn-error.log*
 # node
 node_modules/
 build/
-cms/public/frontend/*
-!cms/public/frontend/.gitkeep
+server/public/frontend/*
+!server/public/frontend/.gitkeep
