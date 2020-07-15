@@ -1,12 +1,12 @@
-# Cms
+# Server
 
-> REST API and admin portal that comprise the backend. It is powered by [Node](https://nodejs.org/en/), [Strapi](https://strapi.io/documentation/v3.x/getting-started/introduction.html), and [PostgreSQL](https://www.postgresql.org/). The file structure is defined by Strapi and is documented [here](https://strapi.io/documentation/3.0.0-beta.x/concepts/file-structure.html#files-structure).
+> Web server and application server that will serve static content and dynamic content over HTTP. It is powered by [Node](https://nodejs.org/en/), [Strapi](https://strapi.io/documentation/v3.x/getting-started/introduction.html), and [PostgreSQL](https://www.postgresql.org/). The file structure is defined by Strapi and is documented [here](https://strapi.io/documentation/3.0.0-beta.x/concepts/file-structure.html#files-structure).
 
 <br/>
 
 ## Setup
 
-**RECOMMENDED:** To run Cms with the rest of the application, see the project [development](../README.md#development) setup.
+**RECOMMENDED:** To run `server` with the rest of the application, see the project [development](../README.md#development) setup.
 
 ### Development
 

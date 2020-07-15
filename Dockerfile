@@ -14,12 +14,12 @@ RUN PUBLIC_URL=/frontend yarn build
 WORKDIR /usr/src/app
 
 # Install app dependencies
-COPY ./cms/package.json .
-COPY ./cms/yarn.lock .
+COPY ./server/package.json .
+COPY ./server/yarn.lock .
 RUN yarn install
 
 # Bundle app source
-COPY ./cms .
+COPY ./server .
 RUN mv ./client/build/* ./public/frontend && rm -r ./client
 
 # Set the env to prod for build

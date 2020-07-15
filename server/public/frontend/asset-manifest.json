@@ -1,0 +1,25 @@
+{
+  "files": {
+    "main.css": "/frontend/static/css/main.d627332b.chunk.css",
+    "main.js": "/frontend/static/js/main.3faa746c.chunk.js",
+    "main.js.map": "/frontend/static/js/main.3faa746c.chunk.js.map",
+    "runtime-main.js": "/frontend/static/js/runtime-main.84a68d31.js",
+    "runtime-main.js.map": "/frontend/static/js/runtime-main.84a68d31.js.map",
+    "static/js/2.bad61a46.chunk.js": "/frontend/static/js/2.bad61a46.chunk.js",
+    "static/js/2.bad61a46.chunk.js.map": "/frontend/static/js/2.bad61a46.chunk.js.map",
+    "index.html": "/frontend/index.html",
+    "precache-manifest.70e9a4d570dd2801ff874f37d0cae847.js": "/frontend/precache-manifest.70e9a4d570dd2801ff874f37d0cae847.js",
+    "service-worker.js": "/frontend/service-worker.js",
+    "static/css/main.d627332b.chunk.css.map": "/frontend/static/css/main.d627332b.chunk.css.map",
+    "static/js/2.bad61a46.chunk.js.LICENSE.txt": "/frontend/static/js/2.bad61a46.chunk.js.LICENSE.txt",
+    "static/media/arduino.png": "/frontend/static/media/arduino.6ae43cde.png",
+    "static/media/maker.png": "/frontend/static/media/maker.0028ed75.png",
+    "static/media/science.png": "/frontend/static/media/science.dd631a47.png"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.84a68d31.js",
+    "static/js/2.bad61a46.chunk.js",
+    "static/css/main.d627332b.chunk.css",
+    "static/js/main.3faa746c.chunk.js"
+  ]
+}
