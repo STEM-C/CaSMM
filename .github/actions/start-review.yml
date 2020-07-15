@@ -1,40 +1,51 @@
 name: Build, test, and deploy a review app
 on: 
   pull_request:
-    branches: [ develop, release, master ]
+    branches: [ develop ]
     types: [ opened, reopened ]
 jobs:
   run:
     runs-on: ubuntu-latest
     steps:
-      - name: Build and push pr image
-        uses: docker/build-push-action@v1
-        with:
-          username: ${{ secrets.DOCKER_USERNAME }}
-          password: ${{ secrets.DOCKER_PASSWORD }}
-          repository: nionata/casmm
-          cache_froms: nionata/casmm
-          tag_with_ref: true
-      - uses: actions/checkout@v2
+      - name: Checkout the repo
+        uses: actions/checkout@v2
       - name: Create review app
         id: app
         uses: STEM-C/auto/review@v0.4.5
         with: 
-          base: casmm
+          base: review
           pipeline: ${{ secrets.PIPELINE_ID }}
           token: ${{ secrets.HEROKU_TOKEN }}
-      - name: Import review database
+      - name: Import development database
         run: ./scripts/init_db.sh
         env:
-          ENVIRONMENT: review
+          ENVIRONMENT: development
           DATABASE_URL: ${{ steps.app.outputs.database_url }}
           SCRIPT_PATH: ./scripts
-      - name: Login to Heroku Container Registry
+      - name: Build and push review pr image
+        uses: docker/build-push-action@v1
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+          repository: casmm/server
+          cache_froms: casmm/server
+          tags: ${{ steps.app.outputs.app_name }}
+          tag_with_sha: true
+      - name: Tag the rev pr image for heroku registry
+        run: docker tag ${{ steps.app.outputs.app_name }} registry.heroku.com/${{ steps.app.outputs.app_name }}/web
+      - name: Push and release the image to heroku
         env:
           HEROKU_API_KEY: ${{ secrets.HEROKU_TOKEN }}
-        run: heroku container:login
-      - name: Tag the pr build for heroku
-        run: docker tag
-      - name: Push image to Heroku Container Registry
-      - name: Release container
-        run: heroku container:release -a ${{ steps.app.outputs.app_name }}
+        run: |
+          heroku container:login
+          docker push registry.heroku.com/${{ steps.app.outputs.app_name }}/web
+          heroku container:release -a ${{ steps.app.outputs.app_name }} web
+      - uses: chrnorm/deployment-action@releases/v1
+        name: Create GitHub deployment
+        if: success()
+        id: deployment
+        with:
+          initial_status: "success"
+          token: "${{ github.token }}"
+          target_url: "https://${{ steps.app.outputs.app_name }}.herokuapp.com"
+          environment: ${{ steps.app.outputs.app_name }}

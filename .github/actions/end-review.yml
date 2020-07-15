@@ -1,7 +1,7 @@
 name: Clean up a review app
 on: 
   pull_request:
-    branches: [ develop, release, master ]
+    branches: [ develop ]
     types: [ closed ]
 jobs:
     run:
@@ -12,7 +12,7 @@ jobs:
         id: app
         uses: STEM-C/auto/review@v0.4.5
         with: 
-          base: casmm
+          base: reivew
           pipeline: ${{ secrets.PIPELINE_ID }}
           token: ${{ secrets.HEROKU_TOKEN }}
     
