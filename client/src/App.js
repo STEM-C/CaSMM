@@ -11,6 +11,8 @@ import StudentLogin from "./views/StudentLogin/StudentLogin";
 import Sandbox from "./views/Sandbox/Sandbox"
 import Roster from "./views/Roster/Roster";
 import {removeUserSession} from "./Utils/AuthRequests";
+import Activity from "./views/Activity/Activity";
+import ActivityCatalogue from "./views/ActivityCatalogue/ActivityCatalogue";
 
 const App = () => {
     const [selectedActivity, setSelectedActivity] = useState('');
@@ -30,6 +32,8 @@ const App = () => {
                 <Route path={"/workspace"} render={() => <Workspace selectedActivity={selectedActivity} history={history} handleLogout={handleLogout}/>}/>
                 <Route path={"/sandbox"} render={() => <Sandbox history={history}/>} />
                 <PrivateRoute exact path={"/roster/:id"} render={() => <Roster history={history} handleLogout={handleLogout}/>}/>
+                <PrivateRoute exact path={"/activity"} render={() => <Activity history={history} handleLogout={handleLogout}/> } />
+                <PrivateRoute exact path={"/catalogue"} render={() => <ActivityCatalogue history={history} handleLogout={handleLogout}/> } />
                 <Route component={NotFound}/>
             </Switch>
         </div>
