@@ -18,8 +18,24 @@
     },
     {
       "method": "GET",
-      "path": "/sessions/:code",
+      "path": "/sessions/:id",
       "handler": "session.findOne",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/sessions/student/activities",
+      "handler": "session.getStudentActivities",
+      "config": {
+        "policies": ["global::isStudent"]
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/sessions/code/:code",
+      "handler": "session.findByCode",
       "config": {
         "policies": []
       }
@@ -29,7 +45,7 @@
       "path": "/sessions",
       "handler": "session.create",
       "config": {
-        "policies": []
+        "policies": ["global::isMentor", "global::hasClassroom"]
       }
     },
     {
@@ -45,7 +61,7 @@
       "path": "/sessions/:id",
       "handler": "session.update",
       "config": {
-        "policies": []
+        "policies": ["global::isMentor", "global::hasSession"]
       }
     },
     {

@@ -21,7 +21,7 @@
       "path": "/classrooms/:id",
       "handler": "classroom.findOne",
       "config": {
-        "policies": []
+        "policies": ["global::isMentor", "global::hasClassroom"]
       }
     },
     {

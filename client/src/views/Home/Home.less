@@ -1,0 +1,111 @@
+@import "../../assets/style.less";
+
+.container {
+    background-color: #colors[primary];
+    height: 100%;
+    min-height: 100vh;
+    width: 100%;
+    min-width: 100vw;
+    text-align: center;
+}
+
+#content-independent {
+    background-color: #colors[secondary];
+    border-radius: 80px;
+    color: #colors[text-secondary];
+    font-size: 1.5em;
+    font-weight: bold;
+    padding: 2%;
+    width: 17%;
+    margin-bottom: -3vh;
+    line-height: 50px;
+    &:hover {
+        opacity: .9;
+    }
+}
+
+#content-wrapper {
+    margin: 0 auto 8vh auto;
+    display: inline-block;
+}
+
+#divider {
+    height: 200px;
+    width: 3px;
+    border-radius: 5px;
+    background-color: #colors[tertiary];
+    margin: 0 20px;
+    display: inline-block;
+}
+
+#box{
+    width: 300px;
+    padding: 40px 20px;
+    background-color: #colors[tertiary];
+    text-align: center;
+    border-radius: 15px;
+    border: 4px solid;
+    border-color: #colors[secondary];
+}
+
+#box-title {
+    background-color: #colors[secondary];
+    border-radius: 80px;
+    width: 80%;
+    min-height: 8%;
+    color: #colors[text-secondary];
+    font-size: 1.5em;
+    font-weight: bold;
+    position: relative;
+    top: -60px;
+    left: -40px;
+    line-height: 50px;
+    text-align: center;
+}
+
+#box input[type = "text"], input[type = "email"], input[type = "password"]{
+    display: block;
+    background: none;
+    margin: 20px auto 0px;
+    border: 2px solid;
+    border-color: #colors[secondary];
+    padding: 14px 10px;
+    width: 200px;
+    outline: none;
+    color: #colors[text-primary];
+    border-radius: 24px;
+    transition: 0.25s;
+}
+
+#box input[type = "text"]:focus, input[type = "email"]:focus, input[type = "password"]:focus{
+    width: 220px;
+}
+
+#box input[type = "button"]{
+    background: darken(#colors[tertiary], 30%);
+    width: 80%;
+    display: block;
+    margin: 0 auto;
+    border: 2px solid;
+    border-color: #colors[secondary];
+    padding: 14px 40px;
+    outline: none;
+    color: #colors[text-secondary];
+    font-size: 1.5em;
+    font-weight: 550;
+    border-radius: 30px;
+    cursor: pointer;
+    transition: 0.25s;
+    &:hover {
+        color: lighten(#colors[secondary], 20%);
+    }
+    position: relative;
+    bottom: -65px;
+}
+
+#casmm-logo {
+    width: 300px;
+    height: auto;
+    position: relative;
+    bottom: -37.5px;
+}
