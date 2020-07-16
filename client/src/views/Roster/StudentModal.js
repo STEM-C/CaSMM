@@ -9,6 +9,10 @@ export default function StudentModal(props) {
         setVisible(true)
     };
 
+    const handleCancel = () => {
+        setVisible(false)
+    };
+
     const handleOk = () => {
         setVisible(false)
     };
@@ -19,6 +23,7 @@ export default function StudentModal(props) {
             <Modal
                 title={student.name}
                 visible={visible}
+                onCancel={handleCancel}
                 footer={[
                     <Button key="ok" type="primary" onClick={handleOk}>
                         OK
