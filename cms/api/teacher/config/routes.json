@@ -2,48 +2,48 @@
   "routes": [
     {
       "method": "GET",
-      "path": "/mentors",
-      "handler": "mentor.find",
+      "path": "/teachers",
+      "handler": "teacher.find",
       "config": {
         "policies": []
       }
     },
     {
       "method": "GET",
-      "path": "/mentors/count",
-      "handler": "mentor.count",
+      "path": "/teachers/count",
+      "handler": "teacher.count",
       "config": {
         "policies": []
       }
     },
     {
       "method": "GET",
-      "path": "/mentors/:id",
-      "handler": "mentor.findOne",
+      "path": "/teachers/:id",
+      "handler": "teacher.findOne",
       "config": {
         "policies": []
       }
     },
     {
       "method": "POST",
-      "path": "/mentors",
-      "handler": "mentor.create",
+      "path": "/teachers",
+      "handler": "teacher.create",
       "config": {
         "policies": ["global::isClassroomManager"]
       }
     },
     {
       "method": "PUT",
-      "path": "/mentors/:id",
-      "handler": "mentor.update",
+      "path": "/teachers/:id",
+      "handler": "teacher.update",
       "config": {
         "policies": []
       }
     },
     {
       "method": "DELETE",
-      "path": "/mentors/:id",
-      "handler": "mentor.delete",
+      "path": "/teachers/:id",
+      "handler": "teacher.delete",
       "config": {
         "policies": []
       }

@@ -1,8 +1,8 @@
 {
   "kind": "collectionType",
-  "collectionName": "mentors",
+  "collectionName": "teachers",
   "info": {
-    "name": "Mentor"
+    "name": "Teacher"
   },
   "options": {
     "increments": true,
@@ -10,17 +10,19 @@
   },
   "attributes": {
     "first_name": {
-      "type": "string"
+      "type": "string",
+      "required": true
     },
     "last_name": {
-      "type": "string"
+      "type": "string",
+      "required": true
     },
     "school": {
       "model": "school",
-      "via": "mentors"
+      "via": "teachers"
     },
     "classrooms": {
-      "via": "mentors",
+      "via": "teachers",
       "collection": "classroom",
       "dominant": true
     },

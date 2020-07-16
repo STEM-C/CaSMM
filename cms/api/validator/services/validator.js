@@ -1,5 +1,9 @@
 'use strict'
 
+module.exports.isInt = (object) => {
+    return object !== undefined && Number.isInteger(object)
+}
+
 module.exports.isIntArray = (arr) => {
 
     // ensure the input is an non-empty array
