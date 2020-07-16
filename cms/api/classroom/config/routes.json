@@ -26,7 +26,7 @@
     },
     {
       "method": "GET",
-      "path": "/classroom/join/:code",
+      "path": "/classrooms/join/:code",
       "handler": "classroom.initJoin",
       "config": {
         "policies": []

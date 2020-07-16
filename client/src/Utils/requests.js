@@ -41,7 +41,7 @@ export const getActivities = async (jwt) => (await axios.get(`${cms}/activities`
     }
 })).data
 
-export const getStudents = async (code) => (await axios.get(`${cms}/classroom/join/${code}`)).data
+export const getStudents = async (code) => (await axios.get(`${cms}/classrooms/join/${code}`)).data
 
 export const postJoin = async (code, ids) => (await axios.post(`${cms}/classrooms/join/${code}`, {
         "students": ids,
