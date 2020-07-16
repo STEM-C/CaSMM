@@ -1,9 +1,9 @@
 import React from 'react';
 import {Form, Input, Popconfirm, Switch, Table} from "antd";
+import StudentModal from "./StudentModal";
 
 export default function ListView(props) {
     const {studentData, editingKey, isEditing, edit, cancelEdit, save, form} = props;
-    const hrefLink = '#'
 
     const EditableCell = ({
                               editing,
@@ -72,24 +72,24 @@ export default function ListView(props) {
             render: (_, record) => {
                 const editable = isEditing(record);
                 return editable ? (
-                    <span>
-            <a
-                href={hrefLink}
+                    <span id='edit-options-span'>
+            <button
+                id='link-btn'
                 onClick={() => save(record.key)}
                 style={{
                     marginRight: 8,
                 }}
             >
               Save
-            </a>
+            </button>
             <Popconfirm title="Are you sure you want to cancel?" onConfirm={cancelEdit}>
-              <a href={hrefLink}>Cancel</a>
+              <button id='link-btn'>Cancel</button>
             </Popconfirm>
           </span>
                 ) : (
-                    <a href={hrefLink} disabled={editingKey !== ''} onClick={() => edit(record)}>
+                    <button id='link-btn' disabled={editingKey !== ''} onClick={() => edit(record)}>
                         Edit
-                    </a>
+                    </button>
                 );
             }
         },
@@ -99,8 +99,8 @@ export default function ListView(props) {
             key: 'view',
             width: '10%',
             align: 'right',
-            render: () => (
-                <a href={hrefLink}>View</a>
+            render: (_, record) => (
+                <StudentModal student={record} linkBtn={true}/>
             )
         },
         {
@@ -131,8 +131,8 @@ export default function ListView(props) {
             }),
         };
     });
-    
-    return(
+
+    return (
         <div id='table-container'>
             <Form form={form} component={false}>
                 <Table columns={mergedColumns}

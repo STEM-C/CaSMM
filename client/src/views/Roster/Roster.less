@@ -27,6 +27,31 @@
   background-color: #colors[tertiary];
 }
 
+.ant-modal .ant-modal-content {
+  border-radius: 4px;
+  border: solid 4px;
+  border-color: #colors[secondary];
+}
+
+#link-btn {
+  background: none !important;
+  border: none;
+  padding: 0 !important;
+  color: #colors[primary];
+
+  &:hover {
+    cursor: pointer;
+    opacity: .9;
+  }
+
+  &:focus {
+    outline: none;
+  }
+}
+
+#edit-options-span {
+  white-space: nowrap;
+}
 
 // Card View
 #card-container {
@@ -50,6 +75,10 @@
 
   #card-button-container {
     margin: 5% auto 0 auto;
+
+    div {
+      margin: auto;
+    }
 
     button {
       width: 10vw;

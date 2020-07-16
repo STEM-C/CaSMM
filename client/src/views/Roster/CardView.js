@@ -1,5 +1,6 @@
 import React from 'react';
 import {Card} from "antd";
+import StudentModal from "./StudentModal";
 
 export default function CardView(props) {
     const {studentData} = props;
@@ -14,7 +15,7 @@ export default function CardView(props) {
                         <p>Status: *Active*</p>
                     </div>
                     <div id='card-button-container' className='flex flex-row'>
-                        <button onClick={() => {}}>View</button>
+                        <StudentModal student={student} linkBtn={false}/>
                         {/*<button onClick={() => {}}>Edit</button>*/}
                         <button onClick={() => {}}>Deactivate</button>
                     </div>

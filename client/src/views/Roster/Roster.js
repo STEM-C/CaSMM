@@ -12,7 +12,7 @@ export default function Roster(props) {
     const [studentData, setStudentData] = useState([]);
     const [editingKey, setEditingKey] = useState('');
     const [classroom, setClassroom] = useState([]);
-    const [listView, setListView] = useState(true)
+    const [listView, setListView] = useState(true);
     const {history, handleLogout}= props;
     const path = history.location.pathname.split('/');
     const classroomId = path[path.length-1];
