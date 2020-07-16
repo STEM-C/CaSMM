@@ -13,8 +13,8 @@ module.exports = async (ctx, next) => {
     classroom = parseInt(classroom)
 
     // get the classrooms that the user belongs to
-    const { id: user } = ctx.state.user
-    const { classrooms } = await strapi.services.mentor.findOne({ user })
+    const { id } = ctx.state.user
+    const { classrooms } = (await strapi.services['classroom-manager'].findById(id)).classroomManager
 
     // check if the target classroom is one of the user's classrooms
     if (classrooms.length && classrooms.find(cr => cr.id === classroom)) {

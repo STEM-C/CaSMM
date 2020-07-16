@@ -21,13 +21,29 @@
       "path": "/classrooms/:id",
       "handler": "classroom.findOne",
       "config": {
-        "policies": ["global::isMentor", "global::hasClassroom"]
+        "policies": ["global::isClassroomManager", "global::hasClassroom"]
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/classrooms/join/:code",
+      "handler": "classroom.initJoin",
+      "config": {
+        "policies": []
       }
     },
     {
       "method": "POST",
       "path": "/classrooms",
       "handler": "classroom.create",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "POST",
+      "path": "/classrooms/join/:code",
+      "handler": "classroom.join",
       "config": {
         "policies": []
       }

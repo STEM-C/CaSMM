@@ -25,33 +25,9 @@
       }
     },
     {
-      "method": "GET",
-      "path": "/sessions/student/activities",
-      "handler": "session.getStudentActivities",
-      "config": {
-        "policies": ["global::isStudent"]
-      }
-    },
-    {
-      "method": "GET",
-      "path": "/sessions/code/:code",
-      "handler": "session.findByCode",
-      "config": {
-        "policies": []
-      }
-    },
-    {
       "method": "POST",
       "path": "/sessions",
       "handler": "session.create",
-      "config": {
-        "policies": ["global::isMentor", "global::hasClassroom"]
-      }
-    },
-    {
-      "method": "POST",
-      "path": "/sessions/join",
-      "handler": "session.join",
       "config": {
         "policies": []
       }
@@ -61,7 +37,7 @@
       "path": "/sessions/:id",
       "handler": "session.update",
       "config": {
-        "policies": ["global::isMentor", "global::hasSession"]
+        "policies": []
       }
     },
     {
