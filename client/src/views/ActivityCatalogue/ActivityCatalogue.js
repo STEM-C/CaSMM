@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {AutoComplete, Input, Card, Checkbox} from "antd";
+import {AutoComplete, Card, Checkbox} from "antd";
 import './ActivityCatalogue.less'
 import MentorSubHeader from "../../components/MentorSubHeader/MentorSubHeader";
 
@@ -64,13 +64,19 @@ export default function ActivityCatalogue(props) {
         <div className='container'>
             <div id='main-header'>Catalogue of Activities</div>
             <div className='flex flex-column'>
-                <MentorSubHeader title={'Available Activities:'} toDashActive={true} handleLogout={handleLogout}/>
+                <MentorSubHeader
+                    title={'Available Activities:'}
+                    toDashActive={true}
+                    checkoutActive={true}
+                    handleLogout={handleLogout}
+                />
                 <span id='search'>
                     <AutoComplete
                         options={searchOptions}
                         placeholder="Search activities"
                         onSelect={onSelect}
-                        onSearch={onSearch}/>
+                        onSearch={onSearch}
+                    />
                 </span>
             </div>
             <div id='card-container'>
@@ -85,7 +91,8 @@ export default function ActivityCatalogue(props) {
                             </select>
                             <button onClick={() => {
                                 history.push('/activity')
-                            }}>View Activity
+                            }}>
+                                View Activity
                             </button>
                             <div id='check'><Checkbox/></div>
                         </div>

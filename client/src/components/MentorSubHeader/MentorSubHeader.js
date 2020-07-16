@@ -10,6 +10,7 @@ export default function MentorSubHeader(props) {
         addUserActive,
         cardViewActive,
         listViewActive,
+        checkoutActive,
         setListView,
         handleLogout
     } = props;
@@ -38,6 +39,10 @@ export default function MentorSubHeader(props) {
                     <button onClick={() => setListView(true)} id='link'>
                         <i className="fa fa-list-alt"/>
                     </button> : null}
+                {checkoutActive ?
+                    <Link id='link' to={"/dashboard"}>
+                        <i className="fa fa-shopping-cart"/>
+                    </Link> : null}
                 <button onClick={handleLogout} id='link'>
                     <i className="fa fa-sign-out-alt"/>
                 </button>

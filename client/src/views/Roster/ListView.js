@@ -3,6 +3,7 @@ import {Form, Input, Popconfirm, Switch, Table} from "antd";
 
 export default function ListView(props) {
     const {studentData, editingKey, isEditing, edit, cancelEdit, save, form} = props;
+    const hrefLink = '#'
 
     const EditableCell = ({
                               editing,
@@ -73,7 +74,7 @@ export default function ListView(props) {
                 return editable ? (
                     <span>
             <a
-                href="/#"
+                href={hrefLink}
                 onClick={() => save(record.key)}
                 style={{
                     marginRight: 8,
@@ -82,11 +83,11 @@ export default function ListView(props) {
               Save
             </a>
             <Popconfirm title="Are you sure you want to cancel?" onConfirm={cancelEdit}>
-              <a href='/#'>Cancel</a>
+              <a href={hrefLink}>Cancel</a>
             </Popconfirm>
           </span>
                 ) : (
-                    <a href='/#' disabled={editingKey !== ''} onClick={() => edit(record)}>
+                    <a href={hrefLink} disabled={editingKey !== ''} onClick={() => edit(record)}>
                         Edit
                     </a>
                 );
@@ -99,7 +100,7 @@ export default function ListView(props) {
             width: '10%',
             align: 'right',
             render: () => (
-                <a href='/#'>View</a>
+                <a href={hrefLink}>View</a>
             )
         },
         {
