@@ -2,24 +2,22 @@ import React, {useEffect, useState} from 'react';
 import {AutoComplete, Card, Checkbox} from "antd";
 import './ActivityCatalogue.less'
 import MentorSubHeader from "../../components/MentorSubHeader/MentorSubHeader";
+import {getActivities} from "../../Utils/requests";
+import {getToken} from "../../Utils/AuthRequests";
 
 export default function ActivityCatalogue(props) {
     const [searchOptions, setSearchOptions] = useState([]);
     const [activities, setActivities] = useState([])
     const [visibleActivities, setVisibleActivities] = useState([])
-    const {history, handleLogout} = props;
+    const {history, setSelectedActivity, handleLogout} = props;
 
     useEffect(() => {
-        let activities = [];
-        for (let i = 0; i < 10; i++) {
-            activities.push({
-                id: i,
-                name: `Activity ${i + 1}`,
-                description: 'This is where the description of the activity will go.'
-            })
-        }
-        setActivities(activities)
-        setVisibleActivities(activities);
+        async function fetchData() {
+            const activities = await getActivities(getToken());
+            setActivities(activities);
+            setVisibleActivities(activities);
+        };
+        fetchData()
     }, [setVisibleActivities]);
 
     const getFinishedWords = word => {
@@ -84,12 +82,15 @@ export default function ActivityCatalogue(props) {
                     <Card id='activity-card' title={activity.name} key={activity.id}>
                         <div id='card-content-container'>
                             <p>Description: {activity.description}</p>
+                            <p>Difficulty: {activity.difficulty.name}</p>
+                            <p>Learning Category: {activity.learning_category.name}</p>
                         </div>
                         <div id='card-action-container' className='flex flex-row'>
                             <select name='day'>
                                 {setDayOptions().map(option => option)}
                             </select>
                             <button onClick={() => {
+                                setSelectedActivity(activity);
                                 history.push('/activity')
                             }}>
                                 View Activity

@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react";
-import {getClassroom} from "../../Utils/requests";
+import {getClassroom, setEnrollmentStatus} from "../../Utils/requests";
 import {getToken} from "../../Utils/AuthRequests";
 import './Roster.less'
 import MentorSubHeader from "../../components/MentorSubHeader/MentorSubHeader";
@@ -35,6 +35,24 @@ export default function Roster(props) {
             setStudentData(data);
         });
     }, [classroomId]);
+
+    const onEnrollToggle = async (id, toggled) => {
+        const updatedStudent = await setEnrollmentStatus(id, toggled, getToken());
+        let newStudentData = [...studentData];
+        const index = studentData.findIndex(function(student) {
+            return student.key === id
+        });
+        newStudentData[index] = {
+            key: updatedStudent.id,
+            name: updatedStudent.name,
+            animal: updatedStudent.character,
+            enrolled: {
+                id: updatedStudent.id,
+                enrolled: updatedStudent.enrolled
+            }
+        };
+        setStudentData(newStudentData)
+    };
 
     const isEditing = record => record.key === editingKey;
 
@@ -80,11 +98,11 @@ export default function Roster(props) {
                              handleLogout={handleLogout}/>
             {
                 listView ?
-                    <ListView studentData={studentData} editingKey={editingKey} isEditing={isEditing}
-                              edit={edit} cancelEdit={cancelEdit} save={save} form={form}/>
+                    <ListView studentData={studentData} onEnrollToggle={onEnrollToggle} editingKey={editingKey}
+                              isEditing={isEditing} edit={edit} cancelEdit={cancelEdit} save={save} form={form}/>
                     :
-                    <CardView studentData={studentData} editingKey={editingKey} isEditing={isEditing}
-                              edit={edit} cancelEdit={cancelEdit} save={save}/>
+                    <CardView studentData={studentData} onEnrollToggle={onEnrollToggle} editingKey={editingKey}
+                              isEditing={isEditing} edit={edit} cancelEdit={cancelEdit} save={save}/>
             }
         </div>
     )

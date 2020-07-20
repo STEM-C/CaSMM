@@ -61,7 +61,7 @@
       "path": "/students/enrolled/:id",
       "handler": "student.enrolled",
       "config": {
-        "policies": ["global::isClassroomManager", "global::hasClassroom"]
+        "policies": ["global::isClassroomManager"]
       }
     }
   ]
