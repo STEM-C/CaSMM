@@ -59,7 +59,7 @@ export const updateSession = async (id, session, jwt) => (await axios.put(`${cms
     }
 )).data
 
-export const setEnrollmentStatus = async (id, enrolled, jwt) => (await axios.put(`${cms}/student/enrolled/${id}`,
+export const setEnrollmentStatus = async (id, enrolled, jwt) => (await axios.put(`${cms}/students/enrolled/${id}`,
     {
         "enrolled": enrolled
     },

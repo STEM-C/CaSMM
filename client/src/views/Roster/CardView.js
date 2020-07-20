@@ -12,7 +12,7 @@ export default function CardView(props) {
                     <div id='card-content-container'>
                         <p>Animal: {student.animal}</p>
                         <p>Number of Submissions: ###</p>
-                        <p>Status: *Active*</p>
+                        <p>Status: {student.enrolled ? 'Enrolled' : 'Unenrolled'}</p>
                     </div>
                     <div id='card-button-container' className='flex flex-row'>
                         <StudentModal student={student} linkBtn={false}/>

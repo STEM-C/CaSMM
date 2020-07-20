@@ -40,7 +40,7 @@ module.exports = {
 
         // validate the request
         const { enrolled } = ctx.request.body
-        if (!enrolled || !strapi.services.validator.isBoolean(enrolled)) return ctx.badRequest(
+        if (typeof enrolled !== "boolean") return ctx.badRequest(
             'An enrollment status must be provided!',
             { id: 'Student.enrolled.body.invalid', error: 'ValidationError' }
         )

@@ -26,10 +26,9 @@ export default function Roster(props) {
                     key: student.id,
                     name: student.name,
                     animal: student.character,
-                    active: {
+                    enrolled: {
                         id: student.id,
-                        // TODO: when student has 'active' status
-                        //  active: student.active
+                        enrolled: student.enrolled
                     }
                 })
             });

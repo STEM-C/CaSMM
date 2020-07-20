@@ -1,6 +1,8 @@
 import React from 'react';
 import {Form, Input, Popconfirm, Switch, Table} from "antd";
 import StudentModal from "./StudentModal";
+import {setEnrollmentStatus} from "../../Utils/requests";
+import {getToken} from "../../Utils/AuthRequests";
 
 export default function ListView(props) {
     const {studentData, editingKey, isEditing, edit, cancelEdit, save, form} = props;
@@ -41,7 +43,8 @@ export default function ListView(props) {
     };
 
     const onToggle = (id, toggled) => {
-        //TODO: update student 'active' status
+        setEnrollmentStatus(id, toggled, getToken())
+        // TODO: set state with new enrollment status
     };
 
     const columns = [
@@ -104,14 +107,14 @@ export default function ListView(props) {
             )
         },
         {
-            title: 'Activate / Deactivate',
-            dataIndex: 'active',
-            key: 'active',
+            title: 'Enroll / Unenroll',
+            dataIndex: 'enrolled',
+            key: 'enrolled',
             width: '10%',
             align: 'right',
-            render: (active) => (<Switch onChange={e => {
-                onToggle(active.id, e)
-            }} defaultChecked={true}/>)
+            render: (enrolled) => (<Switch onChange={e => {
+                onToggle(enrolled.id, e)
+            }} defaultChecked={enrolled.enrolled}/>)
         }
     ];
 
