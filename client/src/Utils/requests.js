@@ -32,7 +32,7 @@ export const getClassroom = async (id, jwt) => (await axios.get(`${cms}/classroo
     }
 })).data
 
-export const getClassrooms = async (ids, jwt) => ( Promise.all(ids.map( id => getClassroom(id,jwt) )))
+export const getClassrooms = async (ids, jwt) => (Promise.all(ids.map(id => getClassroom(id, jwt))))
 
 export const getActivities = async (jwt) => (await axios.get(`${cms}/activities`, {
     headers: {
@@ -51,6 +51,18 @@ export const postJoin = async (code, ids) => (await axios.post(`${cms}/classroom
 export const compileCode = async (body) => (await axios.post(`${compile}/compile`, body)).data
 
 export const updateSession = async (id, session, jwt) => (await axios.put(`${cms}/sessions/${id}`, session,
+    {
+        headers: {
+            'Authorization':
+                `Bearer ${jwt}`
+        }
+    }
+)).data
+
+export const setEnrollmentStatus = async (id, enrolled, jwt) => (await axios.put(`${cms}/student/enrolled/${id}`,
+    {
+        "enrolled": enrolled
+    },
     {
         headers: {
             'Authorization':

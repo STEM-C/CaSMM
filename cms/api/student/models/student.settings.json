@@ -23,6 +23,10 @@
       "via": "students",
       "collection": "session",
       "dominant": true
+    },
+    "enrolled": {
+      "type": "boolean",
+      "default": true
     }
   }
 }

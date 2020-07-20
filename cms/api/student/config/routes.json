@@ -55,6 +55,14 @@
       "config": {
         "policies": []
       }
+    },
+    {
+      "method": "PUT",
+      "path": "/students/enrolled/:id",
+      "handler": "student.enrolled",
+      "config": {
+        "policies": ["global::isClassroomManager", "global::hasClassroom"]
+      }
     }
   ]
 }

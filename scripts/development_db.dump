@@ -729,6 +729,7 @@ CREATE TABLE public.students (
     name character varying(255),
     "character" character varying(255),
     classroom integer,
+    enrolled boolean,
     created_at timestamp with time zone DEFAULT CURRENT_TIMESTAMP,
     updated_at timestamp with time zone DEFAULT CURRENT_TIMESTAMP
 );
@@ -1564,10 +1565,10 @@ COPY public.strapi_webhooks (id, name, url, headers, events, enabled) FROM stdin
 -- Data for Name: students; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY public.students (id, name, "character", classroom, created_at, updated_at) FROM stdin;
-1	Nick	\N	1	2020-07-14 23:12:03.282+00	2020-07-14 23:12:03.299+00
-2	Adam	\N	1	2020-07-14 23:12:08.531+00	2020-07-14 23:12:08.542+00
-3	Dakota	\N	1	2020-07-14 23:12:51.633+00	2020-07-14 23:12:51.65+00
+COPY public.students (id, name, "character", classroom, enrolled, created_at, updated_at) FROM stdin;
+1	Nick	\N	1	true	2020-07-14 23:12:03.282+00	2020-07-14 23:12:03.299+00
+2	Adam	\N	1	true	2020-07-14 23:12:08.531+00	2020-07-14 23:12:08.542+00
+3	Dakota	\N	1	true	2020-07-14 23:12:51.633+00	2020-07-14 23:12:51.65+00
 \.
 
 
