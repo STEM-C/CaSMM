@@ -12,7 +12,7 @@ jobs:
         id: app
         uses: STEM-C/auto/review@v0.4.5
         with: 
-          base: reivew
+          base: review
           pipeline: ${{ secrets.PIPELINE_ID }}
           token: ${{ secrets.HEROKU_TOKEN }}
     
