@@ -28,18 +28,19 @@ jobs:
           echo "::set-output name=tag::casmm/server:${{ steps.app.outputs.app_name }}"
           echo ${{ secrets.GITHUB_TOKEN }} | docker login docker.pkg.github.com -u $GITHUB_ACTOR --password-stdin
           docker pull docker.pkg.github.com/stem-c/casmm/server || true
-          docker build -t ${{ steps.image.outputs.tag }} --cache-from docker.pkg.github.com/stem-c/casmm/server .
-          docker push docker.pkg.github.com/stem-c/${{ steps.image.outputs.tag }}
+          echo "${{ steps.image.outputs.tag }}"
+          docker build -t "${{ steps.image.outputs.tag }}" --cache-from docker.pkg.github.com/stem-c/casmm/server .
+          docker push "docker.pkg.github.com/stem-c/${{ steps.image.outputs.tag }}"
       - name: Tag and push heroku image
         id: heroku
         env:
           HEROKU_API_KEY: ${{ secrets.HEROKU_TOKEN }}
         run: |
           echo "::set-output name=tag::registry.heroku.com/${{ steps.app.outputs.app_name }}/web"
-          docker tag ${{ steps.image.outputs.tag }} ${{ steps.heroku.outputs.tag }}
+          docker tag "${{ steps.image.outputs.tag }}" "${{ steps.heroku.outputs.tag }}"
           heroku container:login
-          docker push ${{ steps.heroku.outputs.tag }}
-          heroku container:release -a ${{ steps.app.outputs.app_name }} web
+          docker push "${{ steps.heroku.outputs.tag }}"
+          heroku container:release -a "${{ steps.app.outputs.app_name }}" web
       - uses: chrnorm/deployment-action@releases/v1
         name: Create GitHub deployment
         if: success()
