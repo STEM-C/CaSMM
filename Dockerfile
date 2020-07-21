@@ -1,38 +1,37 @@
-FROM strapi/base
+#
+# client stage
+#
+FROM node:latest as client
 
-WORKDIR /usr/src/app/client
-
-# Install client dependencies
+WORKDIR /client
 COPY ./client/package.json .
 COPY ./client/yarn.lock .
 RUN yarn install
-
-# Build client
 COPY ./client .
 RUN PUBLIC_URL=/frontend yarn build
 
-WORKDIR /usr/src/app
+#
+# server stage
+#
+FROM node:latest as server
 
-# Install app dependencies
+WORKDIR /server
 COPY ./server/package.json .
 COPY ./server/yarn.lock .
 RUN yarn install
-
-# Bundle app source
 COPY ./server .
 RUN rm -rf ./public/frontend \
-    mkdir ./public/frontend \
-    mv ./client/build/* ./public/frontend/ \
-    rm -rf ./client
-
-# Set the env to prod for build
+    mkdir ./public/frontend 
 ENV NODE_ENV production
-
-# Build admin
 RUN yarn build
 
-# Port mapping
-EXPOSE 1337
+#
+# final stage
+#
+FROM strapi/base
 
-# Run when the container is started
+WORKDIR /usr/src/app
+COPY --from=server /server .
+COPY --from=client /client/build ./public/frontend
+EXPOSE 1337
 CMD yarn start
