@@ -15,7 +15,9 @@ module.exports = {
                 '/student',
                 '/workspace',
                 '/sandbox',
-                '/roster'
+                '/roster/:id',
+                '/activity',
+                '/catalogue'
             ]
         },
         // logger: {
