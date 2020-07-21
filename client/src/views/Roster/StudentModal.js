@@ -30,9 +30,9 @@ export default function StudentModal(props) {
                     </Button>,
                 ]}
             >
-                <p>Animal: {student.animal}</p>
+                <p>Animal: {student.character}</p>
                 <p>Number of submissions: ###</p>
-                <p>Status: *Enrolled*</p>
+                <p>Status: {student.enrolled.enrolled ? 'Enrolled' : 'Unenrolled'}</p>
             </Modal>
         </div>
     );
