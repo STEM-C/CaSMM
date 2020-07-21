@@ -28,7 +28,7 @@ jobs:
           echo "::set-output name=tag::casmm/server:${{ steps.app.outputs.app_name }}"
           echo ${{ secrets.GITHUB_TOKEN }} | docker login docker.pkg.github.com -u $GITHUB_ACTOR --password-stdin
           docker pull docker.pkg.github.com/stem-c/casmm/server || true
-          docker build . -t ${{ steps.image.outputs.tag }} --cache-from=docker.pkg.github.com/stem-c/casmm/server
+          docker build -t ${{ steps.image.outputs.tag }} --cache-from docker.pkg.github.com/stem-c/casmm/server .
           docker push docker.pkg.github.com/stem-c/${{ steps.image.outputs.tag }}
       - name: Tag and push heroku image
         id: heroku
