@@ -18,7 +18,7 @@ export const getActivityToolbox = async (id, jwt) => (await axios.get(`${cms}/ac
     }
 })).data
 
-export const getMentor = async (jwt) => (await axios.get(`${cms}/mentors/me`, {
+export const getMentor = async (jwt) => (await axios.get(`${cms}/classroom-managers/me`, {
     headers: {
         Authorization:
             `Bearer ${jwt}`
@@ -34,18 +34,17 @@ export const getClassroom = async (id, jwt) => (await axios.get(`${cms}/classroo
 
 export const getClassrooms = async (ids, jwt) => ( Promise.all(ids.map( id => getClassroom(id,jwt) )))
 
-export const getActivities = async (jwt) => (await axios.get(`${cms}/sessions/student/activities`, {
+export const getActivities = async (jwt) => (await axios.get(`${cms}/activities`, {
     headers: {
         'Authorization':
             `Bearer ${jwt}`
     }
 })).data
 
-export const getStudents = async (code) => (await axios.get(`${cms}/sessions/code/${code}`)).data
+export const getStudents = async (code) => (await axios.get(`${cms}/classrooms/join/${code}`)).data
 
-export const postJoin = async (code, ids) => (await axios.post(`${cms}/sessions/join`, {
+export const postJoin = async (code, ids) => (await axios.post(`${cms}/classrooms/join/${code}`, {
         "students": ids,
-        "code": code
     }
 )).data
 
