@@ -9,7 +9,7 @@ services:
     ports:
       - 1337:1337
     volumes:
-      - ./cms:/srv/app
+      - ./server:/srv/app
     depends_on:
       - db
   compile:
