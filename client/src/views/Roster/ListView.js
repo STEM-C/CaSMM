@@ -54,8 +54,8 @@ export default function ListView(props) {
         },
         {
             title: 'Animal',
-            dataIndex: 'animal',
-            key: 'animal',
+            dataIndex: 'character',
+            key: 'character',
             editable: true,
             align: 'left',
         },

@@ -45,7 +45,7 @@
       "path": "/students/:id",
       "handler": "student.update",
       "config": {
-        "policies": []
+        "policies": ["global::isClassroomManager", "global::hasStudentsClassroom"]
       }
     },
     {

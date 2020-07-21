@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react";
-import {getClassroom, setEnrollmentStatus} from "../../Utils/requests";
+import {getClassroom, setEnrollmentStatus, updateStudent} from "../../Utils/requests";
 import {getToken} from "../../Utils/AuthRequests";
 import './Roster.less'
 import MentorSubHeader from "../../components/MentorSubHeader/MentorSubHeader";
@@ -25,7 +25,7 @@ export default function Roster(props) {
                 data.push({
                     key: student.id,
                     name: student.name,
-                    animal: student.character,
+                    character: student.character,
                     enrolled: {
                         id: student.id,
                         enrolled: student.enrolled
@@ -45,7 +45,7 @@ export default function Roster(props) {
         newStudentData[index] = {
             key: updatedStudent.id,
             name: updatedStudent.name,
-            animal: updatedStudent.character,
+            character: updatedStudent.character,
             enrolled: {
                 id: updatedStudent.id,
                 enrolled: updatedStudent.enrolled
@@ -59,7 +59,7 @@ export default function Roster(props) {
     const edit = record => {
         form.setFieldsValue({
             name: '',
-            animal: '',
+            character: '',
             ...record,
         });
         setEditingKey(record.key);
@@ -72,6 +72,8 @@ export default function Roster(props) {
     const save = async key => {
         try {
             const row = await form.validateFields();
+
+            // update edited row to studentData state
             const newData = [...studentData];
             const index = newData.findIndex(item => key === item.key);
 
@@ -84,6 +86,13 @@ export default function Roster(props) {
                 newData.push(row);
                 setStudentData(newData);
                 setEditingKey('');
+            }
+
+            // update student in db
+            let student = classroom.students.find(student => student.id === key);
+            for(let attribute in row) student[attribute] = row[attribute]
+            if(student) {
+                updateStudent(student.id, student, getToken())
             }
         } catch (errInfo) {
             console.log('Validate Failed:', errInfo);

@@ -70,3 +70,12 @@ export const setEnrollmentStatus = async (id, enrolled, jwt) => (await axios.put
         }
     }
 )).data
+
+export const updateStudent = async (id, student, jwt) => (await axios.put(`${cms}/students/${id}`, student,
+    {
+        headers: {
+            'Authorization':
+                `Bearer ${jwt}`
+        }
+    }
+)).data

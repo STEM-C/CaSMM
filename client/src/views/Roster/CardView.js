@@ -10,7 +10,7 @@ export default function CardView(props) {
             {studentData.map(student =>
                 <Card id='card' title={student.name} key={student.key}>
                     <div id='card-content-container'>
-                        <p>Animal: {student.animal}</p>
+                        <p>Animal: {student.character}</p>
                         <p>Number of Submissions: ###</p>
                         <p>Status: {student.enrolled.enrolled ? 'Enrolled' : 'Unenrolled'}</p>
                     </div>
