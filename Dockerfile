@@ -22,7 +22,7 @@ RUN yarn install
 COPY ./server .
 RUN rm -rf ./public/frontend \
     mkdir ./public/frontend \
-    mv ./client/build/* ./public/frontend \
+    mv ./client/build/* ./public/frontend/ \
     rm -rf ./client
 
 # Set the env to prod for build
