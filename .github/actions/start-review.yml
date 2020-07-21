@@ -1,4 +1,4 @@
-name: Build, test, and deploy a review app
+name: Create Review App
 on: 
   pull_request:
     branches: [ develop ]
@@ -22,23 +22,23 @@ jobs:
           ENVIRONMENT: development
           DATABASE_URL: ${{ steps.app.outputs.database_url }}
           SCRIPT_PATH: ./scripts
-      - name: Build and push review pr image
-        uses: docker/build-push-action@v1
-        with:
-          username: ${{ secrets.DOCKER_USERNAME }}
-          password: ${{ secrets.DOCKER_PASSWORD }}
-          repository: casmm/server
-          cache_froms: casmm/server
-          tags: ${{ steps.app.outputs.app_name }}
-          tag_with_sha: true
-      - name: Tag the rev pr image for heroku registry
-        run: docker tag ${{ steps.app.outputs.app_name }} registry.heroku.com/${{ steps.app.outputs.app_name }}/web
-      - name: Push and release the image to heroku
+      - name: Build and push review image
+        id: image
+        run: |
+          echo "::set-output name=tag::casmm/server:${{ steps.app.outputs.app_name }}"
+          echo ${{ secrets.GITHUB_TOKEN }} | docker login docker.pkg.github.com -u $GITHUB_ACTOR --password-stdin
+          docker pull docker.pkg.github.com/stem-c/casmm/server || true
+          docker build . -t ${{ steps.image.outputs.tag }} --cache-from=docker.pkg.github.com/stem-c/casmm/server
+          docker push docker.pkg.github.com/stem-c/${{ steps.image.outputs.tag }}
+      - name: Tag and push heroku image
+        id: heroku
         env:
           HEROKU_API_KEY: ${{ secrets.HEROKU_TOKEN }}
         run: |
+          echo "::set-output name=tag::registry.heroku.com/${{ steps.app.outputs.app_name }}/web"
+          docker tag ${{ steps.image.outputs.tag }} ${{ steps.heroku.outputs.tag }}
           heroku container:login
-          docker push registry.heroku.com/${{ steps.app.outputs.app_name }}/web
+          docker push ${{ steps.heroku.outputs.tag }}
           heroku container:release -a ${{ steps.app.outputs.app_name }} web
       - uses: chrnorm/deployment-action@releases/v1
         name: Create GitHub deployment
