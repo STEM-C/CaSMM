@@ -6,9 +6,10 @@ image_name=$IMAGE_NAME
 image_tag=$IMAGE_TAG
 app_name=$APP_NAME
 app_type=$APP_TYPE
+github_token=$GITHUB_TOKEN
 
-requiredParams=($image_name $image_tag $app_name $app_type $HEROKU_API_KEY)
-if [[ "${#requiredParams[@]}" != 5 ]]; 
+requiredParams=($image_name $image_tag $app_name $app_type $github_token $HEROKU_API_KEY)
+if [[ "${#requiredParams[@]}" != 6 ]]; 
 then 
     echo "Not all environment vars were set!"
     exit 1
@@ -18,7 +19,7 @@ gpr_image_name="docker.pkg.github.com/stem-c/casmm/$image_name"
 heroku_image_name="registry.heroku.com/$app_name/$app_type"
 
 # Build and tag image 
-echo ${{ secrets.GITHUB_TOKEN }} | docker login docker.pkg.github.com -u $GITHUB_ACTOR --password-stdin
+echo $GITHUB_TOKEN | docker login docker.pkg.github.com -u $GITHUB_ACTOR --password-stdin
 docker pull "$gpr_image_name" || true
 docker build -t "$gpr_image_name:$image_tag" -t "$gpr_image_name:latest" -t "$heroku_imgae_name" --cache-from "$gpr_image_name" .
 
