@@ -1,0 +1,19 @@
+name: Update Review App
+on: 
+  pull_request:
+    branches: [ develop ]
+    types: [ synchronize ]
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout the repo
+        uses: actions/checkout@v2
+      - name: Built, test, and deploy app
+        run: ./scripts/build_test_deploy.sh
+        env:
+          IMAGE_NAME: server
+          IMAGE_TAG: ${{ steps.app.outputs.app_name }}
+          APP_NAME: ${{ steps.app.outputs.app_name }}
+          APP_TYPE: web
+          HEROKU_API_KEY: ${{ secrets.HEROKU_TOKEN }}

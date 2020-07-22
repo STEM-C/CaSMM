@@ -22,28 +22,14 @@ jobs:
           ENVIRONMENT: development
           DATABASE_URL: ${{ steps.app.outputs.database_url }}
           SCRIPT_PATH: ./scripts
-      - name: Name review image
-        id: image
-        run: echo "::set-output name=tag::docker.pkg.github.com/stem-c/casmm/server:${{ steps.app.outputs.app_name }}"
-      - name: Build and push review image
-        run: |
-          echo ${{ secrets.GITHUB_TOKEN }} | docker login docker.pkg.github.com -u $GITHUB_ACTOR --password-stdin
-          docker pull docker.pkg.github.com/stem-c/casmm/server || true
-          echo "Building ${{ steps.image.outputs.tag }}"
-          docker build -t ${{ steps.image.outputs.tag }} --cache-from docker.pkg.github.com/stem-c/casmm/server .
-          docker push ${{ steps.image.outputs.tag }}
-      - name: Name heroku image
-        id: heroku
-        run: echo "::set-output name=tag::registry.heroku.com/${{ steps.app.outputs.app_name }}/web"
-      - name: Tag and push heroku image
+      - name: Built, test, and deploy app
+        run: ./scripts/build_test_deploy.sh
         env:
+          IMAGE_NAME: server
+          IMAGE_TAG: ${{ steps.app.outputs.app_name }}
+          APP_NAME: ${{ steps.app.outputs.app_name }}
+          APP_TYPE: web
           HEROKU_API_KEY: ${{ secrets.HEROKU_TOKEN }}
-        run: |
-          docker tag ${{ steps.image.outputs.tag }} ${{ steps.heroku.outputs.tag }}
-          heroku container:login
-          echo "Pushing ${{ steps.heroku.outputs.tag }}"
-          docker push ${{ steps.heroku.outputs.tag }}
-          heroku container:release -a ${{ steps.app.outputs.app_name }} web
       - uses: chrnorm/deployment-action@releases/v1
         name: Create GitHub deployment
         if: success()
