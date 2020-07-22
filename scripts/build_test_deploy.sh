@@ -19,7 +19,7 @@ gpr_image_name="docker.pkg.github.com/stem-c/casmm/$image_name"
 heroku_image_name="registry.heroku.com/$app_name/$app_type"
 
 # Build and tag image 
-echo $GITHUB_TOKEN | docker login docker.pkg.github.com -u $GITHUB_ACTOR --password-stdin
+echo "$GITHUB_TOKEN" | docker login docker.pkg.github.com -u "$GITHUB_ACTOR" --password-stdin
 docker pull "$gpr_image_name" || true
 docker build -t "$gpr_image_name:$image_tag" -t "$gpr_image_name:latest" -t "$heroku_imgae_name" --cache-from "$gpr_image_name" .
 
