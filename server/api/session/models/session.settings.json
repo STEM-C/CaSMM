@@ -14,8 +14,8 @@
       "model": "classroom"
     },
     "students": {
-      "collection": "student",
-      "via": "sessions"
+      "via": "sessions",
+      "collection": "student"
     }
   }
 }
