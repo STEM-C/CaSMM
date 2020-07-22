@@ -15,7 +15,7 @@ COPY ./server .
 ENV NODE_ENV production
 RUN yarn build
 RUN rm -rf ./public/frontend \
-    mkdir ./public/frontend 
-COPY /client/build ./public/frontend
-RUN rm -rf /client
+    mkdir ./public/frontend \
+    mv /client/build ./public/frontend \
+    rm -rf /client
 CMD yarn start
