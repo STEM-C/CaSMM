@@ -21,7 +21,7 @@ heroku_image_name="registry.heroku.com/$app_name/$app_type"
 # Build and tag image 
 echo "$GITHUB_TOKEN" | docker login docker.pkg.github.com -u "$GITHUB_ACTOR" --password-stdin
 docker pull "$gpr_image_name" || true
-docker build -t "$gpr_image_name:$image_tag" -t "$gpr_image_name:latest" -t "$heroku_imgae_name" --cache-from "$gpr_image_name" .
+docker build -t "$gpr_image_name:$image_tag" -t "$gpr_image_name:latest" -t "$heroku_image_name" --cache-from "$gpr_image_name" .
 
 # Test
 # docker-compose up -d
@@ -35,7 +35,7 @@ docker build -t "$gpr_image_name:$image_tag" -t "$gpr_image_name:latest" -t "$he
 # yarn performance
 
 # Push gpr image
-docker push "$gpr_image_full_name"
+docker push "$gpr_image_name"
 
 # Push heroku image
 heroku container:login
