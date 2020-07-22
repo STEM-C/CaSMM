@@ -5,8 +5,9 @@ FROM node:latest
 WORKDIR /usr/src/app
 
 # Install app dependencies
-COPY package*.json ./
-RUN npm install
+COPY package.json .
+COPY yarn.lock .
+RUN yarn
 
 # Install arduino compiler
 RUN curl https://downloads.arduino.cc/arduino-1.8.5-linux64.tar.xz | tar -xJ
