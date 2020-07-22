@@ -1,6 +1,6 @@
 FROM strapi/base
 
-WORKDIR /client
+WORKDIR /usr/src/app/client
 COPY ./client/package.json .
 COPY ./client/yarn.lock .
 RUN yarn install
@@ -16,6 +16,6 @@ ENV NODE_ENV production
 RUN yarn build
 RUN rm -rf ./public/frontend \
     mkdir ./public/frontend \
-    mv /client/build ./public/frontend \
-    rm -rf /client
+    mv ./client/build ./public/frontend \
+    rm -rf ./client
 CMD yarn start
