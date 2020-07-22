@@ -30,6 +30,7 @@ jobs:
           APP_NAME: ${{ steps.app.outputs.app_name }}
           APP_TYPE: web
           HEROKU_API_KEY: ${{ secrets.HEROKU_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - uses: chrnorm/deployment-action@releases/v1
         name: Create GitHub deployment
         if: success()

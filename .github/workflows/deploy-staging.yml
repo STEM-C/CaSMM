@@ -19,3 +19,4 @@ jobs:
           APP_NAME: casmm-staging
           APP_TYPE: web
           HEROKU_API_KEY: ${{ secrets.HEROKU_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
