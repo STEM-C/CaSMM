@@ -7,19 +7,10 @@ image_tag=$IMAGE_TAG
 app_name=$APP_NAME
 app_type=$APP_TYPE
 
-valid=true
-for param in image_name image_tag app_name app_type HEROKU_API_KEY
-do
-    if [[ -n param ]];
-    then
-        echo "missing $param"
-        valid=false
-    fi;
-done
-
-if [[ "$valid" = false ]]; 
+requiredParams=($image_name $image_tag $app_name $app_type $HEROKU_API_KEY)
+if [[ "${#requiredParams[@]}" != 5 ]]; 
 then 
-    echo "set all environment vars!"
+    echo "Not all environment vars were set!"
     exit 1
 fi;
 
