@@ -9,11 +9,14 @@ jobs:
     steps:
       - name: Checkout the repo
         uses: actions/checkout@v2
+      - name: Get pr
+        id: get_pr
+        run: echo ::set-output name=NUMBER::$(echo $GITHUB_REF | awk 'BEGIN { FS = "/" } ; { print $3 }')
       - name: Built, test, and deploy app
         run: ./scripts/build_test_deploy.sh
         env:
           IMAGE_NAME: server
-          IMAGE_TAG: ${{ steps.app.outputs.app_name }}
-          APP_NAME: ${{ steps.app.outputs.app_name }}
+          IMAGE_TAG: ${{ steps.get_pr.outputs.NUMBER }}
+          APP_NAME: ${{ steps.get_pr.outputs.NUMBER }}
           APP_TYPE: web
           HEROKU_API_KEY: ${{ secrets.HEROKU_TOKEN }}
