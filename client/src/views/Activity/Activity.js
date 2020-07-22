@@ -5,9 +5,9 @@ import BlocklyCanvasPanel from "../../components/ActivityPanels/BlocklyCanvasPan
 import ActivityInfoPanel from "../../components/ActivityPanels/ActivityInfoPanel";
 
 
-export default function Workspace(props) {
+export default function Activity(props) {
     const [activity, setActivity] = useState({})
-    const {handleLogout} = props
+    const {handleLogout, history} = props
 
     useEffect(() => {
         const localActivity = localStorage.getItem("my-activity")
@@ -25,14 +25,19 @@ export default function Workspace(props) {
                 setActivity(loadedActivity)
             })
         } else {
-            props.history.push('/')
+            props.history.push('/dashboard')
         }
     }, [props])
+
+    const toActivityList = () => {
+        history.push('/catalogue')
+    }
 
     return (
         <div className="container flex flex-row">
             <ActivityInfoPanel activity={activity}/>
-            <BlocklyCanvasPanel activity={activity} activityType={"my-activity"} homePath={'/student'} handleLogout={handleLogout}/>
+            <BlocklyCanvasPanel activity={activity} activityType={"my-activity"} homePath={'/dashboard'}
+                                toActivityList={toActivityList} handleLogout={handleLogout}/>
         </div>
     );
 

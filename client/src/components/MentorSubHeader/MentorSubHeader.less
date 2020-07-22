@@ -1,0 +1,43 @@
+@import "../../assets/style.less";
+
+#page-header {
+  width: 80vw;
+  margin: 0 auto 0 auto;
+  padding-bottom: 2vh;
+
+  h1 {
+    color: #colors[text-secondary];
+    margin-bottom: 0;
+    float: left;
+  }
+
+  #header-nav {
+    position: relative;
+    bottom: -2vh;
+    float: right;
+    margin-right: 0;
+    white-space: nowrap;
+
+    #link {
+      //float: right;
+      background: none !important;
+      border: none;
+      padding: 0 !important;
+      display: inline-block;
+      margin-left: 10px;
+
+      &:focus {
+        outline: none;
+      }
+
+      i {
+        font-size: 2em;
+        color: #colors[text-secondary];
+
+        &:hover {
+          color: #colors[secondary];
+        }
+      }
+    }
+  }
+}

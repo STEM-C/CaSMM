@@ -45,7 +45,7 @@
       "path": "/students/:id",
       "handler": "student.update",
       "config": {
-        "policies": []
+        "policies": ["global::isClassroomManager", "global::hasStudentsClassroom"]
       }
     },
     {
@@ -54,6 +54,14 @@
       "handler": "student.delete",
       "config": {
         "policies": []
+      }
+    },
+    {
+      "method": "PUT",
+      "path": "/students/enrolled/:id",
+      "handler": "student.enrolled",
+      "config": {
+        "policies": ["global::isClassroomManager", "global::hasStudentsClassroom"]
       }
     }
   ]

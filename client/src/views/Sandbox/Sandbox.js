@@ -1,6 +1,5 @@
 import React, {useEffect, useState} from "react"
-import "../Workspace/Workspace.less"
-import BlocklyCanvasPanel from "../../components/BlocklyCanvasPanel/BlocklyCanvasPanel";
+import BlocklyCanvasPanel from "../../components/ActivityPanels/BlocklyCanvasPanel";
 import {getActivityToolboxAll} from "../../Utils/requests";
 
 
@@ -24,7 +23,9 @@ export default function Sandbox() {
     }, []);
 
     return (
-        <BlocklyCanvasPanel activity={activity} activityType={"sandbox-activity"}/>
+        <div className='container'>
+            <BlocklyCanvasPanel activity={activity} activityType={"sandbox-activity"} homePath={'/'}/>
+        </div>
     );
 
 }

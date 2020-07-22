@@ -1,5 +1,6 @@
 import React from 'react';
 import Logo from "../../assets/casmm_logo.png";
+import './ActivityPanels.less'
 import {Carousel} from "antd";
 import PlaceHolderImg1 from "../../assets/science.png";
 import PlaceHolderImg2 from "../../assets/arduino.png";
