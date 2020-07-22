@@ -1,7 +1,11 @@
-const rewireLess = require('react-app-rewire-less');
+const {
+    override,
+    addLessLoader,
+} = require('customize-cra');
 
-module.exports = function override(config, env) {
-    config = rewireLess.withLoaderOptions({
+module.exports = override(
+    addLessLoader({
+        javascriptEnabled:true,
         modifyVars: {
             '@primary-color': '#3d5c82', // primary color for all components
             '@link-color': '#3d5c82', // link color
@@ -17,8 +21,5 @@ module.exports = function override(config, env) {
             '@border-color-base': '#d9d9d9', // major border color
             '@box-shadow-base': '0 2px 8px rgba(0, 0, 0, 0.15)', // major shadow for layers
         },
-        javascriptEnabled: true,
-    })(config, env);
-
-    return config;
-};
+    }),
+);
