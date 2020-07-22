@@ -1,9 +1,9 @@
 import React, {useEffect, useState} from 'react';
 import {AutoComplete, Card, Checkbox} from "antd";
 import './ActivityCatalogue.less'
-import MentorSubHeader from "../../components/MentorSubHeader/MentorSubHeader";
-import {getActivities} from "../../Utils/requests";
-import {getToken} from "../../Utils/AuthRequests";
+import MentorSubHeader from "../../../components/MentorSubHeader/MentorSubHeader";
+import {getActivities} from "../../../Utils/requests";
+import {getToken} from "../../../Utils/AuthRequests";
 
 export default function ActivityCatalogue(props) {
     const [searchOptions, setSearchOptions] = useState([]);
@@ -59,8 +59,7 @@ export default function ActivityCatalogue(props) {
     };
 
     return (
-        <div className='container'>
-            <div id='main-header'>Catalogue of Activities</div>
+        <div>
             <div className='flex flex-column'>
                 <MentorSubHeader
                     title={'Available Activities:'}

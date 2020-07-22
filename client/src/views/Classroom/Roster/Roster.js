@@ -1,8 +1,8 @@
 import React, {useEffect, useState} from "react";
-import {getClassroom, setEnrollmentStatus, updateStudent} from "../../Utils/requests";
-import {getToken} from "../../Utils/AuthRequests";
+import {getClassroom, setEnrollmentStatus, updateStudent} from "../../../Utils/requests";
+import {getToken} from "../../../Utils/AuthRequests";
 import './Roster.less'
-import MentorSubHeader from "../../components/MentorSubHeader/MentorSubHeader";
+import MentorSubHeader from "../../../components/MentorSubHeader/MentorSubHeader";
 import ListView from "./ListView";
 import CardView from "./CardView";
 import {Form} from "antd";
@@ -11,11 +11,9 @@ export default function Roster(props) {
     const [form] = Form.useForm();
     const [studentData, setStudentData] = useState([]);
     const [editingKey, setEditingKey] = useState('');
-    const [classroom, setClassroom] = useState([]);
     const [listView, setListView] = useState(true);
-    const {history, handleLogout}= props;
-    const path = history.location.pathname.split('/');
-    const classroomId = path[path.length-1];
+    const [classroom, setClassroom] = useState({})
+    const {handleLogout, classroomId} = props;
 
     useEffect( () => {
         let data = [];
@@ -39,7 +37,7 @@ export default function Roster(props) {
     const onEnrollToggle = async (id, toggled) => {
         const updatedStudent = await setEnrollmentStatus(id, toggled, getToken());
         let newStudentData = [...studentData];
-        const index = studentData.findIndex(function(student) {
+        const index = studentData.findIndex(function (student) {
             return student.key === id
         });
         newStudentData[index] = {
@@ -79,7 +77,7 @@ export default function Roster(props) {
 
             if (index > -1) {
                 const item = newData[index];
-                newData.splice(index, 1, { ...item, ...row });
+                newData.splice(index, 1, {...item, ...row});
                 setStudentData(newData);
                 setEditingKey('');
             } else {
@@ -90,8 +88,8 @@ export default function Roster(props) {
 
             // update student in db
             let student = classroom.students.find(student => student.id === key);
-            for(let attribute in row) student[attribute] = row[attribute]
-            if(student) {
+            for (let attribute in row) student[attribute] = row[attribute]
+            if (student) {
                 updateStudent(student.id, student, getToken())
             }
         } catch (errInfo) {
@@ -100,8 +98,7 @@ export default function Roster(props) {
     };
 
     return (
-        <div className="container">
-            <div id='main-header'>{classroom.name}</div>
+        <div>
             <MentorSubHeader title={'Your Students:'} toDashActive={true} addUserActive={true}
                              cardViewActive={listView} listViewActive={!listView} setListView={setListView}
                              handleLogout={handleLogout}/>

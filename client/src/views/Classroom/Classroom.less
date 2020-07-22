@@ -4,8 +4,7 @@
   color: #colors[text-secondary];
   font-size: 3em;
   font-weight: bolder;
-  margin-left: 5vw;
-  margin-bottom: 3%;
+  margin: 0 0 1vh 5vw;
   text-align: left;
 }
 
@@ -16,24 +15,23 @@
 .ant-tabs-tab {
   min-width: 10vw;
   justify-content: center;
-  color: #colors[tertiary];
+  color: #colors[tertiary] !important;
 
   &:hover {
     color: #colors[tertiary];
-    opacity: .3;
+    opacity: .6;
   }
 }
 
 .ant-tabs-tab.ant-tabs-tab-active {
-  color: #colors[secondary];
+  color: #colors[secondary] !important;
 
   &:hover {
     color: #colors[secondary];
-    opacity: .3;
+    opacity: .6;
   }
 }
 
 .ant-tabs-ink-bar {
-  color: #colors[secondary];
-  background: #colors[secondary];
+  background: #colors[secondary] !important;
 }
