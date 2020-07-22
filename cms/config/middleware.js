@@ -17,7 +17,8 @@ module.exports = {
                 '/sandbox',
                 '/roster/:id',
                 '/activity',
-                '/catalogue'
+                '/catalogue',
+                '/classroom/:id'
             ]
         },
         // logger: {

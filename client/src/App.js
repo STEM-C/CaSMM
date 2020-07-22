@@ -13,6 +13,7 @@ import Roster from "./views/Roster/Roster";
 import {removeUserSession} from "./Utils/AuthRequests";
 import Activity from "./views/Activity/Activity";
 import ActivityCatalogue from "./views/ActivityCatalogue/ActivityCatalogue";
+import Classroom from "./views/Classroom/Classroom"
 
 const App = () => {
     const [selectedActivity, setSelectedActivity] = useState('');
@@ -34,6 +35,7 @@ const App = () => {
                 <PrivateRoute exact path={"/roster/:id"} render={() => <Roster history={history} handleLogout={handleLogout}/>}/>
                 <PrivateRoute exact path={"/activity"} render={() => <Activity selectedActivity={selectedActivity} history={history} handleLogout={handleLogout}/> } />
                 <PrivateRoute exact path={"/catalogue"} render={() => <ActivityCatalogue setSelectedActivity={setSelectedActivity} history={history} handleLogout={handleLogout}/> } />
+                <PrivateRoute exact path={"/classroom/:id"} render={() => <Classroom setSelectedActivity={setSelectedActivity} history={history} handleLogout={handleLogout}/> } />
                 <Route component={NotFound}/>
             </Switch>
         </div>
