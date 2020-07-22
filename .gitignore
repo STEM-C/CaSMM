@@ -15,6 +15,7 @@ yarn-error.log*
 .cache/
 *.dump
 !development_db.dump
+!test_db.dump
 
 # Packages
 *.zip
