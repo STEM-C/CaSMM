@@ -16,13 +16,18 @@
       "type": "string"
     },
     "classroom": {
-      "via": "students",
-      "model": "classroom"
+      "model": "classroom",
+      "via": "students"
     },
     "sessions": {
-      "via": "students",
       "collection": "session",
+      "via": "students",
       "dominant": true
+    },
+    "enrolled": {
+      "type": "boolean",
+      "default": true,
+      "required": true
     }
   }
 }

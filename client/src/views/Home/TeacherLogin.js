@@ -28,8 +28,8 @@ export default function TeacherLogin(props) {
                 <div id='box-title'>
                     Teacher Login
                 </div>
-                <input type="email" {...email} placeholder="Email" autoComplete="new-password" />
-                <input type="password" {...password} placeholder="Password" autoComplete="new-password"/>
+                <input type="email" {...email} placeholder="Email" autoComplete="username" />
+                <input type="password" {...password} placeholder="Password" autoComplete="current-password"/>
                 {error && <div style={{ color: 'red' }}>{error}</div>}
                 <input type="button" value={loading ? 'Loading...' : 'Login'} onClick={handleLogin} disabled={loading}/>
             </form>

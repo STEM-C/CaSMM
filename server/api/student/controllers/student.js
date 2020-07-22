@@ -15,5 +15,48 @@ module.exports = {
             session,
             students: students.map(student => sanitizeEntity(student, { model: strapi.models.student }))
         }
-    }
+    },
+    /**
+     * Update student enrolled attribute
+     *
+     * @param {Boolean} enrolled
+     *
+     * @return {Student}
+     */
+    async enrolled(ctx) {
+
+        // ensure request was not sent as formdata
+        if (ctx.is('multipart')) return ctx.badRequest(
+            'Multipart requests are not accepted!',
+            { id: 'Student.enrolled.format.invalid', error: 'ValidationError' }
+        )
+
+        // ensure the request has the right number of params
+        const params = Object.keys(ctx.request.body).length
+        if (params !== 1) return ctx.badRequest(
+            'Invalid number of params!',
+            { id: 'Student.enrolled.body.invalid', error: 'ValidationError' }
+        )
+
+        // validate the request
+        const { enrolled } = ctx.request.body
+        if (typeof enrolled !== "boolean") return ctx.badRequest(
+            'An enrollment status must be provided!',
+            { id: 'Student.enrolled.body.invalid', error: 'ValidationError' }
+        )
+
+        // find student
+        const { id } = ctx.params
+        let student = await strapi.services.student.findOne({ id: id })
+        if (!student) return ctx.notFound(
+            'The student id provided does not correspond to a valid student!',
+            { id: 'Student.enrolled.id.invalid', error: 'ValidationError' }
+        )
+
+
+        // remove private fields and return the new student
+        student.enrolled =  ctx.request.body.enrolled
+        const updatedStudent = await strapi.services.student.update({id: id}, student)
+        return sanitizeEntity(updatedStudent, { model: strapi.models.student })
+    },
 }

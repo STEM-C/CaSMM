@@ -1,5 +1,6 @@
 import React, {useEffect, useRef, useState} from 'react';
 import {Link} from "react-router-dom";
+import './ActivityPanels.less'
 import {compileArduinoCode, getArduino, getJS, getXml, setLocalActivity} from "./helpers";
 
 export default function BlocklyCanvasPanel(props) {
@@ -7,7 +8,7 @@ export default function BlocklyCanvasPanel(props) {
     const [hoverJS, setHoverJS] = useState(false)
     const [hoverArduino, setHoverArduino] = useState(false)
     const [hoverCompile, setHoverCompile] = useState(false)
-    const {activity, activityType} = props
+    const {activity, activityType, homePath, toActivityList, handleLogout} = props
 
 
     let workspaceRef = useRef(null)
@@ -38,10 +39,17 @@ export default function BlocklyCanvasPanel(props) {
         <div id='horizontal-container' className="flex flex-column">
             <div id='top-container' className="flex flex-column vertical-container">
                 <div id='description-container' className="flex flex-row space-between card">
-                    <Link id='link' to={"/"} className="flex flex-column">
-                        <i className="fa fa-home" style={{"fontSize": "32px"}}/>
-                        Home
-                    </Link>
+                    <div className='flex flex-row'>
+                        <Link id='link' to={homePath} className="flex flex-column">
+                            <i className="fa fa-home"/>
+                        </Link>
+                        {toActivityList ? <button onClick={toActivityList} id='link' className="flex flex-column">
+                            <i id='icon-btn' className="fa fa-th"/>
+                        </button> : null}
+                        {handleLogout ? <button onClick={handleLogout} id='link' className="flex flex-column">
+                            <i id='icon-btn' className="fa fa-sign-out-alt"/>
+                        </button> : null}
+                    </div>
                     <div style={{"width": "25%"}}>
                         <div id='action-btn-container' className="flex space-between">
                             <i onClick={() => getXml(workspaceRef.current)} className="fas fa-code hvr-info"
