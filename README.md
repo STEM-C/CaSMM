@@ -1,4 +1,4 @@
-# STEM+C
+# CaSMM
 
 > Cloud-based programming interface
 
