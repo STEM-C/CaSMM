@@ -3,6 +3,7 @@ import {getActivityToolbox} from "../../Utils/requests.js"
 import {getToken} from "../../Utils/AuthRequests"
 import BlocklyCanvasPanel from "../../components/ActivityPanels/BlocklyCanvasPanel";
 import ActivityInfoPanel from "../../components/ActivityPanels/ActivityInfoPanel";
+import NavBar from "../../components/NavBar/NavBar";
 
 
 export default function Activity(props) {
@@ -34,10 +35,13 @@ export default function Activity(props) {
     }
 
     return (
-        <div className="container flex flex-row">
-            <ActivityInfoPanel activity={activity}/>
-            <BlocklyCanvasPanel activity={activity} activityType={"my-activity"} homePath={'/dashboard'}
-                                toActivityList={toActivityList} handleLogout={handleLogout}/>
+        <div className="container">
+            <NavBar handleLogout={handleLogout}/>
+            <div className="flex flex-row">
+                <ActivityInfoPanel activity={activity}/>
+                <BlocklyCanvasPanel activity={activity} activityType={"my-activity"} homePath={'/dashboard'}
+                                    toActivityList={toActivityList} handleLogout={handleLogout}/>
+            </div>
         </div>
     );
 

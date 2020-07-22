@@ -5,6 +5,7 @@ import {Card} from 'antd';
 import './Dashboard.less'
 
 import MentorSubHeader from "../../components/MentorSubHeader/MentorSubHeader";
+import NavBar from "../../components/NavBar/NavBar";
 
 export default function Dashboard(props) {
     const [classrooms, setClassrooms] = useState([]);
@@ -33,6 +34,7 @@ export default function Dashboard(props) {
 
     return (
         <div className="container">
+            <NavBar handleLogout={handleLogout}/>
             <div id='main-header'>Welcome {user.username}</div>
             <MentorSubHeader title={'Your Classroom:'} handleLogout={handleLogout}/>
             <div id='card-container'>
