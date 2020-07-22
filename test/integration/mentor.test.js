@@ -28,8 +28,7 @@ beforeAll(async () => {
     })
 
     const { data: classroom } = await adminRequest.post('/classrooms', {
-        name: '',
-        teacher: '',
+        name: 'test',
         school: school.id
     })
 })
@@ -72,8 +71,6 @@ test('an authenticated user can create a mentor profile', async () => {
         last_name: 'user',
         school: 1
     })
-
-    console.log(response)
 
     expect(response.status).toBe(200)
 })

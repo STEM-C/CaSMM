@@ -12,7 +12,7 @@ requiredParams=($image_name $image_tag $app_name $app_type $github_token $HEROKU
 if [[ "${#requiredParams[@]}" != 6 ]]; 
 then 
     echo "Not all environment vars were set!"
-    exit 1
+    exit 0
 fi;
 
 gpr_image_name="docker.pkg.github.com/stem-c/casmm/$image_name"
