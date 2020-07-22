@@ -1,12 +1,12 @@
 # CaSMM
 
+> Computation and Science Modeling through Making
+
+Cloud-based programming interface
+
 ![Review](https://github.com/STEM-C/CaSMM/workflows/Review/badge.svg)
 ![Deploy Staging](https://github.com/STEM-C/CaSMM/workflows/Deploy%20Staging/badge.svg)
 ![Deploy Production](https://github.com/STEM-C/CaSMM/workflows/Deploy%20Production/badge.svg)
-
-> Computational and science modeling through making
-
-Cloud-based programming interface
 
 <br/>
 
