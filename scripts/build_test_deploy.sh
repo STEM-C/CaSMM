@@ -40,4 +40,6 @@ docker push "$gpr_image_name"
 # Push heroku image
 heroku container:login
 docker push "$heroku_image_name"
+
+# Deploy app
 heroku container:release -a "$app_name" web
