@@ -7,6 +7,7 @@ import {getClassroom} from "../../Utils/requests";
 import {getToken} from "../../Utils/AuthRequests";
 import Roster from "./Roster/Roster";
 import ActivityCatalogue from "./ActivityCatalogue/ActivityCatalogue";
+import Home from "./Home/Home";
 
 const {TabPane} = Tabs;
 
@@ -32,7 +33,7 @@ export default function Classroom(props) {
                 onChange={key => history.push(`#${key}`)}
             >
                 <TabPane tab="Home" key="home">
-                    Your classroom info
+                    <Home classroomId={classroomId}/>
                 </TabPane>
                 <TabPane tab="Roster" key="roster">
                     <Roster history={history} handleLogout={handleLogout} classroomId={classroomId}/>
