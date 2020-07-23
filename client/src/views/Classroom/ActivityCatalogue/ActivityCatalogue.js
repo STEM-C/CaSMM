@@ -9,7 +9,7 @@ export default function ActivityCatalogue(props) {
     const [searchOptions, setSearchOptions] = useState([]);
     const [activities, setActivities] = useState([])
     const [visibleActivities, setVisibleActivities] = useState([])
-    const {history, setSelectedActivity, handleLogout} = props;
+    const {history, setSelectedActivity} = props;
 
     useEffect(() => {
         async function fetchData() {
@@ -63,9 +63,7 @@ export default function ActivityCatalogue(props) {
             <div className='flex flex-column'>
                 <MentorSubHeader
                     title={'Available Activities:'}
-                    toDashActive={true}
                     checkoutActive={true}
-                    handleLogout={handleLogout}
                 />
                 <span id='search'>
                     <AutoComplete

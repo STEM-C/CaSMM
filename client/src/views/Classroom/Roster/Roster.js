@@ -13,9 +13,9 @@ export default function Roster(props) {
     const [editingKey, setEditingKey] = useState('');
     const [listView, setListView] = useState(true);
     const [classroom, setClassroom] = useState({})
-    const {handleLogout, classroomId} = props;
+    const {classroomId} = props;
 
-    useEffect( () => {
+    useEffect(() => {
         let data = [];
         getClassroom(classroomId, getToken()).then(classroom => {
             setClassroom(classroom);
@@ -99,9 +99,8 @@ export default function Roster(props) {
 
     return (
         <div>
-            <MentorSubHeader title={'Your Students:'} toDashActive={true} addUserActive={true}
-                             cardViewActive={listView} listViewActive={!listView} setListView={setListView}
-                             handleLogout={handleLogout}/>
+            <MentorSubHeader title={'Your Students:'} addUserActive={true}
+                             cardViewActive={listView} listViewActive={!listView} setListView={setListView}/>
             {
                 listView ?
                     <ListView studentData={studentData} onEnrollToggle={onEnrollToggle} editingKey={editingKey}

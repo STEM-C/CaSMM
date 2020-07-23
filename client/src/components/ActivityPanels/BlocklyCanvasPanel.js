@@ -8,7 +8,7 @@ export default function BlocklyCanvasPanel(props) {
     const [hoverJS, setHoverJS] = useState(false)
     const [hoverArduino, setHoverArduino] = useState(false)
     const [hoverCompile, setHoverCompile] = useState(false)
-    const {activity, activityType, homePath, toActivityList, handleLogout} = props
+    const {activity, activityType, homePath, toActivityList} = props
 
 
     let workspaceRef = useRef(null)
@@ -40,14 +40,11 @@ export default function BlocklyCanvasPanel(props) {
             <div id='top-container' className="flex flex-column vertical-container">
                 <div id='description-container' className="flex flex-row space-between card">
                     <div className='flex flex-row'>
-                        <Link id='link' to={homePath} className="flex flex-column">
+                        {homePath ? <Link id='link' to={homePath} className="flex flex-column">
                             <i className="fa fa-home"/>
-                        </Link>
+                        </Link> : null}
                         {toActivityList ? <button onClick={toActivityList} id='link' className="flex flex-column">
                             <i id='icon-btn' className="fa fa-th"/>
-                        </button> : null}
-                        {handleLogout ? <button onClick={handleLogout} id='link' className="flex flex-column">
-                            <i id='icon-btn' className="fa fa-sign-out-alt"/>
                         </button> : null}
                     </div>
                     <div style={{"width": "25%"}}>

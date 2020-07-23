@@ -7,14 +7,22 @@ import {DownOutlined} from '@ant-design/icons';
 import {getUser} from "../../Utils/AuthRequests";
 
 export default function NavBar(props) {
-    const {handleLogout} = props;
+    const {handleLogout, history} = props;
     const user = getUser();
+
+    const handleDashboard = () => {
+        history.push('/dashboard')
+    };
 
     const menu = (
         <Menu>
             <Menu.Item key="0">
                 <i className="fa fa-user-circle"/>
                 &nbsp; Account Info
+            </Menu.Item>
+            <Menu.Item key="0" onClick={handleDashboard}>
+                <i className="fa fa-home"/>
+                &nbsp; Dashboard
             </Menu.Item>
             <Menu.Item key="1" onClick={handleLogout}>
                 <i className="fa fa-sign-out-alt"/>

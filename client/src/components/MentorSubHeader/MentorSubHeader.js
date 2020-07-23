@@ -5,24 +5,18 @@ import {Link} from "react-router-dom";
 export default function MentorSubHeader(props) {
     const {
         title,
-        toDashActive,
         addActivityActive,
         addUserActive,
         cardViewActive,
         listViewActive,
         checkoutActive,
         setListView,
-        handleLogout
     } = props;
 
     return (
         <div id='page-header'>
             <h1>{title}</h1>
             <span id='header-nav'>
-                {toDashActive ?
-                    <Link id='link' to={"/dashboard"}>
-                        <i className="fa fa-home"/>
-                    </Link> : null}
                 {addActivityActive ?
                     <button id='link'>
                         <i className="fa fa-plus-square"/>
@@ -43,9 +37,6 @@ export default function MentorSubHeader(props) {
                     <Link id='link' to={"/dashboard"}>
                         <i className="fa fa-shopping-cart"/>
                     </Link> : null}
-                <button onClick={handleLogout} id='link'>
-                    <i className="fa fa-sign-out-alt"/>
-                </button>
             </span>
         </div>
     )

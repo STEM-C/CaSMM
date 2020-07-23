@@ -31,16 +31,15 @@ export default function Activity(props) {
     }, [props])
 
     const toActivityList = () => {
-        history.push('/catalogue')
+        history.push(`/classroom/1#learning-standards`)
     }
 
     return (
         <div className="container">
-            <NavBar handleLogout={handleLogout}/>
+            <NavBar handleLogout={handleLogout} history={history}/>
             <div className="flex flex-row">
                 <ActivityInfoPanel activity={activity}/>
-                <BlocklyCanvasPanel activity={activity} activityType={"my-activity"} homePath={'/dashboard'}
-                                    toActivityList={toActivityList} handleLogout={handleLogout}/>
+                <BlocklyCanvasPanel activity={activity} activityType={"my-activity"} toActivityList={toActivityList}/>
             </div>
         </div>
     );

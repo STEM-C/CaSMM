@@ -12,7 +12,7 @@ const {TabPane} = Tabs;
 
 export default function Classroom(props) {
     const [classroom, setClassroom] = useState({})
-    const {handleLogout, history, selectedActivity} = props;
+    const {handleLogout, history, selectedActivity, setSelectedActivity} = props;
     const path = history.location.pathname.split('/');
     const classroomId = path[path.length - 1];
     const tab = history.location.hash.substring(1)
@@ -25,7 +25,7 @@ export default function Classroom(props) {
 
     return (
         <div className="container">
-            <NavBar handleLogout={handleLogout}/>
+            <NavBar handleLogout={handleLogout} history={history}/>
             <div id='main-header'>{classroom.name}</div>
             <Tabs
                 defaultActiveKey={tab ? tab : "home"}
@@ -37,9 +37,9 @@ export default function Classroom(props) {
                 <TabPane tab="Roster" key="roster">
                     <Roster history={history} handleLogout={handleLogout} classroomId={classroomId}/>
                 </TabPane>
-                <TabPane tab="Learning Standards" key="learning-standards">
+                <TabPane tab="Activities" key="activities">
                     <ActivityCatalogue history={history} selectedActivity={selectedActivity}
-                                       handleLogout={handleLogout}/>
+                                       setSelectedActivity={setSelectedActivity}/>
                 </TabPane>
             </Tabs>
         </div>

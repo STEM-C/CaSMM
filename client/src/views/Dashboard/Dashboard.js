@@ -10,7 +10,7 @@ import NavBar from "../../components/NavBar/NavBar";
 export default function Dashboard(props) {
     const [classrooms, setClassrooms] = useState([]);
     const user = getUser();
-    const {handleLogout} = props;
+    const {handleLogout, history} = props;
 
     useEffect( () => {
         let classroomIds = []
@@ -24,28 +24,24 @@ export default function Dashboard(props) {
         })
     }, []);
 
-    const handleViewRoster = (classroomId) => {
-        props.history.push(`/roster/${classroomId}`);
-    };
-
-    const handleViewUnit = (classroomId) => {
-        props.history.push(`/units/${classroomId}`);
+    const handleViewClassroom = (classroomId) => {
+        props.history.push(`/classroom/${classroomId}`);
     };
 
     return (
         <div className="container">
-            <NavBar handleLogout={handleLogout}/>
+            <NavBar handleLogout={handleLogout} history={history}/>
             <div id='main-header'>Welcome {user.username}</div>
-            <MentorSubHeader title={'Your Classroom:'} handleLogout={handleLogout}/>
+            <MentorSubHeader title={'Your Classrooms:'}/>
             <div id='card-container'>
                 {classrooms.map(classroom =>
                     <Card id='class-card' title={classroom.name}>
                         <div id='card-content-container'>
+                            <p>Join code: {classroom.code}</p>
                             <p>Number of students: {classroom.students.length}</p>
                         </div>
                         <div id='card-button-container' className='flex flex-row'>
-                            <button onClick={() => handleViewRoster(classroom.id)}>View Roster</button>
-                            <button onClick={() => handleViewUnit(classroom.id)}>View Unit</button>
+                            <button onClick={() => handleViewClassroom(classroom.id)}>View Classroom</button>
                         </div>
                     </Card>
                 )}
