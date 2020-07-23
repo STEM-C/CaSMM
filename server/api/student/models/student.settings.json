@@ -1,0 +1,33 @@
+{
+  "kind": "collectionType",
+  "collectionName": "students",
+  "info": {
+    "name": "Student"
+  },
+  "options": {
+    "increments": true,
+    "timestamps": true
+  },
+  "attributes": {
+    "name": {
+      "type": "string"
+    },
+    "character": {
+      "type": "string"
+    },
+    "classroom": {
+      "model": "classroom",
+      "via": "students"
+    },
+    "sessions": {
+      "collection": "session",
+      "via": "students",
+      "dominant": true
+    },
+    "enrolled": {
+      "type": "boolean",
+      "default": true,
+      "required": true
+    }
+  }
+}

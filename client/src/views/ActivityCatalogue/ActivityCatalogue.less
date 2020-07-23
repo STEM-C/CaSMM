@@ -1,0 +1,90 @@
+@import "../../assets/style.less";
+
+#main-header {
+  color: #colors[text-secondary];
+  font-size: 3em;
+  font-weight: bolder;
+  margin-left: 10%;
+  margin-bottom: 3%;
+  text-align: left;
+}
+
+#search {
+  .ant-select {
+    float: left;
+    margin-left: 12.5vw;
+    width: 200px;
+
+    .ant-select-selector {
+      border: 2px solid;
+      border-color: #colors[secondary];
+    }
+  }
+}
+
+
+#card-container {
+  width: 80vw;
+  padding: 0 0 5vh 0;
+  margin: 0 auto 0 auto;
+  display: inline-grid;
+  grid-template-columns: auto auto;
+}
+
+#activity-card {
+  text-align: left;
+  width: 35vw;
+  height: 55vh;
+  margin: 2vw auto 0 auto;
+  background: #colors[tertiary];
+  color: #colors[text-primary];
+  border: solid 4px;
+  border-color: #colors[secondary];
+  border-radius: 10px;
+
+  #card-action-container {
+    margin: 10% auto 0 auto;
+
+    button, select {
+      width: 10vw;
+      min-height: 8vh;
+      font-size: 1em;
+      border-radius: 4px;
+      margin: auto;
+      padding-left: 0;
+      padding-right: 0;
+      transition: 0.25s;
+      cursor: pointer;
+      border: 2px solid;
+      border-color: #colors[secondary];
+    }
+
+    button {
+      background: darken(#colors[tertiary], 30%);
+      color: #colors[text-secondary];
+
+      &:hover {
+        width: 11vw;
+        color: lighten(#colors[secondary], 20%);
+      }
+    }
+
+    #check {
+      margin: 2vh;
+
+      .ant-checkbox-inner {
+        zoom: 2;
+        border: 1px solid;
+        border-color: #colors[secondary];
+      }
+    }
+
+  }
+
+  #card-content-container {
+    position: relative;
+    bottom: 0;
+    margin-bottom: 1vh;
+    min-height: 5vh;
+  }
+}

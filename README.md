@@ -1,6 +1,12 @@
-# STEM+C
+# CaSMM
 
-> Cloud-based programming interface
+> Computation and Science Modeling through Making
+
+Cloud-based programming interface
+
+![Review](https://github.com/STEM-C/CaSMM/workflows/Review/badge.svg)
+![Deploy Staging](https://github.com/STEM-C/CaSMM/workflows/Deploy%20Staging/badge.svg)
+![Deploy Production](https://github.com/STEM-C/CaSMM/workflows/Deploy%20Production/badge.svg)
 
 <br/>
 
@@ -9,15 +15,15 @@
 ### `/`  
 
 #### `client/` 
-[Client](/client#client) is the frontend of the application. It is powered by [React](https://reactjs.org/) and [Blockly](https://developers.google.com/blockly).
+[client](/client#client) is the frontend of the application. It is powered by [React](https://reactjs.org/) and [Blockly](https://developers.google.com/blockly).
 
-#### `cms/`
+#### `server/`
 
-[Cms](/cms#cms) is the REST API and admin portal that powers the backend. It is powered by [Node](https://nodejs.org/en/) and [Strapi](https://strapi.io/documentation/v3.x/getting-started/introduction.html).
+[server](/server#server) is the web server and application server. It is powered by [Node](https://nodejs.org/en/) and [Strapi](https://strapi.io/documentation/v3.x/getting-started/introduction.html).
 
 #### `compile/`
 
-  [Compile](/compile#compile) is an arduino compiler service. It is an unofficial fork of [Chromeduino](https://github.com/spaceneedle/Chromeduino).
+  [compile](/compile#compile) is an arduino compiler service. It is an unofficial fork of [Chromeduino](https://github.com/spaceneedle/Chromeduino).
 
 <br/>
 
@@ -26,38 +32,33 @@
 > The project is divided into three conceptual environments.
 
 ### Development
-This project's dependencies are managed through [yarn](https://classic.yarnpkg.com/en/docs/install/#mac-stable). This effectively replaces npm and should be used in place of npm everywhere except sc-compile-dev.
-The following are the available scripts we can use with the client and server: 
+This project's dependencies are managed through [yarn](https://classic.yarnpkg.com/en/docs/install/#mac-stable). This effectively replaces npm.
 
 #### Structure
 
 The development environment is composed of four servers. The first one is run with the [Create React App](https://create-react-app.dev/docs/getting-started/) dev server. The later three are containerized with docker and run with [docker compose](https://docs.docker.com/compose/).
 
-* `stem-c-client-dev` - localhost:3000
-* `stem-c-cms-dev` - localhost:1337
-* `stem-c-compile-dev` - localhost:8080
-* `stem-c-db-dev` - localhost:5432
+* `casmm-client-dev` - localhost:3000
+* `casmm-server-dev` - localhost:1337
+* `casmm-compile-dev` - localhost:8080
+* `casmm-db-dev` - localhost:5432
 
 #### Running
 
-`stem-c-client-dev`
+`casmm-client-dev`
 
 1. Follow the [client](/client#setup) setup
 2. Run `yarn start` from `/client`
 
-`stem-c-cms-dev`, `stem-c-compile-dev`, and `stem-c-db-dev`
+`casmm-server-dev`, `casmm-compile-dev`, and `casmm-db-dev`
 
 1. Install [docker](https://docs.docker.com/get-docker/)
 
    > If you do not meet these [requirements](https://docs.docker.com/toolbox/toolbox_install_windows/) docker desktop will not initialize properly. There are some unofficial modifications, however, we recommend installing the docker [toolbox](https://docs.docker.com/toolbox/toolbox_install_windows/) 
 
-2. Add **dev_db.dump** to `scripts/`
-
-   > Pinned in the #dev channel
-
 3. Run `docker-compose up` from `/`
 
-   > Grant permission to the **scripts** and **cms** directories if you are prompted
+   > Grant permission to the **scripts** and **server** directories if you are prompted
 
 ### Staging
 
@@ -65,13 +66,13 @@ The development environment is composed of four servers. The first one is run wi
 
 The staging environment is deployed on Heroku. It is composed of one app running a Heroku Postgres instance and a web container.
 
-* `stem-c-staging` - [stem-c-staging.herokuapp.com](https://stem-c-staging.herokuapp.com/)
-  * The web container attached to this Heroku app runs `cms` and serves static `client` build files
+* `casmm-staging` - [casmm-staging.herokuapp.com](https://casmm-staging.herokuapp.com/)
+  * The web container attached to this Heroku app runs `server`, which will serve all static files and the api
   * The Heroku Postgres instance is attached as an add-on
 
 #### Running
 
-`stem-c-staging` is automatically built from the latest commits to `release`. Heroku runs the container orchestration from there.
+`casmm-staging` is automatically built from the latest commits to `release`. Heroku runs the container orchestration from there.
 
 ### Production
 
@@ -79,17 +80,17 @@ The staging environment is deployed on Heroku. It is composed of one app running
 
 The production environment is deployed on Heroku. It is composed of two apps. One is running a Heroku Postgres instance and a web container and the other is running just a web container.
 
-* `stem-c` - [stem-c.herokuapp.com](https://stem-c.herokuapp.com/)
-  * The web container attached to this Heroku app runs `cms` and serves static `client` build files
+* `casmm` - [casmm.herokuapp.com](https://casmm.herokuapp.com/)
+  * The web container attached to this Heroku app runs `server`, which will serve all static files and the api
   * The Heroku Postgres instance is attached as an add-on
-* `stem-c-compile` - [stem-c-compile.herokuapp.com](https://stem-c-compile.herokuapp.com/)
+* `casmm-compile` - [casmm.herokuapp.com](https://casmm-compile.herokuapp.com/)
   * The web container attached to this Heroku app runs `compile`
 
 #### Running
 
-`stem-c` is automatically built from the latest commits to `master`. Heroku runs the container orchestration from there.
+`casmm` is automatically built from the latest commits to `master`. Heroku runs the container orchestration from there.
 
-`stem-c-compile` is manually deployed through the [Container Registry](https://devcenter.heroku.com/articles/container-registry-and-runtime) and [Heroku CLI](https://devcenter.heroku.com/articles/heroku-cli).
+`casmm-compile` is manually deployed through the [Container Registry](https://devcenter.heroku.com/articles/container-registry-and-runtime) and [Heroku CLI](https://devcenter.heroku.com/articles/heroku-cli).
 
 1. Install [Heroku CLI](https://devcenter.heroku.com/articles/heroku-cli)
 2. Run the following commands sequentially

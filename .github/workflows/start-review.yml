@@ -1,0 +1,42 @@
+name: Create Review App
+on: 
+  pull_request:
+    branches: [ develop ]
+    types: [ opened, reopened ]
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout the repo
+        uses: actions/checkout@v2
+      - name: Create review app
+        id: app
+        uses: STEM-C/auto/review@v0.4.5
+        with: 
+          base: review
+          pipeline: ${{ secrets.PIPELINE_ID }}
+          token: ${{ secrets.HEROKU_TOKEN }}
+      - name: Import development database
+        run: ./scripts/init_db.sh
+        env:
+          ENVIRONMENT: development
+          DATABASE_URL: ${{ steps.app.outputs.database_url }}
+          SCRIPT_PATH: ./scripts
+      - name: Built, test, and deploy app
+        run: ./scripts/build_test_deploy.sh
+        env:
+          IMAGE_NAME: server
+          IMAGE_TAG: ${{ steps.app.outputs.app_name }}
+          APP_NAME: ${{ steps.app.outputs.app_name }}
+          APP_TYPE: web
+          HEROKU_API_KEY: ${{ secrets.HEROKU_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - uses: chrnorm/deployment-action@releases/v1
+        name: Create GitHub deployment
+        if: success()
+        id: deployment
+        with:
+          initial_status: "success"
+          token: ${{ github.token }}
+          target_url: https://${{ steps.app.outputs.app_name }}.herokuapp.com
+          environment: ${{ steps.app.outputs.app_name }}

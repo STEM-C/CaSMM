@@ -1,0 +1,21 @@
+{
+  "kind": "collectionType",
+  "collectionName": "sessions",
+  "info": {
+    "name": "Session"
+  },
+  "options": {
+    "increments": true,
+    "timestamps": true
+  },
+  "attributes": {
+    "classroom": {
+      "via": "sessions",
+      "model": "classroom"
+    },
+    "students": {
+      "via": "sessions",
+      "collection": "student"
+    }
+  }
+}

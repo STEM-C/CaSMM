@@ -1,0 +1,40 @@
+{
+  "kind": "collectionType",
+  "collectionName": "classrooms",
+  "info": {
+    "name": "Classroom"
+  },
+  "options": {
+    "increments": true,
+    "timestamps": true
+  },
+  "attributes": {
+    "name": {
+      "type": "string"
+    },
+    "school": {
+      "model": "school",
+      "via": "classrooms"
+    },
+    "sessions": {
+      "collection": "session",
+      "via": "classroom"
+    },
+    "mentors": {
+      "collection": "mentor",
+      "via": "classrooms"
+    },
+    "students": {
+      "via": "classroom",
+      "collection": "student"
+    },
+    "code": {
+      "type": "string",
+      "required": true
+    },
+    "teachers": {
+      "collection": "teacher",
+      "via": "classrooms"
+    }
+  }
+}

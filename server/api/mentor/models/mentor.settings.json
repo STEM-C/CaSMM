@@ -1,0 +1,32 @@
+{
+  "kind": "collectionType",
+  "collectionName": "mentors",
+  "info": {
+    "name": "Mentor"
+  },
+  "options": {
+    "increments": true,
+    "timestamps": true
+  },
+  "attributes": {
+    "first_name": {
+      "type": "string"
+    },
+    "last_name": {
+      "type": "string"
+    },
+    "school": {
+      "model": "school",
+      "via": "mentors"
+    },
+    "classrooms": {
+      "via": "mentors",
+      "collection": "classroom",
+      "dominant": true
+    },
+    "user": {
+      "plugin": "users-permissions",
+      "model": "user"
+    }
+  }
+}

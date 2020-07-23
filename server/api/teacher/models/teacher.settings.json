@@ -1,0 +1,34 @@
+{
+  "kind": "collectionType",
+  "collectionName": "teachers",
+  "info": {
+    "name": "Teacher"
+  },
+  "options": {
+    "increments": true,
+    "timestamps": true
+  },
+  "attributes": {
+    "first_name": {
+      "type": "string",
+      "required": true
+    },
+    "last_name": {
+      "type": "string",
+      "required": true
+    },
+    "school": {
+      "model": "school",
+      "via": "teachers"
+    },
+    "classrooms": {
+      "via": "teachers",
+      "collection": "classroom",
+      "dominant": true
+    },
+    "user": {
+      "plugin": "users-permissions",
+      "model": "user"
+    }
+  }
+}

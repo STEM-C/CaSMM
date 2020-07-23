@@ -9,6 +9,7 @@
 1. Install [Node](https://nodejs.org/en/) and [Yarn](https://classic.yarnpkg.com/en/docs/install#windows-stable)
 2. Run `yarn` to install project dependencies
 3. Run `yarn start` to startup the client (please note that much of the functionality will not work without also starting up the backend services)
+4. Navigate to chrome://flags/ and enable the #enable-experimental-web-platform-features flag (This will provide your browser access to serial ports)
 
 <br />
 
@@ -46,6 +47,20 @@ Stars a basic http server (using [http-server](https://www.npmjs.com/package/htt
 
 Builds the app for production to the `build` folder.
 It correctly bundles React in production mode and optimizes the build for the best performance.
+
+<br />
+
+## Styling
+
+To maintain a consistant theme the folowing has been implemented in `\client\src\assets\style.less` for import
+
+### Colors
+    
+    primary: #3D5C82;
+    secondary: #5BABDE;
+    tertiary: #F4F4F5;
+    text-primary: #414141;
+    text-secondary: #FFFFFF;
 
 <br />
 
