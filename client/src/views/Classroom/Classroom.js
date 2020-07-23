@@ -25,9 +25,12 @@ export default function Classroom(props) {
     }, [classroomId]);
 
     return (
-        <div className="container">
+        <div className="container nav-padding">
             <NavBar handleLogout={handleLogout} history={history}/>
-            <div id='main-header'>{classroom.name}</div>
+            <div id='main-header' className='s'>
+                <div id='classroom'>{classroom.name}</div>
+                <div id='code'>Join code: {classroom.code}</div>
+            </div>
             <Tabs
                 defaultActiveKey={tab ? tab : "home"}
                 onChange={key => history.push(`#${key}`)}

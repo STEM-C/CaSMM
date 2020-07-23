@@ -35,7 +35,7 @@ export default function Activity(props) {
     }
 
     return (
-        <div className="container">
+        <div className="container nav-padding">
             <NavBar handleLogout={handleLogout} history={history}/>
             <div className="flex flex-row">
                 <ActivityInfoPanel activity={activity}/>

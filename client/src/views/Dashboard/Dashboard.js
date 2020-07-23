@@ -29,7 +29,7 @@ export default function Dashboard(props) {
     };
 
     return (
-        <div className="container">
+        <div className="container nav-padding">
             <NavBar handleLogout={handleLogout} history={history}/>
             <div id='main-header'>Welcome {user.username}</div>
             <MentorSubHeader title={'Your Classrooms:'}/>
