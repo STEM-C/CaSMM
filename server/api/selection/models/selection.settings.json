@@ -1,0 +1,25 @@
+{
+  "kind": "collectionType",
+  "collectionName": "selections",
+  "info": {
+    "name": "Selection"
+  },
+  "options": {
+    "increments": true,
+    "timestamps": true
+  },
+  "attributes": {
+    "classroom": {
+      "model": "classroom",
+      "via": "selections"
+    },
+    "learning_standard": {
+      "model": "learning-standard"
+    },
+    "current": {
+      "type": "boolean",
+      "default": true,
+      "required": true
+    }
+  }
+}

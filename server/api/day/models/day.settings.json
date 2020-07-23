@@ -1,0 +1,29 @@
+{
+  "kind": "collectionType",
+  "collectionName": "days",
+  "info": {
+    "name": "Day"
+  },
+  "options": {
+    "increments": true,
+    "timestamps": true
+  },
+  "attributes": {
+    "learning_standard": {
+      "model": "learning-standard",
+      "via": "days"
+    },
+    "number": {
+      "type": "biginteger",
+      "required": true
+    },
+    "template": {
+      "type": "text",
+      "required": true
+    },
+    "objectives": {
+      "via": "day",
+      "collection": "objective"
+    }
+  }
+}

@@ -1,0 +1,52 @@
+{
+  "routes": [
+    {
+      "method": "GET",
+      "path": "/objective-types",
+      "handler": "objective-type.find",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/objective-types/count",
+      "handler": "objective-type.count",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/objective-types/:id",
+      "handler": "objective-type.findOne",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "POST",
+      "path": "/objective-types",
+      "handler": "objective-type.create",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "PUT",
+      "path": "/objective-types/:id",
+      "handler": "objective-type.update",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "DELETE",
+      "path": "/objective-types/:id",
+      "handler": "objective-type.delete",
+      "config": {
+        "policies": []
+      }
+    }
+  ]
+}
