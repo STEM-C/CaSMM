@@ -22,8 +22,11 @@
       "required": true
     },
     "objectives": {
-      "via": "day",
-      "collection": "objective"
+      "collection": "objective",
+      "via": "day"
+    },
+    "blocks": {
+      "collection": "block"
     }
   }
 }

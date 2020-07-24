@@ -10,8 +10,8 @@
   },
   "attributes": {
     "day": {
-      "model": "day",
-      "via": "objectives"
+      "via": "objectives",
+      "model": "day"
     },
     "description": {
       "type": "text",
