@@ -46,15 +46,15 @@ module.exports = {
 
         // ensure the request has the right number of params
         const params = Object.keys(ctx.request.body).length
-        if (params !== 2) return ctx.badRequest(
+        if (params !== 3) return ctx.badRequest(
             'Invalid number of params!',
             { id: 'Classroom.create.body.invalid', error: 'ValidationError' }
         )
 
         // validate the request
-        const { name, school } = ctx.request.body
-        if (!name || !strapi.services.validator.isInt(school)) return ctx.badRequest(
-            'A name and a school must be provided!',
+        const { name, school, grade } = ctx.request.body
+        if (!name || !strapi.services.validator.isInt(school) || !strapi.services.validator.isInt(grade)) return ctx.badRequest(
+            'A name, school, and grade must be provided!',
             { id: 'Classroom.create.body.invalid', error: 'ValidationError' }
         )
 
@@ -63,6 +63,13 @@ module.exports = {
         if (validSchool === null) return ctx.notFound(
             'The school provided is invalid!',
             { id: 'Classroom.create.school.invalid', error: 'ValidationError' }
+        )
+
+        // ensure the grade is valid
+        const validGrade = await strapi.services.grade.findOne({ id: grade })
+        if (validGrade === null) return ctx.notFound(
+            'The grade provided is invalid!',
+            { id: 'Classroom.create.grade.invalid', error: 'ValidationError' }
         )
 
         // add a unique code to the request body
