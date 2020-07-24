@@ -1,13 +1,13 @@
 'use strict'
 
-// get all the blocks for an activity
-module.exports.findByActivity = async (id) => {
+// get all the blocks for a day
+module.exports.findByDay = async (id) => {
 
-    // get the target activity
-    const activity = await strapi.services.activity.findOne({ id }, ['blocks.blocks_category'])
+    // get the target day
+    const day = await strapi.services.day.findOne({ id }, ['blocks.blocks_category'])
 
-    // return the blocks only if the activity is found
-    return activity ? activity.blocks : undefined
+    // return the blocks only if the day is found
+    return day ? day.blocks : undefined
 }
 
 // create a blockly friendly toolbox from blocks

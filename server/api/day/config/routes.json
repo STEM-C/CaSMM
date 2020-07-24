@@ -25,6 +25,14 @@
       }
     },
     {
+      "method": "GET",
+      "path": "/days/toolbox/:id",
+      "handler": "day.toolbox",
+      "config": {
+        "policies": []
+      }
+    },
+    {
       "method": "POST",
       "path": "/days",
       "handler": "day.create",

@@ -1,8 +1,22 @@
-'use strict';
+'use strict'
 
-/**
- * Read the documentation (https://strapi.io/documentation/v3.x/concepts/controllers.html#core-controllers)
- * to customize this controller
- */
+module.exports = {
 
-module.exports = {};
+    async toolbox(ctx) {
+
+        const { id } = ctx.params
+
+        // get the blocks 
+        const blocks = await strapi.services.block.findByDay(id)
+
+        // return 404 if blocks is undefined
+        // (only the case of a day not existing)
+        if (!blocks) return undefined
+
+        // return the day id and the toolbox
+        return {
+            id,
+            toolbox: strapi.services.block.blocksToToolbox(blocks)
+        }
+    },
+}
