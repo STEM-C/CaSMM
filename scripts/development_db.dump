@@ -1987,6 +1987,9 @@ COPY public."users-permissions_permission" (id, type, controller, action, enable
 474	upload	upload	search	f		3
 489	users-permissions	user	destroyall	f		3
 504	users-permissions	userspermissions	updateproviders	f		3
+508	application	day	toolbox	f		1
+509	application	day	toolbox	f		2
+510	application	day	toolbox	t		3
 \.
 
 
@@ -2125,7 +2128,7 @@ SELECT pg_catalog.setval('public.sessions_students__students_sessions_id_seq', 1
 -- Name: strapi_administrator_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.strapi_administrator_id_seq', 1, false);
+SELECT pg_catalog.setval('public.strapi_administrator_id_seq', 2, false);
 
 
 --
@@ -2174,7 +2177,7 @@ SELECT pg_catalog.setval('public.upload_file_morph_id_seq', 1, false);
 -- Name: users-permissions_permission_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public."users-permissions_permission_id_seq"', 507, true);
+SELECT pg_catalog.setval('public."users-permissions_permission_id_seq"', 510, true);
 
 
 --
