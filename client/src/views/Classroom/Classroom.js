@@ -36,15 +36,16 @@ export default function Classroom(props) {
                 onChange={key => history.push(`#${key}`)}
             >
                 <TabPane tab="Home" key="home">
-                    <Home classroomId={classroomId}/>
+                    <Home classroomId={classroomId} history={history} selectedActivity={selectedActivity}
+                          setSelectedActivity={setSelectedActivity}/>
                 </TabPane>
                 <TabPane tab="Roster" key="roster">
                     <Roster history={history} handleLogout={handleLogout} classroomId={classroomId}/>
                 </TabPane>
-                <TabPane tab="Activities" key="activities">
-                    <ActivityCatalogue history={history} selectedActivity={selectedActivity}
-                                       setSelectedActivity={setSelectedActivity}/>
-                </TabPane>
+                {/*<TabPane tab="Activities" key="activities">*/}
+                {/*    <ActivityCatalogue history={history} selectedActivity={selectedActivity}*/}
+                {/*                       setSelectedActivity={setSelectedActivity}/>*/}
+                {/*</TabPane>*/}
             </Tabs>
         </div>
     );

@@ -4,6 +4,7 @@ import './ActivityCatalogue.less'
 import MentorSubHeader from "../../../components/MentorSubHeader/MentorSubHeader";
 import {getActivities} from "../../../Utils/requests";
 import {getToken} from "../../../Utils/AuthRequests";
+import CheckUnits from "./CheckUnits";
 
 export default function ActivityCatalogue(props) {
     const [searchOptions, setSearchOptions] = useState([]);
@@ -61,18 +62,21 @@ export default function ActivityCatalogue(props) {
     return (
         <div>
             <div className='flex flex-column'>
-                <MentorSubHeader
-                    title={'Available Activities:'}
-                    checkoutActive={true}
-                />
-                <span id='search'>
+                {/*<MentorSubHeader*/}
+                {/*    title={'Available Activities:'}*/}
+                {/*    checkoutActive={true}*/}
+                {/*/>*/}
+                <div id='search'>
                     <AutoComplete
                         options={searchOptions}
                         placeholder="Search activities"
                         onSelect={onSelect}
                         onSearch={onSearch}
                     />
-                </span>
+                </div>
+                <div>
+                    <CheckUnits/>
+                </div>
             </div>
             <div id='card-container'>
                 {visibleActivities.map(activity =>

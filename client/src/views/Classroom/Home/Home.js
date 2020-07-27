@@ -6,11 +6,13 @@ import {getClassroom} from "../../../Utils/requests";
 import {getToken} from "../../../Utils/AuthRequests";
 import MentorSubHeader from "../../../components/MentorSubHeader/MentorSubHeader";
 import DisplayCodeModal from "./DisplayCodeModal";
+import LearningStandardModal from "./LearningStandardModal";
+import ActivityCatalogue from "../ActivityCatalogue/ActivityCatalogue";
 
 
 export default function Home(props) {
     const [classroom, setClassroom] = useState({})
-    const {classroomId} = props;
+    const {classroomId, history, selectedActivity, setSelectedActivity} = props;
 
     useEffect(() => {
         getClassroom(classroomId, getToken()).then(classroom => {
@@ -33,6 +35,8 @@ export default function Home(props) {
                         <button>Day 2</button>
                         <button>Day 3</button>
                     </div>
+                        <LearningStandardModal history={history} selectedActivity={selectedActivity}
+                                               setSelectedActivity={setSelectedActivity}/>
                 </div>
                 <div id="divider"/>
                 <DisplayCodeModal code={classroom.code}/>
