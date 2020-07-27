@@ -1,13 +1,10 @@
 import React, {useEffect, useState} from "react"
 import "./Home.less"
-import { Divider } from 'antd';
-
 import {getClassroom} from "../../../Utils/requests";
 import {getToken} from "../../../Utils/AuthRequests";
 import MentorSubHeader from "../../../components/MentorSubHeader/MentorSubHeader";
 import DisplayCodeModal from "./DisplayCodeModal";
 import LearningStandardModal from "./LearningStandardModal";
-import ActivityCatalogue from "../ActivityCatalogue/ActivityCatalogue";
 
 
 export default function Home(props) {

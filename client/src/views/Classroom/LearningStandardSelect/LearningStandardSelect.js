@@ -1,11 +1,11 @@
 import React, {useEffect, useState} from 'react';
-import {AutoComplete, Card, Checkbox} from "antd";
-import './ActivityCatalogue.less'
+import {AutoComplete} from "antd";
+import './LearningStandardSelect.less'
 import {getActivities} from "../../../Utils/requests";
 import {getToken} from "../../../Utils/AuthRequests";
 import CheckUnits from "./CheckUnits";
 
-export default function ActivityCatalogue(props) {
+export default function LearningStandardSelect(props) {
     const [searchOptions, setSearchOptions] = useState([]);
     const [activities, setActivities] = useState([]);
     const [visibleActivities, setVisibleActivities] = useState([]);

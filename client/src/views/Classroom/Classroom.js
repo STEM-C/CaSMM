@@ -6,7 +6,6 @@ import NavBar from "../../components/NavBar/NavBar";
 import {getClassroom} from "../../Utils/requests";
 import {getToken} from "../../Utils/AuthRequests";
 import Roster from "./Roster/Roster";
-import ActivityCatalogue from "./ActivityCatalogue/ActivityCatalogue";
 import Home from "./Home/Home";
 
 const {TabPane} = Tabs;
@@ -42,10 +41,6 @@ export default function Classroom(props) {
                 <TabPane tab="Roster" key="roster">
                     <Roster history={history} handleLogout={handleLogout} classroomId={classroomId}/>
                 </TabPane>
-                {/*<TabPane tab="Activities" key="activities">*/}
-                {/*    <ActivityCatalogue history={history} selectedActivity={selectedActivity}*/}
-                {/*                       setSelectedActivity={setSelectedActivity}/>*/}
-                {/*</TabPane>*/}
             </Tabs>
         </div>
     );

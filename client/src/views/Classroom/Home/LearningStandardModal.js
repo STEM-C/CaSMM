@@ -1,6 +1,6 @@
 import {Modal, Button} from 'antd';
 import React, {useState} from "react";
-import ActivityCatalogue from "../ActivityCatalogue/ActivityCatalogue";
+import LearningStandardSelect from "../LearningStandardSelect/LearningStandardSelect";
 
 export default function LearningStandardModal(props) {
     const [visible, setVisible] = useState(false);
@@ -36,8 +36,8 @@ export default function LearningStandardModal(props) {
                     </Button>,
                 ]}
             >
-                <ActivityCatalogue history={history} activePanel={activePanel} setActivePanel={setActivePanel}
-                                   selected={selected} setSelected={setSelected}/>
+                <LearningStandardSelect history={history} activePanel={activePanel} setActivePanel={setActivePanel}
+                                        selected={selected} setSelected={setSelected}/>
             </Modal>
         </div>
     );
