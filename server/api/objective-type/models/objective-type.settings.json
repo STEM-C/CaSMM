@@ -1,0 +1,22 @@
+{
+  "kind": "collectionType",
+  "collectionName": "objective_types",
+  "info": {
+    "name": "Objective Type"
+  },
+  "options": {
+    "increments": true,
+    "timestamps": true
+  },
+  "attributes": {
+    "name": {
+      "type": "string",
+      "required": true,
+      "unique": true
+    },
+    "objectives": {
+      "via": "objective_type",
+      "collection": "objective"
+    }
+  }
+}

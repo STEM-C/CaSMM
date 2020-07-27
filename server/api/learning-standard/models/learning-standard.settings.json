@@ -1,0 +1,32 @@
+{
+  "kind": "collectionType",
+  "collectionName": "learning_standards",
+  "info": {
+    "name": "learning Standard"
+  },
+  "options": {
+    "increments": true,
+    "timestamps": true
+  },
+  "attributes": {
+    "unit": {
+      "model": "unit",
+      "via": "learning_standards"
+    },
+    "number": {
+      "type": "decimal",
+      "required": true
+    },
+    "name": {
+      "type": "string",
+      "required": true
+    },
+    "expectations": {
+      "type": "text"
+    },
+    "days": {
+      "via": "learning_standard",
+      "collection": "day"
+    }
+  }
+}

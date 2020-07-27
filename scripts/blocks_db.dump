@@ -1,0 +1,97 @@
+--
+-- PostgreSQL database dump
+--
+
+-- Dumped from database version 12.2 (Debian 12.2-2.pgdg100+1)
+-- Dumped by pg_dump version 12.1
+
+SET statement_timeout = 0;
+SET lock_timeout = 0;
+SET idle_in_transaction_session_timeout = 0;
+SET client_encoding = 'UTF8';
+SET standard_conforming_strings = on;
+SELECT pg_catalog.set_config('search_path', '', false);
+SET check_function_bodies = false;
+SET xmloption = content;
+SET client_min_messages = warning;
+SET row_security = off;
+
+SET default_tablespace = '';
+
+SET default_table_access_method = heap;
+
+--
+-- Data for Name: blocks; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.blocks (id, name, description, blocks_category, created_at, updated_at) FROM stdin;
+1	controls_if	\N	2	2020-05-13 09:20:13+00	2020-06-01 02:02:08.033+00
+2	controls_whileUntil	\N	2	2020-05-13 09:20:23+00	2020-06-01 02:02:20.206+00
+3	controls_for	\N	2	2020-05-13 09:20:29+00	2020-06-01 02:01:57.774+00
+4	logic_compare	\N	1	2020-05-13 09:20:35+00	2020-06-01 02:03:24.001+00
+5	logic_operation	\N	1	2020-05-13 09:20:44+00	2020-06-01 02:03:32.985+00
+6	logic_boolean	\N	1	2020-05-13 09:20:50+00	2020-06-01 02:03:17.717+00
+7	logic_negate	\N	1	2020-05-13 10:42:01+00	2020-06-01 02:03:26.94+00
+8	logic_null	\N	1	2020-05-13 10:42:30+00	2020-06-01 02:03:30.198+00
+9	logic_ternary	\N	1	2020-05-13 10:42:40+00	2020-06-01 02:03:37.321+00
+10	controls_repeat	\N	2	2020-05-13 10:43:03+00	2020-06-01 02:02:17.025+00
+11	contorls_repeat_ext	\N	2	2020-05-13 10:43:16+00	2020-06-01 02:01:50.593+00
+12	controls_forEach	\N	2	2020-05-13 10:43:42+00	2020-06-01 02:02:01.04+00
+13	controls_flow_statements	\N	2	2020-05-13 10:43:57+00	2020-06-01 02:01:54.462+00
+14	math_number	\N	3	2020-05-13 10:44:13+00	2020-05-13 10:44:13+00
+15	math_arithmetic	\N	3	2020-05-13 10:44:20+00	2020-05-13 10:44:20+00
+16	math_single	\N	3	2020-05-13 10:44:28+00	2020-05-13 10:44:28+00
+17	math_trig	\N	3	2020-05-13 10:44:34+00	2020-05-13 10:44:34+00
+18	math_constant	\N	3	2020-05-13 10:44:41+00	2020-05-13 10:44:41+00
+19	math_number_property	\N	3	2020-05-13 10:44:56+00	2020-05-13 10:44:56+00
+20	math_change	\N	3	2020-05-13 10:45:09+00	2020-05-13 10:45:09+00
+21	math_round	\N	3	2020-05-13 10:45:17+00	2020-05-13 10:45:17+00
+22	math_on_list	\N	3	2020-05-13 10:45:25+00	2020-05-13 10:45:25+00
+23	math_modulo	\N	3	2020-05-13 10:45:34+00	2020-05-13 10:45:34+00
+24	math_constrain	\N	3	2020-05-13 10:45:42+00	2020-05-13 10:45:42+00
+25	math_random_int	\N	3	2020-05-13 10:45:57+00	2020-05-13 10:45:57+00
+26	math_random_float	\N	3	2020-05-13 10:46:05+00	2020-05-13 10:46:05+00
+27	text	\N	4	2020-05-13 10:46:15+00	2020-05-13 10:46:15+00
+28	text_append	\N	4	2020-05-13 10:46:34+00	2020-05-13 10:46:34+00
+29	text_length	\N	4	2020-05-13 10:46:40+00	2020-05-13 10:46:40+00
+30	text_isEmpty	\N	4	2020-05-13 10:46:46+00	2020-05-13 10:46:46+00
+31	text_charAt	\N	4	2020-05-13 10:46:55+00	2020-05-13 10:46:55+00
+32	text_getSubstring	\N	4	2020-05-13 10:47:04+00	2020-05-13 10:47:04+00
+33	variables_get	\N	5	2020-05-13 10:47:20+00	2020-05-13 10:47:20+00
+34	variables_set	\N	5	2020-05-13 10:47:24+00	2020-05-13 10:47:24+00
+35	io_digitalwrite	\N	6	2020-05-13 10:50:27+00	2020-06-01 02:03:02.099+00
+36	io_digitalread	\N	6	2020-05-13 10:50:36+00	2020-06-01 02:02:58.769+00
+37	io_analogwrite	\N	6	2020-05-13 10:50:43+00	2020-06-01 02:02:54.495+00
+38	io_analogread	\N	6	2020-05-13 10:50:49+00	2020-06-01 02:02:47.203+00
+39	io_highlow	\N	6	2020-05-13 10:51:03+00	2020-06-01 02:03:06.045+00
+\.
+
+--
+-- Data for Name: blocks_categories; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.blocks_categories (id, name, created_at, updated_at) FROM stdin;
+1	Logic	2020-03-31 15:59:12+00	2020-05-13 09:41:43+00
+2	Control	2020-05-13 09:21:59+00	2020-05-13 09:41:35+00
+3	Math	2020-05-13 10:51:16+00	2020-05-13 10:51:16+00
+4	Text	2020-05-13 10:52:16+00	2020-05-13 10:52:16+00
+5	Variables	2020-05-13 10:52:37+00	2020-05-13 10:52:37+00
+6	IO	2020-05-13 10:53:08+00	2020-05-13 10:58:21+00
+\.
+
+--
+-- Name: blocks_categories_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.blocks_categories_id_seq', 7, false);
+
+--
+-- Name: blocks_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.blocks_id_seq', 40, false);
+
+--
+-- PostgreSQL database dump complete
+--
+

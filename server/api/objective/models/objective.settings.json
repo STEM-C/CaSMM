@@ -1,0 +1,25 @@
+{
+  "kind": "collectionType",
+  "collectionName": "objectives",
+  "info": {
+    "name": "Objective"
+  },
+  "options": {
+    "increments": true,
+    "timestamps": true
+  },
+  "attributes": {
+    "day": {
+      "via": "objectives",
+      "model": "day"
+    },
+    "description": {
+      "type": "text",
+      "required": true
+    },
+    "objective_type": {
+      "model": "objective-type",
+      "via": "objectives"
+    }
+  }
+}
