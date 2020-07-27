@@ -1,16 +1,15 @@
 import React, {useEffect, useState} from 'react';
 import {AutoComplete, Card, Checkbox} from "antd";
 import './ActivityCatalogue.less'
-import MentorSubHeader from "../../../components/MentorSubHeader/MentorSubHeader";
 import {getActivities} from "../../../Utils/requests";
 import {getToken} from "../../../Utils/AuthRequests";
 import CheckUnits from "./CheckUnits";
 
 export default function ActivityCatalogue(props) {
     const [searchOptions, setSearchOptions] = useState([]);
-    const [activities, setActivities] = useState([])
-    const [visibleActivities, setVisibleActivities] = useState([])
-    const {history, setSelectedActivity} = props;
+    const [activities, setActivities] = useState([]);
+    const [visibleActivities, setVisibleActivities] = useState([]);
+    const {history, selected, setSelected, activePanel, setActivePanel} = props;
 
     useEffect(() => {
         async function fetchData() {
@@ -51,55 +50,43 @@ export default function ActivityCatalogue(props) {
         visible.length > 0 ? setVisibleActivities(visible) : setVisibleActivities(activities)
     };
 
-    const setDayOptions = () => {
-        let options = [];
-        for (let i = 0; i < 5; i++) {
-            options.push(<option key={i} value={i}>{`Day ${i + 1}`}</option>)
-        }
-        return options
-    };
-
     return (
-        <div>
-            <div className='flex flex-column'>
-                {/*<MentorSubHeader*/}
-                {/*    title={'Available Activities:'}*/}
-                {/*    checkoutActive={true}*/}
-                {/*/>*/}
-                <div id='search'>
-                    <AutoComplete
-                        options={searchOptions}
-                        placeholder="Search activities"
-                        onSelect={onSelect}
-                        onSearch={onSearch}
-                    />
+        <div className='overflow-hidden'>
+            <div id='panel-1' className={activePanel === "panel-1" ? "panel-1 show" : "panel-1 hide"}>
+                <div className='flex flex-column'>
+                    <div id='search'>
+                        <AutoComplete
+                            options={searchOptions}
+                            placeholder="Search learning standards"
+                            onSelect={onSelect}
+                            onSearch={onSearch}
+                        />
+                    </div>
+                    <div>
+                        <CheckUnits/>
+                    </div>
                 </div>
-                <div>
-                    <CheckUnits/>
+                <div id='list-container'>
+                    {visibleActivities.map(activity =>
+                        <div key={activity.id}
+                             id={selected.id !== activity.id ? 'list-item-wrapper' : 'selected-activity'}
+                             onClick={() => setSelected(activity)}>
+                            <li>
+                                {activity.name}
+                            </li>
+                        </div>
+                    )}
                 </div>
             </div>
-            <div id='card-container'>
-                {visibleActivities.map(activity =>
-                    <Card id='activity-card' title={activity.name} key={activity.id}>
-                        <div id='card-content-container'>
-                            <p>Description: {activity.description}</p>
-                            <p>Difficulty: {activity.difficulty.name}</p>
-                            <p>Learning Category: {activity.learning_category.name}</p>
-                        </div>
-                        <div id='card-action-container' className='flex flex-row'>
-                            <select name='day'>
-                                {setDayOptions().map(option => option)}
-                            </select>
-                            <button onClick={() => {
-                                setSelectedActivity(activity);
-                                history.push('/activity')
-                            }}>
-                                View Activity
-                            </button>
-                            <div id='check'><Checkbox/></div>
-                        </div>
-                    </Card>
-                )}
+            <div id='panel-2' className={activePanel === "panel-2" ? "panel-2 show" : "panel-2 hide"}>
+                <button id='back-btn' onClick={() => setActivePanel('panel-1')}>
+                    <i className="fa fa-arrow-left" aria-hidden="true"/>
+                </button>
+                <div>
+                    <p>Description: {selected.description}</p>
+                    <p>Difficulty: {selected.difficulty ? selected.difficulty.name : ''}</p>
+                    <p>Learning Category: {selected.learning_category ? selected.learning_category.name : ''}</p>
+                </div>
             </div>
         </div>
     )

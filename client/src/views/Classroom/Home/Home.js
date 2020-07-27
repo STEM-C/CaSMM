@@ -11,7 +11,7 @@ import ActivityCatalogue from "../ActivityCatalogue/ActivityCatalogue";
 
 
 export default function Home(props) {
-    const [classroom, setClassroom] = useState({})
+    const [classroom, setClassroom] = useState({});
     const {classroomId, history, selectedActivity, setSelectedActivity} = props;
 
     useEffect(() => {

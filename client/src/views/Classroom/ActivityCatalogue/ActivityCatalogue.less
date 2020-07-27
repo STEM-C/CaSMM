@@ -16,67 +16,91 @@
 }
 
 
-#card-container {
-  width: 80vw;
-  padding: 0 0 5vh 0;
+#list-container {
+  width: 50vw;
+  padding: 5vh 0;
   margin: 0 auto 0 auto;
-  display: inline-grid;
-  grid-template-columns: auto auto;
-}
+  display: block;
 
-#activity-card {
-  text-align: left;
-  width: 35vw;
-  height: 55vh;
-  margin: 2vw auto 0 auto;
-  background: #colors[tertiary];
-  color: #colors[text-primary];
-  border: solid 4px;
-  border-color: #colors[secondary];
-  border-radius: 10px;
-
-  #card-action-container {
-    margin: 10% auto 0 auto;
-
-    button, select {
-      width: 10vw;
-      min-height: 8vh;
-      font-size: 1em;
-      border-radius: 4px;
-      margin: auto;
-      padding-left: 0;
-      padding-right: 0;
-      transition: 0.25s;
-      cursor: pointer;
-      border: 2px solid;
-      border-color: #colors[secondary];
-    }
-
-    button {
-      background: darken(#colors[tertiary], 30%);
-      color: #colors[text-secondary];
-
-      &:hover {
-        width: 11vw;
-      }
-    }
-
-    #check {
-      margin: 2vh;
-
-      .ant-checkbox-inner {
-        zoom: 2;
-        border: 1px solid;
-        border-color: #colors[secondary];
-      }
-    }
-
+  #list-item-wrapper, #selected-activity {
+    border: solid 5px;
+    border-radius: 80px;
+    margin: 0 auto 1.2em auto;
+    width: 80%;
+    height: 60px;
+    line-height: 45px;
+    text-align: center;
+    font-size: 2.75vh;
   }
 
-  #card-content-container {
-    position: relative;
-    bottom: 0;
-    margin-bottom: 1vh;
-    min-height: 5vh;
+  #list-item-wrapper {
+    background-color: darken(#colors[tertiary], 5%);
+    border-color: #colors[secondary];
+    font-weight: 450;
+    color: #colors[text-primary];
+    transition: 0.25s;
+
+    &:hover {
+      cursor: pointer;
+      color: #colors[text-secondary];
+      background-color: #colors[secondary];
+      border-color: darken(#colors[secondary], 10%);
+      opacity: .9;
+      font-weight: 500;
+      width: 85%;
+    }
+  }
+
+  ul {
+    margin: 0;
+    padding: 0;
+  }
+
+  li {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  #selected-activity {
+    background-color: #colors[secondary];
+    border-color: darken(#colors[secondary], 10%);
+    font-weight: 500;
+    width: 85%;
+    color: #colors[text-secondary];
+  }
+}
+
+.panel-1.show, .panel-2.show{
+  transition:  all 0.2s ease-in-out;
+  text-align: center;
+}
+.panel-1.hide, .panel-2.hide{
+  text-align: center;
+  height: 0;
+  overflow: hidden;
+  transition: all 0.2s ease-in-out;
+}
+
+#back-btn {
+  background: none !important;
+  border: none;
+  padding: 0 !important;
+  display: inline-block;
+  margin-left: 10px;
+  float: left;
+
+  &:focus {
+    outline: none;
+  }
+
+  i {
+    font-size: 2em;
+    color: #colors[primary];
+
+    &:hover {
+      color: #colors[secondary];
+      cursor: pointer;
+    }
   }
 }
