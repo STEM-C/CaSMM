@@ -1,28 +1,45 @@
 import React, {useEffect, useState} from 'react';
 import {AutoComplete} from "antd";
 import './LearningStandardSelect.less'
-import {getActivities} from "../../../Utils/requests";
+import {
+    getActivities,
+    getClassroom,
+    getLearningStandard,
+    setSelection,
+    getUnits
+} from "../../../Utils/requests";
 import {getToken} from "../../../Utils/AuthRequests";
 import CheckUnits from "./CheckUnits";
 
 export default function LearningStandardSelect(props) {
     const [searchOptions, setSearchOptions] = useState([]);
-    const [activities, setActivities] = useState([]);
-    const [visibleActivities, setVisibleActivities] = useState([]);
-    const {history, selected, setSelected, activePanel, setActivePanel} = props;
+    const [learingStandards, setLearningStandards] = useState([]);
+    const [visibleLearningStandards, setVisibleLearningStandards] = useState([]);
+    const {history, selected, setSelected, activePanel, setActivePanel, gradeId} = props;
 
     useEffect(() => {
         async function fetchData() {
-            const activities = await getActivities(getToken());
-            setActivities(activities);
-            setVisibleActivities(activities);
+            const units = await getUnits(gradeId, getToken());
+            let standards = [];
+            await units.forEach(unit => {
+                unit.learning_standards.forEach(ls => {
+                    standards.push(ls)
+                })
+            });
+            setLearningStandards(standards);
+            setVisibleLearningStandards(standards);
         };
         fetchData()
-    }, [setVisibleActivities]);
+    }, [setVisibleLearningStandards]);
+    
+    const getSelectedLearningStandard = async standard => {
+        const newStandard = await getLearningStandard(standard.id, getToken());
+        setSelected(newStandard)
+    };
 
     const getFinishedWords = word => {
         let words = [];
-        activities.forEach(activity => {
+        learingStandards.forEach(activity => {
             if (activity.name.toLowerCase().startsWith(word.toLowerCase())) {
                 words.push({value: activity.name})
             }
@@ -37,17 +54,17 @@ export default function LearningStandardSelect(props) {
         words.forEach(word => {
             values.push(word.value)
         });
-        let visible = activities.filter(activity => {
+        let visible = learingStandards.filter(activity => {
             return values.includes(activity.name)
         });
-        visible.length > 0 ? setVisibleActivities(visible) : setVisibleActivities(activities)
+        visible.length > 0 ? setVisibleLearningStandards(visible) : setVisibleLearningStandards(learingStandards)
     };
 
     const onSelect = value => {
-        let visible = activities.filter(activity => {
+        let visible = learingStandards.filter(activity => {
             return activity.name === value
         });
-        visible.length > 0 ? setVisibleActivities(visible) : setVisibleActivities(activities)
+        visible.length > 0 ? setVisibleLearningStandards(visible) : setVisibleLearningStandards(learingStandards)
     };
 
     return (
@@ -67,12 +84,12 @@ export default function LearningStandardSelect(props) {
                     </div>
                 </div>
                 <div id='list-container'>
-                    {visibleActivities.map(activity =>
-                        <div key={activity.id}
-                             id={selected.id !== activity.id ? 'list-item-wrapper' : 'selected-activity'}
-                             onClick={() => setSelected(activity)}>
+                    {visibleLearningStandards.map(ls =>
+                        <div key={ls.id}
+                             id={selected.id !== ls.id ? 'list-item-wrapper' : 'selected-activity'}
+                             onClick={() => getSelectedLearningStandard(ls)}>
                             <li>
-                                {activity.name}
+                                {ls.name}
                             </li>
                         </div>
                     )}
@@ -82,10 +99,14 @@ export default function LearningStandardSelect(props) {
                 <button id='back-btn' onClick={() => setActivePanel('panel-1')}>
                     <i className="fa fa-arrow-left" aria-hidden="true"/>
                 </button>
-                <div>
-                    <p>Description: {selected.description}</p>
-                    <p>Difficulty: {selected.difficulty ? selected.difficulty.name : ''}</p>
-                    <p>Learning Category: {selected.learning_category ? selected.learning_category.name : ''}</p>
+                <div id='ls-info'>
+                    <p>Expectations: {selected.expectations}</p>
+                    <div id="btn-container" className='flex space-between'>
+                        {selected.days ? selected.days.map(day =>
+                            <button>{`Day ${day.number}`}</button>
+                        )
+                        : null}
+                    </div>
                 </div>
             </div>
         </div>

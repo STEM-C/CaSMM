@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from "react"
 import "./Home.less"
-import {getClassroom} from "../../../Utils/requests";
+import {getClassroom, getLearningStandard} from "../../../Utils/requests";
 import {getToken} from "../../../Utils/AuthRequests";
 import MentorSubHeader from "../../../components/MentorSubHeader/MentorSubHeader";
 import DisplayCodeModal from "./DisplayCodeModal";
@@ -9,12 +9,18 @@ import LearningStandardModal from "./LearningStandardModal";
 
 export default function Home(props) {
     const [classroom, setClassroom] = useState({});
+    const [activeLearningStandard, setActiveLearningStandard] = useState(null);
     const {classroomId, history, selectedActivity, setSelectedActivity} = props;
 
-    useEffect(() => {
-        getClassroom(classroomId, getToken()).then(classroom => {
-            setClassroom(classroom);
-        });
+    useEffect(async () => {
+        const classroom = await getClassroom(classroomId, getToken());
+        setClassroom(classroom);
+        classroom.selections.forEach(async selection => {
+            if(selection.current){
+                const ls = await getLearningStandard(selection.id, getToken())
+                setActiveLearningStandard(ls)
+            }
+        })
     }, [classroomId]);
 
     return (
@@ -22,18 +28,22 @@ export default function Home(props) {
             <MentorSubHeader title={'Your Classroom Info:'}/>
             <div id="home-content-container">
                 <div id="active-learning-standard">
-                    <h3>Learning Standard "1.3" - "Mixtures and Solutions"</h3>
-                    <p>Expectations: "Demonstrate that some mixtures maintain physical properties of their ingredients
-                        such as iron fillings and sand and sand and water. Identify changes that can occur in the
-                        physical properties of the ingredients or solutions such as dissolving salt in water or adding
-                        lemon juice to water."</p>
-                    <div id="btn-container" className='flex space-between'>
-                        <button>Day 1</button>
-                        <button>Day 2</button>
-                        <button>Day 3</button>
+                    {activeLearningStandard ? <div>
+                        <h3>{`Learning Standard ${activeLearningStandard.number} - ${activeLearningStandard.name}`}</h3>
+                        <p>{`Expectations: ${activeLearningStandard.expectations}`}</p>
+                        <div id="btn-container" className='flex space-between'>
+                            {activeLearningStandard.days.map(day =>
+                                <button>{`Day ${day.number}`}</button>
+                            )}
+                        </div>
                     </div>
-                        <LearningStandardModal history={history} selectedActivity={selectedActivity}
-                                               setSelectedActivity={setSelectedActivity}/>
+                        : 'There is currently no active learning standard set. ' +
+                        'Click the button below to browse available learning standards'}
+                    <LearningStandardModal history={history} selectedActivity={selectedActivity}
+                                           setSelectedActivity={setSelectedActivity}
+                                           setActiveLearningStandard={setActiveLearningStandard}
+                                           classroomId={classroomId}
+                                           gradeId={classroom.grade ? classroom.grade.id : null}/>
                 </div>
                 <div id="divider"/>
                 <DisplayCodeModal code={classroom.code}/>

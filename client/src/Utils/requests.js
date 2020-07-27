@@ -79,3 +79,29 @@ export const updateStudent = async (id, student, jwt) => (await axios.put(`${cms
         }
     }
 )).data
+
+export const getUnits = async (id, jwt) => (await axios.get(`${cms}/units?grade=${id}`, {
+    headers: {
+        'Authorization':
+            `Bearer ${jwt}`
+    }
+})).data
+
+export const getLearningStandard = async (id, jwt) => (await axios.get(`${cms}/learning-standards/${id}`, {
+    headers: {
+        'Authorization':
+            `Bearer ${jwt}`
+    }
+})).data
+
+export const setSelection = async (classroom, learningStandard, jwt) => (await axios.post(`${cms}/selections/`,
+    {
+        classroom: classroom,
+        learning_standard: learningStandard
+    },
+    {
+        headers: {
+            'Authorization':
+                `Bearer ${jwt}`
+        }
+    })).data

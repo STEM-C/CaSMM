@@ -14,7 +14,7 @@ export default function Classroom(props) {
     const [classroom, setClassroom] = useState({});
     const {handleLogout, history, selectedActivity, setSelectedActivity} = props;
     const path = history.location.pathname.split('/');
-    const classroomId = path[path.length - 1];
+    const classroomId = parseInt(path[path.length - 1]);
     const tab = history.location.hash.substring(1);
 
     useEffect(() => {
