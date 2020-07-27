@@ -5,6 +5,23 @@ const { sanitizeEntity } = require('strapi-utils')
 module.exports = {
 
     /**
+     * 
+     * Get the classroom and current learning standard
+     * 
+     * @param {Object} user 
+     */
+    async student(ctx) {
+
+        const { classroom: id } = ctx.state.user
+
+        // get the current learning standard
+        const selection = await strapi.services.selection.findOne({ classroom: id, current: true }, ['learning_standard.days', 'classroom.grade'])
+        
+        // return the classroom and learning standard or 404 if there is no current
+        return selection ? { classroom: selection.classroom, learning_standard: selection.learning_standard } : selection
+    },
+
+    /**
      * Get the students belonging to a valid classroom by code
      *
      * @return {Array<Student>}
@@ -133,6 +150,7 @@ module.exports = {
             jwt: strapi.plugins['users-permissions'].services.jwt.issue({
                 ids: students,
                 session: session.id,
+                classroom: classroom.id,
                 isStudent: true
             }),
             students
