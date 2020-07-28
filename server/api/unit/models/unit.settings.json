@@ -1,0 +1,35 @@
+{
+  "kind": "collectionType",
+  "collectionName": "units",
+  "info": {
+    "name": "unit"
+  },
+  "options": {
+    "increments": true,
+    "timestamps": true
+  },
+  "attributes": {
+    "grade": {
+      "model": "grade",
+      "via": "units"
+    },
+    "number": {
+      "type": "integer",
+      "required": true
+    },
+    "name": {
+      "type": "string",
+      "required": true
+    },
+    "teks_id": {
+      "type": "string"
+    },
+    "teks_description": {
+      "type": "text"
+    },
+    "learning_standards": {
+      "via": "unit",
+      "collection": "learning-standard"
+    }
+  }
+}
