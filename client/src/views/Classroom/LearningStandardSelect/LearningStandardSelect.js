@@ -1,10 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {AutoComplete, Divider} from "antd";
 import './LearningStandardSelect.less'
-import {
-    getLearningStandard,
-    getUnits
-} from "../../../Utils/requests";
+import {getLearningStandard, getUnits} from "../../../Utils/requests";
 import {getToken} from "../../../Utils/AuthRequests";
 import CheckUnits from "./CheckUnits";
 
@@ -79,7 +76,7 @@ export default function LearningStandardSelect(props) {
     };
 
     const handleViewDay = day => {
-        localStorage.setItem("my-activity", JSON.stringify(day));
+        localStorage.setItem("my-day", JSON.stringify(day));
         history.push('/activity');
     };
 
@@ -115,7 +112,8 @@ export default function LearningStandardSelect(props) {
                                     <Divider orientation="left">{`Unit ${unit.number}- ${unit.name}`}</Divider>
                                     {unit.learning_standards.map(ls =>
                                         <div key={ls.id}
-                                             id={selected.id !== ls.id ? 'list-item-wrapper' : 'selected-activity'}
+                                             id={selected.id !== ls.id ?
+                                                 'list-item-wrapper' : 'selected-learning-standard'}
                                              onClick={() => getSelectedLearningStandard(ls)}>
                                             <li>
                                                 {ls.name}
@@ -137,7 +135,7 @@ export default function LearningStandardSelect(props) {
                     <p>Expectations: {selected.expectations}</p>
                     <div id="btn-container" className='flex space-between'>
                         {selected.days ? selected.days.map(day =>
-                                <button key={day.id} onClick={() => handleViewDay(day)}>{`Day ${day.number}`}</button>
+                                <button key={day.id} onClick={() => handleViewDay(day)}>{`View Day ${day.number}`}</button>
                             )
                             : null}
                     </div>

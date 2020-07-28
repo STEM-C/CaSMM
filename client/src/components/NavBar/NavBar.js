@@ -20,11 +20,11 @@ export default function NavBar(props) {
                 <i className="fa fa-user-circle"/>
                 &nbsp; Account Info
             </Menu.Item>
-            <Menu.Item key="0" onClick={handleDashboard}>
+            <Menu.Item key="1" onClick={handleDashboard}>
                 <i className="fa fa-home"/>
                 &nbsp; Dashboard
             </Menu.Item>
-            <Menu.Item key="1" onClick={handleLogout}>
+            <Menu.Item key="2" onClick={handleLogout}>
                 <i className="fa fa-sign-out-alt"/>
                 &nbsp; Sign Out
             </Menu.Item>
@@ -38,9 +38,9 @@ export default function NavBar(props) {
             </Link>
             <div id="dropdown-menu">
                 <Dropdown overlay={menu} trigger={['click']}>
-                    <a className="ant-dropdown-link" onClick={e => e.preventDefault()}>
+                    <button className="ant-dropdown-link" onClick={e => e.preventDefault()}>
                         {user.username} <DownOutlined/>
-                    </a>
+                    </button>
                 </Dropdown>
             </div>
         </span>

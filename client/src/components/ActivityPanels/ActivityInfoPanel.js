@@ -7,7 +7,7 @@ import PlaceHolderImg2 from "../../assets/arduino.png";
 import PlaceHolderImg3 from "../../assets/maker.png";
 
 export default function ActivityInfoPanel(props) {
-    const {activity: day} = props;
+    const {day} = props;
 
     return(
         <div id='horizontal-container' className="flex flex-column">

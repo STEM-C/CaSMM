@@ -45,8 +45,16 @@
 
 .ant-dropdown-link {
   color: #colors[tertiary];
+  background: none !important;
+  border: none;
+  padding: 0 !important;
+
+  &:focus {
+    outline: none;
+  }
 
   &:hover {
     color: #colors[secondary];
+    cursor: pointer;
   }
 }

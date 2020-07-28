@@ -4,36 +4,39 @@ import './ActivityPanels.less'
 import {compileArduinoCode, getArduino, getJS, getXml, setLocalActivity} from "./helpers";
 
 export default function BlocklyCanvasPanel(props) {
-    const [hoverXml, setHoverXml] = useState(false)
-    const [hoverJS, setHoverJS] = useState(false)
-    const [hoverArduino, setHoverArduino] = useState(false)
-    const [hoverCompile, setHoverCompile] = useState(false)
-    const {activity, activityType, homePath, toActivityList} = props
+    const [hoverXml, setHoverXml] = useState(false);
+    const [hoverJS, setHoverJS] = useState(false);
+    const [hoverArduino, setHoverArduino] = useState(false);
+    const [hoverCompile, setHoverCompile] = useState(false);
+    const {day, activityType, homePath, handleGoBack} = props;
 
 
-    let workspaceRef = useRef(null)
+    let workspaceRef = useRef(null);
 
-    const setWorkspace = () => workspaceRef.current = window.Blockly.inject('blockly-canvas', {toolbox: document.getElementById('toolbox')})
+    const setWorkspace = () =>
+        workspaceRef.current = window.Blockly.inject('blockly-canvas',
+            {toolbox: document.getElementById('toolbox')}
+        );
 
     useEffect(() => {
         // clean up - removes blockly div from DOM
         return () => {
             if (workspaceRef.current) workspaceRef.current.dispose()
         }
-    }, [])
+    }, []);
 
     useEffect(() => {
-        // once the activity state is set, set the workspace
-        if (!workspaceRef.current && activity && Object.keys(activity).length !== 0) {
-            setWorkspace()
-            workspaceRef.current.addChangeListener(() => setLocalActivity(workspaceRef.current, activityType))
+        // once the day state is set, set the workspace
+        if (!workspaceRef.current && day && Object.keys(day).length !== 0) {
+            setWorkspace();
+            workspaceRef.current.addChangeListener(() => setLocalActivity(workspaceRef.current, activityType));
 
-            if (activity.template) {
-                let xml = window.Blockly.Xml.textToDom(activity.template)
+            if (day.template) {
+                let xml = window.Blockly.Xml.textToDom(day.template);
                 window.Blockly.Xml.domToWorkspace(xml, workspaceRef.current)
             }
         }
-    }, [activity, activityType])
+    }, [day, activityType]);
 
     return (
         <div id='horizontal-container' className="flex flex-column">
@@ -43,7 +46,7 @@ export default function BlocklyCanvasPanel(props) {
                         {homePath ? <Link id='link' to={homePath} className="flex flex-column">
                             <i className="fa fa-home"/>
                         </Link> : null}
-                        {toActivityList ? <button onClick={toActivityList} id='link' className="flex flex-column">
+                        {handleGoBack ? <button onClick={handleGoBack} id='link' className="flex flex-column">
                             <i id='icon-btn' className="fa fa-th"/>
                         </button> : null}
                     </div>
@@ -82,7 +85,7 @@ export default function BlocklyCanvasPanel(props) {
             <xml id="toolbox" style={{"display": "none"}} is="Blockly workspace">
                 {
                     // Maps out block categories
-                    activity && activity.toolbox && activity.toolbox.map(([category, blocks]) => (
+                    day && day.toolbox && day.toolbox.map(([category, blocks]) => (
                         <category name={category} is="Blockly category" key={category}>
                             {
                                 // maps out blocks in category

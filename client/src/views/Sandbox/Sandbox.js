@@ -4,27 +4,27 @@ import {getActivityToolboxAll} from "../../Utils/requests";
 
 
 export default function Sandbox() {
-    const [activity, setActivity] = useState(null)
+    const [day, setDay] = useState(null);
 
     useEffect(() => {
-        const localActivity = localStorage.getItem("sandbox-activity")
+        const localActivity = localStorage.getItem("sandbox-day");
 
         if (localActivity) {
-            let loadedActivity = JSON.parse(localActivity)
-            setActivity(loadedActivity)
+            let loadedActivity = JSON.parse(localActivity);
+            setDay(loadedActivity)
         } else {
             getActivityToolboxAll().then(response => {
-                let loadedActivity = {toolbox: response.toolbox}
+                let loadedActivity = {toolbox: response.toolbox};
 
-                localStorage.setItem("sandbox-activity", JSON.stringify(loadedActivity))
-                setActivity(loadedActivity)
+                localStorage.setItem("sandbox-day", JSON.stringify(loadedActivity));
+                setDay(loadedActivity)
             })
         }
     }, []);
 
     return (
         <div className='container'>
-            <BlocklyCanvasPanel activity={activity} activityType={"sandbox-activity"} homePath={'/'}/>
+            <BlocklyCanvasPanel day={day} activityType={"sandbox-day"} homePath={'/'}/>
         </div>
     );
 

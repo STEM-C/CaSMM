@@ -9,7 +9,7 @@ import LearningStandardModal from "./LearningStandardModal";
 
 export default function Home(props) {
     const [classroom, setClassroom] = useState({});
-    const [gradeId, setGradeId] = useState(null)
+    const [gradeId, setGradeId] = useState(null);
     const [activeLearningStandard, setActiveLearningStandard] = useState(null);
     const {classroomId, history, viewing} = props;
 
@@ -20,7 +20,7 @@ export default function Home(props) {
             setGradeId(classroom.grade.id);
             classroom.selections.forEach(async selection => {
                 if (selection.current) {
-                    const ls = await getLearningStandard(selection.learning_standard, getToken())
+                    const ls = await getLearningStandard(selection.learning_standard, getToken());
                     setActiveLearningStandard(ls)
                 }
             })
@@ -29,7 +29,7 @@ export default function Home(props) {
     }, [classroomId]);
 
     const handleViewDay = day => {
-        localStorage.setItem("my-activity", JSON.stringify(day));
+        localStorage.setItem("my-day", JSON.stringify(day));
         history.push('/activity')
     };
 
@@ -43,7 +43,7 @@ export default function Home(props) {
                             <p>{`Expectations: ${activeLearningStandard.expectations}`}</p>
                             <div id="btn-container" className='flex space-between'>
                                 {activeLearningStandard.days.map(day =>
-                                    <button key={day.id} onClick={() => handleViewDay(day)}>{`Day ${day.number}`}</button>
+                                    <button key={day.id} onClick={() => handleViewDay(day)}>{`View Day ${day.number}`}</button>
                                 )}
                             </div>
                         </div>
