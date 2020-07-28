@@ -1,11 +1,8 @@
 import React, {useEffect, useState} from 'react';
-import {AutoComplete} from "antd";
+import {AutoComplete, Divider} from "antd";
 import './LearningStandardSelect.less'
 import {
-    getActivities,
-    getClassroom,
     getLearningStandard,
-    setSelection,
     getUnits
 } from "../../../Utils/requests";
 import {getToken} from "../../../Utils/AuthRequests";
@@ -13,25 +10,19 @@ import CheckUnits from "./CheckUnits";
 
 export default function LearningStandardSelect(props) {
     const [searchOptions, setSearchOptions] = useState([]);
-    const [learingStandards, setLearningStandards] = useState([]);
-    const [visibleLearningStandards, setVisibleLearningStandards] = useState([]);
+    const [units, setUnits] = useState([]);
+    const [visibleStandardsByUnit, setVisibleStandardsByUnit] = useState([]);
     const {history, selected, setSelected, activePanel, setActivePanel, gradeId} = props;
 
     useEffect(() => {
         async function fetchData() {
-            const units = await getUnits(gradeId, getToken());
-            let standards = [];
-            await units.forEach(unit => {
-                unit.learning_standards.forEach(ls => {
-                    standards.push(ls)
-                })
-            });
-            setLearningStandards(standards);
-            setVisibleLearningStandards(standards);
+            const u = await getUnits(gradeId, getToken());
+            setUnits(u);
+            setVisibleStandardsByUnit(u);
         };
         fetchData()
-    }, [setVisibleLearningStandards]);
-    
+    }, [setVisibleStandardsByUnit]);
+
     const getSelectedLearningStandard = async standard => {
         const newStandard = await getLearningStandard(standard.id, getToken());
         setSelected(newStandard)
@@ -39,10 +30,14 @@ export default function LearningStandardSelect(props) {
 
     const getFinishedWords = word => {
         let words = [];
-        learingStandards.forEach(activity => {
-            if (activity.name.toLowerCase().startsWith(word.toLowerCase())) {
-                words.push({value: activity.name})
-            }
+        units.forEach(unit => {
+            console.log(unit)
+            unit.learning_standards.forEach(ls => {
+                if (ls.name.toLowerCase().startsWith(word.toLowerCase())) {
+                        words.push({value: ls.name})
+                    }
+                }
+            )
         });
         return words
     };
@@ -54,17 +49,24 @@ export default function LearningStandardSelect(props) {
         words.forEach(word => {
             values.push(word.value)
         });
-        let visible = learingStandards.filter(activity => {
-            return values.includes(activity.name)
+        let visible = [];
+        units.forEach(unit => {
+            let u = {...unit};
+            u.learning_standards = unit.learning_standards.filter(ls => {
+            return values.includes(ls.name)
+            });
+            if(u.learning_standards.length > 0) {
+                console.log(u.learning_standards)
+                visible.push(u)}
         });
-        visible.length > 0 ? setVisibleLearningStandards(visible) : setVisibleLearningStandards(learingStandards)
+        visible.length > 0 ? setVisibleStandardsByUnit(visible) : setVisibleStandardsByUnit(units)
     };
 
     const onSelect = value => {
-        let visible = learingStandards.filter(activity => {
+        let visible = units.filter(activity => {
             return activity.name === value
         });
-        visible.length > 0 ? setVisibleLearningStandards(visible) : setVisibleLearningStandards(learingStandards)
+        visible.length > 0 ? setVisibleStandardsByUnit(visible) : setVisibleStandardsByUnit(units)
     };
 
     return (
@@ -84,13 +86,18 @@ export default function LearningStandardSelect(props) {
                     </div>
                 </div>
                 <div id='list-container'>
-                    {visibleLearningStandards.map(ls =>
-                        <div key={ls.id}
-                             id={selected.id !== ls.id ? 'list-item-wrapper' : 'selected-activity'}
-                             onClick={() => getSelectedLearningStandard(ls)}>
-                            <li>
-                                {ls.name}
-                            </li>
+                    {visibleStandardsByUnit.map(unit =>
+                        <div>
+                            <Divider orientation="left">{`Unit ${unit.number}- ${unit.name}`}</Divider>
+                            {unit.learning_standards.map(ls =>
+                                <div key={ls.id}
+                                     id={selected.id !== ls.id ? 'list-item-wrapper' : 'selected-activity'}
+                                     onClick={() => getSelectedLearningStandard(ls)}>
+                                    <li>
+                                        {ls.name}
+                                    </li>
+                                </div>
+                            )}
                         </div>
                     )}
                 </div>
@@ -103,9 +110,9 @@ export default function LearningStandardSelect(props) {
                     <p>Expectations: {selected.expectations}</p>
                     <div id="btn-container" className='flex space-between'>
                         {selected.days ? selected.days.map(day =>
-                            <button>{`Day ${day.number}`}</button>
-                        )
-                        : null}
+                                <button>{`Day ${day.number}`}</button>
+                            )
+                            : null}
                     </div>
                 </div>
             </div>

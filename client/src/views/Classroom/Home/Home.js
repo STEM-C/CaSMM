@@ -17,7 +17,7 @@ export default function Home(props) {
         setClassroom(classroom);
         classroom.selections.forEach(async selection => {
             if(selection.current){
-                const ls = await getLearningStandard(selection.id, getToken())
+                const ls = await getLearningStandard(selection.learning_standard, getToken())
                 setActiveLearningStandard(ls)
             }
         })
