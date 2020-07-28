@@ -15,7 +15,9 @@ export default function Classroom(props) {
     const {handleLogout, history, selectedActivity, setSelectedActivity} = props;
     const path = history.location.pathname.split('/');
     const classroomId = parseInt(path[path.length - 1]);
-    const tab = history.location.hash.substring(1);
+    const hash = history.location.hash.split('#');
+    const tab = hash[1];
+    const viewing = parseInt(hash[2]);
 
     useEffect(() => {
         getClassroom(classroomId, getToken()).then(classroom => {
@@ -36,7 +38,7 @@ export default function Classroom(props) {
             >
                 <TabPane tab="Home" key="home">
                     <Home classroomId={classroomId} history={history} selectedActivity={selectedActivity}
-                          setSelectedActivity={setSelectedActivity}/>
+                          setSelectedActivity={setSelectedActivity} viewing={viewing}/>
                 </TabPane>
                 <TabPane tab="Roster" key="roster">
                     <Roster history={history} handleLogout={handleLogout} classroomId={classroomId}/>

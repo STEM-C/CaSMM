@@ -1,14 +1,23 @@
 import {Modal, Button} from 'antd';
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import LearningStandardSelect from "../LearningStandardSelect/LearningStandardSelect";
-import {setSelection} from "../../../Utils/requests";
+import {getLearningStandard, setSelection} from "../../../Utils/requests";
 import {getToken} from "../../../Utils/AuthRequests";
 
 export default function LearningStandardModal(props) {
     const [visible, setVisible] = useState(false);
     const [activePanel, setActivePanel] = useState('panel-1');
     const [selected, setSelected] = useState({});
-    const {history, setActiveLearningStandard, gradeId, classroomId} = props;
+    const {history, setActiveLearningStandard, gradeId, classroomId, viewing} = props;
+
+    useEffect(async () => {
+        if(viewing){
+            setVisible(true);
+            const ls = await getLearningStandard(viewing, getToken());
+            setSelected(ls);
+            setActivePanel('panel-2')
+        }
+    }, []);
 
     const showModal = () => {
         setActivePanel('panel-1');
@@ -16,13 +25,20 @@ export default function LearningStandardModal(props) {
     };
 
     const handleCancel = () => {
+        history.push('#home');
         setVisible(false)
     };
 
     const handleOk = () => {
+        history.push('#home');
         setSelection(classroomId, selected.id, getToken());
         setActiveLearningStandard(selected);
         setVisible(false)
+    };
+
+    const handleNext = () => {
+        history.push(`#home#${selected.id}`);
+        setActivePanel('panel-2')
     };
 
     return (
@@ -35,7 +51,7 @@ export default function LearningStandardModal(props) {
                 width='60vw'
                 footer={[
                     <Button key="ok" type="primary" disabled={selected.id === undefined}
-                            onClick={activePanel === 'panel-1' ? () => setActivePanel('panel-2') : handleOk}>
+                            onClick={activePanel === 'panel-1' ? handleNext : handleOk}>
                         {activePanel === 'panel-1' ? 'Next' : 'Set as Active Learning Standard'}
                     </Button>,
                 ]}

@@ -29,7 +29,7 @@ export default function LearningStandardSelect(props) {
 
         };
         fetchData()
-    }, [setVisibleStandardsByUnit]);
+    }, [setVisibleStandardsByUnit, gradeId]);
 
     const getSelectedLearningStandard = async standard => {
         const newStandard = await getLearningStandard(standard.id, getToken());
@@ -78,6 +78,16 @@ export default function LearningStandardSelect(props) {
         visible.length > 0 ? setVisibleStandardsByUnit(visible) : setVisibleStandardsByUnit(units)
     };
 
+    const handleViewDay = day => {
+        localStorage.setItem("my-activity", JSON.stringify(day));
+        history.push('/activity')
+    };
+
+    const handleBack = () => {
+        history.push('#home');
+        setActivePanel('panel-1')
+    };
+
     return (
         <div className='overflow-hidden'>
             <div id='panel-1' className={activePanel === "panel-1" ? "panel-1 show" : "panel-1 hide"}>
@@ -120,14 +130,14 @@ export default function LearningStandardSelect(props) {
                 </div>
             </div>
             <div id='panel-2' className={activePanel === "panel-2" ? "panel-2 show" : "panel-2 hide"}>
-                <button id='back-btn' onClick={() => setActivePanel('panel-1')}>
+                <button id='back-btn' onClick={handleBack}>
                     <i className="fa fa-arrow-left" aria-hidden="true"/>
                 </button>
                 <div id='ls-info'>
                     <p>Expectations: {selected.expectations}</p>
                     <div id="btn-container" className='flex space-between'>
                         {selected.days ? selected.days.map(day =>
-                                <button>{`Day ${day.number}`}</button>
+                                <button onClick={() => handleViewDay(day)}>{`Day ${day.number}`}</button>
                             )
                             : null}
                     </div>

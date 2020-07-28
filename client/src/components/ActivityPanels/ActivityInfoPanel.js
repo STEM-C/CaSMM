@@ -7,7 +7,7 @@ import PlaceHolderImg2 from "../../assets/arduino.png";
 import PlaceHolderImg3 from "../../assets/maker.png";
 
 export default function ActivityInfoPanel(props) {
-    const {activity} = props;
+    const {activity: day} = props;
 
     return(
         <div id='horizontal-container' className="flex flex-column">
@@ -16,14 +16,14 @@ export default function ActivityInfoPanel(props) {
                      className="flex flex-row justify-end card overflow-visible"
                      style={{"marginLeft": "70px"}}>
                     <img src={Logo} id='logo' alt="Maker activity"/>
-                    <h2>Maker Activity {activity.name}</h2>
+                    <h2>{`Learning Standard ${day.learning_standard}, Day ${day.number}`}</h2>
                 </div>
             </div>
             <div id='bottom-container' className="flex flex-column vertical-container overflow-visible">
                 <div id="section-header">
                     Learn about the activity...
                 </div>
-                <p id="section-text">{activity.description}</p>
+                <p id="section-text">{console.log(day)}</p>
                 <div id="secondary-section-header">
                     See the different parts of the activity...
                 </div>
