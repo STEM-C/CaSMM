@@ -12,11 +12,11 @@ jobs:
         id: get_version
         run: echo ::set-output name=VERSION::${GITHUB_REF#refs/heads/release/}
       - name: Built, test, and deploy app
-        run: ./scripts/build_test_deploy.sh
-        env:
-          IMAGE_NAME: server
-          IMAGE_TAG: staging-${{ steps.get_version.outputs.VERSION }}
-          APP_NAME: casmm-staging
-          APP_TYPE: web
-          HEROKU_API_KEY: ${{ secrets.HEROKU_TOKEN }}
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        uses: STEM-C/auto/build-test-deploy@develop
+        with:
+          image_name: server
+          image_tag: staging-${{ steps.get_version.outputs.VERSION }}
+          app_name: casmm-staging
+          app_type: web
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          heroku_token: ${{ secrets.HEROKU_TOKEN }}
