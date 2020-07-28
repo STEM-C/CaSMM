@@ -12,6 +12,8 @@ export default function LearningStandardSelect(props) {
     const [searchOptions, setSearchOptions] = useState([]);
     const [units, setUnits] = useState([]);
     const [visibleStandardsByUnit, setVisibleStandardsByUnit] = useState([]);
+    const [plainOptions, setPlainOptions] = useState([]);
+    const [checkedList, setCheckedList] = useState([]);
     const {history, selected, setSelected, activePanel, setActivePanel, gradeId} = props;
 
     useEffect(() => {
@@ -19,6 +21,12 @@ export default function LearningStandardSelect(props) {
             const u = await getUnits(gradeId, getToken());
             setUnits(u);
             setVisibleStandardsByUnit(u);
+            const options = u.map(unitData => {
+                return {id: unitData.id, number: unitData.number, name: unitData.name}
+            });
+            setPlainOptions(options);
+            setCheckedList(options)
+
         };
         fetchData()
     }, [setVisibleStandardsByUnit]);
@@ -31,13 +39,14 @@ export default function LearningStandardSelect(props) {
     const getFinishedWords = word => {
         let words = [];
         units.forEach(unit => {
-            console.log(unit)
-            unit.learning_standards.forEach(ls => {
-                if (ls.name.toLowerCase().startsWith(word.toLowerCase())) {
-                        words.push({value: ls.name})
+            if (checkedList.find(checked => checked.id === unit.id)) {
+                unit.learning_standards.forEach(ls => {
+                        if (ls.name.toLowerCase().startsWith(word.toLowerCase())) {
+                            words.push({value: ls.name})
+                        }
                     }
-                }
-            )
+                )
+            }
         });
         return words
     };
@@ -53,11 +62,11 @@ export default function LearningStandardSelect(props) {
         units.forEach(unit => {
             let u = {...unit};
             u.learning_standards = unit.learning_standards.filter(ls => {
-            return values.includes(ls.name)
+                return values.includes(ls.name)
             });
-            if(u.learning_standards.length > 0) {
-                console.log(u.learning_standards)
-                visible.push(u)}
+            if (u.learning_standards.length > 0) {
+                visible.push(u)
+            }
         });
         visible.length > 0 ? setVisibleStandardsByUnit(visible) : setVisibleStandardsByUnit(units)
     };
@@ -82,23 +91,31 @@ export default function LearningStandardSelect(props) {
                         />
                     </div>
                     <div>
-                        <CheckUnits/>
+                        <CheckUnits
+                            plainOptions={plainOptions}
+                            checkedList={checkedList}
+                            setCheckedList={setCheckedList}
+                        />
                     </div>
                 </div>
                 <div id='list-container'>
-                    {visibleStandardsByUnit.map(unit =>
-                        <div>
-                            <Divider orientation="left">{`Unit ${unit.number}- ${unit.name}`}</Divider>
-                            {unit.learning_standards.map(ls =>
-                                <div key={ls.id}
-                                     id={selected.id !== ls.id ? 'list-item-wrapper' : 'selected-activity'}
-                                     onClick={() => getSelectedLearningStandard(ls)}>
-                                    <li>
-                                        {ls.name}
-                                    </li>
+                    {visibleStandardsByUnit.map(unit => {
+                            return checkedList.find(checked => checked.id === unit.id) ?
+                                <div>
+                                    <Divider orientation="left">{`Unit ${unit.number}- ${unit.name}`}</Divider>
+                                    {unit.learning_standards.map(ls =>
+                                        <div key={ls.id}
+                                             id={selected.id !== ls.id ? 'list-item-wrapper' : 'selected-activity'}
+                                             onClick={() => getSelectedLearningStandard(ls)}>
+                                            <li>
+                                                {ls.name}
+                                            </li>
+                                        </div>
+                                    )}
                                 </div>
-                            )}
-                        </div>
+                                : null
+
+                        }
                     )}
                 </div>
             </div>

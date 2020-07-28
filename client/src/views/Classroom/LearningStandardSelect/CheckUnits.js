@@ -3,16 +3,17 @@ import React, {useState} from "react";
 
 const CheckboxGroup = Checkbox.Group;
 
-const plainOptions = ['Unit 1', 'Unit 2', 'Unit 3', 'Unit 4', 'Unit 5', 'Unit 6'];
-
-export default function CheckUnits() {
-    const [checkedList, setCheckedList] = useState(plainOptions);
+export default function CheckUnits(props) {
+    const {plainOptions, checkedList, setCheckedList} = props;
     const [indeterminate, setIndeterminate] = useState(false);
     const [checkAll, setCheckAll] = useState(true);
 
 
     const onChange = checked => {
-        setCheckedList(checked);
+        setCheckedList(checked.map(value => {
+            const option = getOptions(value);
+            return {...option}
+        }));
         setIndeterminate(!!checked.length && checked.length < plainOptions.length);
         setCheckAll(checked.length === plainOptions.length)
     };
@@ -21,6 +22,10 @@ export default function CheckUnits() {
         setCheckedList(e.target.checked ? plainOptions : []);
         setIndeterminate(false);
         setCheckAll(e.target.checked)
+    };
+
+    const getOptions = (value) => {
+        return plainOptions.find(option => option.number === parseInt(value.slice(-1)))
     };
 
     return (
@@ -36,8 +41,8 @@ export default function CheckUnits() {
             </div>
             <br/>
             <CheckboxGroup
-                options={plainOptions}
-                value={checkedList}
+                options={plainOptions.map(option => `Unit ${option.number}`)}
+                value={checkedList.map(checked => `Unit ${checked.number}`)}
                 onChange={onChange}
             />
         </>
