@@ -13,16 +13,19 @@ export default function Home(props) {
     const [activeLearningStandard, setActiveLearningStandard] = useState(null);
     const {classroomId, history, viewing} = props;
 
-    useEffect(async () => {
-        const classroom = await getClassroom(classroomId, getToken());
-        setClassroom(classroom);
-        setGradeId(classroom.grade.id);
-        classroom.selections.forEach(async selection => {
-            if (selection.current) {
-                const ls = await getLearningStandard(selection.learning_standard, getToken())
-                setActiveLearningStandard(ls)
-            }
-        })
+    useEffect(() => {
+        const fetchData = async () => {
+            const classroom = await getClassroom(classroomId, getToken());
+            setClassroom(classroom);
+            setGradeId(classroom.grade.id);
+            classroom.selections.forEach(async selection => {
+                if (selection.current) {
+                    const ls = await getLearningStandard(selection.learning_standard, getToken())
+                    setActiveLearningStandard(ls)
+                }
+            })
+        };
+        fetchData();
     }, [classroomId]);
 
     const handleViewDay = day => {
@@ -40,7 +43,7 @@ export default function Home(props) {
                             <p>{`Expectations: ${activeLearningStandard.expectations}`}</p>
                             <div id="btn-container" className='flex space-between'>
                                 {activeLearningStandard.days.map(day =>
-                                    <button onClick={() => handleViewDay(day)}>{`Day ${day.number}`}</button>
+                                    <button key={day.id} onClick={() => handleViewDay(day)}>{`Day ${day.number}`}</button>
                                 )}
                             </div>
                         </div>

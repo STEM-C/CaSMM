@@ -31,7 +31,7 @@ export default function Activity(props) {
     }, [props])
 
     const toActivityList = () => {
-        history.push(`/classroom/1#home`)
+        history.goBack()
     }
 
     return (

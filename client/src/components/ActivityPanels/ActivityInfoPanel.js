@@ -23,7 +23,7 @@ export default function ActivityInfoPanel(props) {
                 <div id="section-header">
                     Learn about the activity...
                 </div>
-                <p id="section-text">{console.log(day)}</p>
+                <p id="section-text">{/* day objectives here */}</p>
                 <div id="secondary-section-header">
                     See the different parts of the activity...
                 </div>

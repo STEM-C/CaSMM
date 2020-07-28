@@ -10,14 +10,17 @@ export default function LearningStandardModal(props) {
     const [selected, setSelected] = useState({});
     const {history, setActiveLearningStandard, gradeId, classroomId, viewing} = props;
 
-    useEffect(async () => {
-        if(viewing){
-            setVisible(true);
-            const ls = await getLearningStandard(viewing, getToken());
-            setSelected(ls);
-            setActivePanel('panel-2')
-        }
-    }, []);
+    useEffect(() => {
+        const fetchData = async () => {
+            if (viewing) {
+                setVisible(true);
+                const ls = await getLearningStandard(viewing, getToken());
+                setSelected(ls);
+                setActivePanel('panel-2')
+            }
+        };
+        fetchData()
+    }, [viewing]);
 
     const showModal = () => {
         setActivePanel('panel-1');

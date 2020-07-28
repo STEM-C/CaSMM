@@ -28,7 +28,7 @@ export default function LearningStandardSelect(props) {
             setCheckedList(options)
 
         };
-        fetchData()
+        if(gradeId) fetchData()
     }, [setVisibleStandardsByUnit, gradeId]);
 
     const getSelectedLearningStandard = async standard => {
@@ -72,15 +72,15 @@ export default function LearningStandardSelect(props) {
     };
 
     const onSelect = value => {
-        let visible = units.filter(activity => {
-            return activity.name === value
+        let visible = units.filter(ls => {
+            return ls.name === value
         });
         visible.length > 0 ? setVisibleStandardsByUnit(visible) : setVisibleStandardsByUnit(units)
     };
 
     const handleViewDay = day => {
         localStorage.setItem("my-activity", JSON.stringify(day));
-        history.push('/activity')
+        history.push('/activity');
     };
 
     const handleBack = () => {
@@ -111,7 +111,7 @@ export default function LearningStandardSelect(props) {
                 <div id='list-container'>
                     {visibleStandardsByUnit.map(unit => {
                             return checkedList.find(checked => checked.id === unit.id) ?
-                                <div>
+                                <div key={unit.id}>
                                     <Divider orientation="left">{`Unit ${unit.number}- ${unit.name}`}</Divider>
                                     {unit.learning_standards.map(ls =>
                                         <div key={ls.id}
@@ -137,7 +137,7 @@ export default function LearningStandardSelect(props) {
                     <p>Expectations: {selected.expectations}</p>
                     <div id="btn-container" className='flex space-between'>
                         {selected.days ? selected.days.map(day =>
-                                <button onClick={() => handleViewDay(day)}>{`Day ${day.number}`}</button>
+                                <button key={day.id} onClick={() => handleViewDay(day)}>{`Day ${day.number}`}</button>
                             )
                             : null}
                     </div>
