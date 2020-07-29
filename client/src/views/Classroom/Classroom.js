@@ -20,8 +20,13 @@ export default function Classroom(props) {
     const viewing = parseInt(hash[2]);
 
     useEffect(() => {
-        getClassroom(classroomId, getToken()).then(classroom => {
-            setClassroom(classroom);
+        getClassroom(classroomId, getToken()).then(res => {
+            if(res.data) {
+                setClassroom(res.data);
+            } else {
+                const err = res.err ? res.err : "error";
+                console.log(err)
+            }
         });
     }, [classroomId]);
 

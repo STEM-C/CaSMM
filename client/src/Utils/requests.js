@@ -1,28 +1,73 @@
 import {cms, compile} from './hosts'
 import axios from 'axios'
 
-export const getDayToolboxAll = async () => (await axios.get(`${cms}/sandbox/toolbox`)).data
+const GET = 'GET';
+const PUT = 'PUT';
+const POST = 'POST';
 
-export const getDayToolbox = async (id, jwt) => (await axios.get(`${cms}/days/toolbox/${id}`, {
-    headers: {
-        Authorization:
-            `Bearer ${jwt}`
+const makeRequest = async (method, path, config, error) => {
+    let data = null;
+    let err = null;
+    try {
+        switch (method) {
+            case GET:
+                data = (await axios.get(path, config)).data;
+                break;
+            case POST:
+                data = (await axios.post(path, config)).data;
+                break;
+            case PUT:
+                data = (await axios.put(path, config)).data;
+                break;
+            default:
+                throw Error
+        }
+    } catch {
+        err = error ? error : "An error occurred."
     }
-})).data
 
-export const getMentor = async (jwt) => (await axios.get(`${cms}/classroom-managers/me`, {
-    headers: {
-        Authorization:
-            `Bearer ${jwt}`
-    }
-})).data
+    return {data: data, err: err}
+};
 
-export const getClassroom = async (id, jwt) => (await axios.get(`${cms}/classrooms/${id}`, {
-    headers: {
-        'Authorization':
-            `Bearer ${jwt}`
-    }
-})).data
+export const getDayToolboxAll = async () => (
+    makeRequest(GET, `${cms}/sandbox/toolbox`, null, "Could not retrieve toolbox.")
+);
+
+export const getDayToolbox = async (id, jwt) => (
+    makeRequest(GET,
+        `${cms}/days/toolbox/${id}`,
+        {
+            headers: {
+                Authorization:
+                    `Bearer ${jwt}`
+            }
+        },
+        "Could not retrieve toolbox.")
+);
+
+export const getMentor = async (jwt) => (
+    makeRequest(GET,
+        `${cms}/classroom-managers/me`,
+        {
+            headers: {
+                Authorization:
+                    `Bearer ${jwt}`
+            }
+        },
+        "Could not retrieve your classroom manager information.")
+);
+
+export const getClassroom = async (id, jwt) => (
+    makeRequest(GET,
+        `${cms}/classrooms/${id}`,
+        {
+            headers: {
+                'Authorization':
+                    `Bearer ${jwt}`
+            }
+        },
+        "The classroom could not be retrieved")
+);
 
 export const getStudentClassroom = async (jwt) => (await axios.get(`${cms}/classrooms/student`, {
     headers: {
@@ -31,7 +76,7 @@ export const getStudentClassroom = async (jwt) => (await axios.get(`${cms}/class
     }
 })).data
 
-export const getClassrooms = async (ids, jwt) => (Promise.all(ids.map(id => getClassroom(id, jwt))))
+export const getClassrooms = async (ids, jwt) => (Promise.all(ids.map(async id => (await getClassroom(id, jwt)).data)))
 
 export const getStudents = async (code) => (await axios.get(`${cms}/classrooms/join/${code}`)).data
 

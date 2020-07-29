@@ -15,15 +15,21 @@ export default function Home(props) {
 
     useEffect(() => {
         const fetchData = async () => {
-            const classroom = await getClassroom(classroomId, getToken());
-            setClassroom(classroom);
-            setGradeId(classroom.grade.id);
-            classroom.selections.forEach(async selection => {
-                if (selection.current) {
-                    const ls = await getLearningStandard(selection.learning_standard, getToken());
-                    setActiveLearningStandard(ls)
-                }
-            })
+            const res = await getClassroom(classroomId, getToken());
+            if(res.data){
+                const classroom = res.data;
+                setClassroom(classroom);
+                setGradeId(classroom.grade.id);
+                classroom.selections.forEach(async selection => {
+                    if (selection.current) {
+                        const ls = await getLearningStandard(selection.learning_standard, getToken());
+                        setActiveLearningStandard(ls)
+                    }
+                })
+            } else {
+                const err = res.err ? res.err : "error";
+                console.log(err)
+            }
         };
         fetchData();
     }, [classroomId]);

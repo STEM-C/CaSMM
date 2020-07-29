@@ -9,15 +9,20 @@ export default function Sandbox() {
     useEffect(() => {
         const localDay = localStorage.getItem("sandbox-day");
 
-        if (localDay) {
+        if (!localDay) {
             let loadedDay = JSON.parse(localDay);
             setDay(loadedDay)
         } else {
-            getDayToolboxAll().then(response => {
-                let loadedDay = {toolbox: response.toolbox};
+            getDayToolboxAll().then(res => {
+                if (res.data) {
+                    let loadedDay = {toolbox: res.data.toolbox};
 
-                localStorage.setItem("sandbox-day", JSON.stringify(loadedDay));
-                setDay(loadedDay)
+                    localStorage.setItem("sandbox-day", JSON.stringify(loadedDay));
+                    setDay(loadedDay)
+                } else {
+                    const err = res.err ? res.err : "error";
+                    console.log(err)
+                }
             })
         }
     }, []);

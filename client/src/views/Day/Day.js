@@ -14,14 +14,19 @@ export default function Day(props) {
         const localDay = JSON.parse(localStorage.getItem("my-day"));
 
         if (localDay) {
-            if(localDay.toolbox) {
+            if (localDay.toolbox) {
                 setDay(localDay)
             } else {
-                getDayToolbox(localDay.id, getToken()).then(response => {
-                    let loadedDay = {...localDay, toolbox: response.toolbox};
+                getDayToolbox(localDay.id, getToken()).then(res => {
+                    if (res.data) {
+                        let loadedDay = {...localDay, toolbox: res.data.toolbox};
 
-                    localStorage.setItem("my-day", JSON.stringify(loadedDay));
-                    setDay(loadedDay)
+                        localStorage.setItem("my-day", JSON.stringify(loadedDay));
+                        setDay(loadedDay)
+                    } else {
+                        const err = res.err ? res.err : "error";
+                        console.log(err)
+                    }
                 })
             }
 

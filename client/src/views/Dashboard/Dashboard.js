@@ -12,15 +12,20 @@ export default function Dashboard(props) {
     const user = getUser();
     const {handleLogout, history} = props;
 
-    useEffect( () => {
-        let classroomIds = []
-        getMentor(getToken()).then(mentor => {
-            mentor.classrooms.forEach(classroom => {
-                classroomIds.push(classroom.id)
-            });
-            getClassrooms(classroomIds, getToken()).then(classrooms => {
-                setClassrooms(classrooms)
-            });
+    useEffect(() => {
+        let classroomIds = [];
+        getMentor(getToken()).then(res => {
+            if (res.data) {
+                res.data.classrooms.forEach(classroom => {
+                    classroomIds.push(classroom.id)
+                });
+                getClassrooms(classroomIds, getToken()).then(classrooms => {
+                    setClassrooms(classrooms)
+                });
+            } else {
+                const err = res.err ? res.err : "error";
+                console.log(err)
+            }
         })
     }, []);
 

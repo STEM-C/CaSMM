@@ -17,20 +17,26 @@ export default function Roster(props) {
 
     useEffect(() => {
         let data = [];
-        getClassroom(classroomId, getToken()).then(classroom => {
-            setClassroom(classroom);
-            classroom.students.forEach(student => {
-                data.push({
-                    key: student.id,
-                    name: student.name,
-                    character: student.character,
-                    enrolled: {
-                        id: student.id,
-                        enrolled: student.enrolled
-                    }
-                })
-            });
-            setStudentData(data);
+        getClassroom(classroomId, getToken()).then(res => {
+            if (res.data) {
+                const classroom = res.data;
+                setClassroom(classroom);
+                classroom.students.forEach(student => {
+                    data.push({
+                        key: student.id,
+                        name: student.name,
+                        character: student.character,
+                        enrolled: {
+                            id: student.id,
+                            enrolled: student.enrolled
+                        }
+                    })
+                });
+                setStudentData(data);
+            } else {
+                const err = res.err ? res.err : "error";
+                console.log(err)
+            }
         });
     }, [classroomId]);
 
