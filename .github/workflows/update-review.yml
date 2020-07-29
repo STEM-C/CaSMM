@@ -13,7 +13,7 @@ jobs:
         id: get_name
         run: echo ::set-output name=NAME::review-pr-$(echo $GITHUB_REF | awk 'BEGIN { FS = "/" } ; { print $3 }')
       - name: Built, test, and deploy app
-        uses: STEM-C/auto/build-test-deploy@develop
+        uses: STEM-C/auto/build-test-deploy@v0.6
         with:
           image_name: server
           image_tag: ${{ steps.get_name.outputs.NAME }}
