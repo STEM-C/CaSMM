@@ -23,14 +23,15 @@ jobs:
           DATABASE_URL: ${{ steps.app.outputs.database_url }}
           SCRIPT_PATH: ./scripts
       - name: Built, test, and deploy app
-        run: ./scripts/build_test_deploy.sh
+        uses: STEM-C/auto/build-test-deploy@v0.6
+        with:
+          image_name: server
+          image_tag: ${{ steps.app.outputs.app_name }}
+          app_name: ${{ steps.app.outputs.app_name }}
+          app_type: web
+          github_token: ${{ secrets.GITHUB_TOKEN }}
         env:
-          IMAGE_NAME: server
-          IMAGE_TAG: ${{ steps.app.outputs.app_name }}
-          APP_NAME: ${{ steps.app.outputs.app_name }}
-          APP_TYPE: web
           HEROKU_API_KEY: ${{ secrets.HEROKU_TOKEN }}
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - uses: chrnorm/deployment-action@releases/v1
         name: Create GitHub deployment
         if: success()
