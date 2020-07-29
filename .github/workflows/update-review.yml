@@ -20,4 +20,5 @@ jobs:
           app_name: ${{ steps.get_name.outputs.NAME }}
           app_type: web
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          heroku_token: ${{ secrets.HEROKU_TOKEN }}
+        env:
+          HEROKU_API_KEY: ${{ secrets.HEROKU_TOKEN }}
