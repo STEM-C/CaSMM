@@ -2068,7 +2068,7 @@ COPY public."users-permissions_permission" (id, type, controller, action, enable
 474	upload	upload	search	f		3
 489	users-permissions	user	destroyall	f		3
 504	users-permissions	userspermissions	updateproviders	f		3
-508	application	day	toolbox	f		1
+508	application	day	toolbox	t		1
 509	application	day	toolbox	f		2
 510	application	day	toolbox	t		3
 511	application	classroom	student	f		1

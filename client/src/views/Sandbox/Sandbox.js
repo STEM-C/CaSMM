@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from "react"
 import BlocklyCanvasPanel from "../../components/DayPanels/BlocklyCanvasPanel";
-import {getActivityToolboxAll} from "../../Utils/requests";
+import {getDayToolboxAll} from "../../Utils/requests";
 
 
 export default function Sandbox() {
@@ -13,7 +13,7 @@ export default function Sandbox() {
             let loadedDay = JSON.parse(localDay);
             setDay(loadedDay)
         } else {
-            getActivityToolboxAll().then(response => {
+            getDayToolboxAll().then(response => {
                 let loadedDay = {toolbox: response.toolbox};
 
                 localStorage.setItem("sandbox-day", JSON.stringify(loadedDay));

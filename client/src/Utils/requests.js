@@ -1,7 +1,7 @@
 import {cms, compile} from './hosts'
 import axios from 'axios'
 
-export const getActivityToolboxAll = async () => (await axios.get(`${cms}/sandbox/toolbox`)).data
+export const getDayToolboxAll = async () => (await axios.get(`${cms}/sandbox/toolbox`)).data
 
 export const getDayToolbox = async (id, jwt) => (await axios.get(`${cms}/days/toolbox/${id}`, {
     headers: {
