@@ -4,14 +4,18 @@ import {getActivities, getStudentClassroom} from "../../Utils/requests"
 import './Student.less'
 
 function Student(props) {
-    const [learningStandard, setLearningStandard] = useState([]);
+    const [learningStandard, setLearningStandard] = useState({});
     const [error, setError] = useState(null);
     const [selectedDay, setSelectedDay] = useState({});
 
     useEffect(() => {
         const fetchData = async () => {
-            const classroom = await getStudentClassroom(getToken());
-            setLearningStandard(classroom.learning_standard)
+            try {
+                const classroom = await getStudentClassroom(getToken());
+                if (classroom.learning_standard) {
+                    setLearningStandard(classroom.learning_standard)
+                }
+            } catch {}
         };
         fetchData()
     }, []);
@@ -49,14 +53,21 @@ function Student(props) {
                                     </li>
                                 </div>
                             )
-                            : null
+                            : <div>
+                                <p>There is currently no active learning standard set.</p>
+                                <p>When your classroom manager selects one, it will appear here.</p>
+                            </div>
                     }
                 </ul>
                 {error && <div style={{color: 'red'}}>{error}</div>}
-                <div id='launcher' className='flex flex-column' onClick={() => handleLaunchActivity(setError)}>
-                    <i className="fa fa-rocket" aria-hidden="true"/>
-                    Launch Activity
-                </div>
+                {
+                    learningStandard.days ?
+                        <div id='launcher' className='flex flex-column' onClick={() => handleLaunchActivity(setError)}>
+                            <i className="fa fa-rocket" aria-hidden="true"/>
+                            Launch Activity
+                        </div>
+                        : null
+                }
             </div>
         </div>
     )

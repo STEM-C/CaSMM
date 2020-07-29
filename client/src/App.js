@@ -30,7 +30,7 @@ const App = () => {
                 <Route path={"/workspace"} render={() => <Workspace history={history} handleLogout={handleLogout}/>}/>
                 <Route path={"/sandbox"} render={() => <Sandbox history={history}/>} />
                 <PrivateRoute exact path={"/day"} render={() => <Day history={history} handleLogout={handleLogout}/> } />
-                <PrivateRoute exact path={"/classroom/:id"} render={() => <Classroom history={history} handleLogout={handleLogout}/> } />
+                <PrivateRoute path={"/classroom/:id"} render={() => <Classroom history={history} handleLogout={handleLogout}/> } />
                 <Route component={NotFound}/>
             </Switch>
         </div>

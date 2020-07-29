@@ -16,7 +16,7 @@ module.exports = {
                 '/workspace',
                 '/sandbox',
                 '/day',
-                '/classroom/:id'
+                '/classroom*'
             ]
         },
         // logger: {

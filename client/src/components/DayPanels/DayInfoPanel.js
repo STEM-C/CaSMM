@@ -9,10 +9,6 @@ import PlaceHolderImg3 from "../../assets/maker.png";
 export default function DayInfoPanel(props) {
     const {day} = props;
 
-    useEffect(() => {
-        console.log(day)
-    }, [day])
-
     return(
         <div id='horizontal-container' className="flex flex-column">
             <div id="top-container" className="flex flex-column vertical-container">
@@ -27,7 +23,7 @@ export default function DayInfoPanel(props) {
                 <div id="section-header">
                     Learn about the activity...
                 </div>
-                <p id="section-text">{day.objectives}</p>
+                <p id="section-text">{/* TODO: Add day info */}</p>
                 <div id="secondary-section-header">
                     See the different parts of the activity...
                 </div>
