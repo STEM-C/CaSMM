@@ -1,33 +1,33 @@
 import React, {useState, useEffect} from 'react'
 import {getToken} from "../../Utils/AuthRequests"
-import {getActivities} from "../../Utils/requests"
+import {getActivities, getStudentClassroom} from "../../Utils/requests"
 import './Student.less'
 
 function Student(props) {
-    const [activityList, setActivityList] = useState([]);
+    const [learningStandard, setLearningStandard] = useState([]);
     const [error, setError] = useState(null);
-    const {selectedActivity, setSelectedActivity} = props;
+    const [selectedDay, setSelectedDay] = useState({});
 
     useEffect(() => {
-        const jwt = getToken()
-        getActivities(jwt).then(activity => {
-            setActivityList(activity)
-        })
+        const fetchData = async () => {
+            const classroom = await getStudentClassroom(getToken());
+            setLearningStandard(classroom.learning_standard)
+        };
+        fetchData()
+    }, []);
 
-    }, [])
-
-    const handleSelection = (activity) => {
-        setSelectedActivity(activity);
+    const handleSelection = (day) => {
+        setSelectedDay(day);
+        localStorage.setItem("my-day", JSON.stringify(day));
         setError(null);
     };
 
     const handleLaunchActivity = (setError) => {
-        if(selectedActivity.id) {
+        const loadedDay = localStorage.getItem("my-day");
+        if (selectedDay.id && loadedDay) {
             props.history.push("/workspace")
-        }
-        else {
-            setError('Please select an activity.')
-            console.log('asldfkasldkfj')
+        } else {
+            setError('Please select a day.')
         }
     };
 
@@ -35,25 +35,27 @@ function Student(props) {
         <div className='container flex justify-center'>
             <div id='activity-container'>
                 <div id='header'>
-                    <h1>Select your Activity</h1>
+                    <h1>Select your Day</h1>
                 </div>
                 <ul>
                     {
-                        activityList.map(activity =>
-                            <div key={activity.id}
-                                 id={selectedActivity.id !== activity.id ? 'list-item-wrapper' : 'selected-activity'}
-                                 onClick={() => handleSelection(activity)}>
-                                <li>
-                                    {activity.name}
-                                </li>
-                            </div>
-                        )
+                        learningStandard.days ?
+                            learningStandard.days.map(day =>
+                                <div key={day.id}
+                                     id={selectedDay.id !== day.id ? 'list-item-wrapper' : 'selected-activity'}
+                                     onClick={() => handleSelection(day)}>
+                                    <li>
+                                        {`${learningStandard.name}: Day ${day.number}`}
+                                    </li>
+                                </div>
+                            )
+                            : null
                     }
                 </ul>
-                {error && <div style={{ color: 'red' }}>{error}</div>}
+                {error && <div style={{color: 'red'}}>{error}</div>}
                 <div id='launcher' className='flex flex-column' onClick={() => handleLaunchActivity(setError)}>
-                <i className="fa fa-rocket" aria-hidden="true"/>
-                Launch Activity
+                    <i className="fa fa-rocket" aria-hidden="true"/>
+                    Launch Activity
                 </div>
             </div>
         </div>

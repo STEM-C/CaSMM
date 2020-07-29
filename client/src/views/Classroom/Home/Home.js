@@ -30,7 +30,7 @@ export default function Home(props) {
 
     const handleViewDay = day => {
         localStorage.setItem("my-day", JSON.stringify(day));
-        history.push('/activity')
+        history.push('/day')
     };
 
     return (

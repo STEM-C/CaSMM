@@ -1,13 +1,17 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import Logo from "../../assets/casmm_logo.png";
-import './ActivityPanels.less'
+import './DayPanels.less'
 import {Carousel} from "antd";
 import PlaceHolderImg1 from "../../assets/science.png";
 import PlaceHolderImg2 from "../../assets/arduino.png";
 import PlaceHolderImg3 from "../../assets/maker.png";
 
-export default function ActivityInfoPanel(props) {
+export default function DayInfoPanel(props) {
     const {day} = props;
+
+    useEffect(() => {
+        console.log(day)
+    }, [day])
 
     return(
         <div id='horizontal-container' className="flex flex-column">
@@ -23,7 +27,7 @@ export default function ActivityInfoPanel(props) {
                 <div id="section-header">
                     Learn about the activity...
                 </div>
-                <p id="section-text">{/* day objectives here */}</p>
+                <p id="section-text">{day.objectives}</p>
                 <div id="secondary-section-header">
                     See the different parts of the activity...
                 </div>

@@ -77,7 +77,7 @@ export default function LearningStandardSelect(props) {
 
     const handleViewDay = day => {
         localStorage.setItem("my-day", JSON.stringify(day));
-        history.push('/activity');
+        history.push('/day');
     };
 
     const handleBack = () => {

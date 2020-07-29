@@ -1,6 +1,6 @@
 import React, {useEffect, useRef, useState} from 'react';
 import {Link} from "react-router-dom";
-import './ActivityPanels.less'
+import './DayPanels.less'
 import {compileArduinoCode, getArduino, getJS, getXml, setLocalActivity} from "./helpers";
 
 export default function BlocklyCanvasPanel(props) {
@@ -8,7 +8,7 @@ export default function BlocklyCanvasPanel(props) {
     const [hoverJS, setHoverJS] = useState(false);
     const [hoverArduino, setHoverArduino] = useState(false);
     const [hoverCompile, setHoverCompile] = useState(false);
-    const {day, activityType, homePath, handleGoBack} = props;
+    const {day, dayType, homePath, handleGoBack} = props;
 
 
     let workspaceRef = useRef(null);
@@ -29,14 +29,14 @@ export default function BlocklyCanvasPanel(props) {
         // once the day state is set, set the workspace
         if (!workspaceRef.current && day && Object.keys(day).length !== 0) {
             setWorkspace();
-            workspaceRef.current.addChangeListener(() => setLocalActivity(workspaceRef.current, activityType));
+            workspaceRef.current.addChangeListener(() => setLocalActivity(workspaceRef.current, dayType));
 
             if (day.template) {
                 let xml = window.Blockly.Xml.textToDom(day.template);
                 window.Blockly.Xml.domToWorkspace(xml, workspaceRef.current)
             }
         }
-    }, [day, activityType]);
+    }, [day, dayType]);
 
     return (
         <div id='horizontal-container' className="flex flex-column">
