@@ -22,8 +22,12 @@ export default function Home(props) {
                 setGradeId(classroom.grade.id);
                 classroom.selections.forEach(async selection => {
                     if (selection.current) {
-                        const ls = await getLearningStandard(selection.learning_standard, getToken());
-                        setActiveLearningStandard(ls)
+                        const res = await getLearningStandard(selection.learning_standard, getToken());
+                        if(res.data) setActiveLearningStandard(res);
+                        else {
+                            const err = res.err ? res.err : "error";
+                            console.log(err)
+                        }
                     }
                 })
             } else {

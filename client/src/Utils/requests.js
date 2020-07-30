@@ -5,19 +5,20 @@ const GET = 'GET';
 const PUT = 'PUT';
 const POST = 'POST';
 
-const makeRequest = async (method, path, config, error) => {
-    let data = null;
+// all request functions should utilize makeRequest and return an obj with structure {data, err}
+const makeRequest = async (method, path, data, config, error) => {
+    let res = null;
     let err = null;
     try {
         switch (method) {
             case GET:
-                data = (await axios.get(path, config)).data;
+                res = (await axios.get(path, config)).data;
                 break;
             case POST:
-                data = (await axios.post(path, config)).data;
+                res = (await axios.post(path, data, config)).data;
                 break;
             case PUT:
-                data = (await axios.put(path, config)).data;
+                res = (await axios.put(path, data, config)).data;
                 break;
             default:
                 throw Error
@@ -26,16 +27,21 @@ const makeRequest = async (method, path, config, error) => {
         err = error ? error : "An error occurred."
     }
 
-    return {data: data, err: err}
+    return {data: res, err: err}
 };
 
 export const getDayToolboxAll = async () => (
-    makeRequest(GET, `${cms}/sandbox/toolbox`, null, "Could not retrieve toolbox.")
+    makeRequest(GET,
+        `${cms}/sandbox/toolbox`,
+        null,
+        null,
+        "Could not retrieve toolbox.")
 );
 
 export const getDayToolbox = async (id, jwt) => (
     makeRequest(GET,
         `${cms}/days/toolbox/${id}`,
+        null,
         {
             headers: {
                 Authorization:
@@ -48,6 +54,7 @@ export const getDayToolbox = async (id, jwt) => (
 export const getMentor = async (jwt) => (
     makeRequest(GET,
         `${cms}/classroom-managers/me`,
+        null,
         {
             headers: {
                 Authorization:
@@ -60,77 +67,123 @@ export const getMentor = async (jwt) => (
 export const getClassroom = async (id, jwt) => (
     makeRequest(GET,
         `${cms}/classrooms/${id}`,
+        null,
         {
             headers: {
                 'Authorization':
                     `Bearer ${jwt}`
             }
         },
-        "The classroom could not be retrieved")
+        "The classroom information could not be retrieved")
 );
 
-export const getStudentClassroom = async (jwt) => (await axios.get(`${cms}/classrooms/student`, {
-    headers: {
-        'Authorization':
-            `Bearer ${jwt}`
-    }
-})).data
+export const getStudentClassroom = async (jwt) => (
+    makeRequest(GET,
+        `${cms}/classrooms/student`,
+        null,
+        {
+            headers: {
+                'Authorization':
+                    `Bearer ${jwt}`
+            }
+        },
+        "The classroom information could not be retrieved")
+);
 
 export const getClassrooms = async (ids, jwt) => (Promise.all(ids.map(async id => (await getClassroom(id, jwt)).data)))
 
-export const getStudents = async (code) => (await axios.get(`${cms}/classrooms/join/${code}`)).data
+export const getStudents = async (code) => (
+    makeRequest(GET,
+        `${cms}/classrooms/join/${code}`,
+        null,
+        null,
+        "Student info could not be retrieved.")
+);
 
-export const postJoin = async (code, ids) => (await axios.post(`${cms}/classrooms/join/${code}`, {
-        "students": ids,
-    }
-)).data
+export const postJoin = async (code, ids) => (
+    makeRequest(POST,
+        `${cms}/classrooms/join/${code}`,
+        {
+            "students": ids,
+        },
+        null,
+        "Login failed.")
+);
 
-export const compileCode = async (body) => (await axios.post(`${compile}/compile`, body)).data
+export const compileCode = async (body) => (
+    makeRequest(POST,
+        `${compile}/compile`,
+        body,
+        null,
+        "Compilation failed.")
+);
 
-export const setEnrollmentStatus = async (id, enrolled, jwt) => (await axios.put(`${cms}/students/enrolled/${id}`,
-    {
-        "enrolled": enrolled
-    },
-    {
-        headers: {
-            'Authorization':
-                `Bearer ${jwt}`
-        }
-    }
-)).data
+export const setEnrollmentStatus = async (id, enrolled, jwt) => (
+    makeRequest(PUT,
+        `${cms}/students/enrolled/${id}`,
+        {
+            "enrolled": enrolled
+        },
+        {
+            headers: {
+                'Authorization':
+                    `Bearer ${jwt}`
+            }
+        },
+        "Failed to change enrollment status.")
+);
 
-export const updateStudent = async (id, student, jwt) => (await axios.put(`${cms}/students/${id}`, student,
-    {
-        headers: {
-            'Authorization':
-                `Bearer ${jwt}`
-        }
-    }
-)).data
+export const updateStudent = async (id, student, jwt) => (
+    makeRequest(PUT,
+        `${cms}/students/${id}`,
+        student,
+        {
+            headers: {
+                'Authorization':
+                    `Bearer ${jwt}`
+            }
+        },
+        "Failed to update student.")
+);
 
-export const getUnits = async (id, jwt) => (await axios.get(`${cms}/units?grade=${id}`, {
-    headers: {
-        'Authorization':
-            `Bearer ${jwt}`
-    }
-})).data
+export const getUnits = async (id, jwt) => (
+    makeRequest(GET,
+        `${cms}/units?grade=${id}`,
+        null,
+        {
+            headers: {
+                'Authorization':
+                    `Bearer ${jwt}`
+            }
+        },
+        "Failed to retrieve units.")
+);
 
-export const getLearningStandard = async (id, jwt) => (await axios.get(`${cms}/learning-standards/${id}`, {
-    headers: {
-        'Authorization':
-            `Bearer ${jwt}`
-    }
-})).data
+export const getLearningStandard = async (id, jwt) => (
+    makeRequest(GET,
+        `${cms}/learning-standards/${id}`,
+        null,
+        {
+            headers: {
+                'Authorization':
+                    `Bearer ${jwt}`
+            }
+        },
+        "Failed to retrieve learning standard.")
+);
 
-export const setSelection = async (classroom, learningStandard, jwt) => (await axios.post(`${cms}/selections/`,
-    {
-        classroom: classroom,
-        learning_standard: learningStandard
-    },
-    {
-        headers: {
-            'Authorization':
-                `Bearer ${jwt}`
-        }
-    }
-)).data
+export const setSelection = async (classroom, learningStandard, jwt) => (
+    makeRequest(POST,
+        `${cms}/selections/`,
+        {
+            classroom: classroom,
+            learning_standard: learningStandard
+        },
+        {
+            headers: {
+                'Authorization':
+                    `Bearer ${jwt}`
+            }
+        },
+        "Failed to set active learning standard.")
+);

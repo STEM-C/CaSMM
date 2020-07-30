@@ -41,21 +41,27 @@ export default function Roster(props) {
     }, [classroomId]);
 
     const onEnrollToggle = async (id, toggled) => {
-        const updatedStudent = await setEnrollmentStatus(id, toggled, getToken());
-        let newStudentData = [...studentData];
-        const index = studentData.findIndex(function (student) {
-            return student.key === id
-        });
-        newStudentData[index] = {
-            key: updatedStudent.id,
-            name: updatedStudent.name,
-            character: updatedStudent.character,
-            enrolled: {
-                id: updatedStudent.id,
-                enrolled: updatedStudent.enrolled
-            }
-        };
-        setStudentData(newStudentData)
+        const res = await setEnrollmentStatus(id, toggled, getToken());
+        if (res.data) {
+            const updatedStudent = res.data;
+            let newStudentData = [...studentData];
+            const index = studentData.findIndex(function (student) {
+                return student.key === id
+            });
+            newStudentData[index] = {
+                key: updatedStudent.id,
+                name: updatedStudent.name,
+                character: updatedStudent.character,
+                enrolled: {
+                    id: updatedStudent.id,
+                    enrolled: updatedStudent.enrolled
+                }
+            };
+            setStudentData(newStudentData)
+        } else {
+            const err = res.err ? res.err : "error";
+            console.log(err)
+        }
     };
 
     const isEditing = record => record.key === editingKey;
@@ -96,7 +102,11 @@ export default function Roster(props) {
             let student = classroom.students.find(student => student.id === key);
             for (let attribute in row) student[attribute] = row[attribute]
             if (student) {
-                updateStudent(student.id, student, getToken())
+                const res = await updateStudent(student.id, student, getToken());
+                if(res.err){
+                    const err = res.err ? res.err : "error";
+                    console.log(err)
+                }
             }
         } catch (errInfo) {
             console.log('Validate Failed:', errInfo);

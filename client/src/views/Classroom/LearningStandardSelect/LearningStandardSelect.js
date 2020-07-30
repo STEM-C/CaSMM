@@ -15,22 +15,33 @@ export default function LearningStandardSelect(props) {
 
     useEffect(() => {
         async function fetchData() {
-            const u = await getUnits(gradeId, getToken());
-            setUnits(u);
-            setVisibleStandardsByUnit(u);
-            const options = u.map(unitData => {
-                return {id: unitData.id, number: unitData.number, name: unitData.name}
-            });
-            setPlainOptions(options);
-            setCheckedList(options)
+            const res = await getUnits(gradeId, getToken());
+            if (res.data) {
+                const u = res.data;
+                setUnits(u);
+                setVisibleStandardsByUnit(u);
+                const options = u.map(unitData => {
+                    return {id: unitData.id, number: unitData.number, name: unitData.name}
+                });
+                setPlainOptions(options);
+                setCheckedList(options)
+            } else {
+                const err = res.err ? res.err : "error";
+                console.log(err)
+            }
 
-        };
-        if(gradeId) fetchData()
+        }
+        if (gradeId) fetchData()
     }, [setVisibleStandardsByUnit, gradeId]);
 
     const getSelectedLearningStandard = async standard => {
-        const newStandard = await getLearningStandard(standard.id, getToken());
-        setSelected(newStandard)
+        const res = await getLearningStandard(standard.id, getToken());
+        if (res.data) {
+            setSelected(res.data)
+        } else {
+            const err = res.err ? res.err : "error";
+            console.log(err)
+        }
     };
 
     const getFinishedWords = word => {

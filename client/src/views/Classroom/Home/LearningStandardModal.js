@@ -14,9 +14,14 @@ export default function LearningStandardModal(props) {
         const fetchData = async () => {
             if (viewing) {
                 setVisible(true);
-                const ls = await getLearningStandard(viewing, getToken());
-                setSelected(ls);
-                setActivePanel('panel-2')
+                const res = await getLearningStandard(viewing, getToken());
+                if (res.data) {
+                    setSelected(res.data);
+                    setActivePanel('panel-2')
+                } else {
+                    const err = res.err ? res.err : "error";
+                    console.log(err)
+                }
             }
         };
         fetchData()
@@ -32,11 +37,16 @@ export default function LearningStandardModal(props) {
         setVisible(false)
     };
 
-    const handleOk = () => {
+    const handleOk = async () => {
         history.push('#home');
-        setSelection(classroomId, selected.id, getToken());
-        setActiveLearningStandard(selected);
-        setVisible(false)
+        const res = await setSelection(classroomId, selected.id, getToken());
+        if(res.err){
+            const err = res.err ? res.err : "error";
+            console.log(err)
+        } else {
+            setActiveLearningStandard(selected);
+            setVisible(false)
+        }
     };
 
     const handleNext = () => {

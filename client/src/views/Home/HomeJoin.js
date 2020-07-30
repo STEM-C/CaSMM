@@ -11,14 +11,16 @@ export default function HomeJoin(props) {
         setError(null);
         setLoading(true);
 
-        getStudents(joinCode).then(students => {
-            setLoading(false);
-            localStorage.setItem('join-code', joinCode);
-            props.history.push('/login');
-        }).catch(() => {
-            setLoading(false);
-            setError("Please input a valid join code")
-        });
+        getStudents(joinCode).then(res => {
+            if(res.data){
+                setLoading(false);
+                localStorage.setItem('join-code', joinCode);
+                props.history.push('/login');
+            } else {
+                setLoading(false);
+                setError("Please input a valid join code.")
+            }
+        })
     };
 
     return(

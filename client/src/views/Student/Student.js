@@ -11,9 +11,14 @@ function Student(props) {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const classroom = await getStudentClassroom(getToken());
-                if (classroom.learning_standard) {
-                    setLearningStandard(classroom.learning_standard)
+                const res = await getStudentClassroom(getToken());
+                if (res.data) {
+                    if(res.data.learning_standard){
+                        setLearningStandard(res.learning_standard)
+                    }
+                } else {
+                    const err = res.err ? res.err : "error";
+                    console.log(err)
                 }
             } catch {}
         };
