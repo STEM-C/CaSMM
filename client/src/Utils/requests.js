@@ -1,17 +1,9 @@
 import {cms, compile} from './hosts'
 import axios from 'axios'
 
+export const getDayToolboxAll = async () => (await axios.get(`${cms}/sandbox/toolbox`)).data
 
-export const getTopics = async (jwt) => (await axios.get(`${cms}/topics`, {
-    headers: {
-        Authorization:
-            `Bearer ${jwt}`
-    }
-})).data
-
-export const getActivityToolboxAll = async () => (await axios.get(`${cms}/sandbox/toolbox`)).data
-
-export const getActivityToolbox = async (id, jwt) => (await axios.get(`${cms}/activities/toolbox/${id}`, {
+export const getDayToolbox = async (id, jwt) => (await axios.get(`${cms}/days/toolbox/${id}`, {
     headers: {
         Authorization:
             `Bearer ${jwt}`
@@ -32,14 +24,14 @@ export const getClassroom = async (id, jwt) => (await axios.get(`${cms}/classroo
     }
 })).data
 
-export const getClassrooms = async (ids, jwt) => (Promise.all(ids.map(id => getClassroom(id, jwt))))
-
-export const getActivities = async (jwt) => (await axios.get(`${cms}/activities`, {
+export const getStudentClassroom = async (jwt) => (await axios.get(`${cms}/classrooms/student`, {
     headers: {
         'Authorization':
             `Bearer ${jwt}`
     }
 })).data
+
+export const getClassrooms = async (ids, jwt) => (Promise.all(ids.map(id => getClassroom(id, jwt))))
 
 export const getStudents = async (code) => (await axios.get(`${cms}/classrooms/join/${code}`)).data
 
@@ -49,15 +41,6 @@ export const postJoin = async (code, ids) => (await axios.post(`${cms}/classroom
 )).data
 
 export const compileCode = async (body) => (await axios.post(`${compile}/compile`, body)).data
-
-export const updateSession = async (id, session, jwt) => (await axios.put(`${cms}/sessions/${id}`, session,
-    {
-        headers: {
-            'Authorization':
-                `Bearer ${jwt}`
-        }
-    }
-)).data
 
 export const setEnrollmentStatus = async (id, enrolled, jwt) => (await axios.put(`${cms}/students/enrolled/${id}`,
     {
@@ -72,6 +55,33 @@ export const setEnrollmentStatus = async (id, enrolled, jwt) => (await axios.put
 )).data
 
 export const updateStudent = async (id, student, jwt) => (await axios.put(`${cms}/students/${id}`, student,
+    {
+        headers: {
+            'Authorization':
+                `Bearer ${jwt}`
+        }
+    }
+)).data
+
+export const getUnits = async (id, jwt) => (await axios.get(`${cms}/units?grade=${id}`, {
+    headers: {
+        'Authorization':
+            `Bearer ${jwt}`
+    }
+})).data
+
+export const getLearningStandard = async (id, jwt) => (await axios.get(`${cms}/learning-standards/${id}`, {
+    headers: {
+        'Authorization':
+            `Bearer ${jwt}`
+    }
+})).data
+
+export const setSelection = async (classroom, learningStandard, jwt) => (await axios.post(`${cms}/selections/`,
+    {
+        classroom: classroom,
+        learning_standard: learningStandard
+    },
     {
         headers: {
             'Authorization':

@@ -1,11 +1,12 @@
 import React, {useEffect, useState} from "react"
-import {getDayToolbox} from "../../Utils/requests.js"
-import {getToken} from "../../Utils/AuthRequests"
 import BlocklyCanvasPanel from "../../components/DayPanels/BlocklyCanvasPanel";
 import DayInfoPanel from "../../components/DayPanels/DayInfoPanel";
+import NavBar from "../../components/NavBar/NavBar";
+import {getDayToolbox} from "../../Utils/requests";
+import {getToken} from "../../Utils/AuthRequests";
 
 
-export default function Workspace(props) {
+export default function Day(props) {
     const [day, setDay] = useState({});
     const {handleLogout, history} = props;
 
@@ -25,14 +26,21 @@ export default function Workspace(props) {
             }
 
         } else {
-            history.goBack()
+            props.history.goBack()
         }
     }, [history]);
 
+    const handleGoBack = () => {
+        history.goBack()
+    };
+
     return (
-        <div className="container flex flex-row">
-            <DayInfoPanel day={day}/>
-            <BlocklyCanvasPanel day={day} dayType={"my-day"} homePath={'/student'} handleLogout={handleLogout}/>
+        <div className="container nav-padding">
+            <NavBar handleLogout={handleLogout} history={history}/>
+            <div className="flex flex-row">
+                <DayInfoPanel day={day}/>
+                <BlocklyCanvasPanel day={day} dayType={"my-day"} handleGoBack={handleGoBack}/>
+            </div>
         </div>
     );
 
