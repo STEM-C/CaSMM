@@ -16,7 +16,6 @@ export default function TeacherLogin(props) {
             setLoading(false);
             props.history.push('/dashboard');
         }).catch(error => {
-            console.log(error);
             setLoading(false);
             message.error('Login failed. Please input a valid email and password.');
         });

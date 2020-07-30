@@ -34,8 +34,7 @@ export default function Roster(props) {
                 });
                 setStudentData(data);
             } else {
-                const err = res.err ? res.err : "An error occurred.";
-                message.error(err);
+                message.error(res.err);
             }
         });
     }, [classroomId]);
@@ -60,8 +59,7 @@ export default function Roster(props) {
             setStudentData(newStudentData);
             message.success(`Successfully updated ${updatedStudent.name}'s enrollment status.`);
         } else {
-            const err = res.err ? res.err : "An error occurred.";
-            message.error(err);
+            message.error(res.err);
         }
     };
 
@@ -107,8 +105,7 @@ export default function Roster(props) {
                 if (res.data) {
                     message.success(`Successfully updated ${res.data.name}'s information.`);
                 } else {
-                    const err = res.err ? res.err : "An error occurred.";
-                    message.error(err);
+                    message.error(res.err);
                 }
             }
         } catch (errInfo) {

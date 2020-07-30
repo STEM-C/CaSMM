@@ -26,8 +26,7 @@ export default function LearningStandardSelect(props) {
                 setPlainOptions(options);
                 setCheckedList(options)
             } else {
-                const err = res.err ? res.err : "An error occurred.";
-                message.error(err);
+                message.error(res.err);
             }
 
         }
@@ -39,8 +38,7 @@ export default function LearningStandardSelect(props) {
         if (res.data) {
             setSelected(res.data)
         } else {
-            const err = res.err ? res.err : "An error occurred.";
-            message.error(err);
+            message.error(res.err);
         }
     };
 

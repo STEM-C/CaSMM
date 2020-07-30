@@ -66,7 +66,6 @@ export const compileArduinoCode = async (workspaceRef) => {
             }
         })
     } else {
-        const err = response.err ? response.err : "An error occurred.";
-        message.error(err);
+        message.error(response.err);
     }
 };

@@ -18,8 +18,7 @@ function Student(props) {
                         setLearningStandard(res.data.learning_standard)
                     }
                 } else {
-                    const err = res.err ? res.err : "An error occurred.";
-                    message.error(err);
+                    message.error(res.err);
                 }
             } catch {}
         };

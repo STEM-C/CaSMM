@@ -24,8 +24,7 @@ export default function Workspace(props) {
                         localStorage.setItem("my-day", JSON.stringify(loadedDay));
                         setDay(loadedDay)
                     } else {
-                        const err = res.err ? res.err : "An error occurred.";
-                        message.error(err);
+                        message.error(res.err);
                     }
                 })
             }

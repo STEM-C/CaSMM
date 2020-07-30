@@ -19,8 +19,7 @@ export default function LearningStandardModal(props) {
                     setSelected(res.data);
                     setActivePanel('panel-2')
                 } else {
-                    const err = res.err ? res.err : "An error occurred.";
-                    message.error(err);
+                    message.error(res.err);
                 }
             }
         };
@@ -41,8 +40,7 @@ export default function LearningStandardModal(props) {
         history.push('#home');
         const res = await setSelection(classroomId, selected.id, getToken());
         if(res.err){
-            const err = res.err ? res.err : "An error occurred.";
-            message.error(err);
+            message.error(res.err);
         } else {
             setActiveLearningStandard(selected);
             message.success("Successfully updated active learning standard.")

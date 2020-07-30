@@ -23,8 +23,7 @@ export default function Dashboard(props) {
                     setClassrooms(classrooms)
                 });
             } else {
-                const err = res.err ? res.err : "An error occurred.";
-                message.error(err);
+                message.error(res.err);
             }
         })
     }, []);

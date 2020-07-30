@@ -26,14 +26,12 @@ export default function Home(props) {
                         const res = await getLearningStandard(selection.learning_standard, getToken());
                         if(res.data) setActiveLearningStandard(res.data);
                         else {
-                            const err = res.err ? res.err : "An error occurred.";
-                            message.error(err);
+                            message.error(res.err);
                         }
                     }
                 })
             } else {
-                const err = res.err ? res.err : "An error occurred.";
-                message.error(err);
+                message.error(res.err);
             }
         };
         fetchData();

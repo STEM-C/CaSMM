@@ -24,8 +24,7 @@ export default function Classroom(props) {
             if(res.data) {
                 setClassroom(res.data);
             } else {
-                const err = res.err ? res.err : "An error occurred.";
-                message.error(err);
+                message.error(res.err);
             }
         });
     }, [classroomId]);

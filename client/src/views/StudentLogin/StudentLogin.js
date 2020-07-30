@@ -22,8 +22,7 @@ export default function StudentLogin(props) {
                 setStudentList(res.data);
                 setAnimalList(['Lion', 'Dog', 'Frog', 'Fish', 'Cow']);
             } else {
-                const err = res.err ? res.err : "An error occurred.";
-                message.error(err);
+                message.error(res.err);
             }
         })
     }, [joinCode]);
@@ -35,8 +34,7 @@ export default function StudentLogin(props) {
             setUserSession(res.data.jwt, JSON.stringify(res.data.students));
             props.history.push('/student')
         } else {
-            const err = res.err ? res.err : "An error occurred.";
-            message.error(err);
+            message.error(res.err);
         }
     };
 
