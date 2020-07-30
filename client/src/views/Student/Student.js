@@ -15,7 +15,7 @@ function Student(props) {
                 const res = await getStudentClassroom(getToken());
                 if (res.data) {
                     if(res.data.learning_standard){
-                        setLearningStandard(res.learning_standard)
+                        setLearningStandard(res.data.learning_standard)
                     }
                 } else {
                     const err = res.err ? res.err : "An error occurred.";

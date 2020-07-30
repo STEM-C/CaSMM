@@ -35,7 +35,7 @@ export const getDayToolboxAll = async () => (
         `${cms}/sandbox/toolbox`,
         null,
         null,
-        "Could not retrieve toolbox.")
+        "Toolbox could not be retrieved.")
 );
 
 export const getDayToolbox = async (id, jwt) => (
@@ -48,7 +48,7 @@ export const getDayToolbox = async (id, jwt) => (
                     `Bearer ${jwt}`
             }
         },
-        "Could not retrieve toolbox.")
+        "Toolbox could not be retrieved.")
 );
 
 export const getMentor = async (jwt) => (
@@ -61,7 +61,7 @@ export const getMentor = async (jwt) => (
                     `Bearer ${jwt}`
             }
         },
-        "Could not retrieve your classroom manager information.")
+        "Your classroom manager information could not be retrieved.")
 );
 
 export const getClassroom = async (id, jwt) => (
@@ -74,7 +74,7 @@ export const getClassroom = async (id, jwt) => (
                     `Bearer ${jwt}`
             }
         },
-        "The classroom information could not be retrieved")
+        "Classroom information could not be retrieved")
 );
 
 export const getStudentClassroom = async (jwt) => (
@@ -87,7 +87,7 @@ export const getStudentClassroom = async (jwt) => (
                     `Bearer ${jwt}`
             }
         },
-        "The classroom information could not be retrieved")
+        "Classroom information could not be retrieved")
 );
 
 export const getClassrooms = async (ids, jwt) => (Promise.all(ids.map(async id => (await getClassroom(id, jwt)).data)))

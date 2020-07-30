@@ -32,7 +32,7 @@ export default function StudentLogin(props) {
         let ids = studentIds.slice(0, numForms);
         const res = await postJoin(joinCode, ids);
         if (res.data) {
-            setUserSession(res.jwt, JSON.stringify(res.students));
+            setUserSession(res.data.jwt, JSON.stringify(res.data.students));
             props.history.push('/student')
         } else {
             const err = res.err ? res.err : "An error occurred.";
