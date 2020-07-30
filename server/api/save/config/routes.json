@@ -18,6 +18,14 @@
     },
     {
       "method": "GET",
+      "path": "/saves/day/:day",
+      "handler": "save.findByDay",
+      "config": {
+        "policies": ["global::isStudent"]
+      }
+    },
+    {
+      "method": "GET",
       "path": "/saves/:id",
       "handler": "save.findOne",
       "config": {
