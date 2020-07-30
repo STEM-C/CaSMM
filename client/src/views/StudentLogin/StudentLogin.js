@@ -4,6 +4,7 @@ import Logo from "../../assets/casmm_logo.png"
 import {getStudents, postJoin} from "../../Utils/requests";
 import StudentLoginForm from "./StudentLoginForm";
 import {setUserSession} from "../../Utils/AuthRequests";
+import {message} from "antd";
 
 
 export default function StudentLogin(props) {
@@ -21,8 +22,8 @@ export default function StudentLogin(props) {
                 setStudentList(res.data);
                 setAnimalList(['Lion', 'Dog', 'Frog', 'Fish', 'Cow']);
             } else {
-                const err = res.err ? res.err : "error";
-                console.log(err)
+                const err = res.err ? res.err : "An error occurred.";
+                message.error(err);
             }
         })
     }, [joinCode]);
@@ -34,8 +35,8 @@ export default function StudentLogin(props) {
             setUserSession(res.jwt, JSON.stringify(res.students));
             props.history.push('/student')
         } else {
-            const err = res.err ? res.err : "error";
-            console.log(err)
+            const err = res.err ? res.err : "An error occurred.";
+            message.error(err);
         }
     };
 

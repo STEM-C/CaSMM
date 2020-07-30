@@ -1,4 +1,4 @@
-import {Modal, Button} from 'antd';
+import {Modal, Button, message} from 'antd';
 import React, {useEffect, useState} from "react";
 import LearningStandardSelect from "../LearningStandardSelect/LearningStandardSelect";
 import {getLearningStandard, setSelection} from "../../../Utils/requests";
@@ -19,8 +19,8 @@ export default function LearningStandardModal(props) {
                     setSelected(res.data);
                     setActivePanel('panel-2')
                 } else {
-                    const err = res.err ? res.err : "error";
-                    console.log(err)
+                    const err = res.err ? res.err : "An error occurred.";
+                    message.error(err);
                 }
             }
         };
@@ -41,10 +41,11 @@ export default function LearningStandardModal(props) {
         history.push('#home');
         const res = await setSelection(classroomId, selected.id, getToken());
         if(res.err){
-            const err = res.err ? res.err : "error";
-            console.log(err)
+            const err = res.err ? res.err : "An error occurred.";
+            message.error(err);
         } else {
             setActiveLearningStandard(selected);
+            message.success("Successfully updated active learning standard.")
             setVisible(false)
         }
     };

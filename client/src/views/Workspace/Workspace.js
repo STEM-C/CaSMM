@@ -3,6 +3,7 @@ import {getDayToolbox} from "../../Utils/requests.js"
 import {getToken} from "../../Utils/AuthRequests"
 import BlocklyCanvasPanel from "../../components/DayPanels/BlocklyCanvasPanel";
 import DayInfoPanel from "../../components/DayPanels/DayInfoPanel";
+import {message} from "antd";
 
 
 export default function Workspace(props) {
@@ -23,8 +24,8 @@ export default function Workspace(props) {
                         localStorage.setItem("my-day", JSON.stringify(loadedDay));
                         setDay(loadedDay)
                     } else {
-                        const err = res.err ? res.err : "error";
-                        console.log(err)
+                        const err = res.err ? res.err : "An error occurred.";
+                        message.error(err);
                     }
                 })
             }

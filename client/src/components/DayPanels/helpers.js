@@ -1,4 +1,5 @@
 import {compileCode} from "../../Utils/requests";
+import {message} from "antd";
 
 const AvrboyArduino = window.AvrgirlArduino;
 
@@ -46,11 +47,11 @@ export const compileArduinoCode = async (workspaceRef) => {
     };
 
     // gets compiled hex from server
-    let response = await compileCode(body)
+    let response = await compileCode(body);
 
     if (response.data) {
         // converting base 64 to hex
-        let Hex = atob(response.hex).toString();
+        let Hex = atob(response.data.hex).toString();
 
         const avrgirl = new AvrboyArduino({
             board: "uno",
@@ -65,7 +66,7 @@ export const compileArduinoCode = async (workspaceRef) => {
             }
         })
     } else {
-        const err = response.err ? response.err : "error";
-        console.log(err)
+        const err = response.err ? response.err : "An error occurred.";
+        message.error(err);
     }
 };

@@ -2,6 +2,7 @@ import React, {useState, useEffect} from 'react'
 import {getToken} from "../../Utils/AuthRequests"
 import {getActivities, getStudentClassroom} from "../../Utils/requests"
 import './Student.less'
+import {message} from "antd";
 
 function Student(props) {
     const [learningStandard, setLearningStandard] = useState({});
@@ -17,8 +18,8 @@ function Student(props) {
                         setLearningStandard(res.learning_standard)
                     }
                 } else {
-                    const err = res.err ? res.err : "error";
-                    console.log(err)
+                    const err = res.err ? res.err : "An error occurred.";
+                    message.error(err);
                 }
             } catch {}
         };

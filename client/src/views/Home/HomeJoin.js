@@ -1,14 +1,13 @@
 import React, {useState} from 'react'
+import {message} from 'antd'
 import './Home.less'
 import { getStudents } from "../../Utils/requests";
 
 export default function HomeJoin(props) {
     const [loading, setLoading] = useState(false);
-    const [error, setError] = useState(null);
-    const [joinCode, setJoinCode] = useState('')
+    const [joinCode, setJoinCode] = useState('');
 
     const handleLogin = () => {
-        setError(null);
         setLoading(true);
 
         getStudents(joinCode).then(res => {
@@ -18,7 +17,7 @@ export default function HomeJoin(props) {
                 props.history.push('/login');
             } else {
                 setLoading(false);
-                setError("Please input a valid join code.")
+                message.error('Join failed. Please input a valid join code.');
             }
         })
     };
@@ -26,7 +25,6 @@ export default function HomeJoin(props) {
     return(
         <div id="box" onKeyPress={e => {if(e.key === 'Enter') handleLogin()}}>
             <input type="text" value={joinCode} placeholder="Join Code" onChange={e => setJoinCode(e.target.value)}/>
-            {error && <div style={{ color: 'red' }}>{error}</div>}
             <input type="button" value={loading ? 'Loading...' : 'Join'} onClick={handleLogin} disabled={loading}/>
         </div>
     )

@@ -5,7 +5,7 @@ import './Roster.less'
 import MentorSubHeader from "../../../components/MentorSubHeader/MentorSubHeader";
 import ListView from "./ListView";
 import CardView from "./CardView";
-import {Form} from "antd";
+import {Form, message} from "antd";
 
 export default function Roster(props) {
     const [form] = Form.useForm();
@@ -34,8 +34,8 @@ export default function Roster(props) {
                 });
                 setStudentData(data);
             } else {
-                const err = res.err ? res.err : "error";
-                console.log(err)
+                const err = res.err ? res.err : "An error occurred.";
+                message.error(err);
             }
         });
     }, [classroomId]);
@@ -57,10 +57,11 @@ export default function Roster(props) {
                     enrolled: updatedStudent.enrolled
                 }
             };
-            setStudentData(newStudentData)
+            setStudentData(newStudentData);
+            message.success(`Successfully updated ${updatedStudent.name}'s enrollment status.`);
         } else {
-            const err = res.err ? res.err : "error";
-            console.log(err)
+            const err = res.err ? res.err : "An error occurred.";
+            message.error(err);
         }
     };
 
@@ -103,9 +104,11 @@ export default function Roster(props) {
             for (let attribute in row) student[attribute] = row[attribute]
             if (student) {
                 const res = await updateStudent(student.id, student, getToken());
-                if(res.err){
-                    const err = res.err ? res.err : "error";
-                    console.log(err)
+                if (res.data) {
+                    message.success(`Successfully updated ${res.data.name}'s information.`);
+                } else {
+                    const err = res.err ? res.err : "An error occurred.";
+                    message.error(err);
                 }
             }
         } catch (errInfo) {

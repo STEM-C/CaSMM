@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from "react"
 import BlocklyCanvasPanel from "../../components/DayPanels/BlocklyCanvasPanel";
 import {getDayToolboxAll} from "../../Utils/requests";
+import {message} from "antd";
 
 
 export default function Sandbox() {
@@ -20,8 +21,8 @@ export default function Sandbox() {
                     localStorage.setItem("sandbox-day", JSON.stringify(loadedDay));
                     setDay(loadedDay)
                 } else {
-                    const err = res.err ? res.err : "error";
-                    console.log(err)
+                    const err = res.err ? res.err : "An error occurred.";
+                    message.error(err);
                 }
             })
         }

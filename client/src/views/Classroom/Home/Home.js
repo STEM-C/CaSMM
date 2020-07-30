@@ -5,6 +5,7 @@ import {getToken} from "../../../Utils/AuthRequests";
 import MentorSubHeader from "../../../components/MentorSubHeader/MentorSubHeader";
 import DisplayCodeModal from "./DisplayCodeModal";
 import LearningStandardModal from "./LearningStandardModal";
+import {message} from "antd";
 
 
 export default function Home(props) {
@@ -23,16 +24,16 @@ export default function Home(props) {
                 classroom.selections.forEach(async selection => {
                     if (selection.current) {
                         const res = await getLearningStandard(selection.learning_standard, getToken());
-                        if(res.data) setActiveLearningStandard(res);
+                        if(res.data) setActiveLearningStandard(res.data);
                         else {
-                            const err = res.err ? res.err : "error";
-                            console.log(err)
+                            const err = res.err ? res.err : "An error occurred.";
+                            message.error(err);
                         }
                     }
                 })
             } else {
-                const err = res.err ? res.err : "error";
-                console.log(err)
+                const err = res.err ? res.err : "An error occurred.";
+                message.error(err);
             }
         };
         fetchData();

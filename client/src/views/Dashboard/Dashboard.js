@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from "react"
 import {getMentor, getClassrooms} from "../../Utils/requests"
 import {getUser, getToken} from "../../Utils/AuthRequests";
-import {Card} from 'antd';
+import {Card, message} from 'antd';
 import './Dashboard.less'
 
 import MentorSubHeader from "../../components/MentorSubHeader/MentorSubHeader";
@@ -23,8 +23,8 @@ export default function Dashboard(props) {
                     setClassrooms(classrooms)
                 });
             } else {
-                const err = res.err ? res.err : "error";
-                console.log(err)
+                const err = res.err ? res.err : "An error occurred.";
+                message.error(err);
             }
         })
     }, []);

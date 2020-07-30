@@ -4,6 +4,7 @@ import DayInfoPanel from "../../components/DayPanels/DayInfoPanel";
 import NavBar from "../../components/NavBar/NavBar";
 import {getDayToolbox} from "../../Utils/requests";
 import {getToken} from "../../Utils/AuthRequests";
+import {message} from "antd";
 
 
 export default function Day(props) {
@@ -24,8 +25,8 @@ export default function Day(props) {
                         localStorage.setItem("my-day", JSON.stringify(loadedDay));
                         setDay(loadedDay)
                     } else {
-                        const err = res.err ? res.err : "error";
-                        console.log(err)
+                        const err = res.err ? res.err : "An error occurred.";
+                        message.error(err);
                     }
                 })
             }

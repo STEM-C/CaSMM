@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react"
-import {Tabs} from 'antd';
+import {message, Tabs} from 'antd';
 import "./Classroom.less"
 
 import NavBar from "../../components/NavBar/NavBar";
@@ -24,8 +24,8 @@ export default function Classroom(props) {
             if(res.data) {
                 setClassroom(res.data);
             } else {
-                const err = res.err ? res.err : "error";
-                console.log(err)
+                const err = res.err ? res.err : "An error occurred.";
+                message.error(err);
             }
         });
     }, [classroomId]);

@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {AutoComplete, Divider} from "antd";
+import {AutoComplete, Divider, message} from "antd";
 import './LearningStandardSelect.less'
 import {getLearningStandard, getUnits} from "../../../Utils/requests";
 import {getToken} from "../../../Utils/AuthRequests";
@@ -26,8 +26,8 @@ export default function LearningStandardSelect(props) {
                 setPlainOptions(options);
                 setCheckedList(options)
             } else {
-                const err = res.err ? res.err : "error";
-                console.log(err)
+                const err = res.err ? res.err : "An error occurred.";
+                message.error(err);
             }
 
         }
@@ -39,8 +39,8 @@ export default function LearningStandardSelect(props) {
         if (res.data) {
             setSelected(res.data)
         } else {
-            const err = res.err ? res.err : "error";
-            console.log(err)
+            const err = res.err ? res.err : "An error occurred.";
+            message.error(err);
         }
     };
 
