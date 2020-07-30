@@ -8,10 +8,10 @@ export default function Sandbox() {
     const [day, setDay] = useState(null);
 
     useEffect(() => {
-        const localDay = localStorage.getItem("sandbox-day");
+        const localDay = JSON.parse(localStorage.getItem("sandbox-day"));
 
-        if (!localDay) {
-            let loadedDay = JSON.parse(localDay);
+        if (localDay) {
+            let loadedDay = localDay;
             setDay(loadedDay)
         } else {
             getDayToolboxAll().then(res => {
