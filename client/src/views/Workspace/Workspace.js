@@ -19,7 +19,7 @@ export default function Workspace(props) {
             } else {
                 getDayToolbox(localDay.id, getToken()).then(res => {
                     if (res.data) {
-                        let loadedDay = {...localDay, toolbox: res.toolbox};
+                        let loadedDay = {...localDay, toolbox: res.data.toolbox};
 
                         localStorage.setItem("my-day", JSON.stringify(loadedDay));
                         setDay(loadedDay)

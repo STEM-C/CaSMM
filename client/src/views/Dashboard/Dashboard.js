@@ -40,7 +40,7 @@ export default function Dashboard(props) {
             <MentorSubHeader title={'Your Classrooms:'}/>
             <div id='card-container'>
                 {classrooms.map(classroom =>
-                    <Card id='class-card' title={classroom.name}>
+                    <Card key={classroom.id} id='class-card' title={classroom.name}>
                         <div id='card-content-container'>
                             <p>Join code: {classroom.code}</p>
                             <p>Number of students: {classroom.students.length}</p>

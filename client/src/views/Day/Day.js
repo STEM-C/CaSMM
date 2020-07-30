@@ -32,7 +32,7 @@ export default function Day(props) {
             }
 
         } else {
-            props.history.goBack()
+            history.goBack()
         }
     }, [history]);
 

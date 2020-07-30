@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react'
 import {getToken} from "../../Utils/AuthRequests"
-import {getActivities, getStudentClassroom} from "../../Utils/requests"
+import {getStudentClassroom} from "../../Utils/requests"
 import './Student.less'
 import {message} from "antd";
 
