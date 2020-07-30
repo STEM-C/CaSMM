@@ -32,6 +32,9 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
         env:
           HEROKU_API_KEY: ${{ secrets.HEROKU_TOKEN }}
+      - name: Get branch name
+        id: get_branch
+        run: echo ::set-output name=NAME::${GITHUB_REF#refs/heads/}
       - uses: chrnorm/deployment-action@releases/v1
         name: Create GitHub deployment
         if: success()
@@ -41,3 +44,4 @@ jobs:
           token: ${{ github.token }}
           target_url: https://${{ steps.app.outputs.app_name }}.herokuapp.com
           environment: ${{ steps.app.outputs.app_name }}
+          ref: ${{ steps.get_branch.outputs.NAME }}
