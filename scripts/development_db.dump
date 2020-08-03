@@ -503,6 +503,45 @@ ALTER SEQUENCE public.objectives_id_seq OWNED BY public.objectives.id;
 
 
 --
+-- Name: saves; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.saves (
+    id integer NOT NULL,
+    day integer,
+    student integer,
+    session integer,
+    workspace text NOT NULL,
+    created_at timestamp with time zone DEFAULT CURRENT_TIMESTAMP,
+    updated_at timestamp with time zone DEFAULT CURRENT_TIMESTAMP
+);
+
+
+ALTER TABLE public.saves OWNER TO postgres;
+
+--
+-- Name: saves_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.saves_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.saves_id_seq OWNER TO postgres;
+
+--
+-- Name: saves_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.saves_id_seq OWNED BY public.saves.id;
+
+
+--
 -- Name: schools; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -1140,6 +1179,13 @@ ALTER TABLE ONLY public.objectives ALTER COLUMN id SET DEFAULT nextval('public.o
 
 
 --
+-- Name: saves id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.saves ALTER COLUMN id SET DEFAULT nextval('public.saves_id_seq'::regclass);
+
+
+--
 -- Name: schools id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -1380,6 +1426,8 @@ COPY public.core_store (id, key, value, type, environment, tag) FROM stdin;
 40	plugin_content_manager_configuration_content_types::application::session.session	{"uid":"application::session.session","settings":{"bulkable":true,"filterable":true,"searchable":true,"pageSize":10,"mainField":"id","defaultSortBy":"id","defaultSortOrder":"ASC"},"metadatas":{"id":{"edit":{},"list":{"label":"Id","searchable":true,"sortable":true}},"classroom":{"edit":{"label":"Classroom","description":"","placeholder":"","visible":true,"editable":true,"mainField":"name"},"list":{"label":"Classroom","searchable":false,"sortable":false}},"students":{"edit":{"label":"Students","description":"","placeholder":"","visible":true,"editable":true,"mainField":"name"},"list":{"label":"Students","searchable":false,"sortable":false}},"created_at":{"edit":{"label":"Created_at","description":"","placeholder":"","visible":false,"editable":true},"list":{"label":"Created_at","searchable":true,"sortable":true}},"updated_at":{"edit":{"label":"Updated_at","description":"","placeholder":"","visible":false,"editable":true},"list":{"label":"Updated_at","searchable":true,"sortable":true}}},"layouts":{"list":["id","created_at","updated_at"],"editRelations":["classroom","students"],"edit":[]}}	object		
 41	plugin_content_manager_configuration_content_types::application::student.student	{"uid":"application::student.student","settings":{"bulkable":true,"filterable":true,"searchable":true,"pageSize":10,"mainField":"name","defaultSortBy":"name","defaultSortOrder":"ASC"},"metadatas":{"id":{"edit":{},"list":{"label":"Id","searchable":true,"sortable":true}},"name":{"edit":{"label":"Name","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"Name","searchable":true,"sortable":true}},"character":{"edit":{"label":"Character","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"Character","searchable":true,"sortable":true}},"classroom":{"edit":{"label":"Classroom","description":"","placeholder":"","visible":true,"editable":true,"mainField":"name"},"list":{"label":"Classroom","searchable":false,"sortable":false}},"sessions":{"edit":{"label":"Sessions","description":"","placeholder":"","visible":true,"editable":true,"mainField":"id"},"list":{"label":"Sessions","searchable":false,"sortable":false}},"enrolled":{"edit":{"label":"Enrolled","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"Enrolled","searchable":true,"sortable":true}},"created_at":{"edit":{"label":"Created_at","description":"","placeholder":"","visible":false,"editable":true},"list":{"label":"Created_at","searchable":true,"sortable":true}},"updated_at":{"edit":{"label":"Updated_at","description":"","placeholder":"","visible":false,"editable":true},"list":{"label":"Updated_at","searchable":true,"sortable":true}}},"layouts":{"list":["id","name","character","enrolled"],"editRelations":["classroom","sessions"],"edit":[[{"name":"name","size":6},{"name":"character","size":6}],[{"name":"enrolled","size":4}]]}}	object		
 32	plugin_content_manager_configuration_content_types::application::day.day	{"uid":"application::day.day","settings":{"bulkable":true,"filterable":true,"searchable":true,"pageSize":10,"mainField":"id","defaultSortBy":"id","defaultSortOrder":"ASC"},"metadatas":{"id":{"edit":{},"list":{"label":"Id","searchable":true,"sortable":true}},"learning_standard":{"edit":{"label":"Learning_standard","description":"","placeholder":"","visible":true,"editable":true,"mainField":"name"},"list":{"label":"Learning_standard","searchable":false,"sortable":false}},"number":{"edit":{"label":"Number","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"Number","searchable":true,"sortable":true}},"template":{"edit":{"label":"Template","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"Template","searchable":true,"sortable":true}},"objectives":{"edit":{"label":"Objectives","description":"","placeholder":"","visible":true,"editable":true,"mainField":"id"},"list":{"label":"Objectives","searchable":false,"sortable":false}},"blocks":{"edit":{"label":"Blocks","description":"","placeholder":"","visible":true,"editable":true,"mainField":"name"},"list":{"label":"Blocks","searchable":false,"sortable":false}},"created_at":{"edit":{"label":"Created_at","description":"","placeholder":"","visible":false,"editable":true},"list":{"label":"Created_at","searchable":true,"sortable":true}},"updated_at":{"edit":{"label":"Updated_at","description":"","placeholder":"","visible":false,"editable":true},"list":{"label":"Updated_at","searchable":true,"sortable":true}}},"layouts":{"list":["id","number","template","created_at"],"edit":[[{"name":"number","size":4},{"name":"template","size":6}]],"editRelations":["learning_standard","objectives","blocks"]}}	object		
+52	db_model_saves	{"day":{"model":"day"},"student":{"model":"student"},"session":{"model":"session"},"workspace":{"type":"text","required":true},"created_at":{"type":"currentTimestamp"},"updated_at":{"type":"currentTimestamp"}}	object	\N	\N
+53	plugin_content_manager_configuration_content_types::application::save.save	{"uid":"application::save.save","settings":{"bulkable":true,"filterable":true,"searchable":true,"pageSize":10,"mainField":"id","defaultSortBy":"id","defaultSortOrder":"ASC"},"metadatas":{"id":{"edit":{},"list":{"label":"Id","searchable":true,"sortable":true}},"day":{"edit":{"label":"Day","description":"","placeholder":"","visible":true,"editable":true,"mainField":"id"},"list":{"label":"Day","searchable":false,"sortable":false}},"student":{"edit":{"label":"Student","description":"","placeholder":"","visible":true,"editable":true,"mainField":"name"},"list":{"label":"Student","searchable":false,"sortable":false}},"session":{"edit":{"label":"Session","description":"","placeholder":"","visible":true,"editable":true,"mainField":"id"},"list":{"label":"Session","searchable":false,"sortable":false}},"workspace":{"edit":{"label":"Workspace","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"Workspace","searchable":true,"sortable":true}},"created_at":{"edit":{"label":"Created_at","description":"","placeholder":"","visible":false,"editable":true},"list":{"label":"Created_at","searchable":true,"sortable":true}},"updated_at":{"edit":{"label":"Updated_at","description":"","placeholder":"","visible":false,"editable":true},"list":{"label":"Updated_at","searchable":true,"sortable":true}}},"layouts":{"list":["id","workspace","created_at","updated_at"],"editRelations":["day","student","session"],"edit":[[{"name":"workspace","size":6}]]}}	object		
 \.
 
 
@@ -1462,6 +1510,14 @@ COPY public.objectives (id, day, description, objective_type, created_at, update
 4	2	Students will create a circuit and complete it by finding conductors and insulators in the classroom.	2	2020-07-24 16:57:04.842+00	2020-07-24 17:15:15.811+00
 5	3	Student can recognize the three states of matter. (ex. ice, water, water vapor), and can recognize thermal insulators and conductors in the real world.	1	2020-07-24 16:58:01.265+00	2020-07-24 17:15:26.196+00
 6	3	Student will experiment to identify thermal conductor’s and insulators.	2	2020-07-24 16:58:11.291+00	2020-07-24 17:15:26.196+00
+\.
+
+
+--
+-- Data for Name: saves; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.saves (id, day, student, session, workspace, created_at, updated_at) FROM stdin;
 \.
 
 
@@ -2077,6 +2133,27 @@ COPY public."users-permissions_permission" (id, type, controller, action, enable
 430	application	day	find	f		3
 75	application	learning-standard	findone	t		1
 133	application	selection	create	t		1
+514	application	save	count	f		1
+515	application	save	count	f		2
+516	application	save	count	f		3
+517	application	save	create	f		1
+518	application	save	create	f		2
+520	application	save	delete	f		1
+521	application	save	delete	f		2
+522	application	save	delete	f		3
+523	application	save	find	f		1
+524	application	save	find	f		2
+527	application	save	find	f		3
+525	application	save	findbyday	f		1
+526	application	save	findbyday	f		2
+529	application	save	findone	f		1
+530	application	save	findone	f		2
+531	application	save	findone	f		3
+532	application	save	update	f		1
+533	application	save	update	f		2
+534	application	save	update	f		3
+528	application	save	findbyday	t		3
+519	application	save	create	t		3
 \.
 
 
@@ -2086,8 +2163,8 @@ COPY public."users-permissions_permission" (id, type, controller, action, enable
 
 COPY public."users-permissions_role" (id, name, description, type) FROM stdin;
 2	Public	Default role given to unauthenticated user.	public
-3	Student	Default role given to a student user.	student
 1	Classroom Manager	Default role given to authenticated user.	authenticated
+3	Student	Default role given to a student user.	student
 \.
 
 
@@ -2139,7 +2216,7 @@ SELECT pg_catalog.setval('public.classrooms_teachers__teachers_classrooms_id_seq
 -- Name: core_store_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.core_store_id_seq', 51, true);
+SELECT pg_catalog.setval('public.core_store_id_seq', 53, true);
 
 
 --
@@ -2189,6 +2266,13 @@ SELECT pg_catalog.setval('public.objective_types_id_seq', 3, true);
 --
 
 SELECT pg_catalog.setval('public.objectives_id_seq', 6, true);
+
+
+--
+-- Name: saves_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.saves_id_seq', 1, false);
 
 
 --
@@ -2272,7 +2356,7 @@ SELECT pg_catalog.setval('public.upload_file_morph_id_seq', 1, false);
 -- Name: users-permissions_permission_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public."users-permissions_permission_id_seq"', 513, true);
+SELECT pg_catalog.setval('public."users-permissions_permission_id_seq"', 534, true);
 
 
 --
@@ -2415,6 +2499,14 @@ ALTER TABLE ONLY public.objective_types
 
 ALTER TABLE ONLY public.objectives
     ADD CONSTRAINT objectives_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: saves saves_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.saves
+    ADD CONSTRAINT saves_pkey PRIMARY KEY (id);
 
 
 --
