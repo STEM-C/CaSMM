@@ -33,6 +33,7 @@ module.exports = {
         )
 
         // validate the request
+        // at somept validate the xml...could lead to bad things...
         const { day, workspace } = ctx.request.body
         if (!strapi.services.validator.isInt(day) || !workspace) return ctx.badRequest(
             'A day and workspace must be provided!',
@@ -45,5 +46,25 @@ module.exports = {
             'The day provided is invalid!',
             { id: 'Save.create.day.invalid', error: 'ValidationError' }
         )
-    }
+
+        // get the current student(s) and session
+        const { ids, session } = ctx.state.user
+
+        // get the save(s) for the student(s) for the target day
+        const saves = await strapi.services.save.find({ student: ids, day })
+
+        // create a student saves map 
+        const studentSaves = {}
+        saves.forEach(save => studentSaves[save.student.id] = save.id)
+
+        // create/update a save for each student(s)
+        return await Promise.all(ids.map(id => {
+            // save exists, update
+            const saveId = studentSaves[id]
+            if (saveId) return strapi.services.save.update({ id: saveId, workspace })
+
+            // else, create a new save
+            return strapi.services.save.create({ student: id, day, workspace, session }) 
+        }))
+    },
 }
