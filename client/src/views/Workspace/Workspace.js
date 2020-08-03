@@ -36,7 +36,12 @@ export default function Workspace(props) {
     return (
         <div className="container flex flex-row">
             <DayInfoPanel day={day}/>
-            <BlocklyCanvasPanel day={day} dayType={"my-day"} homePath={'/student'} handleLogout={handleLogout}/>
+            <BlocklyCanvasPanel
+                day={day}
+                dayType={"my-day"}
+                homePath={'/student'}
+                handleLogout={handleLogout}
+                isStudent={true}/>
         </div>
     );
 

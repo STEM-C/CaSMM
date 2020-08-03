@@ -2,13 +2,15 @@ import React, {useEffect, useRef, useState} from 'react';
 import {Link} from "react-router-dom";
 import './DayPanels.less'
 import {compileArduinoCode, getArduino, getJS, getXml, setLocalActivity} from "./helpers";
+import {saveWorkspace} from "../../Utils/requests";
+import {message} from "antd";
 
 export default function BlocklyCanvasPanel(props) {
     const [hoverXml, setHoverXml] = useState(false);
     const [hoverJS, setHoverJS] = useState(false);
     const [hoverArduino, setHoverArduino] = useState(false);
     const [hoverCompile, setHoverCompile] = useState(false);
-    const {day, dayType, homePath, handleGoBack} = props;
+    const {day, dayType, homePath, handleGoBack, isStudent} = props;
 
 
     let workspaceRef = useRef(null);
@@ -38,6 +40,18 @@ export default function BlocklyCanvasPanel(props) {
         }
     }, [day, dayType]);
 
+    const handleSave = async () => {
+        let xml = window.Blockly.Xml.workspaceToDom(workspaceRef.current)
+        let xml_text = window.Blockly.Xml.domToText(xml)
+        const res = await saveWorkspace(day.id, xml_text);
+        console.log(xml_text);
+        if (res.err) {
+            message.error(res.err)
+        } else {
+            message.success('Workspace saved successfully.')
+        }
+    };
+
     return (
         <div id='horizontal-container' className="flex flex-column">
             <div id='top-container' className="flex flex-column vertical-container">
@@ -48,6 +62,11 @@ export default function BlocklyCanvasPanel(props) {
                         </Link> : null}
                         {handleGoBack ? <button onClick={handleGoBack} id='link' className="flex flex-column">
                             <i id='icon-btn' className="fa fa-arrow-left"/>
+                        </button> : null}
+                    </div>
+                    <div className='flex flex-row'>
+                        {isStudent ? <button onClick={handleSave} id='link' className="flex flex-column">
+                            <i id='icon-btn' className="fa fa-save"/>
                         </button> : null}
                     </div>
                     <div style={{"width": "25%"}}>

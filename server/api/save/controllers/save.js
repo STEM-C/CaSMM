@@ -60,7 +60,7 @@ module.exports = {
         return await Promise.all(ids.map(id => {
             // save exists, update
             const saveId = studentSaves[id]
-            if (saveId) return strapi.services.save.update({ id: saveId, workspace })
+            if (saveId) return strapi.services.save.update({id: saveId}, {workspace: workspace})
 
             // else, create a new save
             return strapi.services.save.create({ student: id, day, workspace, session }) 
