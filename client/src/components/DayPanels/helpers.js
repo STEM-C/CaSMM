@@ -1,4 +1,4 @@
-import {compileCode} from "../../Utils/requests";
+import {compileCode, saveWorkspace} from "../../Utils/requests";
 import {message} from "antd";
 
 const AvrboyArduino = window.AvrgirlArduino;
@@ -68,4 +68,11 @@ export const compileArduinoCode = async (workspaceRef) => {
     } else {
         message.error(response.err);
     }
+};
+
+// save current workspace
+export const handleSave = async (dayId, workspaceRef) => {
+    let xml = window.Blockly.Xml.workspaceToDom(workspaceRef.current);
+    let xml_text = window.Blockly.Xml.domToText(xml);
+    return await saveWorkspace(dayId, xml_text);
 };

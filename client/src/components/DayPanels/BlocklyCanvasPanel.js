@@ -1,8 +1,7 @@
 import React, {useEffect, useRef, useState} from 'react';
 import {Link} from "react-router-dom";
 import './DayPanels.less'
-import {compileArduinoCode, getArduino, getJS, getXml, setLocalActivity} from "./helpers";
-import {saveWorkspace} from "../../Utils/requests";
+import {compileArduinoCode, getArduino, getJS, getXml, setLocalActivity, handleSave} from "./helpers";
 import {message} from "antd";
 
 export default function BlocklyCanvasPanel(props) {
@@ -14,6 +13,8 @@ export default function BlocklyCanvasPanel(props) {
 
 
     let workspaceRef = useRef(null);
+    let dayRef = useRef(null);
+    let isStudentRef = useRef(null);
 
     const setWorkspace = () =>
         workspaceRef.current = window.Blockly.inject('blockly-canvas',
@@ -21,14 +22,15 @@ export default function BlocklyCanvasPanel(props) {
         );
 
     useEffect(() => {
-        // clean up - removes blockly div from DOM
+        // clean up - saves workspace and removes blockly div from DOM
         return () => {
-            if (workspaceRef.current) workspaceRef.current.dispose()
+            if (isStudentRef.current) handleSave(dayRef.current.id, workspaceRef);
+            if (workspaceRef.current) workspaceRef.current.dispose();
         }
     }, []);
 
     useEffect(() => {
-        // once the day state is set, set the workspace
+        // once the day state is set, set the workspace and save
         if (!workspaceRef.current && day && Object.keys(day).length !== 0) {
             setWorkspace();
             workspaceRef.current.addChangeListener(() => setLocalActivity(workspaceRef.current, dayType));
@@ -37,14 +39,24 @@ export default function BlocklyCanvasPanel(props) {
                 let xml = window.Blockly.Xml.textToDom(day.template);
                 window.Blockly.Xml.domToWorkspace(xml, workspaceRef.current)
             }
-        }
-    }, [day, dayType]);
 
-    const handleSave = async () => {
-        let xml = window.Blockly.Xml.workspaceToDom(workspaceRef.current)
-        let xml_text = window.Blockly.Xml.domToText(xml)
-        const res = await saveWorkspace(day.id, xml_text);
-        console.log(xml_text);
+            isStudentRef.current = isStudent;
+            if (isStudent) handleSave(day.id, workspaceRef);
+            dayRef.current = day
+        }
+    }, [day, dayType, isStudent]);
+
+    useEffect(() => {
+        // automatically save workspace every 5 min
+        if (isStudentRef) {
+            setInterval(async () => {
+                await handleSave(dayRef.current.id, workspaceRef)
+            }, 150000);
+        }
+    });
+
+    const handleManualSave = async () => {
+        const res = handleSave(day.id, workspaceRef);
         if (res.err) {
             message.error(res.err)
         } else {
@@ -65,7 +77,7 @@ export default function BlocklyCanvasPanel(props) {
                         </button> : null}
                     </div>
                     <div className='flex flex-row'>
-                        {isStudent ? <button onClick={handleSave} id='link' className="flex flex-column">
+                        {isStudent ? <button onClick={handleManualSave} id='link' className="flex flex-column">
                             <i id='icon-btn' className="fa fa-save"/>
                         </button> : null}
                     </div>
