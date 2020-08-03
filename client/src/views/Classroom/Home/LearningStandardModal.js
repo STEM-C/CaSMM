@@ -2,7 +2,6 @@ import {Modal, Button, message} from 'antd';
 import React, {useEffect, useState} from "react";
 import LearningStandardSelect from "../LearningStandardSelect/LearningStandardSelect";
 import {getLearningStandard, setSelection} from "../../../Utils/requests";
-import {getToken} from "../../../Utils/AuthRequests";
 
 export default function LearningStandardModal(props) {
     const [visible, setVisible] = useState(false);
@@ -14,7 +13,7 @@ export default function LearningStandardModal(props) {
         const fetchData = async () => {
             if (viewing) {
                 setVisible(true);
-                const res = await getLearningStandard(viewing, getToken());
+                const res = await getLearningStandard(viewing);
                 if (res.data) {
                     setSelected(res.data);
                     setActivePanel('panel-2')
@@ -38,7 +37,7 @@ export default function LearningStandardModal(props) {
 
     const handleOk = async () => {
         history.push('#home');
-        const res = await setSelection(classroomId, selected.id, getToken());
+        const res = await setSelection(classroomId, selected.id);
         if(res.err){
             message.error(res.err);
         } else {

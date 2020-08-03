@@ -1,6 +1,5 @@
 import React, {useEffect, useState} from "react"
 import {getDayToolbox} from "../../Utils/requests.js"
-import {getToken} from "../../Utils/AuthRequests"
 import BlocklyCanvasPanel from "../../components/DayPanels/BlocklyCanvasPanel";
 import DayInfoPanel from "../../components/DayPanels/DayInfoPanel";
 import {message} from "antd";
@@ -17,7 +16,7 @@ export default function Workspace(props) {
             if (localDay.toolbox) {
                 setDay(localDay)
             } else {
-                getDayToolbox(localDay.id, getToken()).then(res => {
+                getDayToolbox(localDay.id).then(res => {
                     if (res.data) {
                         let loadedDay = {...localDay, toolbox: res.data.toolbox};
 

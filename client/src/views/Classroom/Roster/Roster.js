@@ -1,6 +1,5 @@
 import React, {useEffect, useState} from "react";
 import {getClassroom, setEnrollmentStatus, updateStudent} from "../../../Utils/requests";
-import {getToken} from "../../../Utils/AuthRequests";
 import './Roster.less'
 import MentorSubHeader from "../../../components/MentorSubHeader/MentorSubHeader";
 import ListView from "./ListView";
@@ -17,7 +16,7 @@ export default function Roster(props) {
 
     useEffect(() => {
         let data = [];
-        getClassroom(classroomId, getToken()).then(res => {
+        getClassroom(classroomId).then(res => {
             if (res.data) {
                 const classroom = res.data;
                 setClassroom(classroom);
@@ -40,7 +39,7 @@ export default function Roster(props) {
     }, [classroomId]);
 
     const onEnrollToggle = async (id, toggled) => {
-        const res = await setEnrollmentStatus(id, toggled, getToken());
+        const res = await setEnrollmentStatus(id, toggled);
         if (res.data) {
             const updatedStudent = res.data;
             let newStudentData = [...studentData];
@@ -101,7 +100,7 @@ export default function Roster(props) {
             let student = classroom.students.find(student => student.id === key);
             for (let attribute in row) student[attribute] = row[attribute]
             if (student) {
-                const res = await updateStudent(student.id, student, getToken());
+                const res = await updateStudent(student.id, student);
                 if (res.data) {
                     message.success(`Successfully updated ${res.data.name}'s information.`);
                 } else {

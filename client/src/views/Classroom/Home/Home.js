@@ -1,7 +1,6 @@
 import React, {useEffect, useState} from "react"
 import "./Home.less"
 import {getClassroom, getLearningStandard} from "../../../Utils/requests";
-import {getToken} from "../../../Utils/AuthRequests";
 import MentorSubHeader from "../../../components/MentorSubHeader/MentorSubHeader";
 import DisplayCodeModal from "./DisplayCodeModal";
 import LearningStandardModal from "./LearningStandardModal";
@@ -16,14 +15,14 @@ export default function Home(props) {
 
     useEffect(() => {
         const fetchData = async () => {
-            const res = await getClassroom(classroomId, getToken());
+            const res = await getClassroom(classroomId);
             if(res.data){
                 const classroom = res.data;
                 setClassroom(classroom);
                 setGradeId(classroom.grade.id);
                 classroom.selections.forEach(async selection => {
                     if (selection.current) {
-                        const res = await getLearningStandard(selection.learning_standard, getToken());
+                        const res = await getLearningStandard(selection.learning_standard);
                         if(res.data) setActiveLearningStandard(res.data);
                         else {
                             message.error(res.err);

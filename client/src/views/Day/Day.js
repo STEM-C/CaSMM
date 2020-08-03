@@ -3,7 +3,6 @@ import BlocklyCanvasPanel from "../../components/DayPanels/BlocklyCanvasPanel";
 import DayInfoPanel from "../../components/DayPanels/DayInfoPanel";
 import NavBar from "../../components/NavBar/NavBar";
 import {getDayToolbox} from "../../Utils/requests";
-import {getToken} from "../../Utils/AuthRequests";
 import {message} from "antd";
 
 
@@ -18,7 +17,7 @@ export default function Day(props) {
             if (localDay.toolbox) {
                 setDay(localDay)
             } else {
-                getDayToolbox(localDay.id, getToken()).then(res => {
+                getDayToolbox(localDay.id).then(res => {
                     if (res.data) {
                         let loadedDay = {...localDay, toolbox: res.data.toolbox};
 

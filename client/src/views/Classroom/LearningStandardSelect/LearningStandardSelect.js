@@ -2,7 +2,6 @@ import React, {useEffect, useState} from 'react';
 import {AutoComplete, Divider, message} from "antd";
 import './LearningStandardSelect.less'
 import {getLearningStandard, getUnits} from "../../../Utils/requests";
-import {getToken} from "../../../Utils/AuthRequests";
 import CheckUnits from "./CheckUnits";
 
 export default function LearningStandardSelect(props) {
@@ -15,7 +14,7 @@ export default function LearningStandardSelect(props) {
 
     useEffect(() => {
         async function fetchData() {
-            const res = await getUnits(gradeId, getToken());
+            const res = await getUnits(gradeId);
             if (res.data) {
                 const u = res.data;
                 setUnits(u);
@@ -34,7 +33,7 @@ export default function LearningStandardSelect(props) {
     }, [setVisibleStandardsByUnit, gradeId]);
 
     const getSelectedLearningStandard = async standard => {
-        const res = await getLearningStandard(standard.id, getToken());
+        const res = await getLearningStandard(standard.id);
         if (res.data) {
             setSelected(res.data)
         } else {

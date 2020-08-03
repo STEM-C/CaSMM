@@ -4,7 +4,6 @@ import "./Classroom.less"
 
 import NavBar from "../../components/NavBar/NavBar";
 import {getClassroom} from "../../Utils/requests";
-import {getToken} from "../../Utils/AuthRequests";
 import Roster from "./Roster/Roster";
 import Home from "./Home/Home";
 
@@ -20,7 +19,7 @@ export default function Classroom(props) {
     const viewing = parseInt(hash[2]);
 
     useEffect(() => {
-        getClassroom(classroomId, getToken()).then(res => {
+        getClassroom(classroomId).then(res => {
             if(res.data) {
                 setClassroom(res.data);
             } else {

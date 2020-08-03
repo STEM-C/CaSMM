@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from "react"
 import {getMentor, getClassrooms} from "../../Utils/requests"
-import {getUser, getToken} from "../../Utils/AuthRequests";
+import {getUser} from "../../Utils/AuthRequests";
 import {Card, message} from 'antd';
 import './Dashboard.less'
 
@@ -14,12 +14,12 @@ export default function Dashboard(props) {
 
     useEffect(() => {
         let classroomIds = [];
-        getMentor(getToken()).then(res => {
+        getMentor().then(res => {
             if (res.data) {
                 res.data.classrooms.forEach(classroom => {
                     classroomIds.push(classroom.id)
                 });
-                getClassrooms(classroomIds, getToken()).then(classrooms => {
+                getClassrooms(classroomIds).then(classrooms => {
                     setClassrooms(classrooms)
                 });
             } else {
