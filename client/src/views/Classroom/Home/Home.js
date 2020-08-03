@@ -1,10 +1,10 @@
 import React, {useEffect, useState} from "react"
 import "./Home.less"
 import {getClassroom, getLearningStandard} from "../../../Utils/requests";
-import {getToken} from "../../../Utils/AuthRequests";
 import MentorSubHeader from "../../../components/MentorSubHeader/MentorSubHeader";
 import DisplayCodeModal from "./DisplayCodeModal";
 import LearningStandardModal from "./LearningStandardModal";
+import {message} from "antd";
 
 
 export default function Home(props) {
@@ -15,15 +15,23 @@ export default function Home(props) {
 
     useEffect(() => {
         const fetchData = async () => {
-            const classroom = await getClassroom(classroomId, getToken());
-            setClassroom(classroom);
-            setGradeId(classroom.grade.id);
-            classroom.selections.forEach(async selection => {
-                if (selection.current) {
-                    const ls = await getLearningStandard(selection.learning_standard, getToken());
-                    setActiveLearningStandard(ls)
-                }
-            })
+            const res = await getClassroom(classroomId);
+            if(res.data){
+                const classroom = res.data;
+                setClassroom(classroom);
+                setGradeId(classroom.grade.id);
+                classroom.selections.forEach(async selection => {
+                    if (selection.current) {
+                        const res = await getLearningStandard(selection.learning_standard);
+                        if(res.data) setActiveLearningStandard(res.data);
+                        else {
+                            message.error(res.err);
+                        }
+                    }
+                })
+            } else {
+                message.error(res.err);
+            }
         };
         fetchData();
     }, [classroomId]);

@@ -3,7 +3,7 @@ import BlocklyCanvasPanel from "../../components/DayPanels/BlocklyCanvasPanel";
 import DayInfoPanel from "../../components/DayPanels/DayInfoPanel";
 import NavBar from "../../components/NavBar/NavBar";
 import {getDayToolbox} from "../../Utils/requests";
-import {getToken} from "../../Utils/AuthRequests";
+import {message} from "antd";
 
 
 export default function Day(props) {
@@ -14,19 +14,23 @@ export default function Day(props) {
         const localDay = JSON.parse(localStorage.getItem("my-day"));
 
         if (localDay) {
-            if(localDay.toolbox) {
+            if (localDay.toolbox) {
                 setDay(localDay)
             } else {
-                getDayToolbox(localDay.id, getToken()).then(response => {
-                    let loadedDay = {...localDay, toolbox: response.toolbox};
+                getDayToolbox(localDay.id).then(res => {
+                    if (res.data) {
+                        let loadedDay = {...localDay, toolbox: res.data.toolbox};
 
-                    localStorage.setItem("my-day", JSON.stringify(loadedDay));
-                    setDay(loadedDay)
+                        localStorage.setItem("my-day", JSON.stringify(loadedDay));
+                        setDay(loadedDay)
+                    } else {
+                        message.error(res.err);
+                    }
                 })
             }
 
         } else {
-            props.history.goBack()
+            history.goBack()
         }
     }, [history]);
 

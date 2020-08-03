@@ -1,8 +1,7 @@
 import React, {useEffect, useState} from 'react';
-import {AutoComplete, Divider} from "antd";
+import {AutoComplete, Divider, message} from "antd";
 import './LearningStandardSelect.less'
 import {getLearningStandard, getUnits} from "../../../Utils/requests";
-import {getToken} from "../../../Utils/AuthRequests";
 import CheckUnits from "./CheckUnits";
 
 export default function LearningStandardSelect(props) {
@@ -15,22 +14,31 @@ export default function LearningStandardSelect(props) {
 
     useEffect(() => {
         async function fetchData() {
-            const u = await getUnits(gradeId, getToken());
-            setUnits(u);
-            setVisibleStandardsByUnit(u);
-            const options = u.map(unitData => {
-                return {id: unitData.id, number: unitData.number, name: unitData.name}
-            });
-            setPlainOptions(options);
-            setCheckedList(options)
+            const res = await getUnits(gradeId);
+            if (res.data) {
+                const u = res.data;
+                setUnits(u);
+                setVisibleStandardsByUnit(u);
+                const options = u.map(unitData => {
+                    return {id: unitData.id, number: unitData.number, name: unitData.name}
+                });
+                setPlainOptions(options);
+                setCheckedList(options)
+            } else {
+                message.error(res.err);
+            }
 
-        };
-        if(gradeId) fetchData()
+        }
+        if (gradeId) fetchData()
     }, [setVisibleStandardsByUnit, gradeId]);
 
     const getSelectedLearningStandard = async standard => {
-        const newStandard = await getLearningStandard(standard.id, getToken());
-        setSelected(newStandard)
+        const res = await getLearningStandard(standard.id);
+        if (res.data) {
+            setSelected(res.data)
+        } else {
+            message.error(res.err);
+        }
     };
 
     const getFinishedWords = word => {

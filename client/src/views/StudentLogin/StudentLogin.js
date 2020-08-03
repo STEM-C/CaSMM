@@ -4,6 +4,7 @@ import Logo from "../../assets/casmm_logo.png"
 import {getStudents, postJoin} from "../../Utils/requests";
 import StudentLoginForm from "./StudentLoginForm";
 import {setUserSession} from "../../Utils/AuthRequests";
+import {message} from "antd";
 
 
 export default function StudentLogin(props) {
@@ -16,30 +17,36 @@ export default function StudentLogin(props) {
     const joinCode = localStorage.getItem('join-code');
 
     useEffect(() => {
-        getStudents(joinCode).then(studentArray => {
-            setStudentList(studentArray);
-            setAnimalList(['Lion', 'Dog', 'Frog', 'Fish', 'Cow']);
-        }).catch(err => {
-            console.log(err)
+        getStudents(joinCode).then(res => {
+            if (res.data) {
+                setStudentList(res.data);
+                setAnimalList(['Lion', 'Dog', 'Frog', 'Fish', 'Cow']);
+            } else {
+                message.error(res.err);
+            }
         })
     }, [joinCode]);
 
     const handleLogin = async (studentIds) => {
         let ids = studentIds.slice(0, numForms);
-        const response = await postJoin(joinCode, ids);
-        setUserSession(response.jwt, JSON.stringify(response.students));
-        props.history.push('/student')
+        const res = await postJoin(joinCode, ids);
+        if (res.data) {
+            setUserSession(res.data.jwt, JSON.stringify(res.data.students));
+            props.history.push('/student')
+        } else {
+            message.error(res.err);
+        }
     };
 
     const updateStudentUsers = (studentId, entryNum) => {
         let ids = [...studentIds];
-        ids[entryNum-1] = parseInt(studentId);
+        ids[entryNum - 1] = parseInt(studentId);
         setStudentIds(ids)
     };
 
     const updateStudentAnimals = (studentAnimal, entryNum) => {
         let animals = [...studentAnimals];
-        animals[entryNum-1] = studentAnimal;
+        animals[entryNum - 1] = studentAnimal;
         setStudentAnimals(animals)
     };
 
@@ -51,7 +58,7 @@ export default function StudentLogin(props) {
                     {i > 0 ? <div id='form-divider'/> : null}
                     <div id='wrapper'>
                         <StudentLoginForm
-                            entryNum={i+1}
+                            entryNum={i + 1}
                             updateStudentUsers={updateStudentUsers}
                             studentList={studentList}
                             updateStudentAnimals={updateStudentAnimals}
@@ -65,23 +72,23 @@ export default function StudentLogin(props) {
     };
 
     const addStudent = () => {
-        if(numForms < 3){
-            setNumForms(numForms+1);
+        if (numForms < 3) {
+            setNumForms(numForms + 1);
             setForms()
         }
     };
 
     const removeStudent = () => {
-        if(numForms > 1){
-            setNumForms(numForms-1);
+        if (numForms > 1) {
+            setNumForms(numForms - 1);
             let ids = [...studentIds];
-            ids[numForms-1] = '';
+            ids[numForms - 1] = '';
             setStudentIds(ids);
             setForms()
         }
     };
 
-    return(
+    return (
         <div className='container'>
             <img src={Logo} alt='logo' id='login-logo'/>
             <div id='form-container'>

@@ -1,10 +1,9 @@
 import React, {useEffect, useState} from "react"
-import {Tabs} from 'antd';
+import {message, Tabs} from 'antd';
 import "./Classroom.less"
 
 import NavBar from "../../components/NavBar/NavBar";
 import {getClassroom} from "../../Utils/requests";
-import {getToken} from "../../Utils/AuthRequests";
 import Roster from "./Roster/Roster";
 import Home from "./Home/Home";
 
@@ -20,8 +19,12 @@ export default function Classroom(props) {
     const viewing = parseInt(hash[2]);
 
     useEffect(() => {
-        getClassroom(classroomId, getToken()).then(classroom => {
-            setClassroom(classroom);
+        getClassroom(classroomId).then(res => {
+            if(res.data) {
+                setClassroom(res.data);
+            } else {
+                message.error(res.err);
+            }
         });
     }, [classroomId]);
 
