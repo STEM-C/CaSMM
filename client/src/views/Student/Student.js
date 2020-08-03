@@ -1,19 +1,22 @@
 import React, {useState, useEffect} from 'react'
-import {getToken} from "../../Utils/AuthRequests"
-import {getActivities, getStudentClassroom} from "../../Utils/requests"
+import {getStudentClassroom} from "../../Utils/requests"
 import './Student.less'
+import {message} from "antd";
 
 function Student(props) {
     const [learningStandard, setLearningStandard] = useState({});
-    const [error, setError] = useState(null);
     const [selectedDay, setSelectedDay] = useState({});
 
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const classroom = await getStudentClassroom(getToken());
-                if (classroom.learning_standard) {
-                    setLearningStandard(classroom.learning_standard)
+                const res = await getStudentClassroom();
+                if (res.data) {
+                    if(res.data.learning_standard){
+                        setLearningStandard(res.data.learning_standard)
+                    }
+                } else {
+                    message.error(res.err);
                 }
             } catch {}
         };
@@ -23,15 +26,14 @@ function Student(props) {
     const handleSelection = (day) => {
         setSelectedDay(day);
         localStorage.setItem("my-day", JSON.stringify(day));
-        setError(null);
     };
 
-    const handleLaunchActivity = (setError) => {
+    const handleLaunchActivity = () => {
         const loadedDay = localStorage.getItem("my-day");
         if (selectedDay.id && loadedDay) {
             props.history.push("/workspace")
         } else {
-            setError('Please select a day.')
+            message.error('Please select a day.')
         }
     };
 
@@ -59,10 +61,9 @@ function Student(props) {
                             </div>
                     }
                 </ul>
-                {error && <div style={{color: 'red'}}>{error}</div>}
                 {
                     learningStandard.days ?
-                        <div id='launcher' className='flex flex-column' onClick={() => handleLaunchActivity(setError)}>
+                        <div id='launcher' className='flex flex-column' onClick={handleLaunchActivity}>
                             <i className="fa fa-rocket" aria-hidden="true"/>
                             Launch Activity
                         </div>

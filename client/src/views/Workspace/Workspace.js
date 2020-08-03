@@ -1,8 +1,8 @@
 import React, {useEffect, useState} from "react"
 import {getDayToolbox} from "../../Utils/requests.js"
-import {getToken} from "../../Utils/AuthRequests"
 import BlocklyCanvasPanel from "../../components/DayPanels/BlocklyCanvasPanel";
 import DayInfoPanel from "../../components/DayPanels/DayInfoPanel";
+import {message} from "antd";
 
 
 export default function Workspace(props) {
@@ -13,14 +13,18 @@ export default function Workspace(props) {
         const localDay = JSON.parse(localStorage.getItem("my-day"));
 
         if (localDay) {
-            if(localDay.toolbox) {
+            if (localDay.toolbox) {
                 setDay(localDay)
             } else {
-                getDayToolbox(localDay.id, getToken()).then(response => {
-                    let loadedDay = {...localDay, toolbox: response.toolbox};
+                getDayToolbox(localDay.id).then(res => {
+                    if (res.data) {
+                        let loadedDay = {...localDay, toolbox: res.data.toolbox};
 
-                    localStorage.setItem("my-day", JSON.stringify(loadedDay));
-                    setDay(loadedDay)
+                        localStorage.setItem("my-day", JSON.stringify(loadedDay));
+                        setDay(loadedDay)
+                    } else {
+                        message.error(res.err);
+                    }
                 })
             }
 

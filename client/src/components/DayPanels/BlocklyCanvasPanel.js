@@ -47,7 +47,7 @@ export default function BlocklyCanvasPanel(props) {
                             <i className="fa fa-home"/>
                         </Link> : null}
                         {handleGoBack ? <button onClick={handleGoBack} id='link' className="flex flex-column">
-                            <i id='icon-btn' className="fa fa-th"/>
+                            <i id='icon-btn' className="fa fa-arrow-left"/>
                         </button> : null}
                     </div>
                     <div style={{"width": "25%"}}>

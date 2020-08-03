@@ -1,4 +1,5 @@
-import { compileCode } from "../../Utils/requests";
+import {compileCode} from "../../Utils/requests";
+import {message} from "antd";
 
 const AvrboyArduino = window.AvrgirlArduino;
 
@@ -7,14 +8,14 @@ export const setLocalActivity = (workspaceRef, activityType) => {
     let workspaceText = window.Blockly.Xml.domToText(workspaceDom)
     const localActivity = JSON.parse(localStorage.getItem(activityType))
 
-    let lastActivity = { ...localActivity, template: workspaceText }
+    let lastActivity = {...localActivity, template: workspaceText}
     localStorage.setItem(activityType, JSON.stringify(lastActivity))
 }
 
 // Generates xml from blockly canvas
 export const getXml = (workspaceRef) => {
 
-    const { Blockly } = window
+    const {Blockly} = window
 
     let xml = Blockly.Xml.workspaceToDom(workspaceRef)
     let xml_text = Blockly.Xml.domToText(xml)
@@ -46,21 +47,25 @@ export const compileArduinoCode = async (workspaceRef) => {
     };
 
     // gets compiled hex from server
-    let response = await compileCode(body)
+    let response = await compileCode(body);
 
-    // converting base 64 to hex
-    let Hex = atob(response.hex).toString();
+    if (response.data) {
+        // converting base 64 to hex
+        let Hex = atob(response.data.hex).toString();
 
-    const avrgirl = new AvrboyArduino({
-        board: "uno",
-        debug: true
-    });
+        const avrgirl = new AvrboyArduino({
+            board: "uno",
+            debug: true
+        });
 
-    avrgirl.flash(Hex, (err) => {
-        if (err) {
-            console.log(err);
-        } else {
-            console.log('done correctly.');
-        }
-    })
+        avrgirl.flash(Hex, (err) => {
+            if (err) {
+                console.log(err);
+            } else {
+                console.log('done correctly.');
+            }
+        })
+    } else {
+        message.error(response.err);
+    }
 };

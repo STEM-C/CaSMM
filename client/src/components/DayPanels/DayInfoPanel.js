@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React from 'react';
 import Logo from "../../assets/casmm_logo.png";
 import './DayPanels.less'
 import {Carousel} from "antd";

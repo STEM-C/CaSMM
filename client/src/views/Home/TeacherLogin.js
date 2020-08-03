@@ -1,14 +1,13 @@
 import React, { useState } from 'react'
 import { setUserSession, postUser } from "../../Utils/AuthRequests";
+import {message} from "antd";
 
 export default function TeacherLogin(props) {
     const email = useFormInput('');
     const password = useFormInput('');
-    const [error, setError] = useState(null);
     const [loading, setLoading] = useState(false);
 
     const handleLogin = () => {
-        setError(null);
         setLoading(true);
         let body = { identifier: email.value, password: password.value};
 
@@ -17,11 +16,10 @@ export default function TeacherLogin(props) {
             setLoading(false);
             props.history.push('/dashboard');
         }).catch(error => {
-            console.log(error);
             setLoading(false);
-            setError("Something went wrong. Please try again later.");
+            message.error('Login failed. Please input a valid email and password.');
         });
-    }
+    };
 
     return (
             <form id="box" onKeyPress={e => {if(e.key === 'Enter') handleLogin()}}>
@@ -30,7 +28,6 @@ export default function TeacherLogin(props) {
                 </div>
                 <input type="email" {...email} placeholder="Email" autoComplete="username" />
                 <input type="password" {...password} placeholder="Password" autoComplete="current-password"/>
-                {error && <div style={{ color: 'red' }}>{error}</div>}
                 <input type="button" value={loading ? 'Loading...' : 'Login'} onClick={handleLogin} disabled={loading}/>
             </form>
     )
@@ -41,9 +38,9 @@ const useFormInput = initialValue => {
 
     const handleChange = e => {
         setValue(e.target.value);
-    }
+    };
     return {
         value,
         onChange: handleChange
     }
-}
+};
