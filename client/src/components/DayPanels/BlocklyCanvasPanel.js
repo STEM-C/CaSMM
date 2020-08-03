@@ -3,12 +3,15 @@ import {Link} from "react-router-dom";
 import './DayPanels.less'
 import {compileArduinoCode, getArduino, getJS, getXml, setLocalActivity, handleSave} from "./helpers";
 import {message} from "antd";
+import {getSaves} from "../../Utils/requests";
 
 export default function BlocklyCanvasPanel(props) {
     const [hoverXml, setHoverXml] = useState(false);
     const [hoverJS, setHoverJS] = useState(false);
     const [hoverArduino, setHoverArduino] = useState(false);
     const [hoverCompile, setHoverCompile] = useState(false);
+    const [saves, setSaves] = useState([]);
+    const [selectedSave, setSelectedSave] = useState({})
     const {day, dayType, homePath, handleGoBack, isStudent} = props;
 
 
@@ -21,6 +24,14 @@ export default function BlocklyCanvasPanel(props) {
             {toolbox: document.getElementById('toolbox')}
         );
 
+    // TODO:
+    const loadSave = () => {
+        if (selectedSave.workspace) {
+            let xml = window.Blockly.Xml.textToDom(selectedSave.workspace);
+            window.Blockly.Xml.domToWorkspace(xml, workspaceRef.current)
+        }
+    };
+
     useEffect(() => {
         // clean up - saves workspace and removes blockly div from DOM
         return () => {
@@ -31,19 +42,30 @@ export default function BlocklyCanvasPanel(props) {
 
     useEffect(() => {
         // once the day state is set, set the workspace and save
-        if (!workspaceRef.current && day && Object.keys(day).length !== 0) {
-            setWorkspace();
-            workspaceRef.current.addChangeListener(() => setLocalActivity(workspaceRef.current, dayType));
+        const setUp = async () => {
+            if (!workspaceRef.current && day && Object.keys(day).length !== 0) {
+                setWorkspace();
+                workspaceRef.current.addChangeListener(() => setLocalActivity(workspaceRef.current, dayType));
 
-            if (day.template) {
-                let xml = window.Blockly.Xml.textToDom(day.template);
-                window.Blockly.Xml.domToWorkspace(xml, workspaceRef.current)
+                if (day.template) {
+                    let xml = window.Blockly.Xml.textToDom(day.template);
+                    window.Blockly.Xml.domToWorkspace(xml, workspaceRef.current)
+                }
+
+                isStudentRef.current = isStudent;
+                if (isStudent) {
+                    const res = await getSaves(day.id);
+                    if (res.data) {
+                        setSaves(res.data)
+                    } else {
+                        console.log(res.err)
+                    }
+                    handleSave(day.id, workspaceRef);
+                }
+                dayRef.current = day
             }
-
-            isStudentRef.current = isStudent;
-            if (isStudent) handleSave(day.id, workspaceRef);
-            dayRef.current = day
-        }
+        };
+        setUp()
     }, [day, dayType, isStudent]);
 
     useEffect(() => {
@@ -76,11 +98,25 @@ export default function BlocklyCanvasPanel(props) {
                             <i id='icon-btn' className="fa fa-arrow-left"/>
                         </button> : null}
                     </div>
-                    <div className='flex flex-row'>
-                        {isStudent ? <button onClick={handleManualSave} id='link' className="flex flex-column">
-                            <i id='icon-btn' className="fa fa-save"/>
-                        </button> : null}
-                    </div>
+                    {isStudent ?
+                        <div className='flex flex-row'>
+                            <button onClick={handleManualSave} id='link' className="flex flex-column">
+                                <i id='icon-btn' className="fa fa-save"/>
+                            </button>
+                            <button onClick={loadSave} id='link' className="flex flex-column">
+                                <i id='icon-btn' className="fa fa-folder-open"/>
+                            </button>
+                            <select id='save-select' onChange={() => {
+                            }}>
+                                <option selected disabled>
+                                    Previous Saves
+                                </option>
+                                {saves.map(save =>
+                                    <option key={save.id}>
+                                        {`${save.student.name}'s Last Save`}
+                                    </option>)}
+                            </select>
+                        </div> : null}
                     <div style={{"width": "25%"}}>
                         <div id='action-btn-container' className="flex space-between">
                             <i onClick={() => getXml(workspaceRef.current)} className="fas fa-code hvr-info"

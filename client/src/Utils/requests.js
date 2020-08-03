@@ -178,3 +178,12 @@ export const saveWorkspace = async (day, workspace) => (
         error: 'Failed to save your workspace.'
     })
 );
+
+export const getSaves = async (day) => (
+    makeRequest({
+        method: GET,
+        path: `${cms}/saves/day/${day}`,
+        auth: true,
+        error: 'Past saves could not be retrieved.'
+    })
+);
