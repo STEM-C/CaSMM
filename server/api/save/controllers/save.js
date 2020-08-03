@@ -11,7 +11,6 @@ module.exports = {
 
         const { ids } = ctx.state.user
         const { day } = ctx.params
-        console.log(ids, day)
 
         const saves = await strapi.services.save.find({ student: ids, day })
         return saves
