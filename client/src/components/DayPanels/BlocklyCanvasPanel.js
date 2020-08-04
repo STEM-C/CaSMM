@@ -11,7 +11,7 @@ export default function BlocklyCanvasPanel(props) {
     const [hoverArduino, setHoverArduino] = useState(false);
     const [hoverCompile, setHoverCompile] = useState(false);
     const [saves, setSaves] = useState([]);
-    const [selectedSave, setSelectedSave] = useState({})
+    const [selectedSave, setSelectedSave] = useState(null);
     const {day, dayType, homePath, handleGoBack, isStudent} = props;
 
 
@@ -24,11 +24,14 @@ export default function BlocklyCanvasPanel(props) {
             {toolbox: document.getElementById('toolbox')}
         );
 
-    // TODO:
     const loadSave = () => {
-        if (selectedSave.workspace) {
-            let xml = window.Blockly.Xml.textToDom(selectedSave.workspace);
+        try {
+            const toLoad = saves.find(save => save.id = selectedSave);
+            let xml = window.Blockly.Xml.textToDom(toLoad.workspace);
+            if (workspaceRef.current) workspaceRef.current.clear();
             window.Blockly.Xml.domToWorkspace(xml, workspaceRef.current)
+        } catch {
+            message.error('Failed to load save.')
         }
     };
 
@@ -78,12 +81,16 @@ export default function BlocklyCanvasPanel(props) {
     });
 
     const handleManualSave = async () => {
-        const res = handleSave(day.id, workspaceRef);
+        // save workspace then update load save options
+        const res = await handleSave(day.id, workspaceRef);
         if (res.err) {
             message.error(res.err)
         } else {
             message.success('Workspace saved successfully.')
         }
+
+        const savesRes = await getSaves(day.id);
+        if (savesRes.data) setSaves(savesRes.data);
     };
 
     return (
@@ -106,13 +113,14 @@ export default function BlocklyCanvasPanel(props) {
                             <button onClick={loadSave} id='link' className="flex flex-column">
                                 <i id='icon-btn' className="fa fa-folder-open"/>
                             </button>
-                            <select id='save-select' onChange={() => {
+                            <select id='save-select' defaultValue={'default'} onChange={(e) => {
+                                setSelectedSave(e.target.value)
                             }}>
-                                <option selected disabled>
+                                <option key={-1} value='default' disabled id='disabled-option'>
                                     Previous Saves
                                 </option>
                                 {saves.map(save =>
-                                    <option key={save.id}>
+                                    <option value={save.id} key={save.id}>
                                         {`${save.student.name}'s Last Save`}
                                     </option>)}
                             </select>
