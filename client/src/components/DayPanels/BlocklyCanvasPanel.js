@@ -76,7 +76,7 @@ export default function BlocklyCanvasPanel(props) {
         if (isStudentRef) {
             setInterval(async () => {
                 await handleSave(dayRef.current.id, workspaceRef)
-            }, 150000);
+            }, 300000);
         }
     });
 
