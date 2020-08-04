@@ -21,7 +21,8 @@ h3, p {
   color: #colors[text-primary];
   background-color: #colors[tertiary];
   padding: 10px;
-  border: 1px solid #888;
+  border: 1px solid #colors[secondary];
+  border-radius: 5px;
   position: fixed;
   z-index: 1;
 }
@@ -201,5 +202,20 @@ h3, p {
     }
 
     color: #colors[secondary];
+  }
+}
+
+#save-select {
+  min-width: 10vw;
+  border: 1px solid #colors[secondary];
+  border-radius: 5px;
+
+  &:focus {
+    outline: none !important;
+  }
+
+  #disabled-option {
+    opacity: .6;
+    background-color: darken(#colors[tertiary], 10%);
   }
 }

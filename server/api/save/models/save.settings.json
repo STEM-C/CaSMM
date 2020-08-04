@@ -1,0 +1,26 @@
+{
+  "kind": "collectionType",
+  "collectionName": "saves",
+  "info": {
+    "name": "save"
+  },
+  "options": {
+    "increments": true,
+    "timestamps": true
+  },
+  "attributes": {
+    "day": {
+      "model": "day"
+    },
+    "student": {
+      "model": "student"
+    },
+    "session": {
+      "model": "session"
+    },
+    "workspace": {
+      "type": "text",
+      "required": true
+    }
+  }
+}

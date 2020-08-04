@@ -1,4 +1,4 @@
-import {compileCode} from "../../Utils/requests";
+import {compileCode, saveWorkspace} from "../../Utils/requests";
 import {message} from "antd";
 
 const AvrboyArduino = window.AvrgirlArduino;
@@ -51,21 +51,32 @@ export const compileArduinoCode = async (workspaceRef) => {
 
     if (response.data) {
         // converting base 64 to hex
-        let Hex = atob(response.data.hex).toString();
+        if(response.data.success){
+            let Hex = atob(response.data.hex).toString();
 
-        const avrgirl = new AvrboyArduino({
-            board: "uno",
-            debug: true
-        });
+            const avrgirl = new AvrboyArduino({
+                board: "uno",
+                debug: true
+            });
 
-        avrgirl.flash(Hex, (err) => {
-            if (err) {
-                console.log(err);
-            } else {
-                console.log('done correctly.');
-            }
-        })
+            avrgirl.flash(Hex, (err) => {
+                if (err) {
+                    console.log(err);
+                } else {
+                    console.log('done correctly.');
+                }
+            })
+        } else if (response.data.msg) {
+            message.warning(response.data.msg)
+        }
     } else {
         message.error(response.err);
     }
+};
+
+// save current workspace
+export const handleSave = async (dayId, workspaceRef) => {
+    let xml = window.Blockly.Xml.workspaceToDom(workspaceRef.current);
+    let xml_text = window.Blockly.Xml.domToText(xml);
+    return await saveWorkspace(dayId, xml_text);
 };

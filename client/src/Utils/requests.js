@@ -165,3 +165,25 @@ export const setSelection = async (classroom, learningStandard) => (
         error: "Failed to set active learning standard."
     })
 );
+
+export const saveWorkspace = async (day, workspace) => (
+    makeRequest({
+        method: POST,
+        path: `${cms}/saves`,
+        data: {
+            day: day,
+            workspace: workspace
+        },
+        auth: true,
+        error: 'Failed to save your workspace.'
+    })
+);
+
+export const getSaves = async (day) => (
+    makeRequest({
+        method: GET,
+        path: `${cms}/saves/day/${day}`,
+        auth: true,
+        error: 'Past saves could not be retrieved.'
+    })
+);

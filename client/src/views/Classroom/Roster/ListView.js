@@ -100,7 +100,7 @@ export default function ListView(props) {
             )
         },
         {
-            title: 'Enroll / Unenroll',
+            title: 'Enrolled',
             dataIndex: 'enrolled',
             key: 'enrolled',
             width: '10%',
