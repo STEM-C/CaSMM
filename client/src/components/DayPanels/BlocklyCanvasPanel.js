@@ -26,7 +26,7 @@ export default function BlocklyCanvasPanel(props) {
 
     const loadSave = () => {
         try {
-            const toLoad = saves.find(save => save.id = selectedSave);
+            const toLoad = saves.find(save => save.id === selectedSave);
             let xml = window.Blockly.Xml.textToDom(toLoad.workspace);
             if (workspaceRef.current) workspaceRef.current.clear();
             window.Blockly.Xml.domToWorkspace(xml, workspaceRef.current)
@@ -50,21 +50,26 @@ export default function BlocklyCanvasPanel(props) {
                 setWorkspace();
                 workspaceRef.current.addChangeListener(() => setLocalActivity(workspaceRef.current, dayType));
 
-                if (day.template) {
-                    let xml = window.Blockly.Xml.textToDom(day.template);
-                    window.Blockly.Xml.domToWorkspace(xml, workspaceRef.current)
-                }
-
                 isStudentRef.current = isStudent;
+                let onLoadSave = null;
                 if (isStudent) {
                     const res = await getSaves(day.id);
                     if (res.data) {
+                        onLoadSave = res.data[0] ? res.data[0] : null;
                         setSaves(res.data)
                     } else {
                         console.log(res.err)
                     }
-                    handleSave(day.id, workspaceRef);
                 }
+
+                if(onLoadSave) {
+                    let xml = window.Blockly.Xml.textToDom(onLoadSave.workspace);
+                    window.Blockly.Xml.domToWorkspace(xml, workspaceRef.current)
+                } else if (day.template) {
+                    let xml = window.Blockly.Xml.textToDom(day.template);
+                    window.Blockly.Xml.domToWorkspace(xml, workspaceRef.current)
+                }
+
                 dayRef.current = day
             }
         };
@@ -76,7 +81,7 @@ export default function BlocklyCanvasPanel(props) {
         if (isStudentRef) {
             setInterval(async () => {
                 await handleSave(dayRef.current.id, workspaceRef)
-            }, 300000);
+            }, 60000);
         }
     });
 
@@ -107,14 +112,8 @@ export default function BlocklyCanvasPanel(props) {
                     </div>
                     {isStudent ?
                         <div className='flex flex-row'>
-                            <button onClick={handleManualSave} id='link' className="flex flex-column">
-                                <i id='icon-btn' className="fa fa-save"/>
-                            </button>
-                            <button onClick={loadSave} id='link' className="flex flex-column">
-                                <i id='icon-btn' className="fa fa-folder-open"/>
-                            </button>
                             <select id='save-select' defaultValue={'default'} onChange={(e) => {
-                                setSelectedSave(e.target.value)
+                                setSelectedSave(parseInt(e.target.value))
                             }}>
                                 <option key={-1} value='default' disabled id='disabled-option'>
                                     Previous Saves
@@ -124,6 +123,12 @@ export default function BlocklyCanvasPanel(props) {
                                         {`${save.student.name}'s Last Save`}
                                     </option>)}
                             </select>
+                            <button onClick={loadSave} id='link' className="flex flex-column">
+                                <i id='icon-btn' className="fa fa-folder-open"/>
+                            </button>
+                            <button onClick={handleManualSave} id='link' className="flex flex-column">
+                                <i id='icon-btn' className="fa fa-save"/>
+                            </button>
                         </div> : null}
                     <div style={{"width": "25%"}}>
                         <div id='action-btn-container' className="flex space-between">

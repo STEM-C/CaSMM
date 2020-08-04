@@ -47,7 +47,7 @@ export default function LearningStandardModal(props) {
         }
     };
 
-    const handleNext = () => {
+    const handleReview = () => {
         history.push(`#home#${selected.id}`);
         setActivePanel('panel-2')
     };
@@ -62,8 +62,8 @@ export default function LearningStandardModal(props) {
                 width='60vw'
                 footer={[
                     <Button key="ok" type="primary" disabled={selected.id === undefined}
-                            onClick={activePanel === 'panel-1' ? handleNext : handleOk}>
-                        {activePanel === 'panel-1' ? 'Next' : 'Set as Active Learning Standard'}
+                            onClick={activePanel === 'panel-1' ? handleReview : handleOk}>
+                        {activePanel === 'panel-1' ? 'Review' : 'Set as Active Learning Standard'}
                     </Button>,
                 ]}
             >
