@@ -34,8 +34,11 @@ module.exports = {
         // check if the classroom exists
         let response
         if (classroom) {
-            // return the students from the classroom
-            response = classroom.students.map(student => { return { 
+            // get only the enrolled students
+            const enrolledStudents = classroom.students.filter(student => student.enrolled)
+
+            // respond with a list of enrolled students
+            response = enrolledStudents.map(student => { return { 
                 id: student.id, 
                 name: student.name,
                 character: student.character
@@ -77,14 +80,14 @@ module.exports = {
 
         // ensure the school is valid
         const validSchool = await strapi.services.school.findOne({ id: school })
-        if (validSchool === null) return ctx.notFound(
+        if (!validSchool) return ctx.notFound(
             'The school provided is invalid!',
             { id: 'Classroom.create.school.invalid', error: 'ValidationError' }
         )
 
         // ensure the grade is valid
         const validGrade = await strapi.services.grade.findOne({ id: grade })
-        if (validGrade === null) return ctx.notFound(
+        if (!validGrade) return ctx.notFound(
             'The grade provided is invalid!',
             { id: 'Classroom.create.grade.invalid', error: 'ValidationError' }
         )
@@ -134,11 +137,21 @@ module.exports = {
             { id: 'Classroom.join.code.invalid', error: 'ValidationError' }
         )
 
-        // ensure all the students belong to the classroom
-        for (let student of students) {
-            if (classroom.students.find(cs => cs.id === student) === undefined) return ctx.notFound(
+        // ensure all the students can join this classroom
+        for (let studentId of students) {
+            // get the full student object from the classroom
+            const student = classroom.students.find(cs => cs.id === studentId)
+
+            // check if the student belongs to the classrooom
+            if (!student) return ctx.notFound(
                 'One or more of the students do not belong to the classroom!',
                 { id: 'Classroom.join.studentId.invalid', error: 'ValidationError' }
+            )
+        
+            // check if the student is enrolled
+            if (!student.enrolled) return ctx.notFound(
+                'One or more of the students is unenrolled!',
+                { id: 'Classroom.join.student.unenrolled', error: 'ValidationError' }
             )
         }
 
