@@ -32,13 +32,17 @@ export default function Workspace(props) {
         }
     }, [history]);
 
+    const handleGoBack = () => {
+        history.goBack()
+    };
+
     return (
         <div className="container flex flex-row">
             <BlocklyCanvasPanel
                 day={day}
                 dayType={"my-day"}
                 lessonName={`Learning Standard ${day.learning_standard}, Day ${day.number}`}
-                homePath={'/student'}
+                handleGoBack={handleGoBack}
                 handleLogout={handleLogout}
                 isStudent={true}/>
         </div>
