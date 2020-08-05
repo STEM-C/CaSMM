@@ -1,7 +1,6 @@
 import React, {useEffect, useState} from "react"
 import {getDayToolbox} from "../../Utils/requests.js"
 import BlocklyCanvasPanel from "../../components/DayPanels/BlocklyCanvasPanel";
-import DayInfoPanel from "../../components/DayPanels/DayInfoPanel";
 import {message} from "antd";
 
 
@@ -35,10 +34,10 @@ export default function Workspace(props) {
 
     return (
         <div className="container flex flex-row">
-            <DayInfoPanel day={day}/>
             <BlocklyCanvasPanel
                 day={day}
                 dayType={"my-day"}
+                lessonName={`Learning Standard ${day.learning_standard}, Day ${day.number}`}
                 homePath={'/student'}
                 handleLogout={handleLogout}
                 isStudent={true}/>

@@ -12,7 +12,7 @@ export default function BlocklyCanvasPanel(props) {
     const [hoverCompile, setHoverCompile] = useState(false);
     const [saves, setSaves] = useState([]);
     const [selectedSave, setSelectedSave] = useState(null);
-    const {day, dayType, homePath, handleGoBack, isStudent} = props;
+    const {day, dayType, homePath, handleGoBack, isStudent, lessonName} = props;
 
 
     let workspaceRef = useRef(null);
@@ -155,7 +155,7 @@ export default function BlocklyCanvasPanel(props) {
             </div>
             <div id='bottom-container' className="flex flex-column vertical-container overflow-visible">
                 <div id="section-header">
-                    Program your Arduino...
+                    {lessonName ? lessonName : "Program your Arduino..."}
                 </div>
                 <div id="blockly-canvas"
                      onChange={() => setLocalActivity(workspaceRef.current)}/>
