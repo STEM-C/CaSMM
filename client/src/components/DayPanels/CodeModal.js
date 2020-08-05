@@ -40,7 +40,7 @@ export default function CodeModal(props) {
                 ]}
             >
                 {workspaceRef ?
-                    <Text style={{whiteSpace: "pre-wrap"}}>
+                    <Text copyable style={{whiteSpace: "pre-wrap"}}>
                         {title === 'XML' ? getXml(workspaceRef, false) : getArduino(workspaceRef, false)}
                     </Text>
                     : null}
