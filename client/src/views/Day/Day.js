@@ -38,9 +38,13 @@ export default function Day(props) {
         history.goBack()
     };
 
+    const handleHome = () => {
+        history.push('/dashboard')
+    };
+
     return (
         <div className="container nav-padding">
-            <NavBar handleLogout={handleLogout} history={history}/>
+            <NavBar handleLogout={handleLogout} handleHome={handleHome} isMentor={true}/>
             <div className="flex flex-row">
                 <DayInfoPanel day={day}/>
                 <BlocklyCanvasPanel day={day} dayType={"my-day"} handleGoBack={handleGoBack}/>

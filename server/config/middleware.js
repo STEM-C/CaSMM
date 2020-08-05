@@ -16,7 +16,8 @@ module.exports = {
                 '/workspace',
                 '/sandbox',
                 '/day',
-                '/classroom/*'
+                '/classroom/*',
+                '/teacherlogin'
             ]
         },
         // logger: {

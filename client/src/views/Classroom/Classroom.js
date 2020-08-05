@@ -28,9 +28,13 @@ export default function Classroom(props) {
         });
     }, [classroomId]);
 
+    const handleHome = () => {
+        history.push('/dashboard')
+    };
+
     return (
         <div className="container nav-padding">
-            <NavBar handleLogout={handleLogout} history={history}/>
+            <NavBar handleLogout={handleLogout} handleHome={handleHome} isMentor={true}/>
             <div id='main-header' className='s'>
                 <div id='classroom'>{classroom.name}</div>
                 <div id='code'>Join code: {classroom.code}</div>

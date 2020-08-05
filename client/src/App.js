@@ -12,6 +12,7 @@ import Sandbox from "./views/Sandbox/Sandbox"
 import {removeUserSession} from "./Utils/AuthRequests";
 import Day from "./views/Day/Day";
 import Classroom from "./views/Classroom/Classroom"
+import TeacherLogin from "./views/TeacherLogin/TeacherLogin"
 
 const App = () => {
     let history = useHistory();
@@ -24,6 +25,7 @@ const App = () => {
         <div>
             <Switch>
                 <Route exact path={"/"} render={() => <Home history={history} />}/>
+                <Route exact path={"/teacherlogin"} render={() => <TeacherLogin history={history}/>}/>
                 <Route exact path={"/login"} render={() => <StudentLogin history={history} />}/>
                 <PrivateRoute exact path={"/dashboard"} render={() => <Dashboard history={history} handleLogout={handleLogout}/>}/>
                 <PrivateRoute exact path={"/student"} render={() => <Student history={history}/> } />
