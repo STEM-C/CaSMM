@@ -40,9 +40,11 @@ export default function CodeModal(props) {
                 ]}
             >
                 {workspaceRef ?
-                    <Text copyable style={{whiteSpace: "pre-wrap"}}>
-                        {title === 'XML' ? getXml(workspaceRef, false) : getArduino(workspaceRef, false)}
-                    </Text>
+                    <div id='code-text-box'>
+                        <Text copyable style={{whiteSpace: "pre-wrap"}}>
+                            {title === 'XML' ? getXml(workspaceRef, false) : getArduino(workspaceRef, false)}
+                        </Text>
+                    </div>
                     : null}
             </Modal>
         </div>
