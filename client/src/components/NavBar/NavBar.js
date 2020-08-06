@@ -7,7 +7,7 @@ import {DownOutlined} from '@ant-design/icons';
 import {getUser} from "../../Utils/AuthRequests";
 
 export default function NavBar(props) {
-    const {handleLogout, handleHome, handleTeacherLogin, handleLeaveClass, handleSandbox, isMentor} = props;
+    const {handleLogout, handleHome, handleTeacherLogin, handleSandbox, isMentor} = props;
     const user = getUser();
 
     const menu = isMentor ? (

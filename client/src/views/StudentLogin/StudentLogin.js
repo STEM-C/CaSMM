@@ -3,7 +3,7 @@ import './StudentLogin.less'
 import Logo from "../../assets/casmm_logo.png"
 import {getStudents, postJoin} from "../../Utils/requests";
 import StudentLoginForm from "./StudentLoginForm";
-import {removeUserSession, setUserSession} from "../../Utils/AuthRequests";
+import {setUserSession} from "../../Utils/AuthRequests";
 import {message} from "antd";
 import NavBar from "../../components/NavBar/NavBar";
 

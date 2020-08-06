@@ -2,7 +2,6 @@ import React, {useState, useEffect} from 'react'
 import {getStudentClassroom} from "../../Utils/requests"
 import './Student.less'
 import {message} from "antd";
-import {removeUserSession} from "../../Utils/AuthRequests";
 import NavBar from "../../components/NavBar/NavBar";
 
 function Student(props) {
