@@ -8,10 +8,12 @@ export default function MentorSubHeader(props) {
         title,
         addActivityActive,
         addUserActive,
+        classroomId,
         cardViewActive,
         listViewActive,
         checkoutActive,
         setListView,
+        addStudentsToTable,
     } = props;
 
     return (
@@ -23,7 +25,7 @@ export default function MentorSubHeader(props) {
                         <i className="fa fa-plus-square"/>
                     </button> : null}
                 {addUserActive ?
-                    <AddStudentsModal/> : null}
+                    <AddStudentsModal addStudentsToTable={addStudentsToTable} classroomId={classroomId}/> : null}
                 {cardViewActive ?
                     <button onClick={() => setListView(false)} id='link'>
                         <i className="fa fa-th"/>

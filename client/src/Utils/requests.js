@@ -187,3 +187,27 @@ export const getSaves = async (day) => (
         error: 'Past saves could not be retrieved.'
     })
 );
+
+export const addStudent = async (name, character, classroom) => (
+    makeRequest({
+        method: POST,
+        path: `${cms}/students`,
+        data: {
+            name: name,
+            character: character,
+            classroom: classroom
+        },
+        auth: true,
+        error: 'Failed to add student.'
+    })
+);
+
+export const addStudents = async (students, classroom) => (
+    makeRequest({
+        method: POST,
+        path: `${cms}/students`,
+        data: {students: students, classroom: classroom},
+        auth: true,
+        error: 'Failed to add students.'
+    })
+);

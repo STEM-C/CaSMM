@@ -12,7 +12,7 @@ export default function Roster(props) {
     const [editingKey, setEditingKey] = useState('');
     const [listView, setListView] = useState(true);
     const [classroom, setClassroom] = useState({})
-    const {classroomId} = props;
+    const {classroomId, history} = props;
 
     useEffect(() => {
         let data = [];
@@ -60,6 +60,20 @@ export default function Roster(props) {
         } else {
             message.error(res.err);
         }
+    };
+
+    const addStudentsToTable = (students) => {
+        let newStudentData = [...studentData];
+        students.forEach(student => newStudentData.push({
+            key: student.id,
+            name: student.name,
+            character: student.character,
+            enrolled: {
+                id: student.id,
+                enrolled: student.enrolled
+            }
+        }));
+        setStudentData(newStudentData)
     };
 
     const isEditing = record => record.key === editingKey;
@@ -114,7 +128,7 @@ export default function Roster(props) {
 
     return (
         <div>
-            <MentorSubHeader title={'Your Students:'} addUserActive={true}
+            <MentorSubHeader title={'Your Students:'} addStudentsToTable={addStudentsToTable} addUserActive={true} classroomId={classroomId}
                              cardViewActive={listView} listViewActive={!listView} setListView={setListView}/>
             {
                 listView ?
