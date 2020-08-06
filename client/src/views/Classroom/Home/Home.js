@@ -3,7 +3,7 @@ import "./Home.less"
 import {getClassroom, getLearningStandard} from "../../../Utils/requests";
 import MentorSubHeader from "../../../components/MentorSubHeader/MentorSubHeader";
 import DisplayCodeModal from "./DisplayCodeModal";
-import LearningStandardModal from "./LearningStandardModal";
+import LearningStandardModal from "./LearningStandardSelect/LearningStandardModal";
 import {message} from "antd";
 
 

@@ -1,7 +1,7 @@
 import {Modal, Button, message} from 'antd';
 import React, {useEffect, useState} from "react";
-import LearningStandardSelect from "../LearningStandardSelect/LearningStandardSelect";
-import {getLearningStandard, setSelection} from "../../../Utils/requests";
+import LearningStandardSelect from "./LearningStandardSelect";
+import {getLearningStandard, setSelection} from "../../../../Utils/requests";
 
 export default function LearningStandardModal(props) {
     const [visible, setVisible] = useState(false);

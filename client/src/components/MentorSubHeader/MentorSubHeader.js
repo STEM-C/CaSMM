@@ -1,6 +1,7 @@
 import React from 'react';
 import './MentorSubHeader.less'
 import {Link} from "react-router-dom";
+import AddStudentsModal from "../../views/Classroom/Roster/AddStudents/AddStudentsModal";
 
 export default function MentorSubHeader(props) {
     const {
@@ -22,9 +23,7 @@ export default function MentorSubHeader(props) {
                         <i className="fa fa-plus-square"/>
                     </button> : null}
                 {addUserActive ?
-                    <button id='link'>
-                        <i className="fa fa-user-plus"/>
-                    </button> : null}
+                    <AddStudentsModal/> : null}
                 {cardViewActive ?
                     <button onClick={() => setListView(false)} id='link'>
                         <i className="fa fa-th"/>

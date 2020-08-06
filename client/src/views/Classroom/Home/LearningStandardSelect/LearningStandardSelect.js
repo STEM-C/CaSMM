@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {AutoComplete, Divider, message} from "antd";
 import './LearningStandardSelect.less'
-import {getLearningStandard, getUnits} from "../../../Utils/requests";
+import {getLearningStandard, getUnits} from "../../../../Utils/requests";
 import CheckUnits from "./CheckUnits";
 
 export default function LearningStandardSelect(props) {
