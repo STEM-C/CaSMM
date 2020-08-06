@@ -7,7 +7,7 @@ import {DownOutlined} from '@ant-design/icons';
 import {getUser} from "../../Utils/AuthRequests";
 
 export default function NavBar(props) {
-    const {handleLogout, handleHome, handleTeacherLogin, handleSandbox, isMentor} = props;
+    const {handleLogout, handleHome, handleTeacherLogin, handleLeaveClass, handleSandbox, isMentor} = props;
     const user = getUser();
 
     const menu = isMentor ? (
@@ -27,13 +27,13 @@ export default function NavBar(props) {
         </Menu>
     ) : (
         <Menu>
-            {handleSandbox ? <Menu.Item key="0" onClick={handleSandbox}>
-                <i className="fa fa-window-maximize"/>
-                &nbsp; Sandbox
-            </Menu.Item> : null}
-            {handleHome ? <Menu.Item key="1" onClick={handleHome}>
+            {handleHome ? <Menu.Item key="0" onClick={handleHome}>
                 <i className="fa fa-home"/>
                 &nbsp; Home
+            </Menu.Item> : null}
+            {handleSandbox ? <Menu.Item key="1" onClick={handleSandbox}>
+                <i className="fa fa-window-maximize"/>
+                &nbsp; Sandbox
             </Menu.Item> : null}
             {handleTeacherLogin ? <Menu.Item key="2" onClick={handleTeacherLogin}>
                 <i className="fa fa-sign-in-alt"/>

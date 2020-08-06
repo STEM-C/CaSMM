@@ -2,6 +2,8 @@ import React, {useEffect, useState} from "react"
 import {getDayToolbox} from "../../Utils/requests.js"
 import BlocklyCanvasPanel from "../../components/DayPanels/BlocklyCanvasPanel";
 import {message} from "antd";
+import {removeUserSession} from "../../Utils/AuthRequests";
+import NavBar from "../../components/NavBar/NavBar";
 
 
 export default function Workspace(props) {
@@ -37,7 +39,8 @@ export default function Workspace(props) {
     };
 
     return (
-        <div className="container flex flex-row">
+        <div className="container flex flex-row nav-padding">
+            <NavBar handleLogout={handleLogout}/>
             <BlocklyCanvasPanel
                 day={day}
                 dayType={"my-day"}

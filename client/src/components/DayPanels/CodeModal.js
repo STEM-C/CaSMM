@@ -21,7 +21,7 @@ export default function CodeModal(props) {
 
     return (
         <div id='code-modal'>
-            <i onClick={showModal} className={title === 'XML' ? "fa fa-code hvr-info" : "fa fa-cogs hvr-info"}
+            <i onClick={showModal} className={title === 'XML' ? "fa fa-code hvr-info" : "fa fa-font hvr-info"}
                onMouseEnter={() => setHover(true)}
                onMouseLeave={() => setHover(false)}/>
             {hover &&
