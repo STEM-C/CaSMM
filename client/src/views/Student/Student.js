@@ -2,10 +2,12 @@ import React, {useState, useEffect} from 'react'
 import {getStudentClassroom} from "../../Utils/requests"
 import './Student.less'
 import {message} from "antd";
+import NavBar from "../../components/NavBar/NavBar";
 
 function Student(props) {
     const [learningStandard, setLearningStandard] = useState({});
     const [selectedDay, setSelectedDay] = useState({});
+    const {handleLogout} = props;
 
     useEffect(() => {
         const fetchData = async () => {
@@ -38,7 +40,8 @@ function Student(props) {
     };
 
     return (
-        <div className='container flex justify-center'>
+        <div className='container nav-padding'>
+            <NavBar handleLogout={handleLogout}/>
             <div id='activity-container'>
                 <div id='header'>
                     <h1>Select your Day</h1>

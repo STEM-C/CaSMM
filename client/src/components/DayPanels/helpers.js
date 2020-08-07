@@ -13,13 +13,13 @@ export const setLocalActivity = (workspaceRef, activityType) => {
 }
 
 // Generates xml from blockly canvas
-export const getXml = (workspaceRef) => {
+export const getXml = (workspaceRef, shouldAlert = true) => {
 
     const {Blockly} = window
 
     let xml = Blockly.Xml.workspaceToDom(workspaceRef)
     let xml_text = Blockly.Xml.domToText(xml)
-    alert(xml_text)
+    if(shouldAlert) alert(xml_text)
     return (xml_text)
 };
 

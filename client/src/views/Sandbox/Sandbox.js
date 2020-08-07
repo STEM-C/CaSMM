@@ -2,10 +2,12 @@ import React, {useEffect, useState} from "react"
 import BlocklyCanvasPanel from "../../components/DayPanels/BlocklyCanvasPanel";
 import {getDayToolboxAll} from "../../Utils/requests";
 import {message} from "antd";
+import NavBar from "../../components/NavBar/NavBar";
 
 
-export default function Sandbox() {
+export default function Sandbox(props) {
     const [day, setDay] = useState(null);
+    const {history} = props;
 
     useEffect(() => {
         const localDay = JSON.parse(localStorage.getItem("sandbox-day"));
@@ -27,8 +29,17 @@ export default function Sandbox() {
         }
     }, []);
 
+    const handleHome = () => {
+        history.push('/')
+    };
+
+    const handleTeacherLogin = () => {
+        history.push('/teacherlogin')
+    };
+
     return (
-        <div className='container'>
+        <div className='container nav-padding'>
+            <NavBar handleTeacherLogin={handleTeacherLogin} handleHome={handleHome}/>
             <BlocklyCanvasPanel day={day} dayType={"sandbox-day"} homePath={'/'}/>
         </div>
     );

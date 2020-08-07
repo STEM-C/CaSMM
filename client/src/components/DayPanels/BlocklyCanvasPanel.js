@@ -1,18 +1,18 @@
 import React, {useEffect, useRef, useState} from 'react';
 import {Link} from "react-router-dom";
 import './DayPanels.less'
-import {compileArduinoCode, getArduino, getJS, getXml, setLocalActivity, handleSave} from "./helpers";
+import {compileArduinoCode, setLocalActivity, handleSave} from "./helpers";
 import {message} from "antd";
 import {getSaves} from "../../Utils/requests";
+import CodeModal from "./CodeModal";
 
 export default function BlocklyCanvasPanel(props) {
     const [hoverXml, setHoverXml] = useState(false);
-    const [hoverJS, setHoverJS] = useState(false);
     const [hoverArduino, setHoverArduino] = useState(false);
     const [hoverCompile, setHoverCompile] = useState(false);
     const [saves, setSaves] = useState([]);
     const [selectedSave, setSelectedSave] = useState(null);
-    const {day, dayType, homePath, handleGoBack, isStudent} = props;
+    const {day, dayType, homePath, handleGoBack, isStudent, lessonName} = props;
 
 
     let workspaceRef = useRef(null);
@@ -62,7 +62,7 @@ export default function BlocklyCanvasPanel(props) {
                     }
                 }
 
-                if(onLoadSave) {
+                if (onLoadSave) {
                     let xml = window.Blockly.Xml.textToDom(onLoadSave.workspace);
                     window.Blockly.Xml.domToWorkspace(xml, workspaceRef.current)
                 } else if (day.template) {
@@ -130,32 +130,34 @@ export default function BlocklyCanvasPanel(props) {
                                 <i id='icon-btn' className="fa fa-save"/>
                             </button>
                         </div> : null}
-                    <div style={{"width": "25%"}}>
+                    <div style={{"width": "10%"}}>
                         <div id='action-btn-container' className="flex space-between">
-                            <i onClick={() => getXml(workspaceRef.current)} className="fas fa-code hvr-info"
-                               onMouseEnter={() => setHoverXml(true)}
-                               onMouseLeave={() => setHoverXml(false)}/>
-                            {hoverXml && <div className="popup XML">Shows Xml Code</div>}
-                            <i onClick={() => getJS(workspaceRef.current)} className="fab fa-js hvr-info"
-                               onMouseEnter={() => setHoverJS(true)}
-                               onMouseLeave={() => setHoverJS(false)}/>
-                            {hoverJS && <div className="popup JS">Shows Javascript Code</div>}
-                            <i onClick={() => getArduino(workspaceRef.current)} className="hvr-info"
-                               onMouseEnter={() => setHoverArduino(true)}
-                               onMouseLeave={() => setHoverArduino(false)}>A</i>
-                            {hoverArduino && <div className="popup Arduino">Shows Arduino Code</div>}
+                            {!isStudent ?
+                                <CodeModal
+                                    title={'XML'}
+                                    workspaceRef={workspaceRef.current}
+                                    setHover={setHoverXml}
+                                    hover={hoverXml}
+                                />
+                                : null}
+                            <CodeModal
+                                title={'Arduino Code'}
+                                workspaceRef={workspaceRef.current}
+                                setHover={setHoverArduino}
+                                hover={hoverArduino}
+                            />
                             <i onClick={() => compileArduinoCode(workspaceRef.current)}
-                               className="fas fa-play hvr-info"
+                               className="fas fa-upload hvr-info"
                                onMouseEnter={() => setHoverCompile(true)}
                                onMouseLeave={() => setHoverCompile(false)}/>
-                            {hoverCompile && <div className="popup Compile">Run Program</div>}
+                            {hoverCompile && <div className="popup Compile">Upload to Arduino</div>}
                         </div>
                     </div>
                 </div>
             </div>
             <div id='bottom-container' className="flex flex-column vertical-container overflow-visible">
                 <div id="section-header">
-                    Program your Arduino...
+                    {lessonName ? lessonName : "Program your Arduino..."}
                 </div>
                 <div id="blockly-canvas"
                      onChange={() => setLocalActivity(workspaceRef.current)}/>

@@ -5,6 +5,7 @@ import {getStudents, postJoin} from "../../Utils/requests";
 import StudentLoginForm from "./StudentLoginForm";
 import {setUserSession} from "../../Utils/AuthRequests";
 import {message} from "antd";
+import NavBar from "../../components/NavBar/NavBar";
 
 
 export default function StudentLogin(props) {
@@ -13,7 +14,7 @@ export default function StudentLogin(props) {
     const [studentIds, setStudentIds] = useState([null, null, null]);
     const [studentAnimals, setStudentAnimals] = useState(['', '', '']);
     const [numForms, setNumForms] = useState(2);
-    //const [error, setError] = useState(null);
+    const {handleLogout} = props;
     const joinCode = localStorage.getItem('join-code');
 
     useEffect(() => {
@@ -89,7 +90,8 @@ export default function StudentLogin(props) {
     };
 
     return (
-        <div className='container'>
+        <div className='container nav-padding'>
+            <NavBar handleLogout={handleLogout}/>
             <img src={Logo} alt='logo' id='login-logo'/>
             <div id='form-container'>
                 {setForms().map((form) =>
