@@ -18,6 +18,14 @@
     },
     {
       "method": "GET",
+      "path": "/classrooms/student",
+      "handler": "classroom.student",
+      "config": {
+        "policies": ["global::isStudent"]
+      }
+    },
+    {
+      "method": "GET",
       "path": "/classrooms/:id",
       "handler": "classroom.findOne",
       "config": {

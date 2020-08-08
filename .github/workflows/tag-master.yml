@@ -8,11 +8,9 @@ jobs:
   run:
     runs-on: ubuntu-latest
     steps:
-      # check out the repository
       - name: Checkout
         uses: actions/checkout@v2
-
       - name: Tag Master
-        uses: STEM-C/auto/tag@v0.5
+        uses: STEM-C/auto/tag@v0.6.1
         with:
           repo_token: "${{ secrets.GITHUB_TOKEN }}"

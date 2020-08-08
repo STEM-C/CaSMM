@@ -14,6 +14,7 @@ yarn-error.log*
 *.sql
 .cache/
 *.dump
+!blocks_db.dump
 !development_db.dump
 !test_db.dump
 

@@ -1,0 +1,44 @@
+@import "../../assets/style.less";
+
+#main-header {
+  margin: 0 0 1vh 5vw;
+
+  div{
+    color: #colors[text-secondary];
+    font-weight: bolder;
+  }
+  #classroom {
+    font-size: 5vh;
+  }
+  #code {
+    font-size: 4vh;
+  }
+}
+
+.ant-tabs-nav-wrap, .ant-tabs-nav {
+  margin: auto 5vw;
+}
+
+.ant-tabs-tab {
+  min-width: 10vw;
+  justify-content: center;
+  color: #colors[tertiary] !important;
+
+  &:hover {
+    color: #colors[tertiary];
+    opacity: .6;
+  }
+}
+
+.ant-tabs-tab.ant-tabs-tab-active {
+  color: #colors[secondary] !important;
+
+  &:hover {
+    color: #colors[secondary];
+    opacity: .6;
+  }
+}
+
+.ant-tabs-ink-bar {
+  background: #colors[secondary] !important;
+}

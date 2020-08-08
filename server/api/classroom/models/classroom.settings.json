@@ -35,6 +35,14 @@
     "teachers": {
       "collection": "teacher",
       "via": "classrooms"
+    },
+    "grade": {
+      "via": "classrooms",
+      "model": "grade"
+    },
+    "selections": {
+      "via": "classroom",
+      "collection": "selection"
     }
   }
 }

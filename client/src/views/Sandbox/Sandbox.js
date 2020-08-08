@@ -1,30 +1,35 @@
 import React, {useEffect, useState} from "react"
-import BlocklyCanvasPanel from "../../components/ActivityPanels/BlocklyCanvasPanel";
-import {getActivityToolboxAll} from "../../Utils/requests";
+import BlocklyCanvasPanel from "../../components/DayPanels/BlocklyCanvasPanel";
+import {getDayToolboxAll} from "../../Utils/requests";
+import {message} from "antd";
 
 
 export default function Sandbox() {
-    const [activity, setActivity] = useState(null)
+    const [day, setDay] = useState(null);
 
     useEffect(() => {
-        const localActivity = localStorage.getItem("sandbox-activity")
+        const localDay = JSON.parse(localStorage.getItem("sandbox-day"));
 
-        if (localActivity) {
-            let loadedActivity = JSON.parse(localActivity)
-            setActivity(loadedActivity)
+        if (localDay) {
+            let loadedDay = localDay;
+            setDay(loadedDay)
         } else {
-            getActivityToolboxAll().then(response => {
-                let loadedActivity = {toolbox: response.toolbox}
+            getDayToolboxAll().then(res => {
+                if (res.data) {
+                    let loadedDay = {toolbox: res.data.toolbox};
 
-                localStorage.setItem("sandbox-activity", JSON.stringify(loadedActivity))
-                setActivity(loadedActivity)
+                    localStorage.setItem("sandbox-day", JSON.stringify(loadedDay));
+                    setDay(loadedDay)
+                } else {
+                    message.error(res.err);
+                }
             })
         }
     }, []);
 
     return (
         <div className='container'>
-            <BlocklyCanvasPanel activity={activity} activityType={"sandbox-activity"} homePath={'/'}/>
+            <BlocklyCanvasPanel day={day} dayType={"sandbox-day"} homePath={'/'}/>
         </div>
     );
 

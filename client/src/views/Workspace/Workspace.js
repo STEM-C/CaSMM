@@ -1,38 +1,47 @@
 import React, {useEffect, useState} from "react"
-import {getActivityToolbox} from "../../Utils/requests.js"
-import {getToken} from "../../Utils/AuthRequests"
-import BlocklyCanvasPanel from "../../components/ActivityPanels/BlocklyCanvasPanel";
-import ActivityInfoPanel from "../../components/ActivityPanels/ActivityInfoPanel";
+import {getDayToolbox} from "../../Utils/requests.js"
+import BlocklyCanvasPanel from "../../components/DayPanels/BlocklyCanvasPanel";
+import DayInfoPanel from "../../components/DayPanels/DayInfoPanel";
+import {message} from "antd";
 
 
 export default function Workspace(props) {
-    const [activity, setActivity] = useState({})
-    const {handleLogout} = props
+    const [day, setDay] = useState({});
+    const {handleLogout, history} = props;
 
     useEffect(() => {
-        const localActivity = localStorage.getItem("my-activity")
-        const {selectedActivity} = props
+        const localDay = JSON.parse(localStorage.getItem("my-day"));
 
-        if (localActivity && !selectedActivity) {
-            let loadedActivity = JSON.parse(localActivity)
-            setActivity(loadedActivity)
+        if (localDay) {
+            if (localDay.toolbox) {
+                setDay(localDay)
+            } else {
+                getDayToolbox(localDay.id).then(res => {
+                    if (res.data) {
+                        let loadedDay = {...localDay, toolbox: res.data.toolbox};
 
-        } else if (selectedActivity) {
-            getActivityToolbox(selectedActivity.id, getToken()).then(response => {
-                let loadedActivity = {...selectedActivity, toolbox: response.toolbox}
+                        localStorage.setItem("my-day", JSON.stringify(loadedDay));
+                        setDay(loadedDay)
+                    } else {
+                        message.error(res.err);
+                    }
+                })
+            }
 
-                localStorage.setItem("my-activity", JSON.stringify(loadedActivity))
-                setActivity(loadedActivity)
-            })
         } else {
-            props.history.push('/')
+            history.goBack()
         }
-    }, [props])
+    }, [history]);
 
     return (
         <div className="container flex flex-row">
-            <ActivityInfoPanel activity={activity}/>
-            <BlocklyCanvasPanel activity={activity} activityType={"my-activity"} homePath={'/student'} handleLogout={handleLogout}/>
+            <DayInfoPanel day={day}/>
+            <BlocklyCanvasPanel
+                day={day}
+                dayType={"my-day"}
+                homePath={'/student'}
+                handleLogout={handleLogout}
+                isStudent={true}/>
         </div>
     );
 
