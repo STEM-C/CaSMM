@@ -15,8 +15,8 @@ module.exports = {
         const allSaves = await strapi.services.save.find({ student: ids, day })
 
         const saves = {
-            current: allSaves.filter(save => save.session === session),
-            past: allSaves.filter(save => save.session !== session)
+            current: allSaves.find(save => save.session.id === session),
+            past: allSaves.filter(save => save.session.id !== session)
         }
 
         return saves
