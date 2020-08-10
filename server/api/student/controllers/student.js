@@ -65,6 +65,12 @@ module.exports = {
 
         if (students) {
             return await Promise.all(students.map(student => {
+                // validate the request
+                if (typeof student.name !== "string" || !student.name) return ctx.badRequest(
+                    'A name must be provided!',
+                    {id: 'Student.create.body.invalid', error: 'ValidationError'}
+                )
+
                 return strapi.services.student.create({
                     name: student.name,
                     character: student.character,
@@ -72,6 +78,13 @@ module.exports = {
                 })
             }))
         }
+
+        // validate the request
+        const {name} = ctx.request.body
+        if (typeof name !== "string" || !name) return ctx.badRequest(
+            'A name must be provided!',
+            {id: 'Student.create.body.invalid', error: 'ValidationError'}
+        )
 
         return strapi.services.student.create(ctx.request.body)
     }
