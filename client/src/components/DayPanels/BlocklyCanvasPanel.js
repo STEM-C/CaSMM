@@ -26,9 +26,10 @@ export default function BlocklyCanvasPanel(props) {
 
     const loadSave = () => {
         try {
-            const toLoad = saves.current.id === selectedSave ?
-                saves.current : saves.past.find(save => save.id === selectedSave);
-            let xml = window.Blockly.Xml.textToDom(toLoad.workspace);
+            let toLoad = day.template;
+            if (selectedSave !== -1) toLoad = saves.current.id === selectedSave ?
+                saves.current.workspace : saves.past.find(save => save.id === selectedSave).workspace;
+            let xml = window.Blockly.Xml.textToDom(toLoad);
             if (workspaceRef.current) workspaceRef.current.clear();
             window.Blockly.Xml.domToWorkspace(xml, workspaceRef.current)
         } catch {
@@ -37,10 +38,20 @@ export default function BlocklyCanvasPanel(props) {
     };
 
     useEffect(() => {
+        // automatically save workspace every 5 min
+        if (isStudentRef) {
+            setInterval(async () => {
+                if(workspaceRef.current && dayRef.current) await handleSave(dayRef.current.id, workspaceRef)
+            }, 60000);
+        }
+
         // clean up - saves workspace and removes blockly div from DOM
-        return () => {
-            if (isStudentRef.current && workspaceRef.current) handleSave(dayRef.current.id, workspaceRef);
+        return async () => {
+            if (isStudentRef.current && dayRef.current && workspaceRef.current)
+                await handleSave(dayRef.current.id, workspaceRef);
             if (workspaceRef.current) workspaceRef.current.dispose();
+            isStudentRef.current = null;
+            dayRef.current = null
         }
     }, []);
 
@@ -49,7 +60,7 @@ export default function BlocklyCanvasPanel(props) {
         const setUp = async () => {
             if (!workspaceRef.current && day && Object.keys(day).length !== 0) {
                 setWorkspace();
-                workspaceRef.current.addChangeListener(() => setLocalActivity(workspaceRef.current, dayType));
+                await workspaceRef.current.addChangeListener(() => setLocalActivity(workspaceRef.current, dayType));
 
                 isStudentRef.current = isStudent;
                 let onLoadSave = null;
@@ -81,15 +92,6 @@ export default function BlocklyCanvasPanel(props) {
         setUp()
     }, [day, dayType, isStudent]);
 
-    useEffect(() => {
-        // automatically save workspace every 5 min
-        if (isStudentRef) {
-            setInterval(async () => {
-                if(workspaceRef.current) await handleSave(dayRef.current.id, workspaceRef)
-            }, 60000);
-        }
-    });
-
     const handleManualSave = async () => {
         // save workspace then update load save options
         const res = await handleSave(day.id, workspaceRef);
@@ -120,8 +122,11 @@ export default function BlocklyCanvasPanel(props) {
                             <select id='save-select' defaultValue={'default'} onChange={(e) => {
                                 setSelectedSave(parseInt(e.target.value))
                             }}>
-                                <option key={-1} value='default' disabled id='disabled-option'>
+                                <option key={-2} value='default' disabled id='disabled-option'>
                                     Load Saves
+                                </option>
+                                <option key={-1} value={-1}>
+                                    Default Template
                                 </option>
                                 {saves.current ? <option value={saves.current.id} key={saves.current.id}>
                                     {'Active Save'}
