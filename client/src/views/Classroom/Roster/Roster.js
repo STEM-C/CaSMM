@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react";
-import {getClassroom, setEnrollmentStatus, updateStudent} from "../../../Utils/requests";
+import {deleteStudent, getClassroom, setEnrollmentStatus, updateStudent} from "../../../Utils/requests";
 import './Roster.less'
 import MentorSubHeader from "../../../components/MentorSubHeader/MentorSubHeader";
 import ListView from "./ListView";
@@ -126,14 +126,28 @@ export default function Roster(props) {
         }
     };
 
+    const handleDelete = async key => {
+        const dataSource = [...studentData];
+        setStudentData(dataSource.filter(item => item.key !== key));
+
+        const res = await deleteStudent(key);
+        if (res.data) {
+            message.success(`Successfully deleted student, ${res.data.name}.`);
+        } else {
+            message.error(res.err);
+        }
+    };
+
     return (
         <div>
-            <MentorSubHeader title={'Your Students:'} addStudentsToTable={addStudentsToTable} addUserActive={true} classroomId={classroomId}
+            <MentorSubHeader title={'Your Students:'} addStudentsToTable={addStudentsToTable} addUserActive={true}
+                             classroomId={classroomId}
                              cardViewActive={listView} listViewActive={!listView} setListView={setListView}/>
             {
                 listView ?
                     <ListView studentData={studentData} onEnrollToggle={onEnrollToggle} editingKey={editingKey}
-                              isEditing={isEditing} edit={edit} cancelEdit={cancelEdit} save={save} form={form}/>
+                              isEditing={isEditing} edit={edit} cancelEdit={cancelEdit} save={save} form={form}
+                              handleDelete={handleDelete}/>
                     :
                     <CardView studentData={studentData} onEnrollToggle={onEnrollToggle} editingKey={editingKey}
                               isEditing={isEditing} edit={edit} cancelEdit={cancelEdit} save={save}/>

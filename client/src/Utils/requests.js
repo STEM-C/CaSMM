@@ -5,6 +5,7 @@ import {getToken} from "./AuthRequests";
 const GET = 'GET';
 const PUT = 'PUT';
 const POST = 'POST';
+const DELETE = 'DELETE'
 
 // all request functions should utilize makeRequest and return an obj with structure {data, err}
 const makeRequest = async ({method, path, data, auth = false, error}) => {
@@ -27,6 +28,9 @@ const makeRequest = async ({method, path, data, auth = false, error}) => {
                 break;
             case PUT:
                 res = (await axios.put(path, data, config)).data;
+                break;
+            case DELETE:
+                res = (await axios.delete(path, config)).data;
                 break;
             default:
                 throw Error('Invalid method.')
@@ -209,5 +213,14 @@ export const addStudents = async (students, classroom) => (
         data: {students: students, classroom: classroom},
         auth: true,
         error: 'Failed to add students.'
+    })
+);
+
+export const deleteStudent = async (student) => (
+    makeRequest({
+        method: DELETE,
+        path: `${cms}/students/${student}`,
+        auth: true,
+        error: 'Failed to delete student.'
     })
 );
