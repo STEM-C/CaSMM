@@ -12,6 +12,8 @@ export default function AddStudents(props) {
     const [tableData, setTableData] = useState([]);
     const {classroomId, addStudentsToTable} = props;
 
+    const buttonRef = React.createRef()
+
     const handleManualAdd = async () => {
         const res = await addStudent(name.value, animal.value, classroomId);
         if (res.data) {
@@ -32,7 +34,7 @@ export default function AddStudents(props) {
         const res = await addStudents(students, classroomId);
         if (res.data) {
             addStudentsToTable(res.data);
-            message.success('Uploaded roster added to classroom successfully.')
+            message.success('Uploaded roster added to classroom successfully.');
         } else {
             message.error(res.err)
         }
@@ -64,8 +66,10 @@ export default function AddStudents(props) {
 
     const handleOnDrop = async (roster) => {
         // on file select, filter out bad data and set uploadedRoster and tableData
+        let badInput = false;
         const filteredRoster = roster.filter(student => {
-            if (student.data.name && student.data.animal) return true;
+            if (student.data.name) return true;
+            badInput = true;
             return false
         });
 
@@ -73,12 +77,22 @@ export default function AddStudents(props) {
         setUploadedRoster(students);
         const data = await getTableData(students);
         setTableData(data)
+        if (badInput || students.length === 0) message.warning(
+            "There may have been an issue parsing one or more data entries in the uploaded CSV. " +
+            " Please verify that your data is in the specified format.", 8)
     };
 
-    const handleRemoveFile = () => {
+    const handleOnRemoveFile = () => {
         // clear uploadedRoster and tableData when file is unselected
         setUploadedRoster([]);
         setTableData([]);
+    };
+
+    const handleRemoveFile = (e) => {
+        // Note that the ref is set async, so it might be null at some point
+        if (buttonRef.current) {
+            buttonRef.current.removeFile(e)
+        }
     };
 
     const handleOnError = (err, file, inputElem, reason) => {
@@ -91,9 +105,7 @@ export default function AddStudents(props) {
             <div id='manual-input'>
                 <h3>Manual Input:</h3>
                 <form>
-                    {/*<label htmlFor="name">Name:</label><br/>*/}
                     <input type="text" {...name} id="name" name="name" placeholder='Student Name'/>
-                    {/*<label htmlFor="animal">Animal:</label><br/>*/}
                     <input type="text" {...animal} id="animal" name="animal" placeholder='Student Animal'/>
                     <br/>
                     <input type="button" value="Add Student" onClick={handleManualAdd}/>
@@ -104,9 +116,10 @@ export default function AddStudents(props) {
                 <h3>Upload Roster CSV:</h3>
                 <p>CSV should have the following columns: "Name", "Animal"</p>
                 <CSVReader
+                    ref={buttonRef}
                     onDrop={handleOnDrop}
                     onError={handleOnError}
-                    onRemoveFile={handleRemoveFile}
+                    onRemoveFile={handleOnRemoveFile}
                     progressBarColor={"#5BABDE"}
                     noDrag
                     config={{
@@ -128,7 +141,10 @@ export default function AddStudents(props) {
                             size='small'
                             title={() => 'Review your uploaded roster:'}
                         />
-                        <input type='button' value='Add Students' onClick={handleCsvAdd}/>
+                        <input type='button' value='Add Students' onClick={(e) => {
+                            handleRemoveFile(e);
+                            handleCsvAdd(e);
+                        }}/>
                     </div>
                     : null}
             </div>
