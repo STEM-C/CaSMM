@@ -10,7 +10,7 @@ export default function BlocklyCanvasPanel(props) {
     const [hoverXml, setHoverXml] = useState(false);
     const [hoverArduino, setHoverArduino] = useState(false);
     const [hoverCompile, setHoverCompile] = useState(false);
-    const [saves, setSaves] = useState([]);
+    const [saves, setSaves] = useState({});
     const [selectedSave, setSelectedSave] = useState(null);
     const {day, dayType, homePath, handleGoBack, isStudent, lessonName} = props;
 
@@ -26,7 +26,8 @@ export default function BlocklyCanvasPanel(props) {
 
     const loadSave = () => {
         try {
-            const toLoad = saves.find(save => save.id === selectedSave);
+            const toLoad = saves.current.id === selectedSave ?
+                saves.current : saves.past.find(save => save.id === selectedSave);
             let xml = window.Blockly.Xml.textToDom(toLoad.workspace);
             if (workspaceRef.current) workspaceRef.current.clear();
             window.Blockly.Xml.domToWorkspace(xml, workspaceRef.current)
@@ -38,7 +39,7 @@ export default function BlocklyCanvasPanel(props) {
     useEffect(() => {
         // clean up - saves workspace and removes blockly div from DOM
         return () => {
-            if (isStudentRef.current) handleSave(dayRef.current.id, workspaceRef);
+            if (isStudentRef.current && workspaceRef.current) handleSave(dayRef.current.id, workspaceRef);
             if (workspaceRef.current) workspaceRef.current.dispose();
         }
     }, []);
@@ -55,7 +56,11 @@ export default function BlocklyCanvasPanel(props) {
                 if (isStudent) {
                     const res = await getSaves(day.id);
                     if (res.data) {
-                        onLoadSave = res.data[0] ? res.data[0] : null;
+                        if (res.data.current) {
+                            onLoadSave = res.data.current
+                        } else if (res.data.past[0]) {
+                            onLoadSave = res.data.past[0]
+                        }
                         setSaves(res.data)
                     } else {
                         console.log(res.err)
@@ -80,7 +85,7 @@ export default function BlocklyCanvasPanel(props) {
         // automatically save workspace every 5 min
         if (isStudentRef) {
             setInterval(async () => {
-                await handleSave(dayRef.current.id, workspaceRef)
+                if(workspaceRef.current) await handleSave(dayRef.current.id, workspaceRef)
             }, 60000);
         }
     });
@@ -116,12 +121,15 @@ export default function BlocklyCanvasPanel(props) {
                                 setSelectedSave(parseInt(e.target.value))
                             }}>
                                 <option key={-1} value='default' disabled id='disabled-option'>
-                                    Previous Saves
+                                    Load Saves
                                 </option>
-                                {saves.map(save =>
+                                {saves.current ? <option value={saves.current.id} key={saves.current.id}>
+                                    {'Active Save'}
+                                </option> : null}
+                                {saves.past ? saves.past.map(save =>
                                     <option value={save.id} key={save.id}>
                                         {`${save.student.name}'s Last Save`}
-                                    </option>)}
+                                    </option>) : null}
                             </select>
                             <button onClick={loadSave} id='link' className="flex flex-column">
                                 <i id='icon-btn' className="fa fa-folder-open"/>
