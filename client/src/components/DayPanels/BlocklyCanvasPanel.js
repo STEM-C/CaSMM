@@ -27,12 +27,19 @@ export default function BlocklyCanvasPanel(props) {
     const loadSave = () => {
         try {
             let toLoad = day.template;
-            if (selectedSave !== -1) toLoad = saves.current.id === selectedSave ?
-                saves.current.workspace : saves.past.find(save => save.id === selectedSave).workspace;
+            if (selectedSave !== -1) {
+
+                if (saves.current) {
+                    toLoad = saves.current.id === selectedSave ?
+                        saves.current.workspace : saves.past.find(save => save.id === selectedSave).workspace
+                } else {
+                    toLoad = saves.past.find(save => save.id === selectedSave).workspace
+                }
+            }
             let xml = window.Blockly.Xml.textToDom(toLoad);
             if (workspaceRef.current) workspaceRef.current.clear();
             window.Blockly.Xml.domToWorkspace(xml, workspaceRef.current)
-        } catch {
+        } catch (e) {
             message.error('Failed to load save.')
         }
     };
@@ -41,7 +48,7 @@ export default function BlocklyCanvasPanel(props) {
         // automatically save workspace every 5 min
         if (isStudentRef) {
             setInterval(async () => {
-                if(workspaceRef.current && dayRef.current) await handleSave(dayRef.current.id, workspaceRef)
+                if (workspaceRef.current && dayRef.current) await handleSave(dayRef.current.id, workspaceRef)
             }, 60000);
         }
 
@@ -133,7 +140,8 @@ export default function BlocklyCanvasPanel(props) {
                                 </option> : null}
                                 {saves.past ? saves.past.map(save =>
                                     <option value={save.id} key={save.id}>
-                                        {`${save.student.name}'s Last Save`}
+                                        {`${save.student.name}'s Save 
+                                        ${save.updated_at.slice(5, 7)}/${save.updated_at.slice(8, 10)}`}
                                     </option>) : null}
                             </select>
                             <button onClick={loadSave} id='link' className="flex flex-column">
