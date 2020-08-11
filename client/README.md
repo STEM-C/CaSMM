@@ -26,7 +26,7 @@ This react project has the following file structure rules:
 
 ## Routing
 
-All client routes must be registered in the cms frontend middleware to ensure they are handled by react. Additional information and implementation instructions are in the [cms](/cms#static-assets) documentation.
+All client routes must be registered in the cms frontend middleware to ensure they are handled by react. Additional information and implementation instructions are in the [server](/server#static-assets) documentation.
 
 <br/>
 
