@@ -10,18 +10,16 @@ Cloud-based programming interface
 
 <br/>
 
-## Scaffolds
+## Application
 
-### `/`  
-
-#### `client/` 
+### `client` 
 [client](/client#client) is the frontend of the application. It is powered by [React](https://reactjs.org/) and [Blockly](https://developers.google.com/blockly).
 
-#### `server/`
+### `server`
 
 [server](/server#server) is the web server and application server. It is powered by [Node](https://nodejs.org/en/) and [Strapi](https://strapi.io/documentation/v3.x/getting-started/introduction.html).
 
-#### `compile/`
+### `compile`
 
   [compile](/compile#compile) is an arduino compiler service. It is an unofficial fork of [Chromeduino](https://github.com/spaceneedle/Chromeduino).
 
