@@ -4,21 +4,24 @@ import './AddStudents.less'
 import {CSVReader} from 'react-papaparse';
 import {Table} from 'antd';
 import {addStudent, addStudents} from "../../../../Utils/requests";
+import Picker from 'emoji-picker-react';
 
 export default function AddStudents(props) {
-    const name = useFormInput('');
-    const animal = useFormInput('');
+    const [name, setName] = useState('');
     const [uploadedRoster, setUploadedRoster] = useState([]);
     const [tableData, setTableData] = useState([]);
+    const [chosenCharacter, setChosenCharacter] = useState(null);
     const {classroomId, addStudentsToTable} = props;
 
-    const buttonRef = React.createRef()
+    const buttonRef = React.createRef();
 
     const handleManualAdd = async () => {
-        const res = await addStudent(name.value, animal.value, classroomId);
+        const res = await addStudent(name, chosenCharacter ? chosenCharacter.emoji : null, classroomId);
         if (res.data) {
             addStudentsToTable([res.data]);
-            message.success(`${name.value} has been added to the roster successfully.`)
+            message.success(`${name} has been added to the roster successfully.`);
+            setChosenCharacter(null);
+            setName('')
         } else {
             message.error(res.err)
         }
@@ -76,7 +79,7 @@ export default function AddStudents(props) {
         const students = await filteredRoster.map(student => student.data);
         setUploadedRoster(students);
         const data = await getTableData(students);
-        setTableData(data)
+        setTableData(data);
         if (badInput || students.length === 0) message.warning(
             "There may have been an issue parsing one or more data entries in the uploaded CSV. " +
             " Please verify that your data is in the specified format.", 8)
@@ -100,13 +103,26 @@ export default function AddStudents(props) {
         message.error("Failed to parse the uploaded file.")
     };
 
+    const onEmojiClick = (event, emojiObject) => {
+        setChosenCharacter(emojiObject);
+    };
+
     return (
         <div id='add-students'>
             <div id='manual-input'>
                 <h3>Manual Input:</h3>
                 <form>
-                    <input type="text" {...name} id="name" name="name" placeholder='Student Name'/>
-                    <input type="text" {...animal} id="animal" name="animal" placeholder='Student Animal'/>
+                    <input type="text" value={name} onChange={e => {setName(e.target.value)}}
+                           id="name" name="name" placeholder='Student Name'/>
+                    {/*<input type="text" {...animal} id="animal" name="animal" placeholder='Student Animal'/>*/}
+                    <div id='emoji-picker'>
+                        {chosenCharacter ? (
+                            <span>Student Character: {chosenCharacter.emoji}</span>
+                        ) : (
+                            <span>Optional: Student Character</span>
+                        )}
+                        <Picker onEmojiClick={onEmojiClick} />
+                    </div>
                     <br/>
                     <input type="button" value="Add Student" onClick={handleManualAdd}/>
                 </form>
