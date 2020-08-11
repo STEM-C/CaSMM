@@ -63,6 +63,16 @@ export default function ListView(props) {
             align: 'left',
         },
         {
+            title: 'View',
+            dataIndex: 'view',
+            key: 'view',
+            width: '10%',
+            align: 'right',
+            render: (_, record) => (
+                <StudentModal student={record} linkBtn={true}/>
+            )
+        },
+        {
             title: 'Edit',
             dataIndex: 'edit',
             key: 'edit',
@@ -91,16 +101,6 @@ export default function ListView(props) {
                     </button>
                 );
             }
-        },
-        {
-            title: 'View',
-            dataIndex: 'view',
-            key: 'view',
-            width: '10%',
-            align: 'right',
-            render: (_, record) => (
-                <StudentModal student={record} linkBtn={true}/>
-            )
         },
         {
             title: 'Delete',
