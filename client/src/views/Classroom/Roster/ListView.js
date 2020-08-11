@@ -1,9 +1,10 @@
 import React from 'react';
 import {Form, Input, Popconfirm, Switch, Table} from "antd";
+import {QuestionCircleOutlined} from '@ant-design/icons';
 import StudentModal from "./StudentModal";
 
 export default function ListView(props) {
-    const {studentData, onEnrollToggle, editingKey, isEditing, edit, cancelEdit, save, form} = props;
+    const {studentData, handleDelete, onEnrollToggle, editingKey, isEditing, edit, cancelEdit, save, form} = props;
 
     const EditableCell = ({
                               editing,
@@ -46,6 +47,7 @@ export default function ListView(props) {
             dataIndex: 'name',
             key: 'name',
             editable: true,
+            width: '30%',
             align: 'left',
             sorter: {
                 compare: (a, b) => a.name < b.name ? -1 : 1,
@@ -57,6 +59,7 @@ export default function ListView(props) {
             dataIndex: 'character',
             key: 'character',
             editable: true,
+            width: '30%',
             align: 'left',
         },
         {
@@ -98,6 +101,22 @@ export default function ListView(props) {
             render: (_, record) => (
                 <StudentModal student={record} linkBtn={true}/>
             )
+        },
+        {
+            title: 'Delete',
+            dataIndex: 'delete',
+            key: 'delete',
+            width: '10%',
+            align: 'right',
+            render: (text, record) =>
+                studentData.length >= 1 ? (
+                    <Popconfirm
+                        title={`Are you sure you want to delete all data for ${record.name}?`}
+                        icon={<QuestionCircleOutlined style={{color: 'red'}}/>}
+                        onConfirm={() => handleDelete(record.key)}>
+                        <a>Delete</a>
+                    </Popconfirm>
+                ) : null,
         },
         {
             title: 'Enrolled',
