@@ -12,7 +12,7 @@ export default function Roster(props) {
     const [editingKey, setEditingKey] = useState('');
     const [listView, setListView] = useState(true);
     const [classroom, setClassroom] = useState({})
-    const {classroomId, history} = props;
+    const {classroomId} = props;
 
     useEffect(() => {
         let data = [];
@@ -28,7 +28,8 @@ export default function Roster(props) {
                         enrolled: {
                             id: student.id,
                             enrolled: student.enrolled
-                        }
+                        },
+                        last_logged_in: student.last_logged_in ? cleanDatetime(student.last_logged_in) : null
                     })
                 });
                 setStudentData(data);
@@ -37,6 +38,11 @@ export default function Roster(props) {
             }
         });
     }, [classroomId]);
+
+    const cleanDatetime = dt => {
+        const date = new Date(Date.parse(dt));
+        return date.toLocaleString()
+    };
 
     const onEnrollToggle = async (id, toggled) => {
         const res = await setEnrollmentStatus(id, toggled);
