@@ -74,11 +74,7 @@ export default function BlocklyCanvasPanel(props) {
                 if (isStudent) {
                     const res = await getSaves(day.id);
                     if (res.data) {
-                        if (res.data.current) {
-                            onLoadSave = res.data.current
-                        } else if (res.data.past[0]) {
-                            onLoadSave = res.data.past[0]
-                        }
+                        if (res.data.current) onLoadSave = res.data.current;
                         setSaves(res.data)
                     } else {
                         console.log(res.err)
