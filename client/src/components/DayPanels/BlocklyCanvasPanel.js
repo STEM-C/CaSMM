@@ -11,7 +11,7 @@ export default function BlocklyCanvasPanel(props) {
     const [hoverArduino, setHoverArduino] = useState(false);
     const [hoverCompile, setHoverCompile] = useState(false);
     const [saves, setSaves] = useState({});
-    const [selectedSave, setSelectedSave] = useState(null);
+    const [selectedSave, setSelectedSave] = useState(-2);
     const {day, dayType, homePath, handleGoBack, isStudent, lessonName} = props;
 
 
@@ -38,7 +38,8 @@ export default function BlocklyCanvasPanel(props) {
             }
             let xml = window.Blockly.Xml.textToDom(toLoad);
             if (workspaceRef.current) workspaceRef.current.clear();
-            window.Blockly.Xml.domToWorkspace(xml, workspaceRef.current)
+            window.Blockly.Xml.domToWorkspace(xml, workspaceRef.current);
+            setSelectedSave(-2)
         } catch (e) {
             message.error('Failed to load save.')
         }
@@ -122,10 +123,10 @@ export default function BlocklyCanvasPanel(props) {
                     </div>
                     {isStudent ?
                         <div className='flex flex-row'>
-                            <select id='save-select' defaultValue={'default'} onChange={(e) => {
+                            <select id='save-select' value={selectedSave} onChange={(e) => {
                                 setSelectedSave(parseInt(e.target.value))
                             }}>
-                                <option key={-2} value='default' disabled id='disabled-option'>
+                                <option key={-2} value={-2} disabled id='disabled-option'>
                                     Load Saves
                                 </option>
                                 <option key={-1} value={-1}>
