@@ -12,7 +12,7 @@ export default function Roster(props) {
     const [editingKey, setEditingKey] = useState('');
     const [listView, setListView] = useState(true);
     const [classroom, setClassroom] = useState({})
-    const {classroomId, history} = props;
+    const {classroomId} = props;
 
     useEffect(() => {
         let data = [];

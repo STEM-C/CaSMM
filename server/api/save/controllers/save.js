@@ -9,10 +9,16 @@ module.exports = {
      */
     async findByDay(ctx) {
 
-        const { ids } = ctx.state.user
+        const { ids, session } = ctx.state.user
         const { day } = ctx.params
 
-        const saves = await strapi.services.save.find({ student: ids, day })
+        const allSaves = await strapi.services.save.find({ student: ids, day })
+
+        const saves = {
+            current: allSaves.find(save => save.session.id === session),
+            past: allSaves.filter(save => save.session.id !== session)
+        }
+
         return saves
     },
 
@@ -49,8 +55,8 @@ module.exports = {
         // get the current student(s) and session
         const { ids, session } = ctx.state.user
 
-        // get the save(s) for the student(s) for the target day
-        const saves = await strapi.services.save.find({ student: ids, day })
+        // get the save(s) for the student(s) for the target day and session
+        const saves = await strapi.services.save.find({ student: ids, day, session })
 
         // create a student saves map 
         const studentSaves = {}
