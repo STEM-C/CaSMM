@@ -47,7 +47,7 @@ export default function ListView(props) {
             dataIndex: 'name',
             key: 'name',
             editable: true,
-            width: '30%',
+            width: '22.5%',
             align: 'left',
             sorter: {
                 compare: (a, b) => a.name < b.name ? -1 : 1,
@@ -59,8 +59,20 @@ export default function ListView(props) {
             dataIndex: 'character',
             key: 'character',
             editable: true,
-            width: '30%',
+            width: '22.5%',
             align: 'left',
+        },
+        {
+            title: 'Last logged in',
+            dataIndex: 'last_logged_in',
+            key: 'last_logged_in',
+            width: '15%',
+            align: 'left',
+            render: (_, record) => (
+                `${record.last_logged_in.slice(0, 4)}
+                 ${record.last_logged_in.slice(11, 15)}
+                 ${record.last_logged_in.slice(19, 21)}`
+            )
         },
         {
             title: 'View',
