@@ -1,0 +1,39 @@
+{
+  "kind": "collectionType",
+  "collectionName": "submissions",
+  "info": {
+    "name": "Submission"
+  },
+  "options": {
+    "increments": true,
+    "timestamps": true
+  },
+  "attributes": {
+    "save": {
+      "model": "save",
+      "via": "submissions"
+    },
+    "status": {
+      "type": "string",
+      "default": "WAITING",
+      "required": true
+    },
+    "workspace": {
+      "type": "text",
+      "required": true
+    },
+    "success": {
+      "type": "boolean",
+      "required": false
+    },
+    "hex": {
+      "type": "text"
+    },
+    "stdout": {
+      "type": "text"
+    },
+    "stderr": {
+      "type": "text"
+    }
+  }
+}
