@@ -3,7 +3,7 @@ import {Card} from "antd";
 import StudentModal from "./StudentModal";
 
 export default function CardView(props) {
-    const {studentData, onEnrollToggle} = props;
+    const {studentData, onEnrollToggle, getFormattedDate} = props;
 
     return (
         <div id='card-container'>
@@ -11,12 +11,7 @@ export default function CardView(props) {
                 <Card id='card' title={student.name} key={student.key}>
                     <div id='card-content-container'>
                         <p>Animal: {student.character}</p>
-                        <p>Last logged in:
-                            {
-                                ` ${student.last_logged_in.slice(0, 4)}
-                                 ${student.last_logged_in.slice(11, 15)}
-                                 ${student.last_logged_in.slice(19, 21)}`
-                            }
+                        <p>Last logged in: {getFormattedDate(student.last_logged_in)}
                         </p>
                         <p>Status: {student.enrolled.enrolled ? 'Enrolled' : 'Unenrolled'}</p>
                     </div>
