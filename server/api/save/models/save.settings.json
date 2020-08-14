@@ -21,10 +21,6 @@
     "workspace": {
       "type": "text",
       "required": true
-    },
-    "submissions": {
-      "via": "save",
-      "collection": "submission"
     }
   }
 }

@@ -9,10 +9,6 @@
     "timestamps": true
   },
   "attributes": {
-    "save": {
-      "model": "save",
-      "via": "submissions"
-    },
     "status": {
       "type": "string",
       "default": "WAITING",
@@ -34,6 +30,26 @@
     },
     "stderr": {
       "type": "text"
+    },
+    "board": {
+      "type": "string",
+      "required": true
+    },
+    "sketch": {
+      "type": "text",
+      "required": true
+    },
+    "sandbox": {
+      "type": "boolean",
+      "default": false,
+      "required": true
+    },
+    "session": {
+      "model": "session",
+      "via": "submissions"
+    },
+    "day": {
+      "model": "day"
     }
   }
 }
