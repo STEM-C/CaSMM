@@ -45,15 +45,19 @@ export default function Roster(props) {
     };
 
     const getFormattedDate = d => {
-        const day = d.getDate();
-        const month = d.getMonth() + 1;
-        let hrs = d.getHours();
-        const ampm = hrs >= 12 ? 'PM' : 'AM';
-        hrs = hrs % 12;
-        hrs = hrs ? hrs : 12;
-        let min = d.getMinutes();
-        min = min < 10 ? '0' + min : min;
-        return `${month}/${day} ${hrs}:${min} ${ampm}`
+        if (d) {
+            const day = d.getDate();
+            const month = d.getMonth() + 1;
+            let hrs = d.getHours();
+            const ampm = hrs >= 12 ? 'PM' : 'AM';
+            hrs = hrs % 12;
+            hrs = hrs ? hrs : 12;
+            let min = d.getMinutes();
+            min = min < 10 ? '0' + min : min;
+            return `${month}/${day} ${hrs}:${min} ${ampm}`
+        } else {
+            return 'N/A'
+        }
     };
 
     const onEnrollToggle = async (id, toggled) => {
@@ -71,7 +75,8 @@ export default function Roster(props) {
                 enrolled: {
                     id: updatedStudent.id,
                     enrolled: updatedStudent.enrolled
-                }
+                },
+                last_logged_in: updatedStudent.last_logged_in ? cleanDatetime(updatedStudent.last_logged_in) : null
             };
             setStudentData(newStudentData);
             message.success(`Successfully updated ${updatedStudent.name}'s enrollment status.`);
@@ -89,7 +94,8 @@ export default function Roster(props) {
             enrolled: {
                 id: student.id,
                 enrolled: student.enrolled
-            }
+            },
+            last_logged_in: student.last_logged_in ? cleanDatetime(student.last_logged_in) : null
         }));
         setStudentData(newStudentData)
     };

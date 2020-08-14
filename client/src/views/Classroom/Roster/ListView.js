@@ -147,7 +147,19 @@ export default function ListView(props) {
             align: 'right',
             render: (enrolled) => (<Switch onChange={e => {
                 onEnrollToggle(enrolled.id, e)
-            }} defaultChecked={enrolled.enrolled}/>)
+            }} defaultChecked={enrolled.enrolled}/>),
+            filters: [
+                {
+                    text: 'Enrolled',
+                    value: true,
+                },
+                {
+                    text: 'Unenrolled',
+                    value: false,
+                },
+            ],
+            filterMultiple: false,
+            onFilter: (value, record) => record.enrolled.enrolled === value,
         }
     ];
 
