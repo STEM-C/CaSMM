@@ -126,7 +126,7 @@ export default function ListView(props) {
                         title={`Are you sure you want to delete all data for ${record.name}?`}
                         icon={<QuestionCircleOutlined style={{color: 'red'}}/>}
                         onConfirm={() => handleDelete(record.key)}>
-                        <a>Delete</a>
+                        <button id='link-btn'> Delete </button>
                     </Popconfirm>
                 ) : null,
         },
