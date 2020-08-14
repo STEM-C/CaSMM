@@ -11,7 +11,7 @@ export default function Roster(props) {
     const [studentData, setStudentData] = useState([]);
     const [editingKey, setEditingKey] = useState('');
     const [listView, setListView] = useState(true);
-    const [classroom, setClassroom] = useState({})
+    const [classroom, setClassroom] = useState({});
     const {classroomId} = props;
 
     useEffect(() => {
@@ -28,7 +28,8 @@ export default function Roster(props) {
                         enrolled: {
                             id: student.id,
                             enrolled: student.enrolled
-                        }
+                        },
+                        last_logged_in: student.last_logged_in ? cleanDatetime(student.last_logged_in) : null
                     })
                 });
                 setStudentData(data);
@@ -37,6 +38,27 @@ export default function Roster(props) {
             }
         });
     }, [classroomId]);
+
+    const cleanDatetime = dt => {
+        const date = new Date(Date.parse(dt));
+        return date
+    };
+
+    const getFormattedDate = d => {
+        if (d) {
+            const day = d.getDate();
+            const month = d.getMonth() + 1;
+            let hrs = d.getHours();
+            const ampm = hrs >= 12 ? 'PM' : 'AM';
+            hrs = hrs % 12;
+            hrs = hrs ? hrs : 12;
+            let min = d.getMinutes();
+            min = min < 10 ? '0' + min : min;
+            return `${month}/${day} ${hrs}:${min} ${ampm}`
+        } else {
+            return 'N/A'
+        }
+    };
 
     const onEnrollToggle = async (id, toggled) => {
         const res = await setEnrollmentStatus(id, toggled);
@@ -53,7 +75,8 @@ export default function Roster(props) {
                 enrolled: {
                     id: updatedStudent.id,
                     enrolled: updatedStudent.enrolled
-                }
+                },
+                last_logged_in: updatedStudent.last_logged_in ? cleanDatetime(updatedStudent.last_logged_in) : null
             };
             setStudentData(newStudentData);
             message.success(`Successfully updated ${updatedStudent.name}'s enrollment status.`);
@@ -71,7 +94,8 @@ export default function Roster(props) {
             enrolled: {
                 id: student.id,
                 enrolled: student.enrolled
-            }
+            },
+            last_logged_in: student.last_logged_in ? cleanDatetime(student.last_logged_in) : null
         }));
         setStudentData(newStudentData)
     };
@@ -147,10 +171,10 @@ export default function Roster(props) {
                 listView ?
                     <ListView studentData={studentData} onEnrollToggle={onEnrollToggle} editingKey={editingKey}
                               isEditing={isEditing} edit={edit} cancelEdit={cancelEdit} save={save} form={form}
-                              handleDelete={handleDelete}/>
+                              handleDelete={handleDelete} getFormattedDate={getFormattedDate}/>
                     :
-                    <CardView studentData={studentData} onEnrollToggle={onEnrollToggle} editingKey={editingKey}
-                              isEditing={isEditing} edit={edit} cancelEdit={cancelEdit} save={save}/>
+                    <CardView studentData={studentData} onEnrollToggle={onEnrollToggle}
+                              getFormattedDate={getFormattedDate}/>
             }
         </div>
     )

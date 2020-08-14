@@ -158,6 +158,11 @@ module.exports = {
         // create a new session for the students
         const session = await strapi.services.session.create({ classroom: classroom.id, students })
 
+        // update last_logged_in for each student
+        await Promise.all(students.map(cs => {
+            strapi.services.student.update({id: cs}, {last_logged_in: new Date()})
+        }))
+
         // return a jwt for future requests and the students
         return {
             jwt: strapi.plugins['users-permissions'].services.jwt.issue({

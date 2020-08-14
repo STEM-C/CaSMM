@@ -28,6 +28,9 @@
       "type": "boolean",
       "default": true,
       "required": true
+    },
+    "last_logged_in": {
+      "type": "datetime"
     }
   }
 }

@@ -4,7 +4,18 @@ import {QuestionCircleOutlined} from '@ant-design/icons';
 import StudentModal from "./StudentModal";
 
 export default function ListView(props) {
-    const {studentData, handleDelete, onEnrollToggle, editingKey, isEditing, edit, cancelEdit, save, form} = props;
+    const {
+        studentData,
+        handleDelete,
+        onEnrollToggle,
+        editingKey,
+        isEditing,
+        edit,
+        cancelEdit,
+        save,
+        form,
+        getFormattedDate
+    } = props;
 
     const EditableCell = ({
                               editing,
@@ -47,11 +58,10 @@ export default function ListView(props) {
             dataIndex: 'name',
             key: 'name',
             editable: true,
-            width: '30%',
+            width: '22.5%',
             align: 'left',
             sorter: {
                 compare: (a, b) => a.name < b.name ? -1 : 1,
-                multiple: 1
             }
         },
         {
@@ -59,8 +69,29 @@ export default function ListView(props) {
             dataIndex: 'character',
             key: 'character',
             editable: true,
-            width: '30%',
+            width: '22.5%',
             align: 'left',
+        },
+        {
+            title: 'Last logged in',
+            dataIndex: 'last_logged_in',
+            key: 'last_logged_in',
+            width: '15%',
+            align: 'left',
+            sorter: {
+                compare: (a, b) => a.last_logged_in < b.last_logged_in ? -1 : 1
+            },
+            render: (_, record) => getFormattedDate(record.last_logged_in)
+        },
+        {
+            title: 'View',
+            dataIndex: 'view',
+            key: 'view',
+            width: '10%',
+            align: 'right',
+            render: (_, record) => (
+                <StudentModal student={record} linkBtn={true}/>
+            )
         },
         {
             title: 'Edit',
@@ -93,16 +124,6 @@ export default function ListView(props) {
             }
         },
         {
-            title: 'View',
-            dataIndex: 'view',
-            key: 'view',
-            width: '10%',
-            align: 'right',
-            render: (_, record) => (
-                <StudentModal student={record} linkBtn={true}/>
-            )
-        },
-        {
             title: 'Delete',
             dataIndex: 'delete',
             key: 'delete',
@@ -114,7 +135,7 @@ export default function ListView(props) {
                         title={`Are you sure you want to delete all data for ${record.name}?`}
                         icon={<QuestionCircleOutlined style={{color: 'red'}}/>}
                         onConfirm={() => handleDelete(record.key)}>
-                        <button id='link-btn'> Delete </button>
+                        <button id='link-btn'> Delete</button>
                     </Popconfirm>
                 ) : null,
         },
@@ -126,7 +147,19 @@ export default function ListView(props) {
             align: 'right',
             render: (enrolled) => (<Switch onChange={e => {
                 onEnrollToggle(enrolled.id, e)
-            }} defaultChecked={enrolled.enrolled}/>)
+            }} defaultChecked={enrolled.enrolled}/>),
+            filters: [
+                {
+                    text: 'Enrolled',
+                    value: true,
+                },
+                {
+                    text: 'Unenrolled',
+                    value: false,
+                },
+            ],
+            filterMultiple: false,
+            onFilter: (value, record) => record.enrolled.enrolled === value,
         }
     ];
 

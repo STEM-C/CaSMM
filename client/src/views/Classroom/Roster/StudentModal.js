@@ -31,7 +31,7 @@ export default function StudentModal(props) {
                 ]}
             >
                 <p>Animal: {student.character}</p>
-                <p>Number of submissions: ###</p>
+                <p>Last logged in: {student.last_logged_in ? student.last_logged_in.toLocaleString() : "N/A"}</p>
                 <p>Status: {student.enrolled.enrolled ? 'Enrolled' : 'Unenrolled'}</p>
             </Modal>
         </div>
