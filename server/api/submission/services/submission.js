@@ -3,7 +3,7 @@
 const Queue = require('bull')
 
 const progressStatusMap = {
-    0: 'CREATED',
+    0: 'CREATED', // never set - just for reference
     50: 'COMPILING',
     100: 'COMPLETED'
 }
@@ -21,7 +21,7 @@ module.exports.initCompileQueue = () => {
     compile_queue.on('global:progress', strapi.services.submission.updateProgress)
       
     // add the submission complete listener 
-    compile_queue.on('global:complete', strapi.services.submission.completeJob)
+    compile_queue.on('global:completed', strapi.services.submission.completeJob)
 
     // add queue globally
     strapi.connections.compile_queue = compile_queue
@@ -30,16 +30,29 @@ module.exports.initCompileQueue = () => {
 // listener function for queue progress updates
 module.exports.updateProgress = async (jobId, progress) => {
 
+    const status = progressStatusMap[progress]
+    console.log(`Compile job ${jobId} is ${status}`)
+
+    // let completeJob handle last progress
+    if (progress == 100) return
+
     // get the submission_id from the job
     const job = await strapi.connections.compile_queue.getJob(jobId)
 
     // update the submission
-    const submission = await strapi.services.submission.update({ id: job.data.submission_id }, { status: progressStatusMap[progress] })
-
-    console.log(`Compile job ${jobId} is ${submission.status}`)
+    await strapi.services.submission.update({ id: job.data.submission_id }, { status })
 }
 
 // listener function for queue completed jobs
-module.exports.completeJob = (jobId, result) => {
-    console.log(`${jobId}, ${result}`)
+module.exports.completeJob = async (jobId, result) => {
+
+    // get the submission_id from the job
+    const job = await strapi.connections.compile_queue.getJob(jobId)
+
+    // update the submission
+    const updates = JSON.parse(result)
+    updates.status = 'COMPLETED'
+
+    // update the submission
+    await strapi.services.submission.update({ id: job.data.submission_id }, updates)
 }
