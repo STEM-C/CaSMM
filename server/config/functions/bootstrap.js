@@ -1,25 +1,5 @@
 'use strict'
 
-const Queue = require('bull')
-
-const initCompileQueue = () => {
-
-    // get queue url
-    const url = strapi.config.get('compile_queue.url')
-
-    // connect to queue
-    const compile_queue = new Queue('submissions', url);
-
-    // add the submission progress listener
-    compile_queue.on('global:progress', strapi.services.submission.updateProgress)
-      
-    // add the submission complete listener 
-    compile_queue.on('global:complete', strapi.services.submission.completeJob)
-
-    // add queue globally
-    strapi.connections.compile_queue = compile_queue
-} 
-
 const fixRoles = async () => {
 
     // get all the current roles
@@ -37,7 +17,7 @@ const fixRoles = async () => {
 module.exports = async () => {
 
     // Connect to the compile queue
-    initCompileQueue()
+    strapi.services.submission.initCompileQueue()
 
     // Check the student roles
     await fixRoles()
