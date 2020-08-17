@@ -2,18 +2,33 @@
 
 module.exports = {
 
+    /**
+     * 
+     * @param {Integer} id 
+     * 
+     * @return {Submission}
+     */
     async findOne(ctx) {
 
         // get the submission id and current session
-        const { id } = ctx.params
+        let { id } = ctx.params
         const { session } = ctx.state.user
+
+        // make sure the id
+        // is in the proper format
+        id = parseInt(id)
+
+        // ensure the id is an int
+        if (!strapi.services.validator.isInt(id)) return ctx.badRequest(
+            'The submission id must be an int!',
+            { id: 'Submission.find.id.invalid', error: 'ValidationError' }
+        )
 
         // ensure the submission exists and belongs to the current session
         const submission = await strapi.services.submission.findOne({ id })
-
         if (!submission || submission.session.id != session) return ctx.notFound(
             'The submission id provided is invalid!',
-            { id: 'Submission.status.id.invalid', error: 'ValidationError' }
+            { id: 'Submission.find.id.notfound', error: 'ValidationError' }
         )
 
         // only return the full submission object with it is complete
@@ -22,7 +37,14 @@ module.exports = {
 
     /**
      * 
-     * @param {*} ctx 
+     * Create a submission entry and a compile job to the queue
+     * 
+     * @param {String} board
+     * @param {String} sketch
+     * @param {Integer} day
+     * @param {String} workspace 
+     * 
+     * @return {Submission}
      */
     async create(ctx) {
 
