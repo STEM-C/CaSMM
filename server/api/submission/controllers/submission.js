@@ -24,7 +24,7 @@ module.exports = {
         // validate the request
         const { day: dayId, workspace, board, sketch } = ctx.request.body
         if (!strapi.services.validator.isInt(dayId) && board && sketch ) return ctx.badRequest(
-            'A day, board, and sketch must be provided!',
+            'A day, workspace, board, and sketch must be provided!',
             { id: 'Submission.create.body.invalid', error: 'ValidationError' }
         )
 
@@ -48,7 +48,9 @@ module.exports = {
             sketch
         })
 
-        // add the submission to the queue
+        // add the submission to the queue and set the id
+        const job = await strapi.connections.compile_queue.add(submission)
+        submission.jobId = job.id
 
         // return the new submission
         return submission
