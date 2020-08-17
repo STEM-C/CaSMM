@@ -79,7 +79,7 @@ module.exports = {
         const { session } = ctx.state.user
 
         // create the submission
-        const submission = await strapi.services.submission.create({ 
+        let submission = await strapi.services.submission.create({ 
             day: dayId, 
             status: 'CREATED', 
             session,
@@ -95,8 +95,8 @@ module.exports = {
             submission_id: submission.id
         })
 
-        // set the initial job progress to 0
-        job.progress(0)
+        // add the job_id to the submission
+        submission = await strapi.services.submission.update({ id: submission.id }, { job_id: job.id }) 
 
         // return the new submission
         return submission
