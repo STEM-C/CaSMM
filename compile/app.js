@@ -9,15 +9,15 @@ let REDIS_URL = process.env.REDIS_URL || "redis://compile_queue:6379"
 
 // Spin up multiple processes to handle jobs to take advantage of more CPU cores
 // See: https://devcenter.heroku.com/articles/node-concurrency for more info
-let workers = process.env.WEB_CONCURRENCY || 1
+let workers = process.env.COMPILE_WORKER__CONCURRENCY || 1
 
 // The maximum number of jobs each worker should process at once. This will need
 // to be tuned for your application. If each job is mostly waiting on network 
 // responses it can be much higher. If each job is CPU-intensive, it might need
 // to be much lower.
-let maxJobsPerWorker = 5
+let maxJobsPerWorker = process.env.COMPILE_JOB_CONCURRENCY || 1
 
-function compile() {
+function start() {
 
     // Connect to the named queue
     let compile_queue = new Queue('submissions', REDIS_URL)
@@ -25,14 +25,14 @@ function compile() {
     compile_queue.process(maxJobsPerWorker, async (job) => {
 
         // update the job progress
-        job.progress(50)
+        await job.progress(50)
 
         // get the job data
         const { sketch, board } = job.data
 
         let result = {}
         try {
-            result = arduino.compile(sketch, board)
+            result = await arduino.compile(sketch, board)
         } catch(err) {
             // set the output object to failed
             output.sucess = false
@@ -42,11 +42,11 @@ function compile() {
         }
 
         // update the job progress and return the job result
-        job.progress(100)
+        await job.progress(100)
         return result
     })
 }
 
 // Initialize the clustered worker process
 // See: https://devcenter.heroku.com/articles/node-concurrency for more info
-throng({ workers, compile })
+throng({ workers, start })
