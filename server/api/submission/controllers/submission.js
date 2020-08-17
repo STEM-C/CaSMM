@@ -16,6 +16,7 @@ module.exports = {
             { id: 'Submission.status.id.invalid', error: 'ValidationError' }
         )
 
+        // only return the full submission object with it is complete
         return submission.status == 'COMPLETED' ? submission : { status: submission.status } 
     },
 
