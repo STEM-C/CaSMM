@@ -50,6 +50,9 @@
     },
     "day": {
       "model": "day"
+    },
+    "job_id": {
+      "type": "biginteger"
     }
   }
 }

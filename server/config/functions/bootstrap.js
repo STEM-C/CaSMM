@@ -10,6 +10,12 @@ const initCompileQueue = () => {
     // connect to queue
     const compile_queue = new Queue('submissions', url);
 
+    // add the submission progress listener
+    compile_queue.on('global:progress', strapi.services.submission.updateProgress)
+      
+    // add the submission complete listener 
+    compile_queue.on('global:complete', strapi.services.submission.completeJob)
+
     // add queue globally
     strapi.connections.compile_queue = compile_queue
 } 

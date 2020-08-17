@@ -2,6 +2,22 @@
 
 module.exports = {
 
+    async findOne(ctx) {
+
+        // get the submission id and current session
+        const { id } = ctx.params
+        const { session } = ctx.state.user
+
+        // ensure the submission exists and belongs to the current session
+        const submission = await strapi.services.submission.findOne({ id })
+        if (!submission || submission.session.id != session) return ctx.notFound(
+            'The submission id provided is invalid!',
+            { id: 'Submission.status.id.invalid', error: 'ValidationError' }
+        )
+
+        return submission
+    },
+
     /**
      * 
      * @param {*} ctx 
@@ -48,9 +64,15 @@ module.exports = {
             sketch
         })
 
-        // add the submission to the queue and set the id
-        const job = await strapi.connections.compile_queue.add(submission)
-        submission.jobId = job.id
+        // add the submission to the queue
+        const job = await strapi.connections.compile_queue.add({
+            board,
+            sketch,
+            submission_id: submission.id
+        })
+
+        // set the initial job progress to 0
+        job.progress(0)
 
         // return the new submission
         return submission
