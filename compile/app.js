@@ -1,35 +1,52 @@
-const express = require('express');
-const app = express();
-const bodyParser = require("body-parser");
-const config = require('./config.json');
-const port = process.env.PORT || config.port;
-const { name , version } = require('./package.json');
-const arduino_dir = __dirname + "/arduino-1.8.5";
-const arduino = new (require("./arduino.js"))(arduino_dir);
+const throng = require('throng')
+const Queue = require("bull")
 
-app.use(function(req, res, next) {
-    res.header("Access-Control-Allow-Origin", "*");
-    res.header("Access-Control-Allow-Headers", ["X-Requested-With", "content-type"]);
-    next();
-});
+const arduino_dir = __dirname + "/arduino-1.8.5"
+const arduino = new (require("./arduino.js"))(arduino_dir)
 
-app.use( bodyParser.json() );
-app.use(bodyParser.urlencoded({extended: true}));
+// Connect to a local redis instance locally, and the Heroku-provided URL in production
+let REDIS_URL = process.env.REDIS_URL || "redis://compile_queue:6379"
 
-app.set("trust proxy", 1); // trust first proxy
+// Spin up multiple processes to handle jobs to take advantage of more CPU cores
+// See: https://devcenter.heroku.com/articles/node-concurrency for more info
+let workers = process.env.WEB_CONCURRENCY || 1
 
-app.get('/version', (req, res) => res.json({name, version}));
+// The maximum number of jobs each worker should process at once. This will need
+// to be tuned for your application. If each job is mostly waiting on network 
+// responses it can be much higher. If each job is CPU-intensive, it might need
+// to be much lower.
+let maxJobsPerWorker = 5
 
-app.get('/boards', (req, res) => res.json(arduino.boards));
+function compile() {
 
-app.get('/libraries', (req, res) => res.json(arduino.libraries));
+    // Connect to the named queue
+    let compile_queue = new Queue('submissions', REDIS_URL)
 
-app.post('/compile', (req, res) => {
-    if(typeof req.body.sketch !== 'string' || typeof req.body.board !== 'string')
-        return res.json({success: false, msg: "invalid parameters passed"});
-    arduino.compile(req.body.sketch, req.body.board).catch(console.error).then(data=>res.json(data));
-});
+    compile_queue.process(maxJobsPerWorker, async (job) => {
 
-app.get('*', (req, res) => res.status(404).send("Not found"));
+        // update the job progress
+        job.progress(50)
 
-app.listen(port, () => console.log(`Compile service listening on port ${port}!`));
+        // get the job data
+        const { sketch, board } = job.data
+
+        let result = {}
+        try {
+            result = arduino.compile(sketch, board)
+        } catch(err) {
+            // set the output object to failed
+            output.sucess = false
+            output.stderr = err.messsage
+
+            console.err('Compile Error', err)
+        }
+
+        // update the job progress and return the job result
+        job.progress(100)
+        return result
+    })
+}
+
+// Initialize the clustered worker process
+// See: https://devcenter.heroku.com/articles/node-concurrency for more info
+throng({ workers, compile })
