@@ -10,12 +10,13 @@ module.exports = {
 
         // ensure the submission exists and belongs to the current session
         const submission = await strapi.services.submission.findOne({ id })
+
         if (!submission || submission.session.id != session) return ctx.notFound(
             'The submission id provided is invalid!',
             { id: 'Submission.status.id.invalid', error: 'ValidationError' }
         )
 
-        return submission
+        return submission.status == 'COMPLETED' ? submission : { status: submission.status } 
     },
 
     /**
