@@ -2238,6 +2238,12 @@ COPY public."users-permissions_permission" (id, type, controller, action, enable
 550	application	submission	update	f		1
 540	application	submission	create	t		3
 549	application	submission	findone	t		3
+553	application	sandbox	createsubmission	f		1
+555	application	sandbox	createsubmission	f		3
+556	application	sandbox	findonesubmission	f		1
+558	application	sandbox	findonesubmission	f		3
+554	application	sandbox	createsubmission	t		2
+557	application	sandbox	findonesubmission	t		2
 \.
 
 
@@ -2246,9 +2252,9 @@ COPY public."users-permissions_permission" (id, type, controller, action, enable
 --
 
 COPY public."users-permissions_role" (id, name, description, type) FROM stdin;
-2	Public	Default role given to unauthenticated user.	public
 1	Classroom Manager	Default role given to authenticated user.	authenticated
 3	Student	Default role given to a student user.	student
+2	Public	Default role given to unauthenticated user.	public
 \.
 
 
@@ -2447,7 +2453,7 @@ SELECT pg_catalog.setval('public.upload_file_morph_id_seq', 1, false);
 -- Name: users-permissions_permission_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public."users-permissions_permission_id_seq"', 552, true);
+SELECT pg_catalog.setval('public."users-permissions_permission_id_seq"', 558, true);
 
 
 --

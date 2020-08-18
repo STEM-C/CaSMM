@@ -28,7 +28,7 @@ module.exports = {
 
         // ensure the submission exists and belongs to the current session
         const submission = await strapi.services.submission.findOne({ id })
-        if (!submission || submission.session.id != session) return ctx.notFound(
+        if (!submission || !submission.session || submission.session.id != session) return ctx.notFound(
             'The submission id provided is invalid!',
             { id: 'Submission.find.id.notfound', error: 'ValidationError' }
         )
@@ -39,7 +39,7 @@ module.exports = {
 
     /**
      * 
-     * Create a submission entry and a compile job to the queue
+     * Create a submission entry and add compile job to the queue
      * 
      * @param {String} board
      * @param {String} sketch
@@ -65,7 +65,7 @@ module.exports = {
 
         // validate the request
         const { day: dayId, workspace, board, sketch } = ctx.request.body
-        if (!strapi.services.validator.isInt(dayId) && board && sketch ) return ctx.badRequest(
+        if (!strapi.services.validator.isInt(dayId) || !workspace || !board || !sketch ) return ctx.badRequest(
             'A day, workspace, board, and sketch must be provided!',
             { id: 'Submission.create.body.invalid', error: 'ValidationError' }
         )
@@ -80,27 +80,13 @@ module.exports = {
         // get the current session
         const { session } = ctx.state.user
 
-        // create the submission
-        let submission = await strapi.services.submission.create({ 
+        // construct submission
+        return await strapi.services.submission.startJob({
             day: dayId, 
-            status: 'CREATED', 
             session,
             workspace,
             board,
             sketch
         })
-
-        // add the submission to the queue
-        const job = await strapi.connections.compile_queue.add({
-            board,
-            sketch,
-            submission_id: submission.id
-        })
-
-        // add the job_id to the submission
-        submission = await strapi.services.submission.update({ id: submission.id }, { job_id: job.id }) 
-
-        // return the new submission
-        return submission
     },
 }
