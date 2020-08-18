@@ -69,10 +69,8 @@ export default function AddStudents(props) {
 
     const handleOnDrop = async (roster) => {
         // on file select, filter out bad data and set uploadedRoster and tableData
-        let badInput = false;
         const filteredRoster = roster.filter(student => {
             if (student.data.name) return true;
-            badInput = true;
             return false
         });
 
@@ -80,7 +78,7 @@ export default function AddStudents(props) {
         setUploadedRoster(students);
         const data = await getTableData(students);
         setTableData(data);
-        if (badInput || students.length === 0) message.warning(
+        if (students.length === 0) message.warning(
             "There may have been an issue parsing one or more data entries in the uploaded CSV. " +
             " Please verify that your data is in the specified format.", 8)
     };
@@ -130,7 +128,7 @@ export default function AddStudents(props) {
             <Divider/>
             <div>
                 <h3>Upload Roster CSV:</h3>
-                <p>CSV should have the following columns: "Name", "Animal"</p>
+                <p>CSV should have the following columns: "Name" or "Student", (optional) "Animal"</p>
                 <CSVReader
                     ref={buttonRef}
                     onDrop={handleOnDrop}
@@ -141,7 +139,9 @@ export default function AddStudents(props) {
                     config={{
                         header: true,
                         transformHeader: function (h) {
-                            return h.toLowerCase();
+                            let header = h.toLowerCase();
+                            if(header === 'student' || header === ['student name']) header = 'name';
+                            return header
                         }
                     }}
                     addRemoveButton
