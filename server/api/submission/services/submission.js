@@ -49,7 +49,7 @@ module.exports.completeJob = async (jobId, result) => {
     // get the submission_id from the job
     const job = await strapi.connections.compile_queue.getJob(jobId)
 
-    // update the submission
+    // parse the results
     const updates = JSON.parse(result)
     updates.status = 'COMPLETED'
 

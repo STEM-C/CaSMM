@@ -4,6 +4,8 @@ module.exports = {
 
     /**
      * 
+     * Get a submission in the current session
+     * 
      * @param {Integer} id 
      * 
      * @return {Submission}
