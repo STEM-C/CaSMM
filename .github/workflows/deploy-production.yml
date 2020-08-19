@@ -13,7 +13,7 @@ jobs:
         id: get_version
         run: echo ::set-output name=VERSION::${GITHUB_REF#refs/tags/}
       - name: Built, test, and deploy app
-        uses: STEM-C/auto/build-test-deploy@v0.6
+        uses: STEM-C/auto/build-test-deploy@v0.7
         with:
           image_tag: ${{ steps.get_version.outputs.VERSION }}
           app_name: casmm
