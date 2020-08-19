@@ -23,12 +23,10 @@ jobs:
           DATABASE_URL: ${{ steps.app.outputs.database_url }}
           SCRIPT_PATH: ./scripts
       - name: Built, test, and deploy app
-        uses: STEM-C/auto/build-test-deploy@v0.6
+        uses: STEM-C/auto/build-test-deploy@develop
         with:
-          image_name: server
           image_tag: ${{ steps.app.outputs.app_name }}
           app_name: ${{ steps.app.outputs.app_name }}
-          app_type: web
           github_token: ${{ secrets.GITHUB_TOKEN }}
         env:
           HEROKU_API_KEY: ${{ secrets.HEROKU_TOKEN }}
