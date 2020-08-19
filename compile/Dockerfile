@@ -16,4 +16,4 @@ RUN curl https://downloads.arduino.cc/arduino-1.8.5-linux64.tar.xz | tar -xJ
 COPY . .
 
 # Run when container is started
-CMD ["node", "app.js"]
+CMD node app.js
