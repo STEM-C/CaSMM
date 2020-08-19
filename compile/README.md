@@ -21,30 +21,6 @@ Additional scripts:
 
 <br/>
 
-## API
-
-> The interface for this service is simple. There are three informational endpoints and one endpoint for compiling arduino code.
-
-| Method | Path       | Description                                   |
-| ------ | ---------- | --------------------------------------------- |
-| GET    | /version   | Get the service version                       |
-| GET    | /boards    | Get the supported boards                      |
-| GET    | /libraries | Get the installed libraries                   |
-| POST   | /compile   | Compile the arduino code for a specific board |
-
-### Example Compilation
-
-#### Request
-
-`POST http://localhost:8080/compile`
-
-```json
-{
-	"board": "arduino:avr:uno",
-	"sketch": "void setup(){} void loop(){}"
-}
-```
-
 #### Response
 
 ```json
