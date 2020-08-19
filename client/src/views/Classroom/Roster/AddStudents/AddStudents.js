@@ -16,20 +16,20 @@ export default function AddStudents(props) {
     const buttonRef = React.createRef();
 
     const nameIsFormatted = n => {
-        if (n.search('([A-Za-z]+),\\s*([A-Za-z]+)\\s*([A-Za-z]+)') !== -1 ||
-            n.search('([A-Za-z]+)\\s*([A-Za-z]*)\\s+([A-Za-z])\\.') !== -1) return true;
+        if (n.search('^([A-Za-z]+),\\s*([A-Za-z]+)\\s*([A-Za-z]+)') !== -1 ||
+            n.search('^([A-Za-z]+)\\s*([A-Za-z]*)\\s+([A-Za-z])\\.') !== -1) return true;
         return false
     };
 
     const reformatName = n => {
         // check "Last, First" / "Last, First Middle"
-        if (n.search('([A-Za-z]+),\\s*([A-Za-z]+)\\s*([A-Za-z]+)') !== -1) {
+        if (n.search('^([A-Za-z]+),\\s*([A-Za-z]+)\\s*([A-Za-z]+)') !== -1) {
             let names = n.split(" ");
             if (names.length === 3) return `${names[1]} ${names[2]} ${names[0].substring(0, 1)}.`;
             return `${names[1]} ${names[0].substring(0, 1)}.`;
         }
         // check "First L." and "First Middle L."
-        else if (n.search('([A-Za-z]+)\\s*([A-Za-z]*)\\s+([A-Za-z])\\.$') !== -1) {
+        else if (n.search('^([A-Za-z]+)\\s*([A-Za-z]*)\\s+([A-Za-z])\\.$') !== -1) {
             return n
         }
         // return null. not properly formatted

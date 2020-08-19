@@ -39,7 +39,7 @@ export default function ListView(props) {
                         rules={title === 'Name' ? [
                             {
                                 required: true,
-                                pattern: new RegExp('([A-Za-z]+)\\s*([A-Za-z]*)\\s+([A-Za-z])\\.$'),
+                                pattern: new RegExp('^([A-Za-z]+)\\s*([A-Za-z]*)\\s+([A-Za-z])\\.$'),
                                 message: `Must be in format: "First L." or "First Middle L."!`
                             },
                         ] : [
