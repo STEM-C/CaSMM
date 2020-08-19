@@ -11,7 +11,7 @@
   "attributes": {
     "name": {
       "type": "string",
-      "regex": "([A-Za-z]+)\\s*([A-Za-z]*)\\s+([A-Za-z])\\."
+      "regex": "([A-Za-z]+)\\s*([A-Za-z]*)\\s+([A-Za-z])\\.$"
     },
     "character": {
       "type": "string"

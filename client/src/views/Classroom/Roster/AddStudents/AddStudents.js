@@ -29,7 +29,7 @@ export default function AddStudents(props) {
             return `${names[1]} ${names[0].substring(0, 1)}.`;
         }
         // check "First L." and "First Middle L."
-        else if (n.search('([A-Za-z]+)\\s*([A-Za-z]*)\\s+([A-Za-z])\\.') !== -1) {
+        else if (n.search('([A-Za-z]+)\\s*([A-Za-z]*)\\s+([A-Za-z])\\.$') !== -1) {
             return n
         }
         // return null. not properly formatted
