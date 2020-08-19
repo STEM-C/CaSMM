@@ -36,7 +36,13 @@ export default function ListView(props) {
                         style={{
                             margin: 0,
                         }}
-                        rules={[
+                        rules={title === 'Name' ? [
+                            {
+                                required: true,
+                                pattern: new RegExp('([A-Za-z]+)\\s*([A-Za-z]*)\\s+([A-Za-z])\\.$'),
+                                message: `Must be in format: "First L." or "First Middle L."!`
+                            },
+                        ] : [
                             {
                                 required: true,
                                 message: `Please Input ${title}!`,
