@@ -1629,9 +1629,9 @@ COPY public.strapi_webhooks (id, name, url, headers, events, enabled) FROM stdin
 --
 
 COPY public.students (id, name, "character", classroom, enrolled, last_logged_in, created_at, updated_at) FROM stdin;
-3	Dakota	🤡	1	t	\N	2020-07-24 16:38:45.333+00	2020-07-24 16:52:02.266+00
-2	Adam	🐼	1	t	\N	2020-07-24 16:38:28.699+00	2020-07-24 16:52:02.266+00
-1	Nick	🦍	1	t	\N	2020-07-24 16:38:25.252+00	2020-07-24 16:52:02.266+00
+3	Dakota R.	🤡	1	t	\N	2020-07-24 16:38:45.333+00	2020-07-24 16:52:02.266+00
+2	Adam T.	🐼	1	t	\N	2020-07-24 16:38:28.699+00	2020-07-24 16:52:02.266+00
+1	Nick I.	🦍	1	t	\N	2020-07-24 16:38:25.252+00	2020-07-24 16:52:02.266+00
 \.
 
 
