@@ -17,7 +17,11 @@ module.exports = strapi => {
                 const reqPath = ctx.request.path
                 const reqHost = ctx.request.header.host
                 const reqReferer = ctx.request.header.referer
-                const refererUrl = reqReferer ? reqReferer.replace(`http://${reqHost}`, '') : ''
+                const refererUrl = reqReferer ?
+                    reqReferer.replace('http://', '')
+                        .replace('https://', '')
+                        .replace(reqHost, '')
+                    : ''
 
                 // if request for favicon, admin, or client or if request from admin, go next
                 if (reqPath === '/favicon.ico' || reqPath.startsWith('/admin') || reqPath.startsWith('/client')
