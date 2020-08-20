@@ -1,4 +1,4 @@
 {
-  "cms": "",
+  "cms": "/api",
   "compile": "https://casmm-compile.herokuapp.com"
 }
