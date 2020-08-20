@@ -19,7 +19,7 @@ Additional scripts:
 
 * `yarn db-start` - Start an existing db container
 * `yarn db-bash` - Connect to the postgres bash 
-* `yarn build-frontend` - Build and add the client  to
+* `yarn build-client` - Build and add the client  to
 * `yarn build` - Build the strapi admin panel
 
 <br/>
@@ -28,19 +28,19 @@ Additional scripts:
 
 All assets in the **public** directory will be served. The specifics are defined [here](https://strapi.io/documentation/v3.x/concepts/public-assets.html).
 
-### Frontend
+### Client
 
-> When Docker builds the production container, it builds client and adds it to **public/frontend**
+> When Docker builds the production container, it builds client and adds it to **public/client**
 
-A frontend middleware handles serving **frontend/index.html**, passing off all client routes to react. All other frontend assets are served by strapi as public assets. The middleware was implemented to solve manual navigation to a non-root client route responding with a 404. Read more about this [here](https://github.com/STEM-C/STEM-C/pull/28#pullrequestreview-415846251).
+A client middleware handles serving **client/index.html**, passing off all client routes to react. All other client assets are served by strapi as public assets. The middleware was implemented to solve manual navigation to a non-root client route responding with a 404. Read more about this [here](https://github.com/STEM-C/STEM-C/pull/28#pullrequestreview-415846251).
 
-> As client routes are added, they need to be added to the frontend middleware config
+> As client routes are added, they need to be added to the client middleware config
 
 ```
-// middlewares/frontend/defaults.json
+// middlewares/client/defaults.json
 
 {
-    "frontend": {
+    "client": {
       ...
       "routes": [
         "/",

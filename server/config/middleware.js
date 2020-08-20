@@ -5,9 +5,9 @@ module.exports = {
             path: './public',
             maxAge: 60000,
         },
-        frontend: {
+        client: {
             enabled: true,
-            path: './public/frontend',
+            path: './public/client',
             routes: [
                 '/',
                 '/login',
@@ -20,6 +20,9 @@ module.exports = {
                 '/teacherlogin'
             ]
         },
+        // router: {
+        //     prefix: '/api'
+        // },
         // logger: {
         //     // dev + prod
         //     level: debug + info,
