@@ -1,28 +1,19 @@
 module.exports = {
     timeout: 100,
+    load: {
+        before: ["proxy", "responseTime", "logger", "cors", "responses", "gzip"],
+        order: [],
+        after: ["parser", "router"]
+    },
     settings: {
         public: {
             path: './public',
             maxAge: 60000,
         },
-        client: {
+        proxy: {
             enabled: true,
-            path: './public/client',
-            routes: [
-                '/',
-                '/login',
-                '/dashboard',
-                '/student',
-                '/workspace',
-                '/sandbox',
-                '/day',
-                '/classroom/*',
-                '/teacherlogin'
-            ]
-        },
-        // router: {
-        //     prefix: '/api'
-        // },
+            clientPath: './public/client',
+        }
         // logger: {
         //     // dev + prod
         //     level: debug + info,
