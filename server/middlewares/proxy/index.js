@@ -38,11 +38,10 @@ module.exports = strapi => {
                 // serve the index.html for the client route
                 const {clientPath} = strapi.config.middleware.settings.proxy
                 const clientDir = path.resolve(strapi.dir, clientPath)
-                const serveClient = ctx => {
+                return ctx => {
                     ctx.type = 'html'
                     ctx.body = fs.createReadStream(path.join(clientDir + '/index.html'))
                 }
-                strapi.router.get(reqPath, serveClient)
             });
         },
     }
