@@ -13,7 +13,7 @@ COPY ./server/yarn.lock .
 RUN yarn install
 COPY ./server .
 ENV NODE_ENV production
-RUN PUBLIC_URL=/api yarn build
+RUN yarn build
 RUN mv ./client/build/* ./public/client \
     && rm -rf ./client
 CMD yarn start
