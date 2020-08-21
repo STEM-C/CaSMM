@@ -1,9 +1,9 @@
 module.exports = {
     timeout: 100,
     load: {
-        before: ["proxy", "responseTime", "logger", "cors", "responses", "gzip"],
-        order: [],
-        after: ["parser", "router"]
+        before: ["responseTime", "logger", "cors", "responses", "gzip"],
+        order: ["proxy", "parser"],
+        after: ["router"]
     },
     settings: {
         public: {
