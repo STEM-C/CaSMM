@@ -192,6 +192,30 @@ export const getSaves = async (day) => (
     })
 );
 
+export const createSubmission = async (day, workspace, sketch) => (
+    makeRequest({
+        method: POST,
+        path: `${cms}/submissions`,
+        data: {
+            day: day.id,
+            workspace: workspace,
+            board: "arduino:avr:uno",
+            sketch: sketch
+        },
+        auth: true,
+        error: 'Failed to create submission.'
+    })
+);
+
+export const getSubmission = async (submissionId) => (
+    makeRequest({
+        method: GET,
+        path: `${cms}/submissions/${submissionId}`,
+        auth: true,
+        error: "Failed to retrieve submission status"
+    })
+)
+
 export const addStudent = async (name, character, classroom) => (
     makeRequest({
         method: POST,

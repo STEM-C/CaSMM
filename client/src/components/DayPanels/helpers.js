@@ -1,4 +1,4 @@
-import {compileCode, saveWorkspace} from "../../Utils/requests";
+import { compileCode, createSubmission, getSubmission, saveWorkspace } from "../../Utils/requests";
 import {message} from "antd";
 
 const AvrboyArduino = window.AvrgirlArduino;
@@ -40,15 +40,34 @@ export const getArduino = (workspaceRef, shouldAlert = true) => {
 };
 
 // Sends compiled arduino code to server and returns hex to flash board with
-export const compileArduinoCode = async (workspaceRef) => {
-    let body = {
-        "board": "arduino:avr:uno",
-        "sketch": getArduino(workspaceRef, false)
-    };
+export const compileArduinoCode = async (workspaceRef, day) => {
+    const sketch = await getArduino(workspaceRef, false);
+
+    let workspaceDom = window.Blockly.Xml.workspaceToDom(workspaceRef)
+    let workspaceText = window.Blockly.Xml.domToText(workspaceDom)
 
     // gets compiled hex from server
-    let response = await compileCode(body);
+    try{
+        let initialSubmission = await createSubmission(day, workspaceText, sketch);
+        console.log(initialSubmission)
 
+        let response = {};
+        do {
+            response = await getSubmission(initialSubmission.data.id)
+            console.log(response)
+        }
+        while (response.data.status !== "COMPLETED");
+
+
+        console.log("Finished!")
+    } catch (e) {
+        console.log(e.message)
+    }
+
+    //await flashArduino(response);
+};
+
+const flashArduino = async (response) => {
     if (response.data) {
         // converting base 64 to hex
         if(response.data.success){
@@ -72,7 +91,7 @@ export const compileArduinoCode = async (workspaceRef) => {
     } else {
         message.error(response.err);
     }
-};
+}
 
 // save current workspace
 export const handleSave = async (dayId, workspaceRef) => {
