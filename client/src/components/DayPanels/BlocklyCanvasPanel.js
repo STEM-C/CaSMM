@@ -162,7 +162,7 @@ export default function BlocklyCanvasPanel(props) {
                                 setHover={setHoverArduino}
                                 hover={hoverArduino}
                             />
-                            <i onClick={() => compileArduinoCode(workspaceRef.current, day)}
+                            <i onClick={() => compileArduinoCode(workspaceRef.current, day, isStudent)}
                                className="fas fa-upload hvr-info"
                                onMouseEnter={() => setHoverCompile(true)}
                                onMouseLeave={() => setHoverCompile(false)}/>

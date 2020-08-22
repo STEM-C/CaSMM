@@ -40,21 +40,23 @@ export const getArduino = (workspaceRef, shouldAlert = true) => {
 };
 
 // Sends compiled arduino code to server and returns hex to flash board with
-export const compileArduinoCode = async (workspaceRef, day) => {
+export const compileArduinoCode = async (workspaceRef, day, isStudent) => {
     const sketch = await getArduino(workspaceRef, false);
-
-    let workspaceDom = window.Blockly.Xml.workspaceToDom(workspaceRef)
-    let workspaceText = window.Blockly.Xml.domToText(workspaceDom)
+    let workspaceDom = window.Blockly.Xml.workspaceToDom(workspaceRef);
+    let workspaceText = window.Blockly.Xml.domToText(workspaceDom);
+    let path;
+    isStudent ? path = "/submissions" : path = "/sandbox/submission";
 
     // gets compiled hex from server
     try{
-        let initialSubmission = await createSubmission(day, workspaceText, sketch);
+        let initialSubmission = await createSubmission(day, workspaceText, sketch, path, isStudent);
         console.log(initialSubmission)
 
         let response = {};
         do {
-            response = await getSubmission(initialSubmission.data.id)
+            response = await getSubmission(initialSubmission.data.id, path, isStudent)
             console.log(response)
+            console.log(response.data.status)
         }
         while (response.data.status !== "COMPLETED");
 
