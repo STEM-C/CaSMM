@@ -23,26 +23,24 @@ module.exports = strapi => {
                         .replace(reqHost, '')
                     : ''
 
-                // if request for favicon, admin, or client or if request from admin, go next
                 if (reqPath === '/favicon.ico' || reqPath.startsWith('/admin') || reqPath.startsWith('/client')
                     || refererUrl.startsWith('/admin')) {
+                    // if request for favicon, admin, or client or if request from admin, go next
                     await next()
-                }
 
-                // if api request, remove /api
-                if (reqPath.startsWith('/api')) {
+                } else if (reqPath.startsWith('/api')) {
+                    // if api request, remove /api
                     ctx.request.path = reqPath.replace('/api', '')
                     await next()
-                }
 
-                // serve the index.html for the client route
-                const {clientPath} = strapi.config.middleware.settings.proxy
-                const clientDir = path.resolve(strapi.dir, clientPath)
-                const serveClient = ctx => {
+                } else if (!reqPath.startsWith('/client')) {
+                    // serve the index.html for the client route
+                    const {clientPath} = strapi.config.middleware.settings.proxy
+                    const clientDir = path.resolve(strapi.dir, clientPath)
+
                     ctx.type = 'html'
                     ctx.body = fs.createReadStream(path.join(clientDir + '/index.html'))
                 }
-                strapi.router.get(reqPath, serveClient)
             });
         },
     }
