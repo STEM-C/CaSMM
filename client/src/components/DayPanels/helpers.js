@@ -1,4 +1,4 @@
-import { compileCode, createSubmission, getSubmission, saveWorkspace } from "../../Utils/requests";
+import { createSubmission, getSubmission, saveWorkspace } from "../../Utils/requests";
 import {message} from "antd";
 
 const AvrboyArduino = window.AvrgirlArduino;
@@ -41,33 +41,36 @@ export const getArduino = (workspaceRef, shouldAlert = true) => {
 
 // Sends compiled arduino code to server and returns hex to flash board with
 export const compileArduinoCode = async (workspaceRef, day, isStudent) => {
-    const sketch = await getArduino(workspaceRef, false);
+    const sketch = getArduino(workspaceRef, false);
     let workspaceDom = window.Blockly.Xml.workspaceToDom(workspaceRef);
     let workspaceText = window.Blockly.Xml.domToText(workspaceDom);
     let path;
     isStudent ? path = "/submissions" : path = "/sandbox/submission";
 
-    // gets compiled hex from server
-    try{
-        let initialSubmission = await createSubmission(day, workspaceText, sketch, path, isStudent);
-        console.log(initialSubmission)
+    try {
+        // create an initial submission
+        const initialSubmission = await createSubmission(day, workspaceText, sketch, path, isStudent);
 
-        let response = {};
-        do {
-            response = await getSubmission(initialSubmission.data.id, path, isStudent)
-            console.log(response)
-            console.log(response.data.status)
-        }
-        while (response.data.status !== "COMPLETED");
-
-
-        console.log("Finished!")
+        // get the submission result when it's ready and flash the board
+        await getAndFlashSubmission(initialSubmission.data.id, path, isStudent)
     } catch (e) {
         console.log(e.message)
     }
-
-    //await flashArduino(response);
 };
+
+const getAndFlashSubmission = async (id, path, isStudent) => {
+    // get the submission
+    const response = await getSubmission(id, path, isStudent)
+
+    // if the submission is not complete, try again later
+    if (response.data.status !== "COMPLETED") {
+        setTimeout(() => getAndFlashSubmission(id, path, isStudent), 100)
+        return
+    }
+
+    // flash the board with the output
+    await flashArduino(response);
+}
 
 const flashArduino = async (response) => {
     if (response.data) {
@@ -88,7 +91,7 @@ const flashArduino = async (response) => {
                 }
             })
         } else if (response.data.msg) {
-            message.warning(response.data.msg)
+            message.warning(response.data.stderr)
         }
     } else {
         message.error(response.err);
