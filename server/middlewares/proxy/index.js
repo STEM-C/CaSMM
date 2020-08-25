@@ -33,7 +33,7 @@ module.exports = strapi => {
                     ctx.request.path = reqPath.replace('/api', '')
                     await next()
 
-                } else if (!reqPath.startsWith('/client')) {
+                } else {
                     // serve the index.html for the client route
                     const {clientPath} = strapi.config.middleware.settings.proxy
                     const clientDir = path.resolve(strapi.dir, clientPath)
