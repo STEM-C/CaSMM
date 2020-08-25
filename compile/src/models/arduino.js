@@ -1,14 +1,14 @@
 const { exec } = require('child_process');
 const fs = require('fs');
-const properties = require ("properties");
+const properties = require ('properties');
 const tmp = require('tmp');
 
 const errorCodes = {
-    0: "Success",
-    1: "Build failed or upload failed",
-    2: "Sketch not found",
-    3: "Invalid (argument for) commandline option",
-    4: "Preference passed to --get-pref does not exist"
+    0: 'Success',
+    1: 'Build failed or upload failed',
+    2: 'Sketch not found',
+    3: 'Invalid (argument for) commandline option',
+    4: 'Preference passed to --get-pref does not exist'
 };
 
 const process_file = (path, cb)=>{
@@ -32,9 +32,9 @@ const process_file = (path, cb)=>{
 class Arduino {
     constructor (arduino_dir) {
         this.dir = arduino_dir;
-        this.buildcmd = `"${this.dir}/arduino-builder" -hardware "${this.dir}/hardware" -libraries "${this.dir}/libraries"`;
+        this.buildcmd = `'${this.dir}/arduino-builder' -hardware '${this.dir}/hardware' -libraries '${this.dir}/libraries'`;
         let tools  = ['/hardware/tools', '/tools', '/tools-builder'];
-        for(let i in tools) this.buildcmd += ` -tools "${this.dir}${tools[i]}"`;
+        for(let i in tools) this.buildcmd += ` -tools '${this.dir}${tools[i]}'`;
         this.libraries = [];
         this.boards = {};
         this.loadLibraries().catch(console.error);
@@ -45,7 +45,7 @@ class Arduino {
         return new Promise((resolve, reject) => {
             fs.readdir(`${this.dir}/libraries`, (err, files)=>{
                 if(err) reject(err);
-                if(files.length < 1) return resolve([]);
+                if(files && files.length < 1) return resolve([]);
                 let count = 0;
                 let libs = [];
                 let done = (err)=>{
@@ -93,20 +93,20 @@ class Arduino {
         });
     }
 
-    compile(code, board="arduino:avr:uno", verbose){
+    compile(code, board='arduino:avr:uno', verbose){
         return new Promise((resolve, reject) => {
-            if(!this.boards[board]) return resolve({success: false, msg: "Unknown board provided"});
+            if(!this.boards[board]) return resolve({success: false, msg: 'Unknown board provided'});
             if(/#\s*include\s*<\.*\/.*>/.test(code)) resolve({success: false, msg: 'Security out-of-bounds'});
             verbose = verbose ? '-verbose' : '';
             tmp.dir({prefix: 'chromeduino-', unsafeCleanup: true}, (err, path, cleanup)=>{
                 if(err) return reject(err);
-                console.log(path);
+                // console.log(path);
                 let codeFile = path.replace(/^.*\//, '')+'.ino';
                 fs.writeFile(path + '/' + codeFile, code, err => {
                     if(err) return reject(err);
                     fs.mkdir(path+'/compiled', err=>{
                         if(err) return reject(err);
-                        let cmd = `${this.buildcmd} ${verbose} -fqbn ${board} -build-path "${path}/compiled" "${path}/${codeFile}"`;
+                        let cmd = `${this.buildcmd} ${verbose} -fqbn ${board} -build-path '${path}/compiled' '${path}/${codeFile}'`;
                         exec(cmd, (err, stdout, stderr)=>{
                             stderr = stderr.split(this.dir).join('~/arduino-1.8.5');
                             stdout = stdout.split(this.dir).join('~/arduino-1.8.5');

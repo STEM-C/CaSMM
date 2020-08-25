@@ -8,8 +8,6 @@ const progressStatusMap = {
     100: 'COMPLETED'
 }
 
-const logPrefix = () => `[${(new Date()).toISOString()}] [Compile Queue]`
-
 // connect/create the submissions queue, attach listeners, and set global listeners
 module.exports.initCompileQueue = () => {
 
@@ -29,7 +27,7 @@ module.exports.initCompileQueue = () => {
         // add queue globally
         strapi.connections.compile_queue = compile_queue
     } catch(err) {
-        console.error(`${logPrefix()} err init queue`, err)
+        console.error('err init queue', err)
     }
 } 
 
@@ -38,7 +36,6 @@ module.exports.updateProgress = async (jobId, progress) => {
 
     try {
         const status = progressStatusMap[progress]
-        console.log(`${logPrefix()} Compile job ${jobId} is ${status}`)
     
         // let completeJob handle last progress
         if (progress == 100) return
@@ -49,7 +46,7 @@ module.exports.updateProgress = async (jobId, progress) => {
         // update the submission
         await strapi.services.submission.update({ id: data.submissionId }, { status })
     } catch (err) {
-        console.error(`${logPrefix()} err updating job ${jobId} progress`, err)
+        console.error(`err updating job ${jobId} progress`, err)
     }5
 }
 
@@ -63,11 +60,11 @@ module.exports.completeJob = async (jobId, result) => {
         // parse the results
         const updates = JSON.parse(result)
         updates.status = 'COMPLETED'
-
+        
         // update the submission
         await strapi.services.submission.update({ id: data.submissionId }, updates)
     } catch (err) {
-        console.error(`${logPrefix()} err completing job ${jobId}`, err)
+        console.error(`err completing job ${jobId}`, err)
     }
 }
 

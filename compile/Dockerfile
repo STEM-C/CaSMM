@@ -13,7 +13,7 @@ RUN yarn
 RUN curl https://downloads.arduino.cc/arduino-1.8.5-linux64.tar.xz | tar -xJ
 
 # Bundle app source
-COPY . .
+COPY ./src .
 
 # Run when container is started
-CMD node app.js
+CMD node cluster.js
