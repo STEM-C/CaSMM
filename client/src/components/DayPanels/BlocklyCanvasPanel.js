@@ -16,6 +16,7 @@ export default function BlocklyCanvasPanel(props) {
 
     let workspaceRef = useRef(null);
     let dayRef = useRef(null);
+    let isStudentRef = useRef(null);
 
     const setWorkspace = () =>
         workspaceRef.current = window.Blockly.inject('blockly-canvas',
@@ -52,9 +53,10 @@ export default function BlocklyCanvasPanel(props) {
 
         // clean up - saves workspace and removes blockly div from DOM
         return async () => {
-            if (isStudent && dayRef.current && workspaceRef.current)
+            if (isStudentRef.current && dayRef.current && workspaceRef.current)
                 await handleSave(dayRef.current.id, workspaceRef);
             if (workspaceRef.current) workspaceRef.current.dispose();
+            isStudentRef.current = null;
             dayRef.current = null
         }
     }, [isStudent]);
