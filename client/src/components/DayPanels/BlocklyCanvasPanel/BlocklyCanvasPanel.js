@@ -1,10 +1,11 @@
 import React, {useEffect, useRef, useState} from 'react';
 import {Link} from "react-router-dom";
-import './DayPanels.less'
-import {compileArduinoCode, setLocalActivity, handleSave} from "./helpers";
+import '../DayPanels.less'
+import {compileArduinoCode, setLocalActivity, handleSave} from "../helpers";
 import {message} from "antd";
-import {getSaves} from "../../Utils/requests";
+import {getSaves} from "../../../Utils/requests";
 import CodeModal from "./CodeModal";
+import VersionHistoryModal from "./VersionHistoryModal"
 
 export default function BlocklyCanvasPanel(props) {
     const [hoverXml, setHoverXml] = useState(false);
@@ -121,27 +122,28 @@ export default function BlocklyCanvasPanel(props) {
                     </div>
                     {isStudent ?
                         <div className='flex flex-row'>
-                            <select id='save-select' value={selectedSave} onChange={(e) => {
-                                setSelectedSave(parseInt(e.target.value))
-                            }}>
-                                <option key={-2} value={-2} disabled id='disabled-option'>
-                                    Load Saves
-                                </option>
-                                <option key={-1} value={-1}>
-                                    Default Template
-                                </option>
-                                {saves.current ? <option value={saves.current.id} key={saves.current.id}>
-                                    {'Active Save'}
-                                </option> : null}
-                                {saves.past ? saves.past.map(save =>
-                                    <option value={save.id} key={save.id}>
-                                        {`${save.student.name}'s Save 
-                                        ${save.updated_at.slice(5, 7)}/${save.updated_at.slice(8, 10)}`}
-                                    </option>) : null}
-                            </select>
-                            <button onClick={loadSave} id='link' className="flex flex-column">
-                                <i id='icon-btn' className="fa fa-folder-open"/>
-                            </button>
+                            {/*<select id='save-select' value={selectedSave} onChange={(e) => {*/}
+                            {/*    setSelectedSave(parseInt(e.target.value))*/}
+                            {/*}}>*/}
+                            {/*    <option key={-2} value={-2} disabled id='disabled-option'>*/}
+                            {/*        Load Saves*/}
+                            {/*    </option>*/}
+                            {/*    <option key={-1} value={-1}>*/}
+                            {/*        Default Template*/}
+                            {/*    </option>*/}
+                            {/*    {saves.current ? <option value={saves.current.id} key={saves.current.id}>*/}
+                            {/*        {'Active Save'}*/}
+                            {/*    </option> : null}*/}
+                            {/*    {saves.past ? saves.past.map(save =>*/}
+                            {/*        <option value={save.id} key={save.id}>*/}
+                            {/*            {`${save.student.name}'s Save */}
+                            {/*            ${save.updated_at.slice(5, 7)}/${save.updated_at.slice(8, 10)}`}*/}
+                            {/*        </option>) : null}*/}
+                            {/*</select>*/}
+                            {/*<button onClick={loadSave} id='link' className="flex flex-column">*/}
+                            {/*    <i id='icon-btn' className="fa fa-folder-open"/>*/}
+                            {/*</button>*/}
+                            <VersionHistoryModal saves={saves} defaultTemplate={day}/>
                             <button onClick={handleManualSave} id='link' className="flex flex-column">
                                 <i id='icon-btn' className="fa fa-save"/>
                             </button>
