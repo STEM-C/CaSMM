@@ -48,7 +48,7 @@ export default function VersionHistoryModal(props) {
                     {saves.current ? <li value={saves.current.id} key={saves.current.id}>
                         <div id='history-item'>
                             <div id='item-content'>
-                                Active save
+                                Active save from {getFormattedDate(saves.current.updated_at).slice(11, 21)}
                             </div>
                             <div id='item-content'>
                                 <Button onClick={() => handleSelected(saves.current.id)}>
