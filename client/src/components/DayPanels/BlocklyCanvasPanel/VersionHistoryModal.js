@@ -4,7 +4,7 @@ import '../DayPanels.less'
 
 export default function VersionHistoryModal(props) {
     const [visible, setVisible] = useState(false);
-    const {saves, loadSave} = props;
+    const {saves, loadSave, getFormattedDate} = props;
 
     const showModal = () => {
         setVisible(true)
@@ -21,21 +21,6 @@ export default function VersionHistoryModal(props) {
     const handleSelected = selectedId => {
         loadSave(selectedId);
         setVisible(false)
-    };
-
-    const getFormattedDate = dt => {
-        const d = new Date(Date.parse(dt))
-        const day = d.getDate();
-        const month = d.getMonth() + 1;
-        const year = d.getFullYear();
-        let hrs = d.getHours();
-        const ampm = hrs >= 12 ? 'PM' : 'AM';
-        hrs = hrs % 12;
-        hrs = hrs ? hrs : 12;
-        let min = d.getMinutes();
-        min = min < 10 ? '0' + min : min;
-        const sec = d.getSeconds();
-        return `${month}/${day}/${year}, ${hrs}:${min}:${sec} ${ampm}`
     };
 
     return (

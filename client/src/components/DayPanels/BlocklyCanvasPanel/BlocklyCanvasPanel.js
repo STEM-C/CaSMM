@@ -12,7 +12,7 @@ export default function BlocklyCanvasPanel(props) {
     const [hoverArduino, setHoverArduino] = useState(false);
     const [hoverCompile, setHoverCompile] = useState(false);
     const [saves, setSaves] = useState({});
-    // const [selectedSave, setSelectedSave] = useState(-2);
+    const [lastSavedTime, setLastSavedTime] = useState(null)
     const {day, dayType, homePath, handleGoBack, isStudent, lessonName} = props;
 
 
@@ -30,14 +30,15 @@ export default function BlocklyCanvasPanel(props) {
             let toLoad = day.template;
             if (selectedSave !== -1) {
 
-                if (saves.current) {
-                    toLoad = saves.current.id === selectedSave ?
-                        saves.current.workspace : saves.past.find(save => save.id === selectedSave).workspace
+                if (saves.current && saves.current.id === selectedSave) {
+                    toLoad = saves.current.workspace;
+                    setLastSavedTime(getFormattedDate(saves.current.updated_at));
                 } else {
-                    toLoad = saves.past.find(save => save.id === selectedSave).workspace
+                    const s = saves.past.find(save => save.id === selectedSave);
+                    toLoad = s.workspace;
+                    setLastSavedTime(getFormattedDate(s.updated_at))
                 }
             }
-            console.log(selectedSave, toLoad)
             let xml = window.Blockly.Xml.textToDom(toLoad);
             if (workspaceRef.current) workspaceRef.current.clear();
             window.Blockly.Xml.domToWorkspace(xml, workspaceRef.current);
@@ -50,8 +51,12 @@ export default function BlocklyCanvasPanel(props) {
     useEffect(() => {
         // automatically save workspace every 5 min
         setInterval(async () => {
-            if (isStudentRef.current && workspaceRef.current && dayRef.current)
-                await handleSave(dayRef.current.id, workspaceRef)
+            if (isStudentRef.current && workspaceRef.current && dayRef.current) {
+                const res = await handleSave(dayRef.current.id, workspaceRef)
+                if (res.data) {
+                    setLastSavedTime(getFormattedDate(res.data[0].updated_at));
+                }
+            }
         }, 60000);
 
         // clean up - saves workspace and removes blockly div from DOM
@@ -86,7 +91,8 @@ export default function BlocklyCanvasPanel(props) {
 
                 if (onLoadSave) {
                     let xml = window.Blockly.Xml.textToDom(onLoadSave.workspace);
-                    window.Blockly.Xml.domToWorkspace(xml, workspaceRef.current)
+                    window.Blockly.Xml.domToWorkspace(xml, workspaceRef.current);
+                    setLastSavedTime(getFormattedDate(onLoadSave.updated_at));
                 } else if (day.template) {
                     let xml = window.Blockly.Xml.textToDom(day.template);
                     window.Blockly.Xml.domToWorkspace(xml, workspaceRef.current)
@@ -102,11 +108,28 @@ export default function BlocklyCanvasPanel(props) {
         if (res.err) {
             message.error(res.err)
         } else {
+            setLastSavedTime(getFormattedDate(res.data[0].updated_at));
+            console.log(getFormattedDate(res.data[0].updated_at))
             message.success('Workspace saved successfully.')
         }
 
         const savesRes = await getSaves(day.id);
         if (savesRes.data) setSaves(savesRes.data);
+    };
+
+    const getFormattedDate = dt => {
+        const d = new Date(Date.parse(dt));
+        const day = d.getDate();
+        const month = d.getMonth() + 1;
+        const year = d.getFullYear();
+        let hrs = d.getHours();
+        const ampm = hrs >= 12 ? 'PM' : 'AM';
+        hrs = hrs % 12;
+        hrs = hrs ? hrs : 12;
+        let min = d.getMinutes();
+        min = min < 10 ? '0' + min : min;
+        const sec = d.getSeconds();
+        return `${month}/${day}/${year}, ${hrs}:${min}:${sec} ${ampm}`
     };
 
     return (
@@ -120,6 +143,12 @@ export default function BlocklyCanvasPanel(props) {
                         {handleGoBack ? <button onClick={handleGoBack} id='link' className="flex flex-column">
                             <i id='icon-btn' className="fa fa-arrow-left"/>
                         </button> : null}
+                    </div>
+                    <div>
+                        {isStudent && lastSavedTime ?
+                            `Last changes saved ${lastSavedTime}`
+                            : null
+                        }
                     </div>
                     {isStudent ?
                         <div className='flex flex-row'>
@@ -147,13 +176,15 @@ export default function BlocklyCanvasPanel(props) {
                             <VersionHistoryModal
                                 saves={saves}
                                 defaultTemplate={day}
-                                // setSelectedSave={setSelectedSave}
+                                getFormattedDate={getFormattedDate}
                                 loadSave={loadSave}
                             />
                             <button onClick={handleManualSave} id='link' className="flex flex-column">
                                 <i id='icon-btn' className="fa fa-save"/>
                             </button>
-                        </div> : null}
+                        </div>
+                        : null
+                    }
                     <div style={{"width": "10%"}}>
                         <div id='action-btn-container' className="flex space-between">
                             {!isStudent ?
