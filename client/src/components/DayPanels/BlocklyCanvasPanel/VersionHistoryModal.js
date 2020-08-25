@@ -52,7 +52,7 @@ export default function VersionHistoryModal(props) {
                             </div>
                             <div id='item-content'>
                                 <Button onClick={() => handleSelected(saves.current.id)}>
-                                    Current
+                                    Restore this save
                                 </Button>
                             </div>
                         </div>
