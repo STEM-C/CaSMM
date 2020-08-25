@@ -4,7 +4,7 @@ import '../DayPanels.less'
 
 export default function VersionHistoryModal(props) {
     const [visible, setVisible] = useState(false);
-    const {saves, defaultTemplate} = props;
+    const {saves, loadSave} = props;
 
     const showModal = () => {
         setVisible(true)
@@ -18,6 +18,11 @@ export default function VersionHistoryModal(props) {
         setVisible(false)
     };
 
+    const handleSelected = selectedId => {
+        loadSave(selectedId);
+        setVisible(false)
+    };
+
     return (
         <div id='history-modal'>
             <Button onClick={showModal}>Version History</Button>
@@ -25,7 +30,7 @@ export default function VersionHistoryModal(props) {
                 title={'Your Version History'}
                 visible={visible}
                 onCancel={handleCancel}
-                width='50vw'
+                width='60vw'
                 footer={[
                     <Button key="ok" type="primary" onClick={handleOk}>
                         OK
@@ -39,7 +44,7 @@ export default function VersionHistoryModal(props) {
                                 Active save
                             </div>
                             <div id='item-content'>
-                                <Button disabled>
+                                <Button onClick={() => handleSelected(saves.current.id)}>
                                     Current
                                 </Button>
                             </div>
@@ -53,19 +58,19 @@ export default function VersionHistoryModal(props) {
                                     from {save.updated_at.slice(5, 7)}/{save.updated_at.slice(8, 10)}
                                 </div>
                                 <div id='item-content'>
-                                    <Button>
+                                    <Button onClick={() => handleSelected(save.id)}>
                                         Restore this save
                                     </Button>
                                 </div>
                             </div>
                         </li>) : null}
-                    <li>
+                    <li key={-2}>
                         <div id='history-item'>
                             <div id='item-content'>
                                 Default template
                             </div>
                             <div id='item-content'>
-                                <Button>
+                                <Button onClick={() => handleSelected(-1)}>
                                     Start over
                                 </Button>
                             </div>

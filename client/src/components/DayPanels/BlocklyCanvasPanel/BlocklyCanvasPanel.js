@@ -12,7 +12,7 @@ export default function BlocklyCanvasPanel(props) {
     const [hoverArduino, setHoverArduino] = useState(false);
     const [hoverCompile, setHoverCompile] = useState(false);
     const [saves, setSaves] = useState({});
-    const [selectedSave, setSelectedSave] = useState(-2);
+    // const [selectedSave, setSelectedSave] = useState(-2);
     const {day, dayType, homePath, handleGoBack, isStudent, lessonName} = props;
 
 
@@ -25,7 +25,7 @@ export default function BlocklyCanvasPanel(props) {
             {toolbox: document.getElementById('toolbox')}
         );
 
-    const loadSave = () => {
+    const loadSave = selectedSave => {
         try {
             let toLoad = day.template;
             if (selectedSave !== -1) {
@@ -37,10 +37,11 @@ export default function BlocklyCanvasPanel(props) {
                     toLoad = saves.past.find(save => save.id === selectedSave).workspace
                 }
             }
+            console.log(selectedSave, toLoad)
             let xml = window.Blockly.Xml.textToDom(toLoad);
             if (workspaceRef.current) workspaceRef.current.clear();
             window.Blockly.Xml.domToWorkspace(xml, workspaceRef.current);
-            setSelectedSave(-2)
+            //setSelectedSave(-2)
         } catch (e) {
             message.error('Failed to load save.')
         }
@@ -143,7 +144,12 @@ export default function BlocklyCanvasPanel(props) {
                             {/*<button onClick={loadSave} id='link' className="flex flex-column">*/}
                             {/*    <i id='icon-btn' className="fa fa-folder-open"/>*/}
                             {/*</button>*/}
-                            <VersionHistoryModal saves={saves} defaultTemplate={day}/>
+                            <VersionHistoryModal
+                                saves={saves}
+                                defaultTemplate={day}
+                                // setSelectedSave={setSelectedSave}
+                                loadSave={loadSave}
+                            />
                             <button onClick={handleManualSave} id='link' className="flex flex-column">
                                 <i id='icon-btn' className="fa fa-save"/>
                             </button>
