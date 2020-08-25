@@ -23,9 +23,31 @@ export default function VersionHistoryModal(props) {
         setVisible(false)
     };
 
+    const getFormattedDate = dt => {
+        const d = new Date(Date.parse(dt))
+        const day = d.getDate();
+        const month = d.getMonth() + 1;
+        const year = d.getFullYear();
+        let hrs = d.getHours();
+        const ampm = hrs >= 12 ? 'PM' : 'AM';
+        hrs = hrs % 12;
+        hrs = hrs ? hrs : 12;
+        let min = d.getMinutes();
+        min = min < 10 ? '0' + min : min;
+        const sec = d.getSeconds();
+        return `${month}/${day}/${year}, ${hrs}:${min}:${sec} ${ampm}`
+    };
+
     return (
         <div id='history-modal'>
-            <Button onClick={showModal}>Version History</Button>
+            <Button onClick={showModal}>
+                <div className='flex space-between'>
+                    <i id='eye-icon' className="fa fa-eye fa-lg"/>
+                    <div>
+                        Version History
+                    </div>
+                </div>
+            </Button>
             <Modal
                 title={'Your Version History'}
                 visible={visible}
@@ -55,7 +77,7 @@ export default function VersionHistoryModal(props) {
                             <div id='history-item'>
                                 <div id='item-content'>
                                     {save.student.name}'s save
-                                    from {save.updated_at.slice(5, 7)}/{save.updated_at.slice(8, 10)}
+                                    from {getFormattedDate(save.updated_at)}
                                 </div>
                                 <div id='item-content'>
                                     <Button onClick={() => handleSelected(save.id)}>
