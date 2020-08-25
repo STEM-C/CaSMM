@@ -66,11 +66,11 @@ export default function About(props) {
                     <br/>
                     Pedro Feijóo-García
                     <br/>
+                    Sarah Brown
+                    <br/>
                     Nicholas Ionata
                     <br/>
                     Dakota Rennemann
-                    <br/>
-                    Sarah Brown
                     <br/>
                     Megha Nagarmunoli
                     <br/>
