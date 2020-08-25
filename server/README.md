@@ -32,30 +32,11 @@ All assets in the **public** directory will be served. The specifics are defined
 
 > When Docker builds the production container, it builds client and adds it to **public/client**
 
-A client middleware handles serving **client/index.html**, passing off all client routes to react. All other client assets are served by strapi as public assets. The middleware was implemented to solve manual navigation to a non-root client route responding with a 404. Read more about this [here](https://github.com/STEM-C/STEM-C/pull/28#pullrequestreview-415846251).
-
-> As client routes are added, they need to be added to the client middleware config
-
-```
-// middlewares/client/defaults.json
-
-{
-    "client": {
-      ...
-      "routes": [
-        "/",
-        "/login",
-        "/register", 
-        "/teacher*",
-        "/workspace*"
-      ]
-    }
-}
-```
+The [proxy](/server/middlewares/proxy/index.js) middleware handles serving **client/index.html**, passing off all client routes to react. All other client assets are served by strapi as public assets. The middleware was implemented to solve manual navigation to a non-root client route responding with a 404. Read more about this [here](https://github.com/STEM-C/STEM-C/pull/28#pullrequestreview-415846251).
 
 <br/>
 
-## API `/`
+## API Endpoints `/api`
 
 > Built with [Node](https://nodejs.org/en/), [Koa](https://github.com/koajs/koa#readme), and [Bookshelf](https://bookshelfjs.org/), the REST API enables CRUD functionality with the application's content. Authentication is enabled via JWTs. The dbms is [PostgreSQL](https://www.postgresql.org/).
 
