@@ -38,11 +38,12 @@ export default function BlocklyCanvasPanel(props) {
                     toLoad = s.workspace;
                     setLastSavedTime(getFormattedDate(s.updated_at))
                 }
+            } else {
+                setLastSavedTime(null)
             }
             let xml = window.Blockly.Xml.textToDom(toLoad);
             if (workspaceRef.current) workspaceRef.current.clear();
             window.Blockly.Xml.domToWorkspace(xml, workspaceRef.current);
-            //setSelectedSave(-2)
         } catch (e) {
             message.error('Failed to load save.')
         }
@@ -152,27 +153,6 @@ export default function BlocklyCanvasPanel(props) {
                     </div>
                     {isStudent ?
                         <div className='flex flex-row'>
-                            {/*<select id='save-select' value={selectedSave} onChange={(e) => {*/}
-                            {/*    setSelectedSave(parseInt(e.target.value))*/}
-                            {/*}}>*/}
-                            {/*    <option key={-2} value={-2} disabled id='disabled-option'>*/}
-                            {/*        Load Saves*/}
-                            {/*    </option>*/}
-                            {/*    <option key={-1} value={-1}>*/}
-                            {/*        Default Template*/}
-                            {/*    </option>*/}
-                            {/*    {saves.current ? <option value={saves.current.id} key={saves.current.id}>*/}
-                            {/*        {'Active Save'}*/}
-                            {/*    </option> : null}*/}
-                            {/*    {saves.past ? saves.past.map(save =>*/}
-                            {/*        <option value={save.id} key={save.id}>*/}
-                            {/*            {`${save.student.name}'s Save */}
-                            {/*            ${save.updated_at.slice(5, 7)}/${save.updated_at.slice(8, 10)}`}*/}
-                            {/*        </option>) : null}*/}
-                            {/*</select>*/}
-                            {/*<button onClick={loadSave} id='link' className="flex flex-column">*/}
-                            {/*    <i id='icon-btn' className="fa fa-folder-open"/>*/}
-                            {/*</button>*/}
                             <VersionHistoryModal
                                 saves={saves}
                                 defaultTemplate={day}
