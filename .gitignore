@@ -30,5 +30,5 @@ yarn-error.log*
 # node
 node_modules/
 build/
-server/public/frontend/*
-!server/public/frontend/.gitkeep
+server/public/client/*
+!server/public/client/.gitkeep
