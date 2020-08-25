@@ -50,7 +50,7 @@ export default function About(props) {
                     library to build a block based visual programming editor within our user interface. Programs created
                     through the visual programming editor can be compiled into Arduino executable code and uploaded
                     directly onto a students Arduino. These programs, once uploaded to the student's Arduino, provide
-                    support in performance of a corresponding science project in the classroom.
+                    support in performing the corresponding science project in the classroom.
                 </p>
                 <div id="divider"/>
                 <h1 id='secondary-title'>
