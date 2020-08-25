@@ -12,7 +12,8 @@ export default function BlocklyCanvasPanel(props) {
     const [hoverArduino, setHoverArduino] = useState(false);
     const [hoverCompile, setHoverCompile] = useState(false);
     const [saves, setSaves] = useState({});
-    const [lastSavedTime, setLastSavedTime] = useState(null)
+    const [lastSavedTime, setLastSavedTime] = useState(null);
+    const [undoStack, setUndoStack] = useState([]);
     const {day, dayType, homePath, handleGoBack, isStudent, lessonName} = props;
 
 
@@ -77,7 +78,15 @@ export default function BlocklyCanvasPanel(props) {
             dayRef.current = day
             if (!workspaceRef.current && day && Object.keys(day).length !== 0) {
                 setWorkspace();
-                await workspaceRef.current.addChangeListener(() => setLocalActivity(workspaceRef.current, dayType));
+                await workspaceRef.current.addChangeListener(() => {
+                    setLocalActivity(workspaceRef.current, dayType);
+                    let newStack = [...undoStack];
+                    let xml = window.Blockly.Xml.workspaceToDom(workspaceRef.current);
+                    let xml_text = window.Blockly.Xml.domToText(xml);
+                    newStack.push(xml_text);
+                    console.log(xml_text)
+                    setUndoStack(newStack)
+                });
 
                 let onLoadSave = null;
                 if (isStudent) {
@@ -116,6 +125,17 @@ export default function BlocklyCanvasPanel(props) {
 
         const savesRes = await getSaves(day.id);
         if (savesRes.data) setSaves(savesRes.data);
+    };
+
+    const handleUndo = () => {
+        console.log(undoStack)
+        if (undoStack.length > 0) {
+            let newStack = [...undoStack];
+            let xml = window.Blockly.Xml.textToDom(newStack.pop());
+            if (workspaceRef.current) workspaceRef.current.clear();
+            window.Blockly.Xml.domToWorkspace(xml, workspaceRef.current);
+            setUndoStack(newStack)
+        }
     };
 
     const getFormattedDate = dt => {
@@ -161,6 +181,9 @@ export default function BlocklyCanvasPanel(props) {
                             />
                             <button onClick={handleManualSave} id='link' className="flex flex-column">
                                 <i id='icon-btn' className="fa fa-save"/>
+                            </button>
+                            <button onClick={handleUndo} id='link' className="flex flex-column">
+                                <i id='icon-btn' className="fa fa-undo"/>
                             </button>
                         </div>
                         : null
