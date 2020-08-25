@@ -10,7 +10,8 @@
   },
   "attributes": {
     "name": {
-      "type": "string"
+      "type": "string",
+      "regex": "^([A-Za-z]+)\\s*([A-Za-z]*)\\s+([A-Za-z])\\.$"
     },
     "character": {
       "type": "string"

@@ -15,11 +15,37 @@ export default function AddStudents(props) {
 
     const buttonRef = React.createRef();
 
+    const nameIsFormatted = n => {
+        if (n.search('^([A-Za-z]+),\\s*([A-Za-z]+)\\s*([A-Za-z]+)') !== -1 ||
+            n.search('^([A-Za-z]+)\\s*([A-Za-z]*)\\s+([A-Za-z])\\.') !== -1) return true;
+        return false
+    };
+
+    const reformatName = n => {
+        // check "Last, First" / "Last, First Middle"
+        if (n.search('^([A-Za-z]+),\\s*([A-Za-z]+)\\s*([A-Za-z]+)') !== -1) {
+            let names = n.split(" ");
+            if (names.length === 3) return `${names[1]} ${names[2]} ${names[0].substring(0, 1)}.`;
+            return `${names[1]} ${names[0].substring(0, 1)}.`;
+        }
+        // check "First L." and "First Middle L."
+        else if (n.search('^([A-Za-z]+)\\s*([A-Za-z]*)\\s+([A-Za-z])\\.$') !== -1) {
+            return n
+        }
+        // return null. not properly formatted
+        else return null
+    };
+
     const handleManualAdd = async () => {
-        const res = await addStudent(name, chosenCharacter ? chosenCharacter.emoji : null, classroomId);
+        const formattedName = reformatName(name);
+        if (!formattedName) {
+            message.warning('Please verify that the name you entered is in the specified format.', 6);
+            return
+        }
+        const res = await addStudent(formattedName, chosenCharacter ? chosenCharacter.emoji : null, classroomId);
         if (res.data) {
             addStudentsToTable([res.data]);
-            message.success(`${name} has been added to the roster successfully.`);
+            message.success(`${formattedName} has been added to the roster successfully.`);
             setChosenCharacter(null);
             setName('')
         } else {
@@ -70,13 +96,17 @@ export default function AddStudents(props) {
     const handleOnDrop = async (roster) => {
         // on file select, filter out bad data and set uploadedRoster and tableData
         let badInput = false;
-        const filteredRoster = roster.filter(student => {
-            if (student.data.name) return true;
-            badInput = true;
+        let students = roster.filter(student => {
+            if (student.data.name) {
+                if (nameIsFormatted(student.data.name)) return true;
+                badInput = true;
+            }
             return false
         });
+        students = await students.map(student => {
+            return {name: reformatName(student.data.name), animal: student.data.animal};
+        });
 
-        const students = await filteredRoster.map(student => student.data);
         setUploadedRoster(students);
         const data = await getTableData(students);
         setTableData(data);
@@ -111,17 +141,21 @@ export default function AddStudents(props) {
         <div id='add-students'>
             <div id='manual-input'>
                 <h3>Manual Input:</h3>
+                <p>
+                    Name should be in the format: "Last, First", "Last, First Middle", "First L." or "First Middle L."
+                </p>
                 <form>
-                    <input type="text" value={name} onChange={e => {setName(e.target.value)}}
+                    <input type="text" value={name} onChange={e => {
+                        setName(e.target.value)
+                    }}
                            id="name" name="name" placeholder='Student Name'/>
-                    {/*<input type="text" {...animal} id="animal" name="animal" placeholder='Student Animal'/>*/}
                     <div id='emoji-picker'>
                         {chosenCharacter ? (
                             <span>Student Character: {chosenCharacter.emoji}</span>
                         ) : (
                             <span>Optional: Student Character</span>
                         )}
-                        <Picker onEmojiClick={onEmojiClick} />
+                        <Picker onEmojiClick={onEmojiClick}/>
                     </div>
                     <br/>
                     <input type="button" value="Add Student" onClick={handleManualAdd}/>
@@ -130,7 +164,13 @@ export default function AddStudents(props) {
             <Divider/>
             <div>
                 <h3>Upload Roster CSV:</h3>
-                <p>CSV should have the following columns: "Name", "Animal"</p>
+                <p>
+                    CSV should have the following columns: "Name" or "Student", (optional) "Animal"
+                </p>
+                <p>
+                    Name/Student column should be in the format: "Last, First",
+                    "Last, First Middle", "First L." or "First Middle L."
+                </p>
                 <CSVReader
                     ref={buttonRef}
                     onDrop={handleOnDrop}
@@ -141,7 +181,9 @@ export default function AddStudents(props) {
                     config={{
                         header: true,
                         transformHeader: function (h) {
-                            return h.toLowerCase();
+                            let header = h.toLowerCase();
+                            if (header === 'student' || header === ['student name']) header = 'name';
+                            return header
                         }
                     }}
                     addRemoveButton
@@ -167,15 +209,3 @@ export default function AddStudents(props) {
         </div>
     );
 }
-
-const useFormInput = initialValue => {
-    const [value, setValue] = useState(initialValue);
-
-    const handleChange = e => {
-        setValue(e.target.value);
-    };
-    return {
-        value,
-        onChange: handleChange
-    }
-};
