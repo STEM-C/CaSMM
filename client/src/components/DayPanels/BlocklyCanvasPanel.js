@@ -16,7 +16,6 @@ export default function BlocklyCanvasPanel(props) {
 
     let workspaceRef = useRef(null);
     let dayRef = useRef(null);
-    let isStudentRef = useRef(null);
 
     const setWorkspace = () =>
         workspaceRef.current = window.Blockly.inject('blockly-canvas',
@@ -46,17 +45,17 @@ export default function BlocklyCanvasPanel(props) {
 
     useEffect(() => {
         // automatically save workspace every 5 min
-        setInterval(async () => {
-            if (isStudentRef.current && workspaceRef.current && dayRef.current)
-                await handleSave(dayRef.current.id, workspaceRef)
-        }, 60000);
+        if (isStudent) {
+            setInterval(async () => {
+                if (workspaceRef.current && dayRef.current) await handleSave(dayRef.current.id, workspaceRef)
+            }, 60000);
+        }
 
         // clean up - saves workspace and removes blockly div from DOM
         return async () => {
-            if (isStudentRef.current && dayRef.current && workspaceRef.current)
+            if (isStudent && dayRef.current && workspaceRef.current)
                 await handleSave(dayRef.current.id, workspaceRef);
             if (workspaceRef.current) workspaceRef.current.dispose();
-            isStudentRef.current = null;
             dayRef.current = null
         }
     }, [isStudent]);
@@ -64,8 +63,6 @@ export default function BlocklyCanvasPanel(props) {
     useEffect(() => {
         // once the day state is set, set the workspace and save
         const setUp = async () => {
-            isStudentRef.current = isStudent;
-            dayRef.current = day
             if (!workspaceRef.current && day && Object.keys(day).length !== 0) {
                 setWorkspace();
 
@@ -90,6 +87,8 @@ export default function BlocklyCanvasPanel(props) {
                     let xml = window.Blockly.Xml.textToDom(day.template);
                     window.Blockly.Xml.domToWorkspace(xml, workspaceRef.current)
                 }
+
+                dayRef.current = day
             }
         };
         setUp()
