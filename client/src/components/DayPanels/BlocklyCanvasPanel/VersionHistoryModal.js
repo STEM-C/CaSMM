@@ -1,5 +1,6 @@
 import {Modal, Button} from 'antd';
 import React, {useState} from "react";
+import '../DayPanels.less'
 
 export default function VersionHistoryModal(props) {
     const [visible, setVisible] = useState(false);
@@ -18,7 +19,7 @@ export default function VersionHistoryModal(props) {
     };
 
     return (
-        <div id='code-modal'>
+        <div id='history-modal'>
             <Button onClick={showModal}>Version History</Button>
             <Modal
                 title={'Your Version History'}
@@ -33,15 +34,42 @@ export default function VersionHistoryModal(props) {
             >
                 <ul>
                     {saves.current ? <li value={saves.current.id} key={saves.current.id}>
-                        Active Save
+                        <div id='history-item'>
+                            <div id='item-content'>
+                                Active save
+                            </div>
+                            <div id='item-content'>
+                                <Button disabled>
+                                    Current
+                                </Button>
+                            </div>
+                        </div>
                     </li> : null}
                     {saves.past ? saves.past.map(save =>
                         <li value={save.id} key={save.id}>
-                            {`${save.student.name}'s save 
-                            from ${save.updated_at.slice(5, 7)}/${save.updated_at.slice(8, 10)}`}
+                            <div id='history-item'>
+                                <div id='item-content'>
+                                    {save.student.name}'s save
+                                    from {save.updated_at.slice(5, 7)}/{save.updated_at.slice(8, 10)}
+                                </div>
+                                <div id='item-content'>
+                                    <Button>
+                                        Restore this save
+                                    </Button>
+                                </div>
+                            </div>
                         </li>) : null}
                     <li>
-                        Default Template
+                        <div id='history-item'>
+                            <div id='item-content'>
+                                Default template
+                            </div>
+                            <div id='item-content'>
+                                <Button>
+                                    Start over
+                                </Button>
+                            </div>
+                        </div>
                     </li>
                 </ul>
             </Modal>
