@@ -48,6 +48,7 @@ export default function BlocklyCanvasPanel(props) {
             }
             let xml = window.Blockly.Xml.textToDom(toLoad);
             if (workspaceRef.current) workspaceRef.current.clear();
+            setUndoStack([])
             window.Blockly.Xml.domToWorkspace(xml, workspaceRef.current);
         } catch (e) {
             message.error('Failed to load save.')
@@ -64,7 +65,9 @@ export default function BlocklyCanvasPanel(props) {
                 }
             }
         }, 60000);
+    }, [isStudent]);
 
+    useEffect(() => {
         // clean up - saves workspace and removes blockly div from DOM
         return async () => {
             if (isStudent && dayRef.current && workspaceRef.current)
@@ -72,7 +75,7 @@ export default function BlocklyCanvasPanel(props) {
             if (workspaceRef.current) workspaceRef.current.dispose();
             dayRef.current = null
         }
-    }, []);
+    }, [isStudent]);
 
     const onWorkspaceChange = useCallback(() => {
         // set updated workspace as local activity
@@ -86,7 +89,7 @@ export default function BlocklyCanvasPanel(props) {
             const n = newStack.concat(xml_text);
             setUndoStack(n)
         }
-    },  [dayType, undoStack]);
+    },  [dayType]);
 
     useEffect(() => {
         // once the day state is set, set the workspace and save
@@ -118,7 +121,7 @@ export default function BlocklyCanvasPanel(props) {
             }
         };
         setUp()
-    }, [day, dayType, isStudent, undoStack, onWorkspaceChange]);
+    }, [day, dayType, isStudent, onWorkspaceChange]);
 
     const handleManualSave = async () => {
         // save workspace then update load save options
@@ -136,7 +139,6 @@ export default function BlocklyCanvasPanel(props) {
     };
 
     const handleUndo = () => {
-        console.log(undoStack)
         if (undoStack.length > 1) {
             let newStack = [...undoStack];
             newStack.pop();
