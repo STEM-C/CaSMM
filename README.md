@@ -30,16 +30,15 @@ Cloud-based programming interface
 > The project is divided into three conceptual environments.
 
 ### Development
-This project's dependencies are managed through [yarn](https://classic.yarnpkg.com/en/docs/install/#mac-stable). This effectively replaces npm.
-
 #### Structure
 
-The development environment is composed of four servers. The first one is run with the [Create React App](https://create-react-app.dev/docs/getting-started/) dev server. The later three are containerized with docker and run with [docker compose](https://docs.docker.com/compose/).
+The development environment is composed of five servers. The first one is run with the [Create React App](https://create-react-app.dev/docs/getting-started/) dev server. The later four are containerized with docker and run with [docker compose](https://docs.docker.com/compose/).
 
 * `casmm-client-dev` - localhost:3000
 * `casmm-server-dev` - localhost:1337
-* `casmm-compile-dev` - localhost:8080
+* `casmm-compile-dev` 
 * `casmm-db-dev` - localhost:5432
+* `casmm-compile_queue-dev`
 
 #### Running
 
@@ -48,7 +47,7 @@ The development environment is composed of four servers. The first one is run wi
 1. Follow the [client](/client#setup) setup
 2. Run `yarn start` from `/client`
 
-`casmm-server-dev`, `casmm-compile-dev`, and `casmm-db-dev`
+`casmm-server-dev`, `casmm-compile-dev`, `casmm-db-dev`, and `casmm-compile_queue-dev`
 
 1. Install [docker](https://docs.docker.com/get-docker/)
 
@@ -62,44 +61,29 @@ The development environment is composed of four servers. The first one is run wi
 
 #### Structure
 
-The staging environment is deployed on Heroku. It is composed of one app running a Heroku Postgres instance and a web container.
+The staging environment is a Heroku app. It is composed of a web dyno, compile dyno, Heroku Postgres add-on, and Heroku Redis add-on.
 
 * `casmm-staging` - [casmm-staging.herokuapp.com](https://casmm-staging.herokuapp.com/)
-  * The web container attached to this Heroku app runs `server`, which will serve all static files and the api
-  * The Heroku Postgres instance is attached as an add-on
+  * The web dyno runs `server`
+  * The compile dyno runs `compile`
 
 #### Running
 
-`casmm-staging` is automatically built from the latest commits to `release`. Heroku runs the container orchestration from there.
+`casmm-staging` is automatically built from the latest commits to branches matching `release/v[0-9].[0-9]`. Heroku runs the container orchestration from there.
 
 ### Production
 
 #### Structure
 
-The production environment is deployed on Heroku. It is composed of two apps. One is running a Heroku Postgres instance and a web container and the other is running just a web container.
+The production environment is a Heroku app. It is composed of a web dyno, compile dyno, Heroku Postgres add-on, and Heroku Redis add-on.
 
 * `casmm` - [casmm.herokuapp.com](https://casmm.herokuapp.com/)
-  * The web container attached to this Heroku app runs `server`, which will serve all static files and the api
-  * The Heroku Postgres instance is attached as an add-on
-* `casmm-compile` - [casmm.herokuapp.com](https://casmm-compile.herokuapp.com/)
-  * The web container attached to this Heroku app runs `compile`
+  * The web dyno runs `server`
+  * The compile dyno runs `compile`
 
 #### Running
 
 `casmm` is automatically built from the latest commits to `master`. Heroku runs the container orchestration from there.
-
-`casmm-compile` is manually deployed through the [Container Registry](https://devcenter.heroku.com/articles/container-registry-and-runtime) and [Heroku CLI](https://devcenter.heroku.com/articles/heroku-cli).
-
-1. Install [Heroku CLI](https://devcenter.heroku.com/articles/heroku-cli)
-2. Run the following commands sequentially
-
-```powershell
-heroku login
-heroku git:remote -a stem-c-compile
-heroku container:login
-heroku container:push web
-heroku container:release web
-```
 
 <br/>
 
