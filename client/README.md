@@ -26,7 +26,7 @@ This react project has the following file structure rules:
 
 ## Routing
 
-All client routes are handled by react router. The **index.html** file will be served for all routes that are not `/api`, `/client` (static assets), and `/admin`. Additional information can be found [here](/server#static-assets).
+All client routes are handled by react router. The **index.html** file and all static assets will be served by the [server](/server#static-assets).
 
 <br/>
 
@@ -55,7 +55,7 @@ It correctly bundles React in production mode and optimizes the build for the be
 To maintain a consistant theme the folowing has been implemented in `\client\src\assets\style.less` for import
 
 ### Colors
-    
+
     primary: #3D5C82;
     secondary: #5BABDE;
     tertiary: #F4F4F5;
