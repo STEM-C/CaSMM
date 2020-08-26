@@ -194,7 +194,8 @@ export default function BlocklyCanvasPanel(props) {
                                 <i id='icon-btn' className="fa fa-save"/>
                             </button>
                             <button onClick={handleUndo} id='link' className="flex flex-column">
-                                <i id='icon-btn' className="fa fa-undo"/>
+                                <i id='icon-btn' className="fa fa-undo-alt"
+                                   style={undoStack.length <= 1 ? {color: 'grey', cursor: 'default'} : null}/>
                             </button>
                         </div>
                         : null
