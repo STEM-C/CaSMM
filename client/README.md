@@ -26,7 +26,7 @@ This react project has the following file structure rules:
 
 ## Routing
 
-All client routes must be registered in the cms frontend middleware to ensure they are handled by react. Additional information and implementation instructions are in the [server](/server#static-assets) documentation.
+All client routes are handled by react router. The **index.html** file will be served for all routes that are not `/api`, `/client` (static assets), and `/admin`. Additional information can be found [here](/server#static-assets).
 
 <br/>
 

@@ -3,6 +3,7 @@ import { Route, Switch, useHistory } from 'react-router-dom'
 import PrivateRoute from './Utils/PrivateRoute';
 
 import Home from "./views/Home/Home"
+import About from "./views/About/About"
 import Workspace from "./views/Workspace/Workspace"
 import Dashboard from "./views/Dashboard/Dashboard"
 import Student from "./views/Student/Student"
@@ -24,7 +25,8 @@ const App = () => {
     return (
         <div>
             <Switch>
-                <Route exact path={"/"} render={() => <Home history={history} />}/>
+                <Route exact path={"/"} render={() => <Home history={history}/>}/>
+                <Route exact path={"/about"} render={() => <About history={history}/>}/>
                 <Route exact path={"/teacherlogin"} render={() => <TeacherLogin history={history}/>}/>
                 <Route exact path={"/login"} render={() => <StudentLogin history={history} handleLogout={handleLogout}/>}/>
                 <PrivateRoute exact path={"/dashboard"} render={() => <Dashboard history={history} handleLogout={handleLogout}/>}/>

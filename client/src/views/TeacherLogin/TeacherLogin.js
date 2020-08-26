@@ -32,9 +32,13 @@ export default function TeacherLogin(props) {
         history.push('/')
     };
 
+    const handleAbout = () => {
+        history.push('/about')
+    };
+
     return (
         <div className='container nav-padding'>
-            <NavBar handleSandbox={handleSandbox} handleHome={handleHome}/>
+            <NavBar handleSandbox={handleSandbox} handleHome={handleHome} handleAbout={handleAbout}/>
             <div id='content-wrapper'>
                 <form id="box" onKeyPress={e => {
                     if (e.key === 'Enter') handleLogin()

@@ -11,7 +11,7 @@
     "db-make": "docker run --name casmm-db-dev -p 5432:5432 -e POSTGRES_DB=strapi -e POSTGRES_USER=postgres -e POSTGRES_PASSWORD=postgres -v /var/lib/postgresql/data -v ./scripts:/docker-entrypoint-initdb.d -d postgres",
     "db-start": "docker start casmm-db-dev",
     "db-bash": "docker exec -it casmm-db-dev psql strapi postgres",
-    "build-frontend": "rm -rf ./public/frontend/* && cd ../client && env PUBLIC_URL=/frontend yarn build && mv ./build/* ../server/public/frontend/"
+    "build-client": "rm -rf ./public/client/* && cd ../client && env PUBLIC_URL=/client yarn build && mv ./build/* ../server/public/client/"
   },
   "devDependencies": {},
   "dependencies": {
