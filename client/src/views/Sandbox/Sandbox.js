@@ -37,9 +37,13 @@ export default function Sandbox(props) {
         history.push('/teacherlogin')
     };
 
+    const handleAbout = () => {
+        history.push('/about')
+    };
+
     return (
         <div className='container nav-padding'>
-            <NavBar handleTeacherLogin={handleTeacherLogin} handleHome={handleHome}/>
+            <NavBar handleTeacherLogin={handleTeacherLogin} handleHome={handleHome} handleAbout={handleAbout}/>
             <BlocklyCanvasPanel day={day} dayType={"sandbox-day"} homePath={'/'}/>
         </div>
     );
