@@ -28,7 +28,7 @@ export default function StudentLogin(props) {
         })
     }, [joinCode]);
 
-    const handleLogin = async (studentIds) => {
+    const handleLogin = async () => {
         let ids = studentIds.slice(0, numForms);
         const res = await postJoin(joinCode, ids);
         if (res.data) {
@@ -64,6 +64,7 @@ export default function StudentLogin(props) {
                             studentList={studentList}
                             updateStudentAnimals={updateStudentAnimals}
                             animalList={animalList}
+                            handleLogin={handleLogin}
                         />
                     </div>
                 </span>
@@ -102,7 +103,7 @@ export default function StudentLogin(props) {
                     <button id='link-button' onClick={removeStudent}>Remove a student</button>
                 </div>
                 {/*error && <div style={{ color: 'red' }}>{error}</div>*/}
-                <button id='login-button' type='submit' onClick={() => handleLogin(studentIds)}>Enter</button>
+                <button id='login-button' type='submit' onClick={handleLogin}>Enter</button>
             </div>
         </div>
     )

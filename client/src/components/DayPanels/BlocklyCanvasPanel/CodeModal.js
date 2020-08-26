@@ -1,6 +1,6 @@
 import {Modal, Button, Typography} from 'antd';
 import React, {useState} from "react";
-import {getArduino, getXml} from "./helpers";
+import {getArduino, getXml} from "../helpers";
 
 export default function CodeModal(props) {
     const [visible, setVisible] = useState(false);

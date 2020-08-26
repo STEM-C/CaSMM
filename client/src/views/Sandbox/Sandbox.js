@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react"
-import BlocklyCanvasPanel from "../../components/DayPanels/BlocklyCanvasPanel";
+import BlocklyCanvasPanel from "../../components/DayPanels/BlocklyCanvasPanel/BlocklyCanvasPanel";
 import {getDayToolboxAll} from "../../Utils/requests";
 import {message} from "antd";
 import NavBar from "../../components/NavBar/NavBar";
