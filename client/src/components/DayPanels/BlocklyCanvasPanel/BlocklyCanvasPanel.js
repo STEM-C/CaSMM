@@ -1,7 +1,7 @@
 import React, {useCallback, useEffect, useRef, useState} from 'react';
 import {Link} from "react-router-dom";
 import '../DayPanels.less'
-import {compileArduinoCode, setLocalActivity, handleSave} from "../helpers";
+import {compileArduinoCode, setLocalSandbox, handleSave} from "../helpers";
 import {message} from "antd";
 import {getSaves} from "../../../Utils/requests";
 import CodeModal from "./CodeModal";
@@ -15,7 +15,7 @@ export default function BlocklyCanvasPanel(props) {
     const [lastSavedTime, setLastSavedTime] = useState(null);
     const [, updateState] = useState(null);
     const [lastAutoSave, setLastAutoSave] = useState(null);
-    const {day, dayType, homePath, handleGoBack, isStudent, lessonName} = props;
+    const {day, isSandbox, homePath, handleGoBack, isStudent, lessonName} = props;
 
     const workspaceRef = useRef(null);
     const dayRef = useRef(null);
@@ -35,8 +35,13 @@ export default function BlocklyCanvasPanel(props) {
                     setLastSavedTime(getFormattedDate(saves.current.updated_at));
                 } else {
                     const s = saves.past.find(save => save.id === selectedSave);
-                    toLoad = s.workspace;
-                    setLastSavedTime(getFormattedDate(s.updated_at))
+                    if (s) {
+                        toLoad = s.workspace;
+                        setLastSavedTime(getFormattedDate(s.updated_at))
+                    } else {
+                        message.error('Failed to restore save.')
+                        return
+                    }
                 }
             } else {
                 setLastSavedTime(null)
@@ -76,11 +81,11 @@ export default function BlocklyCanvasPanel(props) {
     const forceUpdate = useCallback(() => updateState({}), []);
 
     const onWorkspaceChange = useCallback(() => {
-        // set updated workspace as local activity
-        setLocalActivity(workspaceRef.current, dayType);
+        // set updated workspace as local sandbox
+        if (isSandbox) setLocalSandbox(workspaceRef.current);
         // force update to properly render undo button state
-        forceUpdate()
-    },  [dayType]);
+        if (isStudent) forceUpdate()
+    },  [isSandbox, isStudent, forceUpdate]);
 
     useEffect(() => {
         // once the day state is set, set the workspace and save
@@ -114,7 +119,7 @@ export default function BlocklyCanvasPanel(props) {
             }
         };
         setUp()
-    }, [day, dayType, isStudent, onWorkspaceChange]);
+    }, [day, isStudent, onWorkspaceChange]);
 
     const handleManualSave = async () => {
         // save workspace then update load save options
@@ -151,7 +156,8 @@ export default function BlocklyCanvasPanel(props) {
         hrs = hrs ? hrs : 12;
         let min = d.getMinutes();
         min = min < 10 ? '0' + min : min;
-        const sec = d.getSeconds();
+        let sec = d.getSeconds();
+        sec = sec < 10 ? '0' + sec : sec;
         return `${month}/${day}/${year}, ${hrs}:${min}:${sec} ${ampm}`
     };
 
@@ -234,7 +240,7 @@ export default function BlocklyCanvasPanel(props) {
                     {lessonName ? lessonName : "Program your Arduino..."}
                 </div>
                 <div id="blockly-canvas"
-                     onChange={() => setLocalActivity(workspaceRef.current)}/>
+                     onChange={() => setLocalSandbox(workspaceRef.current)}/>
             </div>
 
             {/* This xml is for the blocks' menu we will provide. Here are examples on how to include categories and subcategories */}
