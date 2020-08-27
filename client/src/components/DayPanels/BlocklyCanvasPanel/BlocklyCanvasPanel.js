@@ -14,6 +14,7 @@ export default function BlocklyCanvasPanel(props) {
     const [saves, setSaves] = useState({});
     const [lastSavedTime, setLastSavedTime] = useState(null);
     const [, updateState] = useState(null);
+    const [lastAutoSave, setLastAutoSave] = useState(null);
     const {day, dayType, homePath, handleGoBack, isStudent, lessonName} = props;
 
     const workspaceRef = useRef(null);
@@ -55,7 +56,8 @@ export default function BlocklyCanvasPanel(props) {
             if (isStudent && workspaceRef.current && dayRef.current) {
                 const res = await handleSave(dayRef.current.id, workspaceRef);
                 if (res.data) {
-                    setLastSavedTime(getFormattedDate(res.data[0].updated_at));
+                    setLastAutoSave(res.data[0]);
+                    setLastSavedTime(getFormattedDate(res.data[0].updated_at))
                 }
             }
         }, 60000);
@@ -129,14 +131,6 @@ export default function BlocklyCanvasPanel(props) {
     };
 
     const handleUndo = () => {
-        // if (undoStack.length > 1) {
-        //     let newStack = [...undoStack];
-        //     newStack.pop();
-        //     let xml = window.Blockly.Xml.textToDom(newStack.pop());
-        //     if (workspaceRef.current) workspaceRef.current.clear();
-        //     window.Blockly.Xml.domToWorkspace(xml, workspaceRef.current);
-        //     setUndoStack(newStack)
-        // }
         if(workspaceRef.current.undoStack_.length > 0)
             workspaceRef.current.undo(false)
     };
@@ -183,6 +177,7 @@ export default function BlocklyCanvasPanel(props) {
                         <div className='flex flex-row'>
                             <VersionHistoryModal
                                 saves={saves}
+                                lastAutoSave={lastAutoSave}
                                 defaultTemplate={day}
                                 getFormattedDate={getFormattedDate}
                                 loadSave={loadSave}
