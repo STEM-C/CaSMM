@@ -84,8 +84,8 @@ export default function BlocklyCanvasPanel(props) {
         // set updated workspace as local sandbox
         if (isSandbox) setLocalSandbox(workspaceRef.current);
         // force update to properly render undo button state
-        if (isStudent) forceUpdate()
-    },  [isSandbox, isStudent, forceUpdate]);
+        if (isSandbox || isStudent) forceUpdate()
+    }, [isSandbox, isStudent, forceUpdate]);
 
     useEffect(() => {
         // once the day state is set, set the workspace and save
@@ -136,7 +136,7 @@ export default function BlocklyCanvasPanel(props) {
     };
 
     const handleUndo = () => {
-        if(workspaceRef.current.undoStack_.length > 0)
+        if (workspaceRef.current.undoStack_.length > 0)
             workspaceRef.current.undo(false)
     };
 
@@ -179,37 +179,43 @@ export default function BlocklyCanvasPanel(props) {
                             : null
                         }
                     </div>
-                    {isStudent ?
-                        <div className='flex flex-row'>
-                            <VersionHistoryModal
-                                saves={saves}
-                                lastAutoSave={lastAutoSave}
-                                defaultTemplate={day}
-                                getFormattedDate={getFormattedDate}
-                                loadSave={loadSave}
-                            />
-                            <button onClick={handleManualSave} id='link' className="flex flex-column">
-                                <i id='icon-btn' className="fa fa-save"/>
-                            </button>
-                            <button onClick={handleUndo} id='link' className="flex flex-column">
-                                <i id='icon-btn' className="fa fa-undo-alt"
-                                   style={workspaceRef.current ?
-                                       workspaceRef.current.undoStack_.length < 1 ?
-                                       {color: 'grey', cursor: 'default'} : null
-                                       : null}
+                    <div className='flex flex-row'>
+                        {isStudent ?
+                            <div className='flex flex-row'>
+                                <VersionHistoryModal
+                                    saves={saves}
+                                    lastAutoSave={lastAutoSave}
+                                    defaultTemplate={day}
+                                    getFormattedDate={getFormattedDate}
+                                    loadSave={loadSave}
                                 />
-                            </button>
-                            <button onClick={handleRedo} id='link' className="flex flex-column">
-                                <i id='icon-btn' className="fa fa-redo-alt"
-                                   style={workspaceRef.current ?
-                                       workspaceRef.current.redoStack_.length < 1 ?
-                                       {color: 'grey', cursor: 'default'} : null
-                                   : null}
-                                />
-                            </button>
-                        </div>
-                        : null
-                    }
+                                <button onClick={handleManualSave} id='link' className="flex flex-column">
+                                    <i id='icon-btn' className="fa fa-save"/>
+                                </button>
+                            </div>
+                            : null
+                        }
+                        {isStudent || isSandbox ?
+                            <div className='flex flex-row'>
+                                <button onClick={handleUndo} id='link' className="flex flex-column">
+                                    <i id='icon-btn' className="fa fa-undo-alt"
+                                       style={workspaceRef.current ?
+                                           workspaceRef.current.undoStack_.length < 1 ?
+                                               {color: 'grey', cursor: 'default'} : null
+                                           : null}
+                                    />
+                                </button>
+                                <button onClick={handleRedo} id='link' className="flex flex-column">
+                                    <i id='icon-btn' className="fa fa-redo-alt"
+                                       style={workspaceRef.current ?
+                                           workspaceRef.current.redoStack_.length < 1 ?
+                                               {color: 'grey', cursor: 'default'} : null
+                                           : null}
+                                    />
+                                </button>
+                            </div>
+                            : null}
+                    </div>
                     <div style={{"width": "10%"}}>
                         <div id='action-btn-container' className="flex space-between">
                             {!isStudent ?
