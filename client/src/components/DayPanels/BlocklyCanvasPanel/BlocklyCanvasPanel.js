@@ -30,7 +30,10 @@ export default function BlocklyCanvasPanel(props) {
             let toLoad = day.template;
             if (selectedSave !== -1) {
 
-                if (saves.current && saves.current.id === selectedSave) {
+                if (lastAutoSave && selectedSave === -2) {
+                    toLoad = lastAutoSave.workspace;
+                    setLastSavedTime(getFormattedDate(lastAutoSave.updated_at));
+                } else if (saves.current && saves.current.id === selectedSave) {
                     toLoad = saves.current.workspace;
                     setLastSavedTime(getFormattedDate(saves.current.updated_at));
                 } else {

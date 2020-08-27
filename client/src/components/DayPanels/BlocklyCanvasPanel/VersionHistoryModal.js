@@ -48,14 +48,14 @@ export default function VersionHistoryModal(props) {
                 <ul>
                     {
                         // Last auto save option
-                        lastAutoSave ? <li value={lastAutoSave.id} key={lastAutoSave.id}>
+                        lastAutoSave ? <li value={lastAutoSave.id * -1} key={lastAutoSave.id * -1}>
                             <div id='history-item'>
                                 <div id='item-content'>
                                     Last auto-save from {getFormattedDate(lastAutoSave.updated_at)
-                                        .slice(11, getFormattedDate(lastAutoSave.updated_at).length)}
+                                    .slice(11, getFormattedDate(lastAutoSave.updated_at).length)}
                                 </div>
                                 <div id='item-content'>
-                                    <Button onClick={() => handleSelected(lastAutoSave.id)}>
+                                    <Button onClick={() => handleSelected(-2)}>
                                         Restore this save
                                     </Button>
                                 </div>
