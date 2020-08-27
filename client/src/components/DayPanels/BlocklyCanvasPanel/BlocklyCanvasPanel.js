@@ -84,8 +84,8 @@ export default function BlocklyCanvasPanel(props) {
         // set updated workspace as local sandbox
         if (isSandbox) setLocalSandbox(workspaceRef.current);
         // force update to properly render undo button state
-        if (isSandbox || isStudent) forceUpdate()
-    }, [isSandbox, isStudent, forceUpdate]);
+        forceUpdate()
+    }, [isSandbox, forceUpdate]);
 
     useEffect(() => {
         // once the day state is set, set the workspace and save
@@ -195,26 +195,24 @@ export default function BlocklyCanvasPanel(props) {
                             </div>
                             : null
                         }
-                        {isStudent || isSandbox ?
-                            <div className='flex flex-row'>
-                                <button onClick={handleUndo} id='link' className="flex flex-column">
-                                    <i id='icon-btn' className="fa fa-undo-alt"
-                                       style={workspaceRef.current ?
-                                           workspaceRef.current.undoStack_.length < 1 ?
-                                               {color: 'grey', cursor: 'default'} : null
-                                           : null}
-                                    />
-                                </button>
-                                <button onClick={handleRedo} id='link' className="flex flex-column">
-                                    <i id='icon-btn' className="fa fa-redo-alt"
-                                       style={workspaceRef.current ?
-                                           workspaceRef.current.redoStack_.length < 1 ?
-                                               {color: 'grey', cursor: 'default'} : null
-                                           : null}
-                                    />
-                                </button>
-                            </div>
-                            : null}
+                        <div className='flex flex-row'>
+                            <button onClick={handleUndo} id='link' className="flex flex-column">
+                                <i id='icon-btn' className="fa fa-undo-alt"
+                                   style={workspaceRef.current ?
+                                       workspaceRef.current.undoStack_.length < 1 ?
+                                           {color: 'grey', cursor: 'default'} : null
+                                       : null}
+                                />
+                            </button>
+                            <button onClick={handleRedo} id='link' className="flex flex-column">
+                                <i id='icon-btn' className="fa fa-redo-alt"
+                                   style={workspaceRef.current ?
+                                       workspaceRef.current.redoStack_.length < 1 ?
+                                           {color: 'grey', cursor: 'default'} : null
+                                       : null}
+                                />
+                            </button>
+                        </div>
                     </div>
                     <div style={{"width": "10%"}}>
                         <div id='action-btn-container' className="flex space-between">
