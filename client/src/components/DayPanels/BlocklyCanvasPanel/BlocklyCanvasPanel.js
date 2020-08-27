@@ -13,17 +13,11 @@ export default function BlocklyCanvasPanel(props) {
     const [hoverCompile, setHoverCompile] = useState(false);
     const [saves, setSaves] = useState({});
     const [lastSavedTime, setLastSavedTime] = useState(null);
-    const [undoStack, _setUndoStack] = useState([]);
+    const [, updateState] = useState(null);
     const {day, dayType, homePath, handleGoBack, isStudent, lessonName} = props;
-
 
     const workspaceRef = useRef(null);
     const dayRef = useRef(null);
-    const undoStackRef = React.useRef(undoStack);
-    const setUndoStack = stack => {
-        undoStackRef.current = stack;
-        _setUndoStack(stack);
-    };
 
     const setWorkspace = () =>
         workspaceRef.current = window.Blockly.inject('blockly-canvas',
@@ -48,8 +42,8 @@ export default function BlocklyCanvasPanel(props) {
             }
             let xml = window.Blockly.Xml.textToDom(toLoad);
             if (workspaceRef.current) workspaceRef.current.clear();
-            setUndoStack([])
             window.Blockly.Xml.domToWorkspace(xml, workspaceRef.current);
+            workspaceRef.current.clearUndo()
         } catch (e) {
             message.error('Failed to load save.')
         }
@@ -59,7 +53,7 @@ export default function BlocklyCanvasPanel(props) {
         // automatically save workspace every min
         setInterval(async () => {
             if (isStudent && workspaceRef.current && dayRef.current) {
-                const res = await handleSave(dayRef.current.id, workspaceRef)
+                const res = await handleSave(dayRef.current.id, workspaceRef);
                 if (res.data) {
                     setLastSavedTime(getFormattedDate(res.data[0].updated_at));
                 }
@@ -77,18 +71,13 @@ export default function BlocklyCanvasPanel(props) {
         }
     }, [isStudent]);
 
+    const forceUpdate = useCallback(() => updateState({}), []);
+
     const onWorkspaceChange = useCallback(() => {
         // set updated workspace as local activity
         setLocalActivity(workspaceRef.current, dayType);
-
-        // push new state to stack if different
-        let xml = window.Blockly.Xml.workspaceToDom(workspaceRef.current);
-        let xml_text = window.Blockly.Xml.domToText(xml);
-        if (xml_text !== undoStackRef.current[undoStackRef.current.length - 1]) {
-            let newStack = [...undoStackRef.current];
-            const n = newStack.concat(xml_text);
-            setUndoStack(n)
-        }
+        // force update to properly render undo button state
+        forceUpdate()
     },  [dayType]);
 
     useEffect(() => {
@@ -97,7 +86,6 @@ export default function BlocklyCanvasPanel(props) {
             dayRef.current = day;
             if (!workspaceRef.current && day && Object.keys(day).length !== 0) {
                 setWorkspace();
-                await workspaceRef.current.addChangeListener(onWorkspaceChange);
 
                 let onLoadSave = null;
                 if (isStudent) {
@@ -118,6 +106,9 @@ export default function BlocklyCanvasPanel(props) {
                     let xml = window.Blockly.Xml.textToDom(day.template);
                     window.Blockly.Xml.domToWorkspace(xml, workspaceRef.current)
                 }
+
+                await workspaceRef.current.addChangeListener(onWorkspaceChange);
+                workspaceRef.current.clearUndo()
             }
         };
         setUp()
@@ -130,7 +121,6 @@ export default function BlocklyCanvasPanel(props) {
             message.error(res.err)
         } else {
             setLastSavedTime(getFormattedDate(res.data[0].updated_at));
-            console.log(getFormattedDate(res.data[0].updated_at))
             message.success('Workspace saved successfully.')
         }
 
@@ -139,14 +129,21 @@ export default function BlocklyCanvasPanel(props) {
     };
 
     const handleUndo = () => {
-        if (undoStack.length > 1) {
-            let newStack = [...undoStack];
-            newStack.pop();
-            let xml = window.Blockly.Xml.textToDom(newStack.pop());
-            if (workspaceRef.current) workspaceRef.current.clear();
-            window.Blockly.Xml.domToWorkspace(xml, workspaceRef.current);
-            setUndoStack(newStack)
-        }
+        // if (undoStack.length > 1) {
+        //     let newStack = [...undoStack];
+        //     newStack.pop();
+        //     let xml = window.Blockly.Xml.textToDom(newStack.pop());
+        //     if (workspaceRef.current) workspaceRef.current.clear();
+        //     window.Blockly.Xml.domToWorkspace(xml, workspaceRef.current);
+        //     setUndoStack(newStack)
+        // }
+        if(workspaceRef.current.undoStack_.length > 0)
+            workspaceRef.current.undo(false)
+    };
+
+    const handleRedo = () => {
+        if (workspaceRef.current.redoStack_.length > 0)
+            workspaceRef.current.undo(true)
     };
 
     const getFormattedDate = dt => {
@@ -195,7 +192,19 @@ export default function BlocklyCanvasPanel(props) {
                             </button>
                             <button onClick={handleUndo} id='link' className="flex flex-column">
                                 <i id='icon-btn' className="fa fa-undo-alt"
-                                   style={undoStack.length <= 1 ? {color: 'grey', cursor: 'default'} : null}/>
+                                   style={workspaceRef.current ?
+                                       workspaceRef.current.undoStack_.length < 1 ?
+                                       {color: 'grey', cursor: 'default'} : null
+                                       : null}
+                                />
+                            </button>
+                            <button onClick={handleRedo} id='link' className="flex flex-column">
+                                <i id='icon-btn' className="fa fa-redo-alt"
+                                   style={workspaceRef.current ?
+                                       workspaceRef.current.redoStack_.length < 1 ?
+                                       {color: 'grey', cursor: 'default'} : null
+                                   : null}
+                                />
                             </button>
                         </div>
                         : null
