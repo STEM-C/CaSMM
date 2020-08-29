@@ -1,4 +1,4 @@
-import React, {useEffect, useRef, useState} from 'react';
+import React, {useCallback, useEffect, useRef, useState} from 'react';
 import {Link} from "react-router-dom";
 import '../DayPanels.less'
 import {compileArduinoCode, setLocalActivity, handleSave} from "../helpers";
@@ -12,13 +12,12 @@ export default function BlocklyCanvasPanel(props) {
     const [hoverArduino, setHoverArduino] = useState(false);
     const [hoverCompile, setHoverCompile] = useState(false);
     const [saves, setSaves] = useState({});
-    const [lastSavedTime, setLastSavedTime] = useState(null)
+    const [lastSavedTime, setLastSavedTime] = useState(null);
+    const [, updateState] = useState(null);
     const {day, dayType, homePath, handleGoBack, isStudent, lessonName} = props;
 
-
-    let workspaceRef = useRef(null);
-    let dayRef = useRef(null);
-    let isStudentRef = useRef(null);
+    const workspaceRef = useRef(null);
+    const dayRef = useRef(null);
 
     const setWorkspace = () =>
         workspaceRef.current = window.Blockly.inject('blockly-canvas',
@@ -44,40 +43,49 @@ export default function BlocklyCanvasPanel(props) {
             let xml = window.Blockly.Xml.textToDom(toLoad);
             if (workspaceRef.current) workspaceRef.current.clear();
             window.Blockly.Xml.domToWorkspace(xml, workspaceRef.current);
+            workspaceRef.current.clearUndo()
         } catch (e) {
             message.error('Failed to load save.')
         }
     };
 
     useEffect(() => {
-        // automatically save workspace every 5 min
+        // automatically save workspace every min
         setInterval(async () => {
-            if (isStudentRef.current && workspaceRef.current && dayRef.current) {
-                const res = await handleSave(dayRef.current.id, workspaceRef)
+            if (isStudent && workspaceRef.current && dayRef.current) {
+                const res = await handleSave(dayRef.current.id, workspaceRef);
                 if (res.data) {
                     setLastSavedTime(getFormattedDate(res.data[0].updated_at));
                 }
             }
         }, 60000);
+    }, [isStudent]);
 
+    useEffect(() => {
         // clean up - saves workspace and removes blockly div from DOM
         return async () => {
-            if (isStudentRef.current && dayRef.current && workspaceRef.current)
+            if (isStudent && dayRef.current && workspaceRef.current)
                 await handleSave(dayRef.current.id, workspaceRef);
             if (workspaceRef.current) workspaceRef.current.dispose();
-            isStudentRef.current = null;
             dayRef.current = null
         }
-    }, []);
+    }, [isStudent]);
+
+    const forceUpdate = useCallback(() => updateState({}), []);
+
+    const onWorkspaceChange = useCallback(() => {
+        // set updated workspace as local activity
+        setLocalActivity(workspaceRef.current, dayType);
+        // force update to properly render undo button state
+        forceUpdate()
+    },  [dayType]);
 
     useEffect(() => {
         // once the day state is set, set the workspace and save
         const setUp = async () => {
-            isStudentRef.current = isStudent;
-            dayRef.current = day
+            dayRef.current = day;
             if (!workspaceRef.current && day && Object.keys(day).length !== 0) {
                 setWorkspace();
-                await workspaceRef.current.addChangeListener(() => setLocalActivity(workspaceRef.current, dayType));
 
                 let onLoadSave = null;
                 if (isStudent) {
@@ -98,10 +106,13 @@ export default function BlocklyCanvasPanel(props) {
                     let xml = window.Blockly.Xml.textToDom(day.template);
                     window.Blockly.Xml.domToWorkspace(xml, workspaceRef.current)
                 }
+
+                await workspaceRef.current.addChangeListener(onWorkspaceChange);
+                workspaceRef.current.clearUndo()
             }
         };
         setUp()
-    }, [day, dayType, isStudent]);
+    }, [day, dayType, isStudent, onWorkspaceChange]);
 
     const handleManualSave = async () => {
         // save workspace then update load save options
@@ -110,12 +121,29 @@ export default function BlocklyCanvasPanel(props) {
             message.error(res.err)
         } else {
             setLastSavedTime(getFormattedDate(res.data[0].updated_at));
-            console.log(getFormattedDate(res.data[0].updated_at))
             message.success('Workspace saved successfully.')
         }
 
         const savesRes = await getSaves(day.id);
         if (savesRes.data) setSaves(savesRes.data);
+    };
+
+    const handleUndo = () => {
+        // if (undoStack.length > 1) {
+        //     let newStack = [...undoStack];
+        //     newStack.pop();
+        //     let xml = window.Blockly.Xml.textToDom(newStack.pop());
+        //     if (workspaceRef.current) workspaceRef.current.clear();
+        //     window.Blockly.Xml.domToWorkspace(xml, workspaceRef.current);
+        //     setUndoStack(newStack)
+        // }
+        if(workspaceRef.current.undoStack_.length > 0)
+            workspaceRef.current.undo(false)
+    };
+
+    const handleRedo = () => {
+        if (workspaceRef.current.redoStack_.length > 0)
+            workspaceRef.current.undo(true)
     };
 
     const getFormattedDate = dt => {
@@ -161,6 +189,22 @@ export default function BlocklyCanvasPanel(props) {
                             />
                             <button onClick={handleManualSave} id='link' className="flex flex-column">
                                 <i id='icon-btn' className="fa fa-save"/>
+                            </button>
+                            <button onClick={handleUndo} id='link' className="flex flex-column">
+                                <i id='icon-btn' className="fa fa-undo-alt"
+                                   style={workspaceRef.current ?
+                                       workspaceRef.current.undoStack_.length < 1 ?
+                                       {color: 'grey', cursor: 'default'} : null
+                                       : null}
+                                />
+                            </button>
+                            <button onClick={handleRedo} id='link' className="flex flex-column">
+                                <i id='icon-btn' className="fa fa-redo-alt"
+                                   style={workspaceRef.current ?
+                                       workspaceRef.current.redoStack_.length < 1 ?
+                                       {color: 'grey', cursor: 'default'} : null
+                                   : null}
+                                />
                             </button>
                         </div>
                         : null
