@@ -1,7 +1,7 @@
 import React, {useCallback, useEffect, useRef, useState} from 'react';
 import {Link} from "react-router-dom";
 import '../DayPanels.less'
-import {compileArduinoCode, setLocalActivity, handleSave} from "../helpers";
+import {compileArduinoCode, setLocalSandbox, handleSave} from "../helpers";
 import {message} from "antd";
 import {getSaves} from "../../../Utils/requests";
 import CodeModal from "./CodeModal";
@@ -14,7 +14,8 @@ export default function BlocklyCanvasPanel(props) {
     const [saves, setSaves] = useState({});
     const [lastSavedTime, setLastSavedTime] = useState(null);
     const [, updateState] = useState(null);
-    const {day, dayType, homePath, handleGoBack, isStudent, lessonName} = props;
+    const [lastAutoSave, setLastAutoSave] = useState(null);
+    const {day, isSandbox, homePath, handleGoBack, isStudent, lessonName} = props;
 
     const workspaceRef = useRef(null);
     const dayRef = useRef(null);
@@ -29,13 +30,21 @@ export default function BlocklyCanvasPanel(props) {
             let toLoad = day.template;
             if (selectedSave !== -1) {
 
-                if (saves.current && saves.current.id === selectedSave) {
+                if (lastAutoSave && selectedSave === -2) {
+                    toLoad = lastAutoSave.workspace;
+                    setLastSavedTime(getFormattedDate(lastAutoSave.updated_at));
+                } else if (saves.current && saves.current.id === selectedSave) {
                     toLoad = saves.current.workspace;
                     setLastSavedTime(getFormattedDate(saves.current.updated_at));
                 } else {
                     const s = saves.past.find(save => save.id === selectedSave);
-                    toLoad = s.workspace;
-                    setLastSavedTime(getFormattedDate(s.updated_at))
+                    if (s) {
+                        toLoad = s.workspace;
+                        setLastSavedTime(getFormattedDate(s.updated_at))
+                    } else {
+                        message.error('Failed to restore save.')
+                        return
+                    }
                 }
             } else {
                 setLastSavedTime(null)
@@ -55,7 +64,8 @@ export default function BlocklyCanvasPanel(props) {
             if (isStudent && workspaceRef.current && dayRef.current) {
                 const res = await handleSave(dayRef.current.id, workspaceRef);
                 if (res.data) {
-                    setLastSavedTime(getFormattedDate(res.data[0].updated_at));
+                    setLastAutoSave(res.data[0]);
+                    setLastSavedTime(getFormattedDate(res.data[0].updated_at))
                 }
             }
         }, 60000);
@@ -74,11 +84,11 @@ export default function BlocklyCanvasPanel(props) {
     const forceUpdate = useCallback(() => updateState({}), []);
 
     const onWorkspaceChange = useCallback(() => {
-        // set updated workspace as local activity
-        setLocalActivity(workspaceRef.current, dayType);
+        // set updated workspace as local sandbox
+        if (isSandbox) setLocalSandbox(workspaceRef.current);
         // force update to properly render undo button state
         forceUpdate()
-    },  [dayType]);
+    }, [isSandbox, forceUpdate]);
 
     useEffect(() => {
         // once the day state is set, set the workspace and save
@@ -112,7 +122,7 @@ export default function BlocklyCanvasPanel(props) {
             }
         };
         setUp()
-    }, [day, dayType, isStudent, onWorkspaceChange]);
+    }, [day, isStudent, onWorkspaceChange]);
 
     const handleManualSave = async () => {
         // save workspace then update load save options
@@ -129,15 +139,7 @@ export default function BlocklyCanvasPanel(props) {
     };
 
     const handleUndo = () => {
-        // if (undoStack.length > 1) {
-        //     let newStack = [...undoStack];
-        //     newStack.pop();
-        //     let xml = window.Blockly.Xml.textToDom(newStack.pop());
-        //     if (workspaceRef.current) workspaceRef.current.clear();
-        //     window.Blockly.Xml.domToWorkspace(xml, workspaceRef.current);
-        //     setUndoStack(newStack)
-        // }
-        if(workspaceRef.current.undoStack_.length > 0)
+        if (workspaceRef.current.undoStack_.length > 0)
             workspaceRef.current.undo(false)
     };
 
@@ -157,7 +159,8 @@ export default function BlocklyCanvasPanel(props) {
         hrs = hrs ? hrs : 12;
         let min = d.getMinutes();
         min = min < 10 ? '0' + min : min;
-        const sec = d.getSeconds();
+        let sec = d.getSeconds();
+        sec = sec < 10 ? '0' + sec : sec;
         return `${month}/${day}/${year}, ${hrs}:${min}:${sec} ${ampm}`
     };
 
@@ -179,22 +182,28 @@ export default function BlocklyCanvasPanel(props) {
                             : null
                         }
                     </div>
-                    {isStudent ?
+                    <div className='flex flex-row'>
+                        {isStudent ?
+                            <div className='flex flex-row'>
+                                <VersionHistoryModal
+                                    saves={saves}
+                                    lastAutoSave={lastAutoSave}
+                                    defaultTemplate={day}
+                                    getFormattedDate={getFormattedDate}
+                                    loadSave={loadSave}
+                                />
+                                <button onClick={handleManualSave} id='link' className="flex flex-column">
+                                    <i id='icon-btn' className="fa fa-save"/>
+                                </button>
+                            </div>
+                            : null
+                        }
                         <div className='flex flex-row'>
-                            <VersionHistoryModal
-                                saves={saves}
-                                defaultTemplate={day}
-                                getFormattedDate={getFormattedDate}
-                                loadSave={loadSave}
-                            />
-                            <button onClick={handleManualSave} id='link' className="flex flex-column">
-                                <i id='icon-btn' className="fa fa-save"/>
-                            </button>
                             <button onClick={handleUndo} id='link' className="flex flex-column">
                                 <i id='icon-btn' className="fa fa-undo-alt"
                                    style={workspaceRef.current ?
                                        workspaceRef.current.undoStack_.length < 1 ?
-                                       {color: 'grey', cursor: 'default'} : null
+                                           {color: 'grey', cursor: 'default'} : null
                                        : null}
                                 />
                             </button>
@@ -202,13 +211,12 @@ export default function BlocklyCanvasPanel(props) {
                                 <i id='icon-btn' className="fa fa-redo-alt"
                                    style={workspaceRef.current ?
                                        workspaceRef.current.redoStack_.length < 1 ?
-                                       {color: 'grey', cursor: 'default'} : null
-                                   : null}
+                                           {color: 'grey', cursor: 'default'} : null
+                                       : null}
                                 />
                             </button>
                         </div>
-                        : null
-                    }
+                    </div>
                     <div style={{"width": "10%"}}>
                         <div id='action-btn-container' className="flex space-between">
                             {!isStudent ?
@@ -239,7 +247,7 @@ export default function BlocklyCanvasPanel(props) {
                     {lessonName ? lessonName : "Program your Arduino..."}
                 </div>
                 <div id="blockly-canvas"
-                     onChange={() => setLocalActivity(workspaceRef.current)}/>
+                     onChange={() => setLocalSandbox(workspaceRef.current)}/>
             </div>
 
             {/* This xml is for the blocks' menu we will provide. Here are examples on how to include categories and subcategories */}

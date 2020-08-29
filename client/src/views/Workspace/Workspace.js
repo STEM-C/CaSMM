@@ -42,7 +42,6 @@ export default function Workspace(props) {
             <NavBar handleLogout={handleLogout}/>
             <BlocklyCanvasPanel
                 day={day}
-                dayType={"my-day"}
                 lessonName={`Learning Standard ${day.learning_standard}, Day ${day.number}`}
                 handleGoBack={handleGoBack}
                 handleLogout={handleLogout}
