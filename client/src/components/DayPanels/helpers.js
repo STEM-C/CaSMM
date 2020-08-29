@@ -3,13 +3,13 @@ import {message} from "antd";
 
 const AvrboyArduino = window.AvrgirlArduino;
 
-export const setLocalActivity = (workspaceRef, activityType) => {
+export const setLocalSandbox = (workspaceRef) => {
     let workspaceDom = window.Blockly.Xml.workspaceToDom(workspaceRef)
     let workspaceText = window.Blockly.Xml.domToText(workspaceDom)
-    const localActivity = JSON.parse(localStorage.getItem(activityType))
+    const localActivity = JSON.parse(localStorage.getItem('sandbox-day'))
 
     let lastActivity = {...localActivity, template: workspaceText}
-    localStorage.setItem(activityType, JSON.stringify(lastActivity))
+    localStorage.setItem('sandbox-day', JSON.stringify(lastActivity))
 }
 
 // Generates xml from blockly canvas

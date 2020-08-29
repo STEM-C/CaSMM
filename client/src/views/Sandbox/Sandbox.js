@@ -44,7 +44,7 @@ export default function Sandbox(props) {
     return (
         <div className='container nav-padding'>
             <NavBar handleTeacherLogin={handleTeacherLogin} handleHome={handleHome} handleAbout={handleAbout}/>
-            <BlocklyCanvasPanel day={day} dayType={"sandbox-day"} homePath={'/'}/>
+            <BlocklyCanvasPanel day={day} isSandbox={true} homePath={'/'}/>
         </div>
     );
 
