@@ -6,20 +6,13 @@
 
 ## Setup
 
-**RECOMMENDED:** To run `server` with the rest of the application, see the project [development](../README.md#development) setup.
+`server` depends on other services and must be run with the rest of the application. See the project [development](../README.md#development) setup for instructions.
 
-### Development
+<br/>
 
-1. Install [docker](https://docs.docker.com/get-docker/)
-3. Start a new docker container running postgres `yarn run db-make`
-4. Install dependencies `yarn install`
-5. Start the development server `yarn develop`
+## Available scripts
 
-Additional scripts:
-
-* `yarn db-start` - Start an existing db container
-* `yarn db-bash` - Connect to the postgres bash 
-* `yarn build-client` - Build and add the client  to
+* `yarn build-client` - Build client and add it to the public folder
 * `yarn build` - Build the strapi admin panel
 
 <br/>

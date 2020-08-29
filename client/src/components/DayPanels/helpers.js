@@ -1,4 +1,4 @@
-import {compileCode, saveWorkspace} from "../../Utils/requests";
+import { createSubmission, getSubmission, saveWorkspace } from "../../Utils/requests";
 import {message} from "antd";
 
 const AvrboyArduino = window.AvrgirlArduino;
@@ -40,15 +40,39 @@ export const getArduino = (workspaceRef, shouldAlert = true) => {
 };
 
 // Sends compiled arduino code to server and returns hex to flash board with
-export const compileArduinoCode = async (workspaceRef) => {
-    let body = {
-        "board": "arduino:avr:uno",
-        "sketch": getArduino(workspaceRef, false)
-    };
+export const compileArduinoCode = async (workspaceRef, day, isStudent) => {
+    const sketch = getArduino(workspaceRef, false);
+    let workspaceDom = window.Blockly.Xml.workspaceToDom(workspaceRef);
+    let workspaceText = window.Blockly.Xml.domToText(workspaceDom);
+    let path;
+    isStudent ? path = "/submissions" : path = "/sandbox/submission";
 
-    // gets compiled hex from server
-    let response = await compileCode(body);
+    try {
+        // create an initial submission
+        const initialSubmission = await createSubmission(day, workspaceText, sketch, path, isStudent);
 
+        // get the submission result when it's ready and flash the board
+        await getAndFlashSubmission(initialSubmission.data.id, path, isStudent)
+    } catch (e) {
+        console.log(e.message)
+    }
+};
+
+const getAndFlashSubmission = async (id, path, isStudent) => {
+    // get the submission
+    const response = await getSubmission(id, path, isStudent)
+
+    // if the submission is not complete, try again later
+    if (response.data.status !== "COMPLETED") {
+        setTimeout(() => getAndFlashSubmission(id, path, isStudent), 100)
+        return
+    }
+
+    // flash the board with the output
+    await flashArduino(response);
+}
+
+const flashArduino = async (response) => {
     if (response.data) {
         // converting base 64 to hex
         if(response.data.success){
@@ -67,12 +91,12 @@ export const compileArduinoCode = async (workspaceRef) => {
                 }
             })
         } else if (response.data.msg) {
-            message.warning(response.data.msg)
+            message.warning(response.data.stderr)
         }
     } else {
         message.error(response.err);
     }
-};
+}
 
 // save current workspace
 export const handleSave = async (dayId, workspaceRef) => {

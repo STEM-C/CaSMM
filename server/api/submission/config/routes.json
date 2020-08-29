@@ -21,7 +21,7 @@
       "path": "/submissions/:id",
       "handler": "submission.findOne",
       "config": {
-        "policies": []
+        "policies": ["global::isStudent"]
       }
     },
     {

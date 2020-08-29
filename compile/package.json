@@ -2,19 +2,14 @@
   "name": "compile",
   "version": "0.0.1",
   "description": "Arduino compilier service",
-  "main": "app.js",
-  "scripts": {
-    "build": "docker build -t compile .",
-    "new": "docker run --name compile-dev -p 8080:8080 -d compile",
-    "start": "docker start compile-dev",
-    "bash": "docker exec -it compile-dev /bin/bash"
-  },
-  "author": "Fraser Bullock",
+  "author": "Nicholas Ionata",
   "license": "MIT",
   "dependencies": {
     "body-parser": "^1.18.2",
+    "bull": "^3.18.0",
     "express": "^4.16.2",
     "properties": "^1.2.1",
+    "throng": "^4.0.0",
     "tmp": "0.0.33"
   }
 }

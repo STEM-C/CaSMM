@@ -13,7 +13,6 @@ services:
       - ./server:/srv/app
     depends_on:
       - db
-      - compile
       - compile_queue
   compile:
     container_name: casmm-compile-dev

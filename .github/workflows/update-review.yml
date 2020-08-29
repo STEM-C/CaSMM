@@ -13,12 +13,10 @@ jobs:
         id: get_name
         run: echo ::set-output name=NAME::review-pr-$(echo $GITHUB_REF | awk 'BEGIN { FS = "/" } ; { print $3 }')
       - name: Built, test, and deploy app
-        uses: STEM-C/auto/build-test-deploy@v0.6
+        uses: STEM-C/auto/build-test-deploy@v0.7
         with:
-          image_name: server
           image_tag: ${{ steps.get_name.outputs.NAME }}
           app_name: ${{ steps.get_name.outputs.NAME }}
-          app_type: web
           github_token: ${{ secrets.GITHUB_TOKEN }}
         env:
           HEROKU_API_KEY: ${{ secrets.HEROKU_TOKEN }}

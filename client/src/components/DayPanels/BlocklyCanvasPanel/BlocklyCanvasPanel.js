@@ -98,15 +98,14 @@ export default function BlocklyCanvasPanel(props) {
                 setWorkspace();
 
                 let onLoadSave = null;
-                if (isStudent) {
-                    const res = await getSaves(day.id);
-                    if (res.data) {
-                        if (res.data.current) onLoadSave = res.data.current;
-                        setSaves(res.data)
-                    } else {
-                        console.log(res.err)
-                    }
+                const res = await getSaves(day.id);
+                if (res.data) {
+                    if (res.data.current) onLoadSave = res.data.current;
+                    setSaves(res.data)
+                } else {
+                    console.log(res.err)
                 }
+
 
                 if (onLoadSave) {
                     let xml = window.Blockly.Xml.textToDom(onLoadSave.workspace);
@@ -233,7 +232,7 @@ export default function BlocklyCanvasPanel(props) {
                                 setHover={setHoverArduino}
                                 hover={hoverArduino}
                             />
-                            <i onClick={() => compileArduinoCode(workspaceRef.current)}
+                            <i onClick={() => compileArduinoCode(workspaceRef.current, day, isStudent)}
                                className="fas fa-upload hvr-info"
                                onMouseEnter={() => setHoverCompile(true)}
                                onMouseLeave={() => setHoverCompile(false)}/>
