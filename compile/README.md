@@ -4,19 +4,37 @@
 
 <br/>
 
+## Structure
+
+`compile` and `server` connect to the queue in [pub/sub]([https://en.wikipedia.org/wiki/Publish%E2%80%93subscribe_pattern](https://en.wikipedia.org/wiki/Publish–subscribe_pattern)) fashion. As jobs make progress and eventually complete, events will be emitted. The `server` listens to these events and will update the submission in the `database` accordingly. This asynchronous processing reduces high latency requests on the  `server`, providing a more responsive experience. Additionally, `compile` can be [optimized](#Configuration) to easily run concurrent processes and jobs.
+
+![diagram](./diagram.png)
+
+<br/>
+
 ## Setup
 
 `compile` depends on other services and must be run with the rest of the application. See the project [development](../README.md#development) setup for instructions.
 
 <br/>
 
+## Configuration
 
+`WEB_CONCURRENCY` 
+
+- Spin up multiple processes to handle jobs to take advantage of more CPU cores
+- See: https://devcenter.heroku.com/articles/node-concurrency for more info
+
+`JOB_CONCURRENCY`
+
+- The maximum number of jobs each worker should process at once
+- Each job is CPU-intensive, so this value should not be too high
 
 <br/>
 
 ## Notes
 
-This project was forked from spaceneedle's [Chromeduino](https://github.com/spaceneedle/Chromeduino) project. 
+This service was forked from spaceneedle's [Chromeduino](https://github.com/spaceneedle/Chromeduino) project. 
 
 ### Notice of Non-Affiliation and Disclaimer:
 
