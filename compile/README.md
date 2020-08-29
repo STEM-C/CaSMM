@@ -6,7 +6,7 @@
 
 ## Structure
 
-`compile` and `server` connect to the queue in [pub/sub]([https://en.wikipedia.org/wiki/Publish%E2%80%93subscribe_pattern](https://en.wikipedia.org/wiki/Publish–subscribe_pattern)) fashion. As jobs make progress and eventually complete, events will be emitted. The `server` listens to these events and will update the submission in the `database` accordingly. This asynchronous processing reduces high latency requests on the  `server`, providing a more responsive experience. Additionally, `compile` can be [optimized](#Configuration) to easily run concurrent processes and jobs.
+`compile` and `server` connect to the queue in [pub/sub](https://en.wikipedia.org/wiki/Publish–subscribe_pattern) fashion. As jobs make progress and eventually complete, events will be emitted. The `server` listens to these events and will update the submission in the `database` accordingly. This asynchronous processing reduces high latency requests on the  `server`, providing a more responsive experience. Additionally, `compile` can be [optimized](#Configuration) to easily run concurrent processes and jobs.
 
 ![diagram](./diagram.png)
 
