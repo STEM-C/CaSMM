@@ -51,8 +51,7 @@ export default function VersionHistoryModal(props) {
                         lastAutoSave ? <li value={lastAutoSave.id * -1} key={lastAutoSave.id * -1}>
                             <div id='history-item'>
                                 <div id='item-content'>
-                                    Last auto-save from {getFormattedDate(lastAutoSave.updated_at)
-                                    .slice(11, getFormattedDate(lastAutoSave.updated_at).length)}
+                                    Last auto-save from {getFormattedDate(lastAutoSave.updated_at)}
                                 </div>
                                 <div id='item-content'>
                                     <Button onClick={() => handleSelected(-2)}>
@@ -67,8 +66,7 @@ export default function VersionHistoryModal(props) {
                         saves.current ? <li value={saves.current.id} key={saves.current.id}>
                             <div id='history-item'>
                                 <div id='item-content'>
-                                    Active save from {getFormattedDate(saves.current.updated_at)
-                                    .slice(11, getFormattedDate(saves.current.updated_at).length)}
+                                    Active save from {getFormattedDate(saves.current.updated_at)}
                                 </div>
                                 <div id='item-content'>
                                     <Button onClick={() => handleSelected(saves.current.id)}>
