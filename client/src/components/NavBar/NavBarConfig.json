@@ -9,7 +9,7 @@
     "AccountInfo": "/account"
   },
   "users": {
-    "isNone": ["Home", "TeacherLogin", "Sandbox", "About"],
+    "defaultUser": ["Home", "TeacherLogin", "Sandbox", "About"],
     "isMentor": ["Dashboard", "AccountInfo", "SignOut"],
     "isStudent": ["SignOut"]
   }

@@ -25,7 +25,7 @@ export default function TeacherLogin(props) {
 
     return (
         <div className='container nav-padding'>
-            <NavBar isMentor={true}/>
+            <NavBar />
             <div id='content-wrapper'>
                 <form id="box" onKeyPress={e => {
                     if (e.key === 'Enter') handleLogin()

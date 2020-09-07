@@ -9,7 +9,7 @@ export default function About(props) {
 
     return(
         <div className='container nav-padding'>
-            <NavBar isNone={true}/>
+            <NavBar />
             <div id='about-content-container'>
                 <h1 id='title'>
                     About CASMM

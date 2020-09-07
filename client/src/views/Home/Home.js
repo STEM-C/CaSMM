@@ -8,7 +8,7 @@ export default function Home(props) {
 
     return(
         <div className='container nav-padding'>
-            <NavBar isNone={true}/>
+            <NavBar />
             <div id='join-wrapper'>
                 <img src={Logo} id='casmm-logo' alt='logo'/>
                 <HomeJoin history={props.history}/>
