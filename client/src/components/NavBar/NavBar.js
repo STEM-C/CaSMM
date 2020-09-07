@@ -1,54 +1,72 @@
 import React from 'react';
 import './NavBar.less'
+import config from './NavBarConfig.json';
 import Logo from "../../assets/casmm_logo.png";
-import {Link} from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import {Menu, Dropdown} from 'antd';
 import {DownOutlined} from '@ant-design/icons';
-import {getUser} from "../../Utils/AuthRequests";
+import { getUser, removeUserSession } from "../../Utils/AuthRequests";
 
 export default function NavBar(props) {
-    const {handleLogout, handleHome, handleTeacherLogin, handleSandbox, handleAbout, isMentor} = props;
+    const {isNone, isMentor, isStudent} = props;
     const user = getUser();
+    let currentRoute = "";
+    let profile = "";
+    let history = useHistory();
+    let routes = config.routes;
 
-    const menu = isMentor ? (
+    if (isNone) profile = "isNone";
+    if (isMentor) profile = "isMentor";
+    if (isStudent) profile = "isStudent";
+
+    const handleLogout = () => {
+        removeUserSession();
+        currentRoute = "/";
+        history.push('/');
+    };
+
+    const handleRoute = (route) => {
+        currentRoute = route;
+        history.push(route);
+    }
+
+    const shouldShowRoute = (route) => {
+        if (currentRoute === route) return false;
+        return config.users[profile].includes(route);
+    }
+
+    const menu =
         <Menu>
-            <Menu.Item key="0">
-                <i className="fa fa-user-circle"/>
-                &nbsp; Account Info
-            </Menu.Item>
-            {handleHome ? <Menu.Item key="1" onClick={handleHome}>
-                <i className="fa fa-home"/>
-                &nbsp; Dashboard
-            </Menu.Item> : null}
-            <Menu.Item key="2" onClick={handleLogout}>
-                <i className="fa fa-sign-out-alt"/>
-                &nbsp; Sign Out
-            </Menu.Item>
-        </Menu>
-    ) : (
-        <Menu>
-            {handleHome ? <Menu.Item key="0" onClick={handleHome}>
+            { shouldShowRoute("Home") ? <Menu.Item key="0" onClick={() => handleRoute(routes.Home)}>
                 <i className="fa fa-home"/>
                 &nbsp; Home
+            </Menu.Item> : null }
+            { shouldShowRoute("AccountInfo") ? <Menu.Item key="0" onClick={() => handleRoute(routes.AccountInfo)}>
+                <i className="fa fa-user-circle"/>
+                &nbsp; Account Info
             </Menu.Item> : null}
-            {handleSandbox ? <Menu.Item key="1" onClick={handleSandbox}>
+            { shouldShowRoute("Dashboard") ? <Menu.Item key="1" onClick={() => handleRoute(routes.Home)}>
+                <i className="fa fa-home"/>
+                &nbsp; Dashboard
+            </Menu.Item> : null }
+            { shouldShowRoute("Sandbox") ? <Menu.Item key="1" onClick={() => handleRoute(routes.Sandbox)}>
                 <i className="fa fa-window-maximize"/>
                 &nbsp; Sandbox
-            </Menu.Item> : null}
-            {handleTeacherLogin ? <Menu.Item key="2" onClick={handleTeacherLogin}>
+            </Menu.Item> : null }
+            { shouldShowRoute("TeacherLogin") ? <Menu.Item key="2" onClick={() => handleRoute(routes.TeacherLogin)}>
                 <i className="fa fa-sign-in-alt"/>
                 &nbsp; Teacher Login
-            </Menu.Item> : null}
-            {handleAbout ? <Menu.Item key="3" onClick={handleAbout}>
+            </Menu.Item> : null }
+            { shouldShowRoute("About") ? <Menu.Item key="3" onClick={() => handleRoute(routes.About)}>
                 <i className="fa fa-info-circle"/>
                 &nbsp; About
-            </Menu.Item> : null}
-            {handleLogout ? <Menu.Item key="3" onClick={handleLogout}>
+            </Menu.Item> : null }
+            { shouldShowRoute("SignOut") ? <Menu.Item key="2" onClick={() => handleLogout}>
                 <i className="fa fa-sign-out-alt"/>
                 &nbsp; Sign Out
-            </Menu.Item> : null}
+            </Menu.Item> : null }
         </Menu>
-    );
+
 
     return (
         <span id="navBar">

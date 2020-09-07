@@ -6,28 +6,15 @@ import TAMU from "../../assets/tamu_logo.png"
 import NavBar from "../../components/NavBar/NavBar";
 
 export default function About(props) {
-    const {history} = props;
-
-    const handleTeacherLogin = () => {
-        history.push('/teacherlogin')
-    };
-
-    const handleSandbox = () => {
-        history.push('/sandbox')
-    };
-
-    const handleHome = () => {
-        history.push('/')
-    }
 
     return(
         <div className='container nav-padding'>
-            <NavBar handleTeacherLogin={handleTeacherLogin} handleSandbox={handleSandbox} handleHome={handleHome}/>
+            <NavBar isNone={true}/>
             <div id='about-content-container'>
                 <h1 id='title'>
                     About CASMM
                 </h1>
-                <div id='logos' class="flex space-between">
+                <div id='logos' className="flex space-between">
                     <img src={UF} alt='uf'/>
                     <img src={NSF} alt='nsf'/>
                     <img src={TAMU} alt='tamu'/>

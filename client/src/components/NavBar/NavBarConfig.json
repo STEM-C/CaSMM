@@ -1,0 +1,16 @@
+{
+  "routes": {
+    "TeacherLogin": "/teacherlogin",
+    "Sandbox": "/sandbox",
+    "About": "/about",
+    "Home": "/",
+    "Dashboard": "/dashboard",
+    "SignOut": "/",
+    "AccountInfo": "/account"
+  },
+  "users": {
+    "isNone": ["Home", "TeacherLogin", "Sandbox", "About"],
+    "isMentor": ["Dashboard", "AccountInfo", "SignOut"],
+    "isStudent": ["SignOut"]
+  }
+}
