@@ -236,7 +236,7 @@ export default function BlocklyCanvasPanel(props) {
                                className="fas fa-upload hvr-info"
                                onMouseEnter={() => setHoverCompile(true)}
                                onMouseLeave={() => setHoverCompile(false)}/>
-                            {hoverCompile && <div className="popup Compile">Upload to Arduino</div>}
+                            {hoverCompile && <div className="popup ModalCompile">Upload to Arduino</div>}
                         </div>
                     </div>
                 </div>
