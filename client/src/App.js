@@ -10,17 +10,12 @@ import Student from "./views/Student/Student"
 import NotFound from "./views/NotFound"
 import StudentLogin from "./views/StudentLogin/StudentLogin";
 import Sandbox from "./views/Sandbox/Sandbox"
-import {removeUserSession} from "./Utils/AuthRequests";
 import Day from "./views/Day/Day";
 import Classroom from "./views/Classroom/Classroom"
 import TeacherLogin from "./views/TeacherLogin/TeacherLogin"
 
 const App = () => {
     let history = useHistory();
-    const handleLogout = () => {
-        removeUserSession();
-        history.push('/');
-    };
 
     return (
         <div>
@@ -28,13 +23,13 @@ const App = () => {
                 <Route exact path={"/"} render={() => <Home history={history}/>}/>
                 <Route exact path={"/about"} render={() => <About history={history}/>}/>
                 <Route exact path={"/teacherlogin"} render={() => <TeacherLogin history={history}/>}/>
-                <Route exact path={"/login"} render={() => <StudentLogin history={history} handleLogout={handleLogout}/>}/>
-                <PrivateRoute exact path={"/dashboard"} render={() => <Dashboard history={history} handleLogout={handleLogout}/>}/>
-                <PrivateRoute exact path={"/student"} render={() => <Student history={history} handleLogout={handleLogout}/> } />
-                <Route path={"/workspace"} render={() => <Workspace history={history} handleLogout={handleLogout}/>}/>
+                <Route exact path={"/login"} render={() => <StudentLogin history={history} />}/>
+                <PrivateRoute exact path={"/dashboard"} render={() => <Dashboard history={history}/>}/>
+                <PrivateRoute exact path={"/student"} render={() => <Student history={history} /> } />
+                <Route path={"/workspace"} render={() => <Workspace history={history} />}/>
                 <Route path={"/sandbox"} render={() => <Sandbox history={history}/>} />
-                <PrivateRoute exact path={"/day"} render={() => <Day history={history} handleLogout={handleLogout}/> } />
-                <PrivateRoute path={"/classroom/:id"} render={() => <Classroom history={history} handleLogout={handleLogout}/> } />
+                <PrivateRoute exact path={"/day"} render={() => <Day history={history} /> } />
+                <PrivateRoute path={"/classroom/:id"} render={() => <Classroom history={history} /> } />
                 <Route component={NotFound}/>
             </Switch>
         </div>
