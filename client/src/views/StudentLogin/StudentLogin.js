@@ -14,7 +14,6 @@ export default function StudentLogin(props) {
     const [studentIds, setStudentIds] = useState([null, null, null]);
     const [studentAnimals, setStudentAnimals] = useState(['', '', '']);
     const [numForms, setNumForms] = useState(2);
-    const {handleLogout} = props;
     const joinCode = localStorage.getItem('join-code');
 
     useEffect(() => {
@@ -92,7 +91,7 @@ export default function StudentLogin(props) {
 
     return (
         <div className='container nav-padding'>
-            <NavBar handleLogout={handleLogout}/>
+            <NavBar isStudent={true}/>
             <img src={Logo} alt='logo' id='login-logo'/>
             <div id='form-container'>
                 {setForms().map((form) =>

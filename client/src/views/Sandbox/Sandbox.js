@@ -7,7 +7,6 @@ import NavBar from "../../components/NavBar/NavBar";
 
 export default function Sandbox(props) {
     const [day, setDay] = useState(null);
-    const {history} = props;
 
     useEffect(() => {
         const localDay = JSON.parse(localStorage.getItem("sandbox-day"));
@@ -29,21 +28,9 @@ export default function Sandbox(props) {
         }
     }, []);
 
-    const handleHome = () => {
-        history.push('/')
-    };
-
-    const handleTeacherLogin = () => {
-        history.push('/teacherlogin')
-    };
-
-    const handleAbout = () => {
-        history.push('/about')
-    };
-
     return (
         <div className='container nav-padding'>
-            <NavBar handleTeacherLogin={handleTeacherLogin} handleHome={handleHome} handleAbout={handleAbout}/>
+            <NavBar />
             <BlocklyCanvasPanel day={day} isSandbox={true} homePath={'/'}/>
         </div>
     );

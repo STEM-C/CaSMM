@@ -26,8 +26,8 @@ export default function CodeModal(props) {
                onMouseLeave={() => setHover(false)}/>
             {hover &&
             (title === 'XML' ?
-                <div className="popup XML">Shows XML</div> :
-                <div className="popup Arduino">Shows Arduino Code</div>)}
+                <div className="popup ModalCompile2">Shows XML</div> :
+                <div className="popup ModalCompile3">Shows Arduino Code</div>)}
             <Modal
                 title={title}
                 visible={visible}

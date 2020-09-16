@@ -7,7 +7,7 @@ import {message} from "antd";
 
 export default function Day(props) {
     const [day, setDay] = useState({});
-    const {handleLogout, history} = props;
+    const {history} = props;
 
     useEffect(() => {
         const localDay = JSON.parse(localStorage.getItem("my-day"));
@@ -37,13 +37,9 @@ export default function Day(props) {
         history.goBack()
     };
 
-    const handleHome = () => {
-        history.push('/dashboard')
-    };
-
     return (
         <div className="container nav-padding">
-            <NavBar handleLogout={handleLogout} handleHome={handleHome} isMentor={true}/>
+            <NavBar isMentor={true}/>
             <div className="flex flex-row">
                 <BlocklyCanvasPanel
                     day={day}

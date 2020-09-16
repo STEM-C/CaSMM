@@ -39,7 +39,7 @@ export default function Workspace(props) {
 
     return (
         <div className="container flex flex-row nav-padding">
-            <NavBar handleLogout={handleLogout}/>
+            <NavBar isStudent={true}/>
             <BlocklyCanvasPanel
                 day={day}
                 lessonName={`Learning Standard ${day.learning_standard}, Day ${day.number}`}

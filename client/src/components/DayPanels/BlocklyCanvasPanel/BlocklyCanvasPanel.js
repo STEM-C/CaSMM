@@ -13,7 +13,6 @@ export default function BlocklyCanvasPanel(props) {
     const [hoverCompile, setHoverCompile] = useState(false);
     const [saves, setSaves] = useState({});
     const [lastSavedTime, setLastSavedTime] = useState(null);
-    const [, updateState] = useState(null);
     const [lastAutoSave, setLastAutoSave] = useState(null);
     const {day, isSandbox, homePath, handleGoBack, isStudent, lessonName} = props;
 
@@ -69,9 +68,7 @@ export default function BlocklyCanvasPanel(props) {
                 }
             }
         }, 60000);
-    }, [isStudent]);
 
-    useEffect(() => {
         // clean up - saves workspace and removes blockly div from DOM
         return async () => {
             if (isStudent && dayRef.current && workspaceRef.current)
@@ -79,16 +76,7 @@ export default function BlocklyCanvasPanel(props) {
             if (workspaceRef.current) workspaceRef.current.dispose();
             dayRef.current = null
         }
-    }, [isStudent]);
-
-    const forceUpdate = useCallback(() => updateState({}), []);
-
-    const onWorkspaceChange = useCallback(() => {
-        // set updated workspace as local sandbox
-        if (isSandbox) setLocalSandbox(workspaceRef.current);
-        // force update to properly render undo button state
-        forceUpdate()
-    }, [isSandbox, forceUpdate]);
+    }, []);
 
     useEffect(() => {
         // once the day state is set, set the workspace and save
@@ -96,6 +84,8 @@ export default function BlocklyCanvasPanel(props) {
             dayRef.current = day;
             if (!workspaceRef.current && day && Object.keys(day).length !== 0) {
                 setWorkspace();
+
+                if (!isStudent) return;
 
                 let onLoadSave = null;
                 const res = await getSaves(day.id);
@@ -106,7 +96,6 @@ export default function BlocklyCanvasPanel(props) {
                     console.log(res.err)
                 }
 
-
                 if (onLoadSave) {
                     let xml = window.Blockly.Xml.textToDom(onLoadSave.workspace);
                     window.Blockly.Xml.domToWorkspace(xml, workspaceRef.current);
@@ -116,12 +105,11 @@ export default function BlocklyCanvasPanel(props) {
                     window.Blockly.Xml.domToWorkspace(xml, workspaceRef.current)
                 }
 
-                await workspaceRef.current.addChangeListener(onWorkspaceChange);
                 workspaceRef.current.clearUndo()
             }
         };
         setUp()
-    }, [day, isStudent, onWorkspaceChange]);
+    }, [day, isStudent]);
 
     const handleManualSave = async () => {
         // save workspace then update load save options
@@ -236,7 +224,7 @@ export default function BlocklyCanvasPanel(props) {
                                className="fas fa-upload hvr-info"
                                onMouseEnter={() => setHoverCompile(true)}
                                onMouseLeave={() => setHoverCompile(false)}/>
-                            {hoverCompile && <div className="popup Compile">Upload to Arduino</div>}
+                            {hoverCompile && <div className="popup ModalCompile">Upload to Arduino</div>}
                         </div>
                     </div>
                 </div>
@@ -245,8 +233,7 @@ export default function BlocklyCanvasPanel(props) {
                 <div id="section-header">
                     {lessonName ? lessonName : "Program your Arduino..."}
                 </div>
-                <div id="blockly-canvas"
-                     onChange={() => setLocalSandbox(workspaceRef.current)}/>
+                <div id="blockly-canvas"/>
             </div>
 
             {/* This xml is for the blocks' menu we will provide. Here are examples on how to include categories and subcategories */}

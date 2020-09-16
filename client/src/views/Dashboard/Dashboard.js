@@ -10,7 +10,7 @@ import NavBar from "../../components/NavBar/NavBar";
 export default function Dashboard(props) {
     const [classrooms, setClassrooms] = useState([]);
     const user = getUser();
-    const {handleLogout, history} = props;
+    const {history} = props;
 
     useEffect(() => {
         let classroomIds = [];
@@ -34,7 +34,7 @@ export default function Dashboard(props) {
 
     return (
         <div className="container nav-padding">
-            <NavBar handleLogout={handleLogout} isMentor={true}/>
+            <NavBar isMentor={true}/>
             <div id='main-header'>Welcome {user.username}</div>
             <MentorSubHeader title={'Your Classrooms:'}/>
             <div id='card-container'>

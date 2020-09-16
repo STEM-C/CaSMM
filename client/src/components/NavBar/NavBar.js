@@ -1,54 +1,73 @@
 import React from 'react';
 import './NavBar.less'
+import config from './NavBarConfig.json';
 import Logo from "../../assets/casmm_logo.png";
-import {Link} from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import {Menu, Dropdown} from 'antd';
 import {DownOutlined} from '@ant-design/icons';
-import {getUser} from "../../Utils/AuthRequests";
+import { getUser, removeUserSession } from "../../Utils/AuthRequests";
 
 export default function NavBar(props) {
-    const {handleLogout, handleHome, handleTeacherLogin, handleSandbox, handleAbout, isMentor} = props;
+    const {isMentor, isStudent} = props;
     const user = getUser();
+    let currentRoute = window.location.pathname;
+    let profile = "";
+    let history = useHistory();
+    let routes = config.routes;
 
-    const menu = isMentor ? (
+    if (isMentor) {
+        profile = "isMentor"
+    } else if (isStudent) {
+        profile = "isStudent"
+    } else {
+        profile = "defaultUser"
+    }
+
+    const handleLogout = () => {
+        removeUserSession();
+        history.push('/');
+    };
+
+    const handleRouteChange = (route) => {
+        history.push(route);
+    }
+
+    const shouldShowRoute = (route) => {
+        if (currentRoute === routes[route]) return false;
+        return config.users[profile].includes(route);
+    }
+
+    const menu =
         <Menu>
-            <Menu.Item key="0">
-                <i className="fa fa-user-circle"/>
-                &nbsp; Account Info
-            </Menu.Item>
-            {handleHome ? <Menu.Item key="1" onClick={handleHome}>
-                <i className="fa fa-home"/>
-                &nbsp; Dashboard
-            </Menu.Item> : null}
-            <Menu.Item key="2" onClick={handleLogout}>
-                <i className="fa fa-sign-out-alt"/>
-                &nbsp; Sign Out
-            </Menu.Item>
-        </Menu>
-    ) : (
-        <Menu>
-            {handleHome ? <Menu.Item key="0" onClick={handleHome}>
+            { shouldShowRoute("Home") ? <Menu.Item key="0" onClick={() => handleRouteChange(routes.Home)}>
                 <i className="fa fa-home"/>
                 &nbsp; Home
+            </Menu.Item> : null }
+            { shouldShowRoute("AccountInfo") ? <Menu.Item key="0" onClick={() => handleRouteChange(routes.AccountInfo)}>
+                <i className="fa fa-user-circle"/>
+                &nbsp; Account Info
             </Menu.Item> : null}
-            {handleSandbox ? <Menu.Item key="1" onClick={handleSandbox}>
+            { shouldShowRoute("Dashboard") ? <Menu.Item key="1" onClick={() => handleRouteChange(routes.Home)}>
+                <i className="fa fa-home"/>
+                &nbsp; Dashboard
+            </Menu.Item> : null }
+            { shouldShowRoute("Sandbox") ? <Menu.Item key="1" onClick={() => handleRouteChange(routes.Sandbox)}>
                 <i className="fa fa-window-maximize"/>
                 &nbsp; Sandbox
-            </Menu.Item> : null}
-            {handleTeacherLogin ? <Menu.Item key="2" onClick={handleTeacherLogin}>
+            </Menu.Item> : null }
+            { shouldShowRoute("TeacherLogin") ? <Menu.Item key="2" onClick={() => handleRouteChange(routes.TeacherLogin)}>
                 <i className="fa fa-sign-in-alt"/>
                 &nbsp; Teacher Login
-            </Menu.Item> : null}
-            {handleAbout ? <Menu.Item key="3" onClick={handleAbout}>
+            </Menu.Item> : null }
+            { shouldShowRoute("About") ? <Menu.Item key="3" onClick={() => handleRouteChange(routes.About)}>
                 <i className="fa fa-info-circle"/>
                 &nbsp; About
-            </Menu.Item> : null}
-            {handleLogout ? <Menu.Item key="3" onClick={handleLogout}>
+            </Menu.Item> : null }
+            { shouldShowRoute("SignOut") ? <Menu.Item key="2" onClick={() => handleLogout()}>
                 <i className="fa fa-sign-out-alt"/>
                 &nbsp; Sign Out
-            </Menu.Item> : null}
+            </Menu.Item> : null }
         </Menu>
-    );
 
     return (
         <span id="navBar">
