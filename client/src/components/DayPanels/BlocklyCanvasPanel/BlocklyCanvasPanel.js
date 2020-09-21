@@ -1,7 +1,7 @@
-import React, {useCallback, useEffect, useRef, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {Link} from "react-router-dom";
 import '../DayPanels.less'
-import {compileArduinoCode, setLocalSandbox, handleSave} from "../helpers";
+import {compileArduinoCode, handleSave} from "../helpers";
 import {message} from "antd";
 import {getSaves} from "../../../Utils/requests";
 import CodeModal from "./CodeModal";
@@ -14,7 +14,7 @@ export default function BlocklyCanvasPanel(props) {
     const [saves, setSaves] = useState({});
     const [lastSavedTime, setLastSavedTime] = useState(null);
     const [lastAutoSave, setLastAutoSave] = useState(null);
-    const {day, isSandbox, homePath, handleGoBack, isStudent, lessonName} = props;
+    const {day, homePath, handleGoBack, isStudent, isMentor, lessonName} = props;
 
     const workspaceRef = useRef(null);
     const dayRef = useRef(null);
@@ -76,7 +76,7 @@ export default function BlocklyCanvasPanel(props) {
             if (workspaceRef.current) workspaceRef.current.dispose();
             dayRef.current = null
         }
-    }, []);
+    }, [isStudent]);
 
     useEffect(() => {
         // once the day state is set, set the workspace and save
@@ -85,7 +85,7 @@ export default function BlocklyCanvasPanel(props) {
             if (!workspaceRef.current && day && Object.keys(day).length !== 0) {
                 setWorkspace();
 
-                if (!isStudent) return;
+                if (!isStudent && !isMentor) return;
 
                 let onLoadSave = null;
                 const res = await getSaves(day.id);
@@ -109,7 +109,7 @@ export default function BlocklyCanvasPanel(props) {
             }
         };
         setUp()
-    }, [day, isStudent]);
+    }, [day, isStudent, isMentor]);
 
     const handleManualSave = async () => {
         // save workspace then update load save options

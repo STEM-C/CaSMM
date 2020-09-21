@@ -43,10 +43,10 @@ export default function NavBar(props) {
                 <i className="fa fa-home"/>
                 &nbsp; Home
             </Menu.Item> : null }
-            { shouldShowRoute("AccountInfo") ? <Menu.Item key="0" onClick={() => handleRouteChange(routes.AccountInfo)}>
-                <i className="fa fa-user-circle"/>
-                &nbsp; Account Info
-            </Menu.Item> : null}
+            {/*{ shouldShowRoute("AccountInfo") ? <Menu.Item key="0" onClick={() => handleRouteChange(routes.AccountInfo)}>*/}
+            {/*    <i className="fa fa-user-circle"/>*/}
+            {/*    &nbsp; Account Info*/}
+            {/*</Menu.Item> : null}*/}
             { shouldShowRoute("Dashboard") ? <Menu.Item key="1" onClick={() => handleRouteChange(routes.Home)}>
                 <i className="fa fa-home"/>
                 &nbsp; Dashboard
