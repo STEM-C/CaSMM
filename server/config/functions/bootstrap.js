@@ -1,6 +1,6 @@
 'use strict'
 
-module.exports = async () => {
+const fixRoles = async () => {
 
     // get all the current roles
     const roles = await strapi.query('role', 'users-permissions').find({}, [])
@@ -12,4 +12,13 @@ module.exports = async () => {
     // if the student role doesn't exist, alert the user
     const student = roles.find(role => role.type === 'student')
     if (!student) console.log('There is currently not a student role! Make sure to make one.')
+}
+
+module.exports = async () => {
+
+    // Connect to the compile queue
+    strapi.services.submission.initCompileQueue()
+
+    // Check the student roles
+    await fixRoles()
 }

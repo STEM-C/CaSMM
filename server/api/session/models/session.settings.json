@@ -16,6 +16,10 @@
     "students": {
       "via": "sessions",
       "collection": "student"
+    },
+    "submissions": {
+      "via": "session",
+      "collection": "submission"
     }
   }
 }

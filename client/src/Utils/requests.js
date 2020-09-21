@@ -1,10 +1,11 @@
-import {cms, compile} from './hosts'
+import {server} from './hosts'
 import axios from 'axios'
 import {getToken} from "./AuthRequests";
 
 const GET = 'GET';
 const PUT = 'PUT';
 const POST = 'POST';
+const DELETE = 'DELETE'
 
 // all request functions should utilize makeRequest and return an obj with structure {data, err}
 const makeRequest = async ({method, path, data, auth = false, error}) => {
@@ -28,6 +29,9 @@ const makeRequest = async ({method, path, data, auth = false, error}) => {
             case PUT:
                 res = (await axios.put(path, data, config)).data;
                 break;
+            case DELETE:
+                res = (await axios.delete(path, config)).data;
+                break;
             default:
                 throw Error('Invalid method.')
         }
@@ -42,7 +46,7 @@ const makeRequest = async ({method, path, data, auth = false, error}) => {
 export const getDayToolboxAll = async () => (
     makeRequest({
         method: GET,
-        path: `${cms}/sandbox/toolbox`,
+        path: `${server}/sandbox/toolbox`,
         error: "Toolbox could not be retrieved."
     })
 );
@@ -50,7 +54,7 @@ export const getDayToolboxAll = async () => (
 export const getDayToolbox = async (id) => (
     makeRequest({
         method: GET,
-        path: `${cms}/days/toolbox/${id}`,
+        path: `${server}/days/toolbox/${id}`,
         auth: true,
         error: "Toolbox could not be retrieved."
     })
@@ -59,7 +63,7 @@ export const getDayToolbox = async (id) => (
 export const getMentor = async () => (
     makeRequest({
         method: GET,
-        path: `${cms}/classroom-managers/me`,
+        path: `${server}/classroom-managers/me`,
         auth: true,
         error: "Your classroom manager information could not be retrieved."
     })
@@ -68,7 +72,7 @@ export const getMentor = async () => (
 export const getClassroom = async (id) => (
     makeRequest({
         method: GET,
-        path: `${cms}/classrooms/${id}`,
+        path: `${server}/classrooms/${id}`,
         auth: true,
         error: "Classroom information could not be retrieved"
     })
@@ -77,7 +81,7 @@ export const getClassroom = async (id) => (
 export const getStudentClassroom = async () => (
     makeRequest({
         method: GET,
-        path: `${cms}/classrooms/student`,
+        path: `${server}/classrooms/student`,
         auth: true,
         error: "Classroom information could not be retrieved"
     })
@@ -88,7 +92,7 @@ export const getClassrooms = async (ids) => (Promise.all(ids.map(async id => (aw
 export const getStudents = async (code) => (
     makeRequest({
         method: GET,
-        path: `${cms}/classrooms/join/${code}`,
+        path: `${server}/classrooms/join/${code}`,
         error: "Student info could not be retrieved."
     })
 );
@@ -96,7 +100,7 @@ export const getStudents = async (code) => (
 export const postJoin = async (code, ids) => (
     makeRequest({
         method: POST,
-        path: `${cms}/classrooms/join/${code}`,
+        path: `${server}/classrooms/join/${code}`,
         data: {
             "students": ids,
         },
@@ -104,19 +108,10 @@ export const postJoin = async (code, ids) => (
     })
 );
 
-export const compileCode = async (body) => (
-    makeRequest({
-        method: POST,
-        path: `${compile}/compile`,
-        data: body,
-        error: "Compilation failed."
-    })
-);
-
 export const setEnrollmentStatus = async (id, enrolled) => (
     makeRequest({
         method: PUT,
-        path: `${cms}/students/enrolled/${id}`,
+        path: `${server}/students/enrolled/${id}`,
         data: {
             "enrolled": enrolled
         },
@@ -128,7 +123,7 @@ export const setEnrollmentStatus = async (id, enrolled) => (
 export const updateStudent = async (id, student) => (
     makeRequest({
         method: PUT,
-        path: `${cms}/students/${id}`,
+        path: `${server}/students/${id}`,
         data: student,
         auth: true,
         error: "Failed to update student."
@@ -138,7 +133,7 @@ export const updateStudent = async (id, student) => (
 export const getUnits = async (id) => (
     makeRequest({
         method: GET,
-        path: `${cms}/units?grade=${id}`,
+        path: `${server}/units?grade=${id}`,
         auth: true,
         error: "Failed to retrieve units."
     })
@@ -147,7 +142,7 @@ export const getUnits = async (id) => (
 export const getLearningStandard = async (id) => (
     makeRequest({
         method: GET,
-        path: `${cms}/learning-standards/${id}`,
+        path: `${server}/learning-standards/${id}`,
         auth: true,
         error: "Failed to retrieve learning standard."
     })
@@ -156,7 +151,7 @@ export const getLearningStandard = async (id) => (
 export const setSelection = async (classroom, learningStandard) => (
     makeRequest({
         method: POST,
-        path: `${cms}/selections/`,
+        path: `${server}/selections/`,
         data: {
             classroom: classroom,
             learning_standard: learningStandard
@@ -169,7 +164,7 @@ export const setSelection = async (classroom, learningStandard) => (
 export const saveWorkspace = async (day, workspace) => (
     makeRequest({
         method: POST,
-        path: `${cms}/saves`,
+        path: `${server}/saves`,
         data: {
             day: day,
             workspace: workspace
@@ -182,8 +177,65 @@ export const saveWorkspace = async (day, workspace) => (
 export const getSaves = async (day) => (
     makeRequest({
         method: GET,
-        path: `${cms}/saves/day/${day}`,
+        path: `${server}/saves/day/${day}`,
         auth: true,
         error: 'Past saves could not be retrieved.'
+    })
+);
+
+export const createSubmission = async (day, workspace, sketch, path, isAuth) => (
+    makeRequest({
+        method: POST,
+        path: `${server}${path}`,
+        data: {
+            day: day.id,
+            workspace: workspace,
+            board: "arduino:avr:uno",
+            sketch: sketch
+        },
+        auth: isAuth,
+        error: 'Failed to create submission.'
+    })
+);
+
+export const getSubmission = async (submissionId, path, isAuth) => (
+    makeRequest({
+        method: GET,
+        path: `${server}${path}/${submissionId}`,
+        auth: isAuth,
+        error: "Failed to retrieve submission status"
+    })
+)
+
+export const addStudent = async (name, character, classroom) => (
+    makeRequest({
+        method: POST,
+        path: `${server}/students`,
+        data: {
+            name: name,
+            character: character,
+            classroom: classroom
+        },
+        auth: true,
+        error: 'Failed to add student.'
+    })
+);
+
+export const addStudents = async (students, classroom) => (
+    makeRequest({
+        method: POST,
+        path: `${server}/students`,
+        data: {students: students, classroom: classroom},
+        auth: true,
+        error: 'Failed to add students.'
+    })
+);
+
+export const deleteStudent = async (student) => (
+    makeRequest({
+        method: DELETE,
+        path: `${server}/students/${student}`,
+        auth: true,
+        error: 'Failed to delete student.'
     })
 );

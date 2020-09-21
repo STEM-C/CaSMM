@@ -1,16 +1,19 @@
 import React from 'react';
 import './MentorSubHeader.less'
 import {Link} from "react-router-dom";
+import AddStudentsModal from "../../views/Classroom/Roster/AddStudents/AddStudentsModal";
 
 export default function MentorSubHeader(props) {
     const {
         title,
         addActivityActive,
         addUserActive,
+        classroomId,
         cardViewActive,
         listViewActive,
         checkoutActive,
         setListView,
+        addStudentsToTable,
     } = props;
 
     return (
@@ -22,9 +25,7 @@ export default function MentorSubHeader(props) {
                         <i className="fa fa-plus-square"/>
                     </button> : null}
                 {addUserActive ?
-                    <button id='link'>
-                        <i className="fa fa-user-plus"/>
-                    </button> : null}
+                    <AddStudentsModal addStudentsToTable={addStudentsToTable} classroomId={classroomId}/> : null}
                 {cardViewActive ?
                     <button onClick={() => setListView(false)} id='link'>
                         <i className="fa fa-th"/>

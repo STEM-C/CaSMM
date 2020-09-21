@@ -1,4 +1,4 @@
-import { cms } from './hosts'
+import { server } from './hosts'
 import axios from "axios";
 
 // return user data from session storage
@@ -9,7 +9,7 @@ export const getUser = () => {
 
 // return user token from strapi
 export const postUser = async (body) => {
-    const response = await axios.post(`${cms}/auth/local`, body);
+    const response = await axios.post(`${server}/auth/local`, body);
     return response;
 }
 

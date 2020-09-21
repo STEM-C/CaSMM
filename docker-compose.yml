@@ -4,6 +4,7 @@ services:
   server:
     container_name: casmm-server-dev
     image: strapi/strapi
+    restart: always
     environment: 
       - DATABASE_HOST=db
     ports:
@@ -12,12 +13,13 @@ services:
       - ./server:/srv/app
     depends_on:
       - db
+      - compile_queue
   compile:
     container_name: casmm-compile-dev
     build: ./compile
     restart: always
-    ports:
-      - 8080:8080
+    depends_on:
+      - compile_queue
   db:
     container_name: casmm-db-dev
     image: postgres
@@ -34,3 +36,7 @@ services:
       ENVIRONMENT: development
       DATABASE_URL: strapi
       SCRIPT_PATH: /docker-entrypoint-initdb.d
+  compile_queue:
+    container_name: casmm-compile_queue-dev
+    image: redis
+    restart: always

@@ -53,7 +53,7 @@
       "path": "/students/:id",
       "handler": "student.delete",
       "config": {
-        "policies": []
+        "policies": ["global::isClassroomManager", "global::hasStudentsClassroom"]
       }
     },
     {

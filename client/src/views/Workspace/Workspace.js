@@ -1,8 +1,8 @@
 import React, {useEffect, useState} from "react"
 import {getDayToolbox} from "../../Utils/requests.js"
-import BlocklyCanvasPanel from "../../components/DayPanels/BlocklyCanvasPanel";
-import DayInfoPanel from "../../components/DayPanels/DayInfoPanel";
+import BlocklyCanvasPanel from "../../components/DayPanels/BlocklyCanvasPanel/BlocklyCanvasPanel";
 import {message} from "antd";
+import NavBar from "../../components/NavBar/NavBar";
 
 
 export default function Workspace(props) {
@@ -33,13 +33,17 @@ export default function Workspace(props) {
         }
     }, [history]);
 
+    const handleGoBack = () => {
+        history.goBack()
+    };
+
     return (
-        <div className="container flex flex-row">
-            <DayInfoPanel day={day}/>
+        <div className="container flex flex-row nav-padding">
+            <NavBar isStudent={true}/>
             <BlocklyCanvasPanel
                 day={day}
-                dayType={"my-day"}
-                homePath={'/student'}
+                lessonName={`Learning Standard ${day.learning_standard}, Day ${day.number}`}
+                handleGoBack={handleGoBack}
                 handleLogout={handleLogout}
                 isStudent={true}/>
         </div>
