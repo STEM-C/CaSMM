@@ -43,6 +43,7 @@ export default function Day(props) {
             <div className="flex flex-row">
                 <BlocklyCanvasPanel
                     day={day}
+                    isMentor={true}
                     lessonName={`Learning Standard ${day.learning_standard}, Day ${day.number}`}
                     handleGoBack={handleGoBack}/>
             </div>
