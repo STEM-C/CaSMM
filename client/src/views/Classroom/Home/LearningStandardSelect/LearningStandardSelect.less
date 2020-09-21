@@ -1,0 +1,137 @@
+@import "../../../../assets/style.less";
+
+#search {
+  margin-bottom: 1vh;
+
+  .ant-select {
+    float: left;
+    //margin-left: 12.5vw;
+    width: 200px;
+
+    .ant-select-selector {
+      border: 2px solid;
+      border-color: #colors[secondary];
+    }
+  }
+}
+
+
+#list-container {
+  width: 50vw;
+  padding: 5vh 0;
+  margin: 0 auto 0 auto;
+  display: block;
+
+  #list-item-wrapper, #selected-learning-standard {
+    border: solid 5px;
+    border-radius: 80px;
+    margin: 0 auto 1.2em auto;
+    width: 80%;
+    height: 60px;
+    line-height: 45px;
+    text-align: center;
+    font-size: 2.75vh;
+  }
+
+  #list-item-wrapper {
+    background-color: darken(#colors[tertiary], 5%);
+    border-color: #colors[secondary];
+    font-weight: 450;
+    color: #colors[text-primary];
+    transition: 0.25s;
+
+    &:hover {
+      cursor: pointer;
+      color: #colors[text-secondary];
+      background-color: #colors[secondary];
+      border-color: darken(#colors[secondary], 10%);
+      opacity: .9;
+      font-weight: 500;
+      width: 85%;
+    }
+  }
+
+  ul {
+    margin: 0;
+    padding: 0;
+  }
+
+  li {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  #selected-learning-standard {
+    background-color: #colors[secondary];
+    border-color: darken(#colors[secondary], 10%);
+    font-weight: 500;
+    width: 85%;
+    color: #colors[text-secondary];
+  }
+}
+
+.panel-1.show, .panel-2.show{
+  transition:  all 0.2s ease-in-out;
+  text-align: center;
+}
+.panel-1.hide, .panel-2.hide{
+  text-align: center;
+  height: 0;
+  overflow: hidden;
+  transition: all 0.2s ease-in-out;
+}
+
+#back-btn {
+  background: none !important;
+  border: none;
+  padding: 0 !important;
+  display: inline-block;
+  margin-left: 10px;
+  float: left;
+
+  &:focus {
+    outline: none;
+  }
+
+  i {
+    font-size: 2em;
+    color: #colors[primary];
+
+    &:hover {
+      color: #colors[secondary];
+      cursor: pointer;
+    }
+  }
+}
+
+#ls-info {
+  #btn-container {
+    width: 80%;
+    margin: auto;
+
+    button {
+      width: 8vw;
+      min-height: 8vh;
+      font-size: 1em;
+      border-radius: 4px;
+      margin: auto;
+      padding-left: 0;
+      padding-right: 0;
+      background: darken(#colors[tertiary], 30%);
+      border: 2px solid;
+      border-color: #colors[secondary];
+      color: #colors[text-secondary];
+      transition: 0.25s;
+      cursor: pointer;
+
+      &:focus {
+        outline: none;
+      }
+
+      &:hover {
+        width: 10vw;
+      }
+    }
+  }
+}

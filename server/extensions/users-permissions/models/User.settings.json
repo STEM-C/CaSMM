@@ -47,6 +47,9 @@
       "default": false,
       "configurable": false
     },
+    "last_logged_in": {
+      "type": "datetime"
+    },
     "role": {
       "model": "role",
       "via": "users",
