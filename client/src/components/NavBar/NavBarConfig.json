@@ -6,11 +6,13 @@
     "Home": "/",
     "Dashboard": "/dashboard",
     "SignOut": "/",
-    "AccountInfo": "/account"
+    "AccountInfo": "/account",
+    "ContentCreatorDashboard":"/ccdashboard"
   },
   "users": {
     "defaultUser": ["Home", "TeacherLogin", "Sandbox", "About"],
     "isMentor": ["Dashboard", "AccountInfo", "SignOut"],
-    "isStudent": ["SignOut"]
+    "isStudent": ["SignOut"],
+    "isContentCreator":["ContentCreatorDashboard","AccountInfo", "SignOut"]
   }
 }

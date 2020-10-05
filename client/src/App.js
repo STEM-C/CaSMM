@@ -13,6 +13,7 @@ import Sandbox from "./views/Sandbox/Sandbox"
 import Day from "./views/Day/Day";
 import Classroom from "./views/Classroom/Classroom"
 import TeacherLogin from "./views/TeacherLogin/TeacherLogin"
+import ContentCreatorDashboard from "./views/ContentCreatorDashboard/ContentCreatorDashboard"
 
 const App = () => {
     let history = useHistory();
@@ -25,6 +26,7 @@ const App = () => {
                 <Route exact path={"/teacherlogin"} render={() => <TeacherLogin history={history}/>}/>
                 <Route exact path={"/login"} render={() => <StudentLogin history={history} />}/>
                 <PrivateRoute exact path={"/dashboard"} render={() => <Dashboard history={history}/>}/>
+                <PrivateRoute exact path={"/ccdashboard"} render={() => <ContentCreatorDashboard history={history}/>}/>
                 <PrivateRoute exact path={"/student"} render={() => <Student history={history} /> } />
                 <Route path={"/workspace"} render={() => <Workspace history={history} />}/>
                 <Route path={"/sandbox"} render={() => <Sandbox history={history}/>} />
