@@ -16,7 +16,14 @@ export default function TeacherLogin(props) {
         postUser(body).then(response => {
             setUserSession(response.data.jwt, JSON.stringify(response.data.user));
             setLoading(false);
-            props.history.push('/dashboard');
+            if (response.data.user.role.name === "Content Creator") {
+                props.history.push('/ccdashboard');
+            } else {
+                props.history.push('/dashboard');
+            }
+                
+                
+
         }).catch(error => {
             setLoading(false);
             message.error('Login failed. Please input a valid email and password.');

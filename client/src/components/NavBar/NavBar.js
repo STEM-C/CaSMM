@@ -8,7 +8,7 @@ import {DownOutlined} from '@ant-design/icons';
 import { getUser, removeUserSession } from "../../Utils/AuthRequests";
 
 export default function NavBar(props) {
-    const {isMentor, isStudent} = props;
+    const {isMentor, isStudent, isContentCreator } = props;
     const user = getUser();
     let currentRoute = window.location.pathname;
     let profile = "";
@@ -19,6 +19,8 @@ export default function NavBar(props) {
         profile = "isMentor"
     } else if (isStudent) {
         profile = "isStudent"
+    } else if (isContentCreator) {
+        profile = "isContentCreator"
     } else {
         profile = "defaultUser"
     }
@@ -47,7 +49,11 @@ export default function NavBar(props) {
             {/*    <i className="fa fa-user-circle"/>*/}
             {/*    &nbsp; Account Info*/}
             {/*</Menu.Item> : null}*/}
-            { shouldShowRoute("Dashboard") ? <Menu.Item key="1" onClick={() => handleRouteChange(routes.Home)}>
+            { shouldShowRoute("Dashboard") ? <Menu.Item key="1" onClick={() => handleRouteChange(routes.Dashboard)}>
+                <i className="fa fa-home"/>
+                &nbsp; Dashboard
+            </Menu.Item> : null }
+            { shouldShowRoute("ContentCreatorDashboard") ? <Menu.Item key="1" onClick={() => handleRouteChange(routes.ContentCreatorDashboard)}>
                 <i className="fa fa-home"/>
                 &nbsp; Dashboard
             </Menu.Item> : null }
