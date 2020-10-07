@@ -1,4 +1,4 @@
-import React,{useState, useEffect} from 'react'
+import React,{useState} from 'react'
 import {Button, List, Card, Modal} from 'antd'
 import { PlusOutlined, CloseOutlined } from '@ant-design/icons';
 import {createDay, deleteDay} from '../../../Utils/requests'
@@ -18,10 +18,6 @@ export default function ContentCreator(props){
         setVisible(false)
     };
 
-    const handleOk = () => {
-        setVisible(false)
-    };
-
     const showModal = () => {
         setDay([...props.days])
      
@@ -32,7 +28,7 @@ export default function ContentCreator(props){
     const addBasicDay = () =>{
         const res = createDay(days.length+1, learningStandard)
         res.then(function(res1){
-            console.log(res1)
+            //console.log(res1)
             setDay([...days, {id: res1.data.id ,day: days.length+1}])
         })
     }
@@ -75,7 +71,7 @@ export default function ContentCreator(props){
         }
         const res = deleteDay(currDay.id)
         res.then(function(a){
-            console.log(res)
+            //console.log(res)
         })
     }
 

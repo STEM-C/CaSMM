@@ -15,8 +15,6 @@ import Classroom from "./views/Classroom/Classroom"
 import TeacherLogin from "./views/TeacherLogin/TeacherLogin"
 import ContentCreator from './views/ContentCreator/ContentCreator'
 import UnitCreator from './views/ContentCreator/UnitCreator/UnitCreator'
-import ContentCreatorDashboard from "./views/ContentCreatorDashboard/ContentCreatorDashboard"
-
 
 const App = () => {
     let history = useHistory();

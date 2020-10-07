@@ -1,7 +1,6 @@
 import {server} from './hosts'
 import axios from 'axios'
 import {getToken} from "./AuthRequests";
-import React from 'react';
 
 const GET = 'GET';
 const PUT = 'PUT';
@@ -166,6 +165,15 @@ export const getLearningStandard = async (id) => (
     })
 );
 
+export const getUnit = async(id)=>(
+    makeRequest({
+        method: GET,
+        path: `${server}/units/${id}`,
+        auth: true,
+        error: "Failed to retrieve learning standard."
+    })
+)
+
 export const getLearningStandardcount = async () => (
     makeRequest({
         method: GET,
@@ -279,8 +287,49 @@ export const deleteStudent = async (student) => (
 export const deleteDay = async (id) => (
     makeRequest({
         method: DELETE,
-        path: `${server}/students/${id}`,
+        path: `${server}/days/${id}`,
         auth: true,
         error: 'Failed to delete student.'
     })
 );
+
+export const deleteLearningStandard = async (id) => (
+    makeRequest({
+        method: DELETE,
+        path: `${server}/learning-standards/${id}`,
+        auth: true,
+        error: 'Failed to delete student.'
+    })
+);
+
+export const createLearningStandard = async (description,name,number,unit) =>(
+    makeRequest({
+        method: POST,
+        path: `${server}/learning-standards`,
+        data: {
+            "expectations": description,
+            "name": name,
+            "number": number,
+            "unit": unit
+        },
+        auth: true,
+        error: "Login failed."
+    })
+);
+
+export const createUnit = async(number,name,teksID,teksDescrip,grade)=>(
+    makeRequest({
+        method: POST,
+        path: `${server}/units`,
+        data: {
+            "name": name,
+            "grade": grade,
+            "number": number,
+            "teks_id": teksID,
+            "teks_description": teksDescrip
+        },
+        auth: true,
+        error: "Login failed."
+    })
+    
+)

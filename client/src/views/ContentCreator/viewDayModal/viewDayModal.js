@@ -1,4 +1,4 @@
-import React,{useState, useEffect} from 'react'
+import React,{useState} from 'react'
 
 import {Modal} from 'antd';
 
@@ -12,16 +12,13 @@ export default function ViewDayModal(props){
     const showModal = () => {
         setDay([...props.days])
         setVisible(true)
-        console.log(days)
-        console.log(props.days)
+        // console.log(days)
+        // console.log(props.days)
     };
     const handleCancel = () => {
         setVisible(false)
     };
 
-    const handleOk = () => {
-        setVisible(false)
-    };
 
 
     return(
