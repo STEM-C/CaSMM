@@ -1,6 +1,7 @@
 import {server} from './hosts'
 import axios from 'axios'
 import {getToken} from "./AuthRequests";
+import React from 'react';
 
 const GET = 'GET';
 const PUT = 'PUT';
@@ -111,6 +112,20 @@ export const postJoin = async (code, ids) => (
     })
 );
 
+export const createDay = async (day,learningStandard) =>(
+    makeRequest({
+        method: POST,
+        path: `${server}/days`,
+        data: {
+            "learning_standard": learningStandard,
+            "number": day,
+            "template": '<xml xmlns="http://www.w3.org/1999/xhtml"></xml>)',
+        },
+        auth: true,
+        error: "Login failed."
+    })
+);
+
 export const setEnrollmentStatus = async (id, enrolled) => (
     makeRequest({
         method: PUT,
@@ -155,6 +170,15 @@ export const getLearningStandardcount = async () => (
     makeRequest({
         method: GET,
         path: `${server}/learning-standards/count`,
+        auth: true,
+        error: "Failed to retrieve learning standard."
+    })
+);
+
+export const getLearningStandardAll = async () => (
+    makeRequest({
+        method: GET,
+        path: `${server}/learning-standards`,
         auth: true,
         error: "Failed to retrieve learning standard."
     })
@@ -247,6 +271,15 @@ export const deleteStudent = async (student) => (
     makeRequest({
         method: DELETE,
         path: `${server}/students/${student}`,
+        auth: true,
+        error: 'Failed to delete student.'
+    })
+);
+
+export const deleteDay = async (id) => (
+    makeRequest({
+        method: DELETE,
+        path: `${server}/students/${id}`,
         auth: true,
         error: 'Failed to delete student.'
     })
