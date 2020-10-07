@@ -190,7 +190,7 @@ export default function UnitCreator(props){
         
          
         </Form.List>
-        <Form.Item size="small" label="Number of Days"
+        <Form.Item layout="vertical" size="small" label="# of Days"
         onChange={(e)=>{ const {value} = e.target; setNumofDays(value);}}>
                 <Input/>
         </Form.Item>
