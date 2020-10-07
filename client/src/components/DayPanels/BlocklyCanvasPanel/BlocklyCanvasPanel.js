@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { Link } from "react-router-dom";
 import '../DayPanels.less'
 import { compileArduinoCode, handleCreatorSaveDay, handleSave } from "../helpers";
-import { message, Spin } from "antd";
+import { message, Spin, Menu, Checkbox } from "antd";
 import { getSaves } from "../../../Utils/requests";
 import CodeModal from "./CodeModal";
 import VersionHistoryModal from "./VersionHistoryModal"
@@ -19,6 +19,7 @@ export default function BlocklyCanvasPanel(props) {
 
     const workspaceRef = useRef(null);
     const dayRef = useRef(null);
+    const { SubMenu } = Menu;
 
     const setWorkspace = () =>
         workspaceRef.current = window.Blockly.inject('blockly-canvas',
@@ -250,11 +251,68 @@ export default function BlocklyCanvasPanel(props) {
                     </div>
                 </div>
                 </Spin>
-                <div id='bottom-container' className="flex flex-column vertical-container overflow-visible">
-                    <div id="section-header">
-                        {lessonName ? lessonName : "Program your Arduino..."}
+                <div className='flex flex-row'>
+                    <div id='bottom-container' className="flex flex-column vertical-container overflow-visible">
+                        <div id="section-header">
+                            {lessonName ? lessonName : "Program your Arduino..."}
+                        </div>
+                        <div id="blockly-canvas"/>
                     </div>
-                    <div id="blockly-canvas"/>
+                    {isContentCreator ?
+                        <div id='side-container'>
+                            Current Student Toolbox Selection
+                            <Menu mode="inline">
+                                <SubMenu key="sub1" title="Control">
+                                    <Menu.Item key="5">
+                                        <Checkbox>Option 1</Checkbox>
+                                    </Menu.Item>
+                                    <Menu.Item key="5">
+                                        <Checkbox>Option 2</Checkbox>
+                                    </Menu.Item>
+                                </SubMenu>
+                                <SubMenu key="sub2" title="Logic">
+                                    <Menu.Item key="5">
+                                        <Checkbox>Option 3</Checkbox>
+                                    </Menu.Item>
+                                    <Menu.Item key="5">
+                                        <Checkbox>Option 4</Checkbox>
+                                    </Menu.Item>
+                                </SubMenu>
+                                <SubMenu key="sub3" title="Math">
+                                    <Menu.Item key="5">
+                                        <Checkbox>Option 5</Checkbox>
+                                    </Menu.Item>
+                                    <Menu.Item key="5">
+                                        <Checkbox>Option 6</Checkbox>
+                                    </Menu.Item>
+                                </SubMenu>
+                                <SubMenu key="sub4" title="Text">
+                                    <Menu.Item key="5">
+                                        <Checkbox>Option 7</Checkbox>
+                                    </Menu.Item>
+                                    <Menu.Item key="5">
+                                        <Checkbox>Option 8</Checkbox>
+                                    </Menu.Item>
+                                </SubMenu>
+                                <SubMenu key="sub5" title="Variables">
+                                    <Menu.Item key="5">
+                                        <Checkbox>Option 9</Checkbox>
+                                    </Menu.Item>
+                                    <Menu.Item key="5">
+                                        <Checkbox>Option 10</Checkbox>
+                                    </Menu.Item>
+                                </SubMenu>
+                                <SubMenu key="sub6" title="IO">
+                                    <Menu.Item key="5">
+                                        <Checkbox>Option 11</Checkbox>
+                                    </Menu.Item>
+                                    <Menu.Item key="5">
+                                        <Checkbox>Option 12</Checkbox>
+                                    </Menu.Item>
+                                </SubMenu>
+                            </Menu>
+                        </div>
+                        : null}
                 </div>
 
                 {/* This xml is for the blocks' menu we will provide. Here are examples on how to include categories and subcategories */}
