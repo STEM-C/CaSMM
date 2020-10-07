@@ -1,8 +1,8 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Link } from "react-router-dom";
 import '../DayPanels.less'
-import { compileArduinoCode, handleSave } from "../helpers";
-import { message, Spin, Alert } from "antd";
+import { compileArduinoCode, handleCreatorSaveDay, handleSave } from "../helpers";
+import { message, Spin } from "antd";
 import { getSaves } from "../../../Utils/requests";
 import CodeModal from "./CodeModal";
 import VersionHistoryModal from "./VersionHistoryModal"
@@ -15,7 +15,7 @@ export default function BlocklyCanvasPanel(props) {
     const [saves, setSaves] = useState({});
     const [lastSavedTime, setLastSavedTime] = useState(null);
     const [lastAutoSave, setLastAutoSave] = useState(null);
-    const { day, homePath, handleGoBack, isStudent, isMentor, lessonName } = props;
+    const { day, homePath, handleGoBack, isStudent, isMentor, isContentCreator, lessonName } = props;
 
     const workspaceRef = useRef(null);
     const dayRef = useRef(null);
@@ -86,7 +86,7 @@ export default function BlocklyCanvasPanel(props) {
             if (!workspaceRef.current && day && Object.keys(day).length !== 0) {
                 setWorkspace();
 
-                if (!isStudent && !isMentor) return;
+                if (!isStudent && !isMentor && !isContentCreator) return;
 
                 let onLoadSave = null;
                 const res = await getSaves(day.id);
@@ -110,7 +110,7 @@ export default function BlocklyCanvasPanel(props) {
             }
         };
         setUp()
-    }, [day, isStudent, isMentor]);
+    }, [day, isStudent, isMentor, isContentCreator]);
 
     const handleManualSave = async () => {
         // save workspace then update load save options
@@ -125,6 +125,15 @@ export default function BlocklyCanvasPanel(props) {
         const savesRes = await getSaves(day.id);
         if (savesRes.data) setSaves(savesRes.data);
     };
+
+    const handleCreatorSave = async () => {
+        const res = handleCreatorSaveDay(day.id, workspaceRef);
+        if (res.err) {
+            message.error(res.err)
+        } else {
+            message.success('Day saved successfully')
+        }
+    }
 
     const handleUndo = () => {
         if (workspaceRef.current.undoStack_.length > 0)
@@ -188,6 +197,13 @@ export default function BlocklyCanvasPanel(props) {
                                 </div>
                                 : null
                             }
+                            {isContentCreator ?
+                            <div className='flex flex-row'>
+                                <button onClick={handleCreatorSave} id='link' className="flex flex-column">
+                                    <i id='icon-btn' className="fa fa-save"/>
+                                </button>
+                            </div>
+                            : null}
                             <div className='flex flex-row'>
                                 <button onClick={handleUndo} id='link' className="flex flex-column">
                                     <i id='icon-btn' className="fa fa-undo-alt"

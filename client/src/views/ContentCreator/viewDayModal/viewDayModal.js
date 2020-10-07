@@ -1,10 +1,10 @@
-import React,{useState} from 'react'
+import React, { useState } from 'react'
 
-import {Modal} from 'antd';
+import { Modal } from 'antd';
 
 import './viewDayModal.less'
 
-export default function ViewDayModal(props){
+export default function ViewDayModal(props) {
 
     const [visible, setVisible] = useState(false);
     const [days, setDay] = useState([]);
@@ -19,25 +19,28 @@ export default function ViewDayModal(props){
         setVisible(false)
     };
 
+    const handleViewDay = day => {
+        localStorage.setItem("my-day", JSON.stringify(day));
+        props.history.push('/day')
+    };
 
-
-    return(
+    return (
         <div>
-        <button onClick={showModal} id={'link-btn'} >View</button>
-        <Modal
-        title="hello"
-        visible={visible}
-        onCancel={handleCancel}
-        size="large"
-    >
+            <button onClick={showModal} id={'link-btn'}>View</button>
+            <Modal
+                title="hello"
+                visible={visible}
+                onCancel={handleCancel}
+                size="large"
+            >
                 <div id="btn-container" className='flex space-between'>
                     {days ? days.map(day =>
-                            <button key={day}>{`View Day ${day.day}`}</button>
+                            <button key={day.id} onClick={() => handleViewDay(day)}>{`View Day ${day.day}`}</button>
                         )
                         : null}
                 </div>
-       
-        </Modal>
+
+            </Modal>
         </div>
     )
 }

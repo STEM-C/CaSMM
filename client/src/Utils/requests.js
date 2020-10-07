@@ -284,12 +284,22 @@ export const deleteStudent = async (student) => (
     })
 );
 
+export const updateDay = async (id, workspace) => (
+    makeRequest({
+        method: PUT,
+        path: `${server}/days/${id}`,
+        data: {template: workspace},
+        auth: true,
+        error: 'Failed to update Day'
+    })
+)
+
 export const deleteDay = async (id) => (
     makeRequest({
         method: DELETE,
         path: `${server}/days/${id}`,
         auth: true,
-        error: 'Failed to delete student.'
+        error: 'Failed to delete day.'
     })
 );
 

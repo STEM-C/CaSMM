@@ -1,4 +1,4 @@
-import { createSubmission, getSubmission, saveWorkspace } from "../../Utils/requests";
+import { createSubmission, getSubmission, saveWorkspace, updateDay } from "../../Utils/requests";
 import {message} from "antd";
 
 const AvrboyArduino = window.AvrgirlArduino;
@@ -105,3 +105,9 @@ export const handleSave = async (dayId, workspaceRef) => {
     let xml_text = window.Blockly.Xml.domToText(xml);
     return await saveWorkspace(dayId, xml_text);
 };
+
+export const handleCreatorSaveDay = async (dayId, workspaceRef) => {
+    let xml = window.Blockly.Xml.workspaceToDom(workspaceRef.current);
+    let xml_text = window.Blockly.Xml.domToText(xml);
+    return await updateDay(dayId, xml_text);
+}

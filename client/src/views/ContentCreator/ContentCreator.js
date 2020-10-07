@@ -13,7 +13,6 @@ const {TabPane} = Tabs;
 
 export default function ContentCreator(props){
 
-
     const [dataSource, setDataSource] = useState([])
     useEffect(() => {
         //console.log(getLearningStandardcount())
@@ -53,7 +52,7 @@ export default function ContentCreator(props){
             width: '10%',
             align: 'right',
             render: (_, key) => (
-                <ViewDayModal days={getDays(key)} llinkBtn={true}/>
+                <ViewDayModal history={props.history} days={getDays(key)} llinkBtn={true}/>
             )
         },
         {
@@ -93,13 +92,8 @@ export default function ContentCreator(props){
     ];
 
     const handleRemoveItem = id1 => {
-        //console.log(id1, dataSource)
-       
-    
         setDataSource(dataSource.filter(item=> item.delete !==id1))
-        //console.log(dataSource)
     }
-
 
     const getDays = (i) =>{
         //console.log(i.edit)
@@ -115,16 +109,15 @@ export default function ContentCreator(props){
             result.data.days.forEach(el => {
                 day1.push({
                     id: el.id,
-                    day: j
+                    day: j,
+                    template: el.template
                 })
                 j++;
                 //console.log(day1)
             });
             //console.log(day1)
         })
-        
         return day1;
-
     }
 
     const axiosCall = async() =>{
