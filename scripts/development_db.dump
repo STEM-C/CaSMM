@@ -2,8 +2,8 @@
 -- PostgreSQL database dump
 --
 
--- Dumped from database version 12.2 (Debian 12.2-2.pgdg100+1)
--- Dumped by pg_dump version 12.1
+-- Dumped from database version 13.0 (Debian 13.0-1.pgdg100+1)
+-- Dumped by pg_dump version 13.0 (Debian 13.0-1.pgdg100+1)
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -1479,9 +1479,9 @@ COPY public.core_store (id, key, value, type, environment, tag) FROM stdin;
 38	plugin_content_manager_configuration_content_types::application::school.school	{"uid":"application::school.school","settings":{"bulkable":true,"filterable":true,"searchable":true,"pageSize":10,"mainField":"name","defaultSortBy":"name","defaultSortOrder":"ASC"},"metadatas":{"id":{"edit":{},"list":{"label":"Id","searchable":true,"sortable":true}},"name":{"edit":{"label":"Name","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"Name","searchable":true,"sortable":true}},"county":{"edit":{"label":"County","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"County","searchable":true,"sortable":true}},"state":{"edit":{"label":"State","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"State","searchable":true,"sortable":true}},"classrooms":{"edit":{"label":"Classrooms","description":"","placeholder":"","visible":true,"editable":true,"mainField":"name"},"list":{"label":"Classrooms","searchable":false,"sortable":false}},"mentors":{"edit":{"label":"Mentors","description":"","placeholder":"","visible":true,"editable":true,"mainField":"first_name"},"list":{"label":"Mentors","searchable":false,"sortable":false}},"teachers":{"edit":{"label":"Teachers","description":"","placeholder":"","visible":true,"editable":true,"mainField":"first_name"},"list":{"label":"Teachers","searchable":false,"sortable":false}},"created_at":{"edit":{"label":"Created_at","description":"","placeholder":"","visible":false,"editable":true},"list":{"label":"Created_at","searchable":true,"sortable":true}},"updated_at":{"edit":{"label":"Updated_at","description":"","placeholder":"","visible":false,"editable":true},"list":{"label":"Updated_at","searchable":true,"sortable":true}}},"layouts":{"list":["id","name","county","state"],"editRelations":["classrooms","mentors","teachers"],"edit":[[{"name":"name","size":6},{"name":"county","size":6}],[{"name":"state","size":6}]]}}	object		
 39	plugin_content_manager_configuration_content_types::application::selection.selection	{"uid":"application::selection.selection","settings":{"bulkable":true,"filterable":true,"searchable":true,"pageSize":10,"mainField":"id","defaultSortBy":"id","defaultSortOrder":"ASC"},"metadatas":{"id":{"edit":{},"list":{"label":"Id","searchable":true,"sortable":true}},"classroom":{"edit":{"label":"Classroom","description":"","placeholder":"","visible":true,"editable":true,"mainField":"name"},"list":{"label":"Classroom","searchable":false,"sortable":false}},"learning_standard":{"edit":{"label":"Learning_standard","description":"","placeholder":"","visible":true,"editable":true,"mainField":"name"},"list":{"label":"Learning_standard","searchable":false,"sortable":false}},"current":{"edit":{"label":"Current","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"Current","searchable":true,"sortable":true}},"created_at":{"edit":{"label":"Created_at","description":"","placeholder":"","visible":false,"editable":true},"list":{"label":"Created_at","searchable":true,"sortable":true}},"updated_at":{"edit":{"label":"Updated_at","description":"","placeholder":"","visible":false,"editable":true},"list":{"label":"Updated_at","searchable":true,"sortable":true}}},"layouts":{"list":["id","current","created_at","updated_at"],"editRelations":["classroom","learning_standard"],"edit":[[{"name":"current","size":4}]]}}	object		
 32	plugin_content_manager_configuration_content_types::application::day.day	{"uid":"application::day.day","settings":{"bulkable":true,"filterable":true,"searchable":true,"pageSize":10,"mainField":"id","defaultSortBy":"id","defaultSortOrder":"ASC"},"metadatas":{"id":{"edit":{},"list":{"label":"Id","searchable":true,"sortable":true}},"learning_standard":{"edit":{"label":"Learning_standard","description":"","placeholder":"","visible":true,"editable":true,"mainField":"name"},"list":{"label":"Learning_standard","searchable":false,"sortable":false}},"number":{"edit":{"label":"Number","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"Number","searchable":true,"sortable":true}},"template":{"edit":{"label":"Template","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"Template","searchable":true,"sortable":true}},"objectives":{"edit":{"label":"Objectives","description":"","placeholder":"","visible":true,"editable":true,"mainField":"id"},"list":{"label":"Objectives","searchable":false,"sortable":false}},"blocks":{"edit":{"label":"Blocks","description":"","placeholder":"","visible":true,"editable":true,"mainField":"name"},"list":{"label":"Blocks","searchable":false,"sortable":false}},"created_at":{"edit":{"label":"Created_at","description":"","placeholder":"","visible":false,"editable":true},"list":{"label":"Created_at","searchable":true,"sortable":true}},"updated_at":{"edit":{"label":"Updated_at","description":"","placeholder":"","visible":false,"editable":true},"list":{"label":"Updated_at","searchable":true,"sortable":true}}},"layouts":{"list":["id","number","template","created_at"],"edit":[[{"name":"number","size":4},{"name":"template","size":6}]],"editRelations":["learning_standard","objectives","blocks"]}}	object		
-7	db_model_students	{"name":{"type":"string"},"character":{"type":"string"},"classroom":{"model":"classroom","via":"students"},"sessions":{"collection":"session","via":"students","dominant":true,"attribute":"session","column":"id","isVirtual":true},"enrolled":{"type":"boolean","default":true,"required":true},"last_logged_in":{"type":"datetime"},"created_at":{"type":"currentTimestamp"},"updated_at":{"type":"currentTimestamp"}}	object	\N	\N
 22	db_model_users-permissions_user	{"username":{"type":"string","minLength":3,"unique":true,"configurable":false,"required":true},"email":{"type":"email","minLength":6,"configurable":false,"required":true},"provider":{"type":"string","configurable":false},"password":{"type":"password","minLength":6,"configurable":false,"private":true},"resetPasswordToken":{"type":"string","configurable":false,"private":true},"confirmed":{"type":"boolean","default":false,"configurable":false},"blocked":{"type":"boolean","default":false,"configurable":false},"last_logged_in":{"type":"datetime"},"role":{"model":"role","via":"users","plugin":"users-permissions","configurable":false},"created_at":{"type":"currentTimestamp"},"updated_at":{"type":"currentTimestamp"}}	object	\N	\N
 41	plugin_content_manager_configuration_content_types::application::student.student	{"uid":"application::student.student","settings":{"bulkable":true,"filterable":true,"searchable":true,"pageSize":10,"mainField":"name","defaultSortBy":"name","defaultSortOrder":"ASC"},"metadatas":{"id":{"edit":{},"list":{"label":"Id","searchable":true,"sortable":true}},"name":{"edit":{"label":"Name","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"Name","searchable":true,"sortable":true}},"character":{"edit":{"label":"Character","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"Character","searchable":true,"sortable":true}},"classroom":{"edit":{"label":"Classroom","description":"","placeholder":"","visible":true,"editable":true,"mainField":"name"},"list":{"label":"Classroom","searchable":false,"sortable":false}},"sessions":{"edit":{"label":"Sessions","description":"","placeholder":"","visible":true,"editable":true,"mainField":"id"},"list":{"label":"Sessions","searchable":false,"sortable":false}},"enrolled":{"edit":{"label":"Enrolled","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"Enrolled","searchable":true,"sortable":true}},"last_logged_in":{"edit":{"label":"Last_logged_in","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"Last_logged_in","searchable":true,"sortable":true}},"created_at":{"edit":{"label":"Created_at","description":"","placeholder":"","visible":false,"editable":true},"list":{"label":"Created_at","searchable":true,"sortable":true}},"updated_at":{"edit":{"label":"Updated_at","description":"","placeholder":"","visible":false,"editable":true},"list":{"label":"Updated_at","searchable":true,"sortable":true}}},"layouts":{"list":["id","name","character","enrolled"],"edit":[[{"name":"name","size":6},{"name":"character","size":6}],[{"name":"enrolled","size":4},{"name":"last_logged_in","size":6}]],"editRelations":["classroom","sessions"]}}	object		
+7	db_model_students	{"name":{"type":"string","regex":"^([A-Za-z]+)\\\\s*([A-Za-z]*)\\\\s+([A-Za-z])\\\\.$"},"character":{"type":"string"},"classroom":{"model":"classroom","via":"students"},"sessions":{"collection":"session","via":"students","dominant":true,"attribute":"session","column":"id","isVirtual":true},"enrolled":{"type":"boolean","default":true,"required":true},"last_logged_in":{"type":"datetime"},"created_at":{"type":"currentTimestamp"},"updated_at":{"type":"currentTimestamp"}}	object	\N	\N
 53	plugin_content_manager_configuration_content_types::application::save.save	{"uid":"application::save.save","settings":{"bulkable":true,"filterable":true,"searchable":true,"pageSize":10,"mainField":"id","defaultSortBy":"id","defaultSortOrder":"ASC"},"metadatas":{"id":{"edit":{},"list":{"label":"Id","searchable":true,"sortable":true}},"day":{"edit":{"label":"Day","description":"","placeholder":"","visible":true,"editable":true,"mainField":"id"},"list":{"label":"Day","searchable":false,"sortable":false}},"student":{"edit":{"label":"Student","description":"","placeholder":"","visible":true,"editable":true,"mainField":"name"},"list":{"label":"Student","searchable":false,"sortable":false}},"session":{"edit":{"label":"Session","description":"","placeholder":"","visible":true,"editable":true,"mainField":"id"},"list":{"label":"Session","searchable":false,"sortable":false}},"workspace":{"edit":{"label":"Workspace","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"Workspace","searchable":true,"sortable":true}},"created_at":{"edit":{"label":"Created_at","description":"","placeholder":"","visible":false,"editable":true},"list":{"label":"Created_at","searchable":true,"sortable":true}},"updated_at":{"edit":{"label":"Updated_at","description":"","placeholder":"","visible":false,"editable":true},"list":{"label":"Updated_at","searchable":true,"sortable":true}}},"layouts":{"list":["id","workspace","created_at","updated_at"],"edit":[[{"name":"workspace","size":6}]],"editRelations":["day","student","session"]}}	object		
 40	plugin_content_manager_configuration_content_types::application::session.session	{"uid":"application::session.session","settings":{"bulkable":true,"filterable":true,"searchable":true,"pageSize":10,"mainField":"id","defaultSortBy":"id","defaultSortOrder":"ASC"},"metadatas":{"id":{"edit":{},"list":{"label":"Id","searchable":true,"sortable":true}},"classroom":{"edit":{"label":"Classroom","description":"","placeholder":"","visible":true,"editable":true,"mainField":"name"},"list":{"label":"Classroom","searchable":false,"sortable":false}},"students":{"edit":{"label":"Students","description":"","placeholder":"","visible":true,"editable":true,"mainField":"name"},"list":{"label":"Students","searchable":false,"sortable":false}},"submissions":{"edit":{"label":"Submissions","description":"","placeholder":"","visible":true,"editable":true,"mainField":"status"},"list":{"label":"Submissions","searchable":false,"sortable":false}},"created_at":{"edit":{"label":"Created_at","description":"","placeholder":"","visible":false,"editable":true},"list":{"label":"Created_at","searchable":true,"sortable":true}},"updated_at":{"edit":{"label":"Updated_at","description":"","placeholder":"","visible":false,"editable":true},"list":{"label":"Updated_at","searchable":true,"sortable":true}}},"layouts":{"list":["id","created_at","updated_at"],"edit":[],"editRelations":["classroom","students","submissions"]}}	object		
 55	plugin_content_manager_configuration_content_types::application::submission.submission	{"uid":"application::submission.submission","settings":{"bulkable":true,"filterable":true,"searchable":true,"pageSize":10,"mainField":"status","defaultSortBy":"status","defaultSortOrder":"ASC"},"metadatas":{"id":{"edit":{},"list":{"label":"Id","searchable":true,"sortable":true}},"status":{"edit":{"label":"Status","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"Status","searchable":true,"sortable":true}},"workspace":{"edit":{"label":"Workspace","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"Workspace","searchable":true,"sortable":true}},"success":{"edit":{"label":"Success","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"Success","searchable":true,"sortable":true}},"hex":{"edit":{"label":"Hex","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"Hex","searchable":true,"sortable":true}},"stdout":{"edit":{"label":"Stdout","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"Stdout","searchable":true,"sortable":true}},"stderr":{"edit":{"label":"Stderr","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"Stderr","searchable":true,"sortable":true}},"board":{"edit":{"label":"Board","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"Board","searchable":true,"sortable":true}},"sketch":{"edit":{"label":"Sketch","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"Sketch","searchable":true,"sortable":true}},"sandbox":{"edit":{"label":"Sandbox","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"Sandbox","searchable":true,"sortable":true}},"session":{"edit":{"label":"Session","description":"","placeholder":"","visible":true,"editable":true,"mainField":"id"},"list":{"label":"Session","searchable":false,"sortable":false}},"day":{"edit":{"label":"Day","description":"","placeholder":"","visible":true,"editable":true,"mainField":"id"},"list":{"label":"Day","searchable":false,"sortable":false}},"job_id":{"edit":{"label":"Job_id","description":"","placeholder":"","visible":true,"editable":true},"list":{"label":"Job_id","searchable":true,"sortable":true}},"created_at":{"edit":{"label":"Created_at","description":"","placeholder":"","visible":false,"editable":true},"list":{"label":"Created_at","searchable":true,"sortable":true}},"updated_at":{"edit":{"label":"Updated_at","description":"","placeholder":"","visible":false,"editable":true},"list":{"label":"Updated_at","searchable":true,"sortable":true}}},"layouts":{"list":["id","status","workspace","success"],"edit":[[{"name":"status","size":6},{"name":"workspace","size":6}],[{"name":"success","size":4},{"name":"hex","size":6}],[{"name":"stdout","size":6},{"name":"stderr","size":6}],[{"name":"board","size":6},{"name":"sketch","size":6}],[{"name":"sandbox","size":4},{"name":"job_id","size":4}]],"editRelations":["session","day"]}}	object		
@@ -1576,6 +1576,9 @@ COPY public.objectives (id, day, description, objective_type, created_at, update
 --
 
 COPY public.saves (id, day, student, session, workspace, created_at, updated_at) FROM stdin;
+1	1	1	2	<xml xmlns="http://www.w3.org/1999/xhtml"><block type="controls_if" id="QJ(1[6#4Ys@+p~@Ryl|Z" x="117" y="178"><value name="IF0"><block type="logic_compare" id="x5M=__I|GXzRT:u6nz]_"><field name="OP">EQ</field><value name="A"><block type="math_number" id="?L[7sHbFFX{X-d({Qgi!"><field name="NUM">0</field></block></value><value name="B"><block type="math_number" id="qfOmU9isz_01I8~u#sSW"><field name="NUM">0</field></block></value></block></value><statement name="DO0"><block type="math_change" id=";y@:{=LW6[@|j,1*.6C]"><field name="VAR">item</field><value name="DELTA"><block type="math_number" id="m0.eI+XUsK/KXsTo3}#B"><field name="NUM">0</field></block></value></block></statement></block></xml>	2020-09-28 04:19:15.241+00	2020-09-28 04:19:15.246+00
+2	2	1	2	<xml xmlns="http://www.w3.org/1999/xhtml"><block type="controls_if" id="+tDwx%uD*;|/%MoHiBuD" x="72" y="141"><value name="IF0"><block type="variables_get" id="iQ,uNAfjOn;[Fhd|~lzS"><field name="VAR">item</field></block></value></block></xml>	2020-09-28 04:19:22.024+00	2020-09-28 04:19:22.029+00
+3	3	1	2	<xml xmlns="http://www.w3.org/1999/xhtml"><block type="io_digitalwrite" id="j#m#H23NIQH5Wz^I2c^G" x="70" y="224"><field name="PIN">0</field><value name="STATE"><block type="io_highlow" id="7.^n|ek_3R;_Q`K9M!;/"><field name="STATE">HIGH</field></block></value></block></xml>	2020-09-28 04:19:29.845+00	2020-09-28 04:19:29.853+00
 \.
 
 
@@ -1593,6 +1596,7 @@ COPY public.schools (id, name, county, state, created_at, updated_at) FROM stdin
 --
 
 COPY public.selections (id, classroom, learning_standard, current, created_at, updated_at) FROM stdin;
+1	1	1	t	2020-09-28 04:18:43.191+00	2020-09-28 04:18:43.196+00
 \.
 
 
@@ -1601,6 +1605,8 @@ COPY public.selections (id, classroom, learning_standard, current, created_at, u
 --
 
 COPY public.sessions (id, classroom, created_at, updated_at) FROM stdin;
+1	1	2020-09-28 04:17:35.021+00	2020-09-28 04:17:35.034+00
+2	1	2020-09-28 04:19:04.36+00	2020-09-28 04:19:04.372+00
 \.
 
 
@@ -1609,6 +1615,9 @@ COPY public.sessions (id, classroom, created_at, updated_at) FROM stdin;
 --
 
 COPY public.sessions_students__students_sessions (id, student_id, session_id) FROM stdin;
+1	2	1
+2	1	1
+3	1	2
 \.
 
 
@@ -1635,8 +1644,8 @@ COPY public.strapi_webhooks (id, name, url, headers, events, enabled) FROM stdin
 
 COPY public.students (id, name, "character", classroom, enrolled, last_logged_in, created_at, updated_at) FROM stdin;
 3	Dakota R.	🤡	1	t	\N	2020-07-24 16:38:45.333+00	2020-07-24 16:52:02.266+00
-2	Adam T.	🐼	1	t	\N	2020-07-24 16:38:28.699+00	2020-07-24 16:52:02.266+00
-1	Nick I.	🦍	1	t	\N	2020-07-24 16:38:25.252+00	2020-07-24 16:52:02.266+00
+2	Adam T.	🐼	1	t	2020-09-28 04:17:35.046+00	2020-07-24 16:38:28.699+00	2020-09-28 04:17:35.066+00
+1	Nick I.	🦍	1	t	2020-09-28 04:19:04.384+00	2020-07-24 16:38:25.252+00	2020-09-28 04:19:04.402+00
 \.
 
 
@@ -1729,15 +1738,10 @@ COPY public."users-permissions_permission" (id, type, controller, action, enable
 42	application	classroom	update	f		2
 43	application	day	count	f		1
 44	application	day	count	f		2
-45	application	day	create	f		1
 46	application	day	create	f		2
-47	application	day	delete	f		1
 48	application	day	delete	f		2
-49	application	day	find	f		1
 50	application	day	find	f		2
-51	application	day	findone	f		1
 52	application	day	findone	f		2
-53	application	day	update	f		1
 54	application	day	update	f		2
 55	application	grade	count	f		1
 56	application	grade	count	f		2
@@ -2244,6 +2248,197 @@ COPY public."users-permissions_permission" (id, type, controller, action, enable
 558	application	sandbox	findonesubmission	f		3
 554	application	sandbox	createsubmission	t		2
 557	application	sandbox	findonesubmission	t		2
+559	application	mentor	find	f		4
+560	application	mentor	findone	f		4
+561	application	mentor	count	f		4
+562	application	mentor	create	t		4
+563	application	mentor	update	f		4
+564	application	mentor	delete	f		4
+565	application	mentor	me	f		4
+566	application	teacher	find	f		4
+568	application	teacher	count	f		4
+569	application	teacher	create	t		4
+570	application	teacher	update	f		4
+571	application	teacher	delete	f		4
+572	application	unit	find	t		4
+567	application	teacher	findone	f		4
+573	application	unit	findone	t		4
+574	application	unit	count	f		4
+575	application	unit	create	t		4
+576	application	unit	update	t		4
+577	application	unit	delete	t		4
+578	application	blocks-category	find	t		4
+579	application	blocks-category	findone	t		4
+580	application	blocks-category	count	f		4
+581	application	blocks-category	create	t		4
+582	application	blocks-category	update	t		4
+583	application	blocks-category	delete	t		4
+584	application	sandbox	toolbox	t		4
+585	application	sandbox	findonesubmission	f		4
+586	application	sandbox	createsubmission	f		4
+587	application	learning-standard	find	t		4
+588	application	learning-standard	findone	t		4
+589	application	learning-standard	count	f		4
+590	application	learning-standard	create	t		4
+591	application	learning-standard	update	t		4
+592	application	learning-standard	delete	t		4
+593	application	selection	find	f		4
+594	application	selection	findone	f		4
+595	application	selection	count	f		4
+596	application	selection	create	f		4
+597	application	selection	update	f		4
+598	application	selection	delete	f		4
+599	application	submission	find	f		4
+600	application	submission	findone	f		4
+601	application	submission	count	f		4
+602	application	submission	create	f		4
+603	application	submission	update	f		4
+47	application	day	delete	f		1
+604	application	submission	delete	f		4
+605	application	block	find	t		4
+606	application	block	findone	t		4
+607	application	block	count	f		4
+608	application	block	create	t		4
+609	application	block	update	t		4
+625	application	classroom	student	f		4
+639	application	grade	find	f		4
+652	application	student	findone	f		4
+667	application	save	findone	f		4
+683	content-manager	contentmanager	generateuid	f		4
+700	content-type-builder	contenttypes	updatecontenttype	f		4
+714	users-permissions	auth	connect	t		4
+729	users-permissions	userspermissions	getroutes	f		4
+45	application	day	create	f		1
+610	application	block	delete	t		4
+624	application	classroom	initjoin	f		4
+640	application	grade	findone	f		4
+655	application	student	update	f		4
+670	application	save	update	f		4
+685	content-manager	contenttypes	listcontenttypes	f		4
+699	content-type-builder	contenttypes	createcontenttype	f		4
+713	users-permissions	auth	resetpassword	f		4
+727	users-permissions	userspermissions	getemailtemplate	f		4
+742	users-permissions	userspermissions	getadvancedsettings	f		4
+49	application	day	find	f		1
+611	application	objective-type	find	t		4
+626	application	classroom	create	t		4
+641	application	grade	count	f		4
+656	application	student	delete	f		4
+671	application	save	delete	f		4
+686	content-manager	contenttypes	findcontenttype	f		4
+701	content-type-builder	contenttypes	deletecontenttype	f		4
+716	users-permissions	auth	register	f		4
+731	users-permissions	userspermissions	getpolicies	f		4
+51	application	day	findone	f		1
+612	application	objective-type	findone	t		4
+631	application	school	update	f		4
+643	application	grade	update	f		4
+657	application	student	me	f		4
+673	content-manager	components	listcomponents	f		4
+687	content-manager	contenttypes	updatecontenttype	f		4
+703	upload	proxy	uploadproxy	f		4
+717	users-permissions	auth	emailconfirmation	f		4
+735	users-permissions	userspermissions	updateemailtemplate	f		4
+53	application	day	update	f		1
+613	application	objective-type	count	f		4
+628	application	school	findone	f		4
+644	application	grade	delete	f		4
+658	application	student	enrolled	f		4
+674	content-manager	components	findcomponent	f		4
+689	content-type-builder	componentcategories	editcategory	f		4
+705	upload	upload	getsettings	f		4
+718	users-permissions	auth	sendemailconfirmation	f		4
+733	users-permissions	userspermissions	getrole	f		4
+614	application	objective-type	create	t		4
+627	application	school	find	f		4
+642	application	grade	create	f		4
+661	application	day	count	f		4
+672	application	save	findbyday	f		4
+690	content-type-builder	componentcategories	deletecategory	f		4
+702	email	email	send	f		4
+721	users-permissions	user	count	f		4
+732	users-permissions	userspermissions	getroles	f		4
+615	application	objective-type	update	t		4
+630	application	school	create	f		4
+646	application	objective	findone	f		4
+660	application	day	findone	t		4
+676	content-manager	contentmanager	checkuidavailability	f		4
+691	content-type-builder	components	getcomponents	f		4
+706	upload	upload	updatesettings	f		4
+720	users-permissions	user	me	t		4
+736	users-permissions	userspermissions	updateadvancedsettings	f		4
+616	application	objective-type	delete	t		4
+629	application	school	count	f		4
+645	application	objective	find	f		4
+659	application	day	find	t		4
+675	content-manager	components	updatecomponent	f		4
+688	content-type-builder	builder	getreservednames	f		4
+704	upload	upload	upload	f		4
+719	users-permissions	user	find	f		4
+734	users-permissions	userspermissions	getproviders	f		4
+617	application	classroom-manager	me	f		4
+632	application	school	delete	f		4
+647	application	objective	count	f		4
+662	application	day	create	t		4
+677	content-manager	contentmanager	update	f		4
+692	content-type-builder	components	getcomponent	f		4
+707	upload	upload	find	f		4
+722	users-permissions	user	findone	f		4
+737	users-permissions	userspermissions	getpermissions	f		4
+618	application	classroom	update	t		4
+633	application	session	find	f		4
+648	application	objective	create	f		4
+663	application	day	update	t		4
+678	content-manager	contentmanager	deletemany	f		4
+693	content-type-builder	components	createcomponent	f		4
+708	upload	upload	findone	f		4
+723	users-permissions	user	create	f		4
+738	users-permissions	userspermissions	init	t		4
+619	application	classroom	join	f		4
+634	application	session	findone	f		4
+649	application	objective	update	f		4
+664	application	day	delete	t		4
+679	content-manager	contentmanager	delete	f		4
+694	content-type-builder	components	updatecomponent	f		4
+709	upload	upload	count	f		4
+724	users-permissions	user	update	f		4
+739	users-permissions	userspermissions	index	f		4
+620	application	classroom	delete	t		4
+635	application	session	count	f		4
+650	application	objective	delete	f		4
+665	application	day	toolbox	t		4
+680	content-manager	contentmanager	findone	f		4
+695	content-type-builder	components	deletecomponent	f		4
+710	upload	upload	destroy	f		4
+725	users-permissions	user	destroy	f		4
+740	users-permissions	userspermissions	createrole	f		4
+621	application	classroom	findone	t		4
+636	application	session	create	f		4
+651	application	student	find	f		4
+666	application	save	find	f		4
+681	content-manager	contentmanager	count	f		4
+696	content-type-builder	connections	getconnections	f		4
+711	upload	upload	search	f		4
+726	users-permissions	user	destroyall	f		4
+741	users-permissions	userspermissions	updateproviders	f		4
+622	application	classroom	count	f		4
+638	application	session	delete	f		4
+654	application	student	create	f		4
+668	application	save	count	f		4
+684	content-manager	contentmanager	create	f		4
+697	content-type-builder	contenttypes	getcontenttypes	f		4
+715	users-permissions	auth	forgotpassword	f		4
+730	users-permissions	userspermissions	deleterole	f		4
+744	users-permissions	userspermissions	updaterole	f		4
+623	application	classroom	find	t		4
+637	application	session	update	f		4
+653	application	student	count	f		4
+669	application	save	create	f		4
+682	content-manager	contentmanager	find	f		4
+698	content-type-builder	contenttypes	getcontenttype	f		4
+712	users-permissions	auth	callback	f		4
+728	users-permissions	userspermissions	searchusers	f		4
+743	users-permissions	userspermissions	deleteprovider	f		4
 \.
 
 
@@ -2252,9 +2447,10 @@ COPY public."users-permissions_permission" (id, type, controller, action, enable
 --
 
 COPY public."users-permissions_role" (id, name, description, type) FROM stdin;
-1	Classroom Manager	Default role given to authenticated user.	authenticated
 3	Student	Default role given to a student user.	student
 2	Public	Default role given to unauthenticated user.	public
+4	Content Creator	Role given to content Creators	content_creator
+1	Classroom Manager	Default role given to authenticated user.	authenticated
 \.
 
 
@@ -2263,7 +2459,8 @@ COPY public."users-permissions_role" (id, name, description, type) FROM stdin;
 --
 
 COPY public."users-permissions_user" (id, username, email, provider, password, "resetPasswordToken", confirmed, blocked, last_logged_in, role, created_at, updated_at) FROM stdin;
-1	defaultmentor	dm@mail.com	local	$2a$10$lz.mh/Eb3vt5.VtpqDXmFOmw.Ra.2Kp1w5sQl3yW3dYLRughOdS.2	\N	t	\N	\N	1	2020-07-24 16:36:23.083+00	2020-07-24 16:36:23.097+00
+1	defaultmentor	dm@mail.com	local	$2a$10$lz.mh/Eb3vt5.VtpqDXmFOmw.Ra.2Kp1w5sQl3yW3dYLRughOdS.2	\N	t	\N	2020-10-05 14:55:07.36+00	1	2020-07-24 16:36:23.083+00	2020-10-05 14:55:07.365+00
+2	defaultcontentcreator	dcc@mail.com	local	$2a$10$K6PHyUKeO25Ygxe09Lbx9.Vn0bNeQh/CAEOm85j9wkHLkQ.sjA7vS	\N	t	f	2020-10-05 22:01:49.242+00	4	2020-10-04 20:01:01.537+00	2020-10-05 22:01:49.248+00
 \.
 
 
@@ -2362,7 +2559,7 @@ SELECT pg_catalog.setval('public.objectives_id_seq', 6, true);
 -- Name: saves_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.saves_id_seq', 1, false);
+SELECT pg_catalog.setval('public.saves_id_seq', 3, true);
 
 
 --
@@ -2376,21 +2573,21 @@ SELECT pg_catalog.setval('public.schools_id_seq', 1, true);
 -- Name: selections_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.selections_id_seq', 1, false);
+SELECT pg_catalog.setval('public.selections_id_seq', 1, true);
 
 
 --
 -- Name: sessions_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.sessions_id_seq', 1, false);
+SELECT pg_catalog.setval('public.sessions_id_seq', 2, true);
 
 
 --
 -- Name: sessions_students__students_sessions_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.sessions_students__students_sessions_id_seq', 1, false);
+SELECT pg_catalog.setval('public.sessions_students__students_sessions_id_seq', 3, true);
 
 
 --
@@ -2453,21 +2650,21 @@ SELECT pg_catalog.setval('public.upload_file_morph_id_seq', 1, false);
 -- Name: users-permissions_permission_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public."users-permissions_permission_id_seq"', 558, true);
+SELECT pg_catalog.setval('public."users-permissions_permission_id_seq"', 744, true);
 
 
 --
 -- Name: users-permissions_role_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public."users-permissions_role_id_seq"', 3, true);
+SELECT pg_catalog.setval('public."users-permissions_role_id_seq"', 4, true);
 
 
 --
 -- Name: users-permissions_user_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public."users-permissions_user_id_seq"', 1, true);
+SELECT pg_catalog.setval('public."users-permissions_user_id_seq"', 2, true);
 
 
 --
