@@ -40,7 +40,8 @@ export const getArduino = (workspaceRef, shouldAlert = true) => {
 };
 
 // Sends compiled arduino code to server and returns hex to flash board with
-export const compileArduinoCode = async (workspaceRef, day, isStudent) => {
+export const compileArduinoCode = async (workspaceRef, setSelectedCompile, day, isStudent) => {
+    setSelectedCompile(true);
     const sketch = getArduino(workspaceRef, false);
     let workspaceDom = window.Blockly.Xml.workspaceToDom(workspaceRef);
     let workspaceText = window.Blockly.Xml.domToText(workspaceDom);
@@ -52,22 +53,22 @@ export const compileArduinoCode = async (workspaceRef, day, isStudent) => {
         const initialSubmission = await createSubmission(day, workspaceText, sketch, path, isStudent);
 
         // get the submission result when it's ready and flash the board
-        await getAndFlashSubmission(initialSubmission.data.id, path, isStudent)
+        await getAndFlashSubmission(initialSubmission.data.id, path, isStudent, setSelectedCompile)
     } catch (e) {
         console.log(e.message)
     }
 };
 
-const getAndFlashSubmission = async (id, path, isStudent) => {
+const getAndFlashSubmission = async (id, path, isStudent, setSelectedCompile) => {
     // get the submission
     const response = await getSubmission(id, path, isStudent)
 
     // if the submission is not complete, try again later
     if (response.data.status !== "COMPLETED") {
-        setTimeout(() => getAndFlashSubmission(id, path, isStudent), 100)
+        setTimeout(() => getAndFlashSubmission(id, path, isStudent, setSelectedCompile), 250)
         return
     }
-
+    setSelectedCompile(false)
     // flash the board with the output
     await flashArduino(response);
 }
