@@ -78,6 +78,9 @@ export const getClassroom = async (id) => (
     })
 );
 
+
+
+
 export const getStudentClassroom = async () => (
     makeRequest({
         method: GET,
@@ -143,6 +146,15 @@ export const getLearningStandard = async (id) => (
     makeRequest({
         method: GET,
         path: `${server}/learning-standards/${id}`,
+        auth: true,
+        error: "Failed to retrieve learning standard."
+    })
+);
+
+export const getLearningStandardcount = async () => (
+    makeRequest({
+        method: GET,
+        path: `${server}/learning-standards/count`,
         auth: true,
         error: "Failed to retrieve learning standard."
     })
