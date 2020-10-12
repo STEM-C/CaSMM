@@ -38,7 +38,7 @@ export default function TeacherLogin(props) {
                     if (e.key === 'Enter') handleLogin()
                 }}>
                     <div id='box-title'>
-                        Teacher Login
+                        User Login
                     </div>
                     <input type="email" {...email} placeholder="Email" autoComplete="username"/>
                     <input type="password" {...password} placeholder="Password" autoComplete="current-password"/>
