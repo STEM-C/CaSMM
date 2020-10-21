@@ -13,6 +13,7 @@ export default function BlocklyCanvasPanel(props) {
     const [hoverCompile, setHoverCompile] = useState(false);
     const [selectedCompile, setSelectedCompile] = useState(false);
     const [saves, setSaves] = useState({});
+    const [studentToolbox, setStudentToolbox] = useState([]);
     const [lastSavedTime, setLastSavedTime] = useState(null);
     const [lastAutoSave, setLastAutoSave] = useState(null);
     const { day, homePath, handleGoBack, isStudent, isMentor, isContentCreator, lessonName } = props;
@@ -128,11 +129,20 @@ export default function BlocklyCanvasPanel(props) {
     };
 
     const handleCreatorSave = async () => {
-        const res = handleCreatorSaveDay(day.id, workspaceRef);
+        const res = handleCreatorSaveDay(day.id, workspaceRef, studentToolbox);
         if (res.err) {
             message.error(res.err)
         } else {
             message.success('Day saved successfully')
+        }
+    }
+
+    const handleToolboxSelection = (blockName) => {
+        let index = studentToolbox.indexOf(blockName);
+        if(index > -1) {
+            setStudentToolbox(studentToolbox.filter(item => item !== blockName));
+        } else {
+            setStudentToolbox([...studentToolbox, blockName]);
         }
     }
 
@@ -164,8 +174,8 @@ export default function BlocklyCanvasPanel(props) {
 
     return (
 
-            <div id='horizontal-container' className="flex flex-column">
-                <Spin tip="Compiling Code Please Wait..." className="compilePop" spinning={selectedCompile}>
+        <div id='horizontal-container' className="flex flex-column">
+            <Spin tip="Compiling Code Please Wait..." className="compilePop" spinning={selectedCompile}>
                 <div id='top-container' className="flex flex-column vertical-container">
                     <div id='description-container' className="flex flex-row space-between card">
                         <div className='flex flex-row'>
@@ -199,12 +209,12 @@ export default function BlocklyCanvasPanel(props) {
                                 : null
                             }
                             {isContentCreator ?
-                            <div className='flex flex-row'>
-                                <button onClick={handleCreatorSave} id='link' className="flex flex-column">
-                                    <i id='icon-btn' className="fa fa-save"/>
-                                </button>
-                            </div>
-                            : null}
+                                <div className='flex flex-row'>
+                                    <button onClick={handleCreatorSave} id='link' className="flex flex-column">
+                                        <i id='icon-btn' className="fa fa-save"/>
+                                    </button>
+                                </div>
+                                : null}
                             <div className='flex flex-row'>
                                 <button onClick={handleUndo} id='link' className="flex flex-column">
                                     <i id='icon-btn' className="fa fa-undo-alt"
@@ -250,89 +260,57 @@ export default function BlocklyCanvasPanel(props) {
                         </div>
                     </div>
                 </div>
-                </Spin>
-                <div className='flex flex-row'>
-                    <div id='bottom-container' className="flex flex-column vertical-container overflow-visible">
-                        <div id="section-header">
-                            {lessonName ? lessonName : "Program your Arduino..."}
-                        </div>
-                        <div id="blockly-canvas"/>
+            </Spin>
+            <div className='flex flex-row'>
+                <div id='bottom-container' className="flex flex-column vertical-container overflow-visible">
+                    <div id="section-header">
+                        {lessonName ? lessonName : "Program your Arduino..."}
                     </div>
-                    {isContentCreator ?
-                        <div id='side-container'>
-                            Current Student Toolbox Selection
-                            <Menu mode="inline">
-                                <SubMenu key="sub1" title="Control">
-                                    <Menu.Item key="5">
-                                        <Checkbox>Option 1</Checkbox>
-                                    </Menu.Item>
-                                    <Menu.Item key="5">
-                                        <Checkbox>Option 2</Checkbox>
-                                    </Menu.Item>
-                                </SubMenu>
-                                <SubMenu key="sub2" title="Logic">
-                                    <Menu.Item key="5">
-                                        <Checkbox>Option 3</Checkbox>
-                                    </Menu.Item>
-                                    <Menu.Item key="5">
-                                        <Checkbox>Option 4</Checkbox>
-                                    </Menu.Item>
-                                </SubMenu>
-                                <SubMenu key="sub3" title="Math">
-                                    <Menu.Item key="5">
-                                        <Checkbox>Option 5</Checkbox>
-                                    </Menu.Item>
-                                    <Menu.Item key="5">
-                                        <Checkbox>Option 6</Checkbox>
-                                    </Menu.Item>
-                                </SubMenu>
-                                <SubMenu key="sub4" title="Text">
-                                    <Menu.Item key="5">
-                                        <Checkbox>Option 7</Checkbox>
-                                    </Menu.Item>
-                                    <Menu.Item key="5">
-                                        <Checkbox>Option 8</Checkbox>
-                                    </Menu.Item>
-                                </SubMenu>
-                                <SubMenu key="sub5" title="Variables">
-                                    <Menu.Item key="5">
-                                        <Checkbox>Option 9</Checkbox>
-                                    </Menu.Item>
-                                    <Menu.Item key="5">
-                                        <Checkbox>Option 10</Checkbox>
-                                    </Menu.Item>
-                                </SubMenu>
-                                <SubMenu key="sub6" title="IO">
-                                    <Menu.Item key="5">
-                                        <Checkbox>Option 11</Checkbox>
-                                    </Menu.Item>
-                                    <Menu.Item key="5">
-                                        <Checkbox>Option 12</Checkbox>
-                                    </Menu.Item>
-                                </SubMenu>
-                            </Menu>
-                        </div>
-                        : null}
+                    <div id="blockly-canvas"/>
                 </div>
-
-                {/* This xml is for the blocks' menu we will provide. Here are examples on how to include categories and subcategories */}
-                <xml id="toolbox" is="Blockly workspace">
-                    {
-                        // Maps out block categories
-                        day && day.toolbox && day.toolbox.map(([category, blocks]) => (
-                            <category name={category} is="Blockly category" key={category}>
-                                {
-                                    // maps out blocks in category
-                                    // eslint-disable-next-line
-                                    blocks.map((block) => {
-                                        return <block type={block.name} is="Blockly block" key={block.name}/>
-                                    })
-                                }
-                            </category>
-                        ))
-                    }
-                </xml>
-
+                {isContentCreator ?
+                    <div id='side-container'>
+                        Current Student Toolbox Selection
+                        <Menu mode="inline">
+                            {
+                                // Maps out block categories
+                                day && day.toolbox && day.toolbox.map(([category, blocks]) => (
+                                    <SubMenu key={category} title={category}>
+                                        {
+                                            blocks.map((block) => {
+                                                return(
+                                                    <Menu.Item key={block.name}>
+                                                        <Checkbox onClick={e => handleToolboxSelection(block.name)}>{block.name}</Checkbox>
+                                                    </Menu.Item>
+                                                )
+                                        })
+                                        }
+                                    </SubMenu>
+                                ))
+                            }
+                        </Menu>
+                    </div>
+                    : null}
             </div>
+
+            {/* This xml is for the blocks' menu we will provide. Here are examples on how to include categories and subcategories */}
+            <xml id="toolbox" is="Blockly workspace">
+                {
+                    // Maps out block categories
+                    day && day.toolbox && day.toolbox.map(([category, blocks]) => (
+                        <category name={category} is="Blockly category" key={category}>
+                            {
+                                // maps out blocks in category
+                                // eslint-disable-next-line
+                                blocks.map((block) => {
+                                    return <block type={block.name} is="Blockly block" key={block.name}/>
+                                })
+                            }
+                        </category>
+                    ))
+                }
+            </xml>
+
+        </div>
     )
 }

@@ -1,8 +1,9 @@
 import React, { useState } from 'react'
 
-import { Modal } from 'antd';
+import { message, Modal } from 'antd';
 
 import './viewDayModal.less'
+import { getDayToolboxAll } from "../../../Utils/requests";
 
 export default function ViewDayModal(props) {
 
@@ -19,7 +20,10 @@ export default function ViewDayModal(props) {
         setVisible(false)
     };
 
-    const handleViewDay = day => {
+    const handleViewDay = async day => {
+        const res = await getDayToolboxAll();
+        day.toolbox = res.data.toolbox;
+
         localStorage.setItem("my-day", JSON.stringify(day));
         props.history.push('/day')
     };

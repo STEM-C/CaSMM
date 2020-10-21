@@ -106,8 +106,11 @@ export const handleSave = async (dayId, workspaceRef) => {
     return await saveWorkspace(dayId, xml_text);
 };
 
-export const handleCreatorSaveDay = async (dayId, workspaceRef) => {
+export const handleCreatorSaveDay = async (dayId, workspaceRef, blocksList) => {
     let xml = window.Blockly.Xml.workspaceToDom(workspaceRef.current);
     let xml_text = window.Blockly.Xml.domToText(xml);
-    return await updateDay(dayId, xml_text);
+
+    console.log("The current blocksList is: ", blocksList)
+
+    return await updateDay(dayId, xml_text, blocksList);
 }

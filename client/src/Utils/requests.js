@@ -294,13 +294,26 @@ export const deleteStudent = async (student) => (
     })
 );
 
-export const updateDay = async (id, workspace) => (
+export const updateDayTemplate = async (id, workspace) => (
     makeRequest({
         method: PUT,
         path: `${server}/days/${id}`,
         data: {template: workspace},
         auth: true,
         error: 'Failed to update Day'
+    })
+)
+
+export const updateDay = async (id, workspace, blocksList) => (
+    makeRequest({
+        method: PUT,
+        path: `${server}/days/${id}`,
+        data: {
+            "template": workspace,
+            "blocks": blocksList
+        },
+        auth: true,
+        error: 'Failed to update the toolbox for the day'
     })
 )
 
