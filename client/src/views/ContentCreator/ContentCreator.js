@@ -56,19 +56,19 @@ export default function ContentCreator(props){
             width: '10%',
             align: 'right',
             render: (_, key) => (
-                <ViewDayModal history={props.history} days={getDays(key)} llinkBtn={true}/>
+                <DayEditor history={props.history} days = {getDays(key)} learningStandard={key.edit} linkBtn={true}/>
             )
         },
-        {
-            title: 'Edit',
-            dataIndex: 'edit',
-            key: 'edit',
-            width: '10%',
-            align: 'right',
-            render: (_, key) => (
-                <DayEditor days = {getDays(key)} learningStandard={key.edit} linkBtn={true}/>
-            )
-        },
+        // {
+        //     title: 'Edit',
+        //     dataIndex: 'edit',
+        //     key: 'edit',
+        //     width: '10%',
+        //     align: 'right',
+        //     render: (_, key) => (
+        //         <DayEditor history={props.history} days = {getDays(key)} learningStandard={key.edit} linkBtn={true}/>
+        //     )
+        // },
         {
             title: 'Delete',
             dataIndex: 'delete',
