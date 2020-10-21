@@ -76,13 +76,17 @@ export default function ContentCreator(props) {
         border: "2px solid #5BABDE",
 
     }
+    const handleViewDay = day => {
+        localStorage.setItem("my-day", JSON.stringify(day));
+        props.history.push('/day')
+    };
     //figure out how to set these up in the css file colors[] stuff causes problems
 
     return (
         <div>
             {/* {console.log(props)} */}
 
-            <button id={linkBtn ? 'link-btn' : null} onClick={showModal}>Edit</button>
+            <button id={linkBtn ? 'link-btn' : null} onClick={showModal}>View</button>
 
             <Modal
                 title="hello"
@@ -102,8 +106,8 @@ export default function ContentCreator(props) {
                             <button key={item.day}>{`Day ${item.day}`}</button>
                         </div> */}
                                     <div className="border-card-info">
-                                        <Card title={"Day " + item.day + ":"}
-                                              extra={<Button onClick={() => removeBasicDay(item)} size="small" icon={<CloseOutlined/>}/>}/>
+                                        <Card key={item.day.id} title={"Day " + item.day + ":"} hoverable="true"
+                                             onClick={() => handleViewDay(item)} extra={<Button onClick={() => removeBasicDay(item)} size="small" icon={<CloseOutlined/>}/>}/>
                                     </div>
                                 </List.Item>
                             )}

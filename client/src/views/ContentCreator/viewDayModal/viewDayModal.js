@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 
-import { message, Modal } from 'antd';
+import { Modal } from 'antd';
+import {CloseOutlined} from '@ant-design/icons'
 
 import './viewDayModal.less'
 import { getDayToolboxAll } from "../../../Utils/requests";
@@ -39,7 +40,10 @@ export default function ViewDayModal(props) {
             >
                 <div id="btn-container" className='flex space-between'>
                     {days ? days.map(day =>
-                            <button key={day.id} onClick={() => handleViewDay(day)}>{`View Day ${day.day}`}</button>
+                            <div>
+                                <button key={day.id} onClick={() => handleViewDay(day)}>{`View Day ${day.day}`}</button>
+                                
+                            </div>
                         )
                         : null}
                 </div>
