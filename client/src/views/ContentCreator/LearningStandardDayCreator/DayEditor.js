@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { Button, List, Card, Modal } from 'antd'
 import { PlusOutlined, CloseOutlined } from '@ant-design/icons';
-import { createDay, deleteDay } from '../../../Utils/requests'
+import { createDay, deleteDay, getDayToolboxAll } from '../../../Utils/requests'
 
 import './DayEditor.less'
 
@@ -76,7 +76,10 @@ export default function ContentCreator(props) {
         border: "2px solid #5BABDE",
 
     }
-    const handleViewDay = day => {
+    const handleViewDay = async day => {
+        const res = await getDayToolboxAll();
+        day.toolbox = res.data.toolbox;
+
         localStorage.setItem("my-day", JSON.stringify(day));
         props.history.push('/day')
     };
