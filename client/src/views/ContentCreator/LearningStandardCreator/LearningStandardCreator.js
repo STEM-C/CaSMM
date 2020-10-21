@@ -114,6 +114,14 @@ export default function LearningStandardCreator(props){
              }));}}>
                 <Input />
             </Form.Item>
+            <Form.Item label="TekS"
+            >
+                <Input />
+            </Form.Item>
+            <Form.Item label="NGSS"
+           >
+                <Input />
+            </Form.Item>
             <Form.Item label="# of Days"
             onChange={(e)=>{ const {value} = e.target; setLearnObj((learningObj) => ({
                 ...learningObj,
@@ -121,6 +129,7 @@ export default function LearningStandardCreator(props){
              }));}}>
                 <Input />
             </Form.Item>
+            
 
         <Form.Item>
             <Button type="primary" htmlType="submit" onClick={onclickhandler}>
