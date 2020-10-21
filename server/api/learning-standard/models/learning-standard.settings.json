@@ -10,8 +10,8 @@
   },
   "attributes": {
     "unit": {
-      "model": "unit",
-      "via": "learning_standards"
+      "via": "learning_standards",
+      "model": "unit"
     },
     "number": {
       "type": "decimal",

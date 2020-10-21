@@ -14,7 +14,7 @@ export default function UnitCreator(props){
     const [unitObject, setUnitObject] = useState({
     unitName: "",
     unitGrade: 0,
-    unitNumber: 0,
+    // unitNumber: 0,
     unitDescrip: "",
     unitTeksId: 0,})
 
@@ -64,16 +64,17 @@ export default function UnitCreator(props){
 
      const onclickhandler= async()=>{
         //console.log(getLearningStandard(1))
+        console.log(unitObject)
       
-        const creatunit = createUnit(unitObject.unitNumber,unitObject.unitName,unitObject.unitTeksId,unitObject.unitDescrip,unitObject.unitGrade)
+        const creatunit = createUnit(unitObject.unitName,unitObject.unitTeksId,unitObject.unitDescrip,unitObject.unitGrade)
         const unitReponse = await creatunit
-        const getUnitreponse = getUnit(unitReponse.data.id)
-        const unit = await getUnitreponse
-        const newArr = [...props.datasource]
-        learningStandObjs.map(each=>{
-            creatLeanrAndDays(each,unit,newArr)
+        // const getUnitreponse = getUnit(unitReponse.data.id)
+        // const unit = await getUnitreponse
+        // const newArr = [...props.datasource]
+        // learningStandObjs.map(each=>{
+        //     creatLeanrAndDays(each,unit,newArr)
           
-        })
+        // })
         
     }
 
@@ -103,9 +104,10 @@ export default function UnitCreator(props){
     return(
         <div>
             <Button style={addButtonStyle} onClick={showModal}  icon={<PlusOutlined/>}>
+                Add Unit
                 </Button>
             <Modal
-               title="hello"
+               title="Unit Creator"
                visible={visible}
                onCancel={handleCancel}
             >
@@ -131,13 +133,13 @@ export default function UnitCreator(props){
              }));}}>
                 <Input/>
             </Form.Item>
-            <Form.Item label="Number"
+            {/* <Form.Item label="Number"
             onChange={(e)=>{ const {value} = e.target; setUnitObject((unitObject) => ({
                 ...unitObject,
                 unitNumber: parseInt(value,10)
              }));}}>
                 <Input />
-            </Form.Item>
+            </Form.Item> */}
             <Form.Item label="Description"
             onChange={(e)=>{ const {value} = e.target; setUnitObject((unitObject) => ({
                 ...unitObject,
@@ -145,14 +147,14 @@ export default function UnitCreator(props){
              }));}}>
                 <Input />
             </Form.Item>
-            <Form.Item label="Teks ID"
+            <Form.Item label="TekS"
             onChange={(e)=>{ const {value} = e.target; setUnitObject((unitObject) => ({
                 ...unitObject,
                 unitTeksId: value
              }));}}>
                 <Input />
             </Form.Item>
-            <div>Learning Standards</div>
+            {/* <div>Learning Standards</div>
             <Form.List name="names">
         {(fields, { add, remove }) => {
             return(
@@ -193,7 +195,7 @@ export default function UnitCreator(props){
         <Form.Item layout="vertical" size="small" label="# of Days"
         onChange={(e)=>{ const {value} = e.target; setNumofDays(value);}}>
                 <Input/>
-        </Form.Item>
+        </Form.Item> */}
 
         <Form.Item>
             <Button type="primary" htmlType="submit" onClick={onclickhandler}>

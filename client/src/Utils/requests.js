@@ -174,6 +174,16 @@ export const getUnit = async(id)=>(
     })
 )
 
+
+export const getAllUnits = async()=>(
+    makeRequest({
+        method: GET,
+        path: `${server}/units`,
+        auth: true,
+        error: "Failed to retrieve learning standard."
+    })
+)
+
 export const getLearningStandardcount = async () => (
     makeRequest({
         method: GET,
@@ -327,16 +337,15 @@ export const createLearningStandard = async (description,name,number,unit) =>(
     })
 );
 
-export const createUnit = async(number,name,teksID,teksDescrip,grade)=>(
+export const createUnit = async(name,teksID,teksDescrip,grade)=>(
     makeRequest({
         method: POST,
         path: `${server}/units`,
         data: {
             "name": name,
             "grade": grade,
-            "number": number,
             "teks_id": teksID,
-            "teks_description": teksDescrip
+            "teks_description": teksDescrip,
         },
         auth: true,
         error: "Login failed."

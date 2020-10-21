@@ -13,10 +13,6 @@
       "model": "grade",
       "via": "units"
     },
-    "number": {
-      "type": "integer",
-      "required": true
-    },
     "name": {
       "type": "string",
       "required": true
@@ -28,8 +24,8 @@
       "type": "text"
     },
     "learning_standards": {
-      "via": "unit",
-      "collection": "learning-standard"
+      "collection": "learning-standard",
+      "via": "unit"
     }
   }
 }
