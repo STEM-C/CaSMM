@@ -17,7 +17,7 @@ module.exports = {
         let unfriendlyBlocks = ctx.request.body.blocks;
         let friendlyBlocks = [];
         for(let i = 0; i < unfriendlyBlocks.length; i++) {
-            let currentBlock = strapi.services.block.findOne({name:unfriendlyBlocks[i]});
+            let currentBlock = await strapi.services.block.findOne({name:unfriendlyBlocks[i]});
             friendlyBlocks.push(currentBlock);
         }
         day.blocks = friendlyBlocks;
