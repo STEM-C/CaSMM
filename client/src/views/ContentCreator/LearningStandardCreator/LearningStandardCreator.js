@@ -36,10 +36,10 @@ export default function LearningStandardCreator(props){
     }
 
      const onclickhandler= async()=>{
-         console.log(props.dataSource)
+         //(props.dataSource)
         const newArr = []
         const units1 = await getAllUnits()
-        console.log(units1)
+        //console.log(units1)
         units1.data.forEach(element => {
            creaStandard(element,newArr)
         });
@@ -49,10 +49,11 @@ export default function LearningStandardCreator(props){
     }
 
     const creaStandard = async(element,newArr)=>{
-        if(element.name === learningObj.learningStandUnit){
+        // if(element.name === learningObj.learningStandUnit){
             //console.log(element)
                 const learningStand = createLearningStandard(learningObj.learningdescrip,learningObj.learningName,learningObj.learningNum,element)
                 const getLearn = await learningStand;
+                console.log(getLearn)
                 for(var i=0;i<learningObj.learningNumOfDays;i++){
                     const var1 = createDay(i+1,getLearn.data)
                     const var2 = await var1
@@ -64,7 +65,30 @@ export default function LearningStandardCreator(props){
                     edit: getLearn.data.id,
                     delete: getLearn.data.id})
                 props.changeDataSource(newArr)
-            }
+        // }
+        // else{
+        //     const val = {
+        //             unitName: "None",
+        //             unitGrade: 3,
+        //             // unitNumber: 0,
+        //             unitDescrip: "None",
+        //             unitTeksId: 0,
+        //     }
+        //     const learningStand = createLearningStandard(learningObj.learningdescrip,learningObj.learningName,learningObj.learningNum,val)
+        //         const getLearn = await learningStand;
+        //         console.log(getLearn)
+        //         for(var i=0;i<learningObj.learningNumOfDays;i++){
+        //             const var1 = createDay(i+1,getLearn.data)
+        //             const var2 = await var1
+        //         }
+        //         newArr.push( { name:getLearn.data.name,
+        //             unit:getLearn.data.unit.name,
+        //             description:getLearn.data.expectations.length> 5 ? getLearn.data.expectations.substring(0,30) + "...": getLearn.data.expectations,
+        //             view: getLearn.data.id,
+        //             edit: getLearn.data.id,
+        //             delete: getLearn.data.id})
+        //         props.changeDataSource(newArr)
+        // }
     }
 
     return(

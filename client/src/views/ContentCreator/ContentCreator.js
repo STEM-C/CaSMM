@@ -9,6 +9,7 @@ import UnitCreator from './UnitCreator/UnitCreator';
 import LearningStandardDayCreator from './LearningStandardCreator/LearningStandardCreator'
 import {getLearningStandard, getLearningStandardAll,deleteLearningStandard} from '../../Utils/requests'
 import ViewDayModal from './viewDayModal/viewDayModal';
+import UnitEditor from './UnitEditor/UnitEditor'
 
 const { TabPane } = Tabs;
 
@@ -42,6 +43,16 @@ export default function ContentCreator(props) {
             align: 'left',
         },
         {
+            title: 'Edit',
+            dataIndex: 'edit',
+            key: 'edit',
+            width: '10%',
+            align: 'right',
+            render: (_, key) => (
+                <UnitEditor days={getDays(key)} learningStandard={key.edit} linkBtn={true}/>
+            )
+        },
+        {
             title: 'Desciption',
             dataIndex: 'description',
             key: 'character',
@@ -69,16 +80,16 @@ export default function ContentCreator(props) {
         //         <DayEditor history={props.history} days = {getDays(key)} learningStandard={key.edit} linkBtn={true}/>
         //     )
         // },
-        {
-            title: 'Edit',
-            dataIndex: 'edit',
-            key: 'edit',
-            width: '10%',
-            align: 'right',
-            render: (_, key) => (
-                <DayEditor days={getDays(key)} learningStandard={key.edit} linkBtn={true}/>
-            )
-        },
+        // {
+        //     title: 'Edit',
+        //     dataIndex: 'edit',
+        //     key: 'edit',
+        //     width: '10%',
+        //     align: 'right',
+        //     render: (_, key) => (
+        //         <DayEditor days={getDays(key)} learningStandard={key.edit} linkBtn={true}/>
+        //     )
+        // },
         {
             title: 'Delete',
             dataIndex: 'delete',
@@ -190,6 +201,7 @@ export default function ContentCreator(props) {
 
         const request = getLearningStandard(learningStand.id);
         const result = await request;
+        console.log(result)
 
         const value = {
             name: result.data.name,
