@@ -226,7 +226,7 @@ export default function ContentCreator(props) {
     return (
         <div className="container nav-padding">
 
-            <Navbar/>
+            <Navbar isContentCreator={true}/>
             <div id='main-header'>Welcome Content Creator</div>
 
             {/* <div className= "search-button">
