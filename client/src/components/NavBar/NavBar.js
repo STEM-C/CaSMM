@@ -63,7 +63,7 @@ export default function NavBar(props) {
             </Menu.Item> : null }
             { shouldShowRoute("TeacherLogin") ? <Menu.Item key="2" onClick={() => handleRouteChange(routes.TeacherLogin)}>
                 <i className="fa fa-sign-in-alt"/>
-                &nbsp; Teacher Login
+                &nbsp; User Login
             </Menu.Item> : null }
             { shouldShowRoute("About") ? <Menu.Item key="3" onClick={() => handleRouteChange(routes.About)}>
                 <i className="fa fa-info-circle"/>

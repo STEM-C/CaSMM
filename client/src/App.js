@@ -13,7 +13,8 @@ import Sandbox from "./views/Sandbox/Sandbox"
 import Day from "./views/Day/Day";
 import Classroom from "./views/Classroom/Classroom"
 import TeacherLogin from "./views/TeacherLogin/TeacherLogin"
-import ContentCreatorDashboard from "./views/ContentCreatorDashboard/ContentCreatorDashboard"
+import ContentCreator from './views/ContentCreator/ContentCreator'
+import UnitCreator from './views/ContentCreator/UnitCreator/UnitCreator'
 
 const App = () => {
     let history = useHistory();
@@ -26,12 +27,14 @@ const App = () => {
                 <Route exact path={"/teacherlogin"} render={() => <TeacherLogin history={history}/>}/>
                 <Route exact path={"/login"} render={() => <StudentLogin history={history} />}/>
                 <PrivateRoute exact path={"/dashboard"} render={() => <Dashboard history={history}/>}/>
-                <PrivateRoute exact path={"/ccdashboard"} render={() => <ContentCreatorDashboard history={history}/>}/>
                 <PrivateRoute exact path={"/student"} render={() => <Student history={history} /> } />
                 <Route path={"/workspace"} render={() => <Workspace history={history} />}/>
                 <Route path={"/sandbox"} render={() => <Sandbox history={history}/>} />
                 <PrivateRoute exact path={"/day"} render={() => <Day history={history} /> } />
                 <PrivateRoute path={"/classroom/:id"} render={() => <Classroom history={history} /> } />
+                <Route exact path={"/ccdashboard"} render={() => <ContentCreator history={history} />}/>
+                <Route exact path={"/unitcreator"} render={() => <UnitCreator history={history} />}/>
+               
                 <Route component={NotFound}/>
             </Switch>
         </div>

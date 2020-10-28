@@ -78,6 +78,9 @@ export const getClassroom = async (id) => (
     })
 );
 
+
+
+
 export const getStudentClassroom = async () => (
     makeRequest({
         method: GET,
@@ -104,6 +107,20 @@ export const postJoin = async (code, ids) => (
         data: {
             "students": ids,
         },
+        error: "Login failed."
+    })
+);
+
+export const createDay = async (day,learningStandard) =>(
+    makeRequest({
+        method: POST,
+        path: `${server}/days`,
+        data: {
+            "learning_standard": learningStandard,
+            "number": day,
+            "template": '<xml xmlns="http://www.w3.org/1999/xhtml"></xml>)',
+        },
+        auth: true,
         error: "Login failed."
     })
 );
@@ -143,6 +160,43 @@ export const getLearningStandard = async (id) => (
     makeRequest({
         method: GET,
         path: `${server}/learning-standards/${id}`,
+        auth: true,
+        error: "Failed to retrieve learning standard."
+    })
+);
+
+export const getUnit = async(id)=>(
+    makeRequest({
+        method: GET,
+        path: `${server}/units/${id}`,
+        auth: true,
+        error: "Failed to retrieve learning standard."
+    })
+)
+
+
+export const getAllUnits = async()=>(
+    makeRequest({
+        method: GET,
+        path: `${server}/units`,
+        auth: true,
+        error: "Failed to retrieve learning standard."
+    })
+)
+
+export const getLearningStandardcount = async () => (
+    makeRequest({
+        method: GET,
+        path: `${server}/learning-standards/count`,
+        auth: true,
+        error: "Failed to retrieve learning standard."
+    })
+);
+
+export const getLearningStandardAll = async () => (
+    makeRequest({
+        method: GET,
+        path: `${server}/learning-standards`,
         auth: true,
         error: "Failed to retrieve learning standard."
     })
@@ -239,3 +293,75 @@ export const deleteStudent = async (student) => (
         error: 'Failed to delete student.'
     })
 );
+
+export const updateDayTemplate = async (id, workspace) => (
+    makeRequest({
+        method: PUT,
+        path: `${server}/days/${id}`,
+        data: {template: workspace},
+        auth: true,
+        error: 'Failed to update Day'
+    })
+)
+
+export const updateDay = async (id, workspace, blocksList) => (
+    makeRequest({
+        method: PUT,
+        path: `${server}/days/${id}`,
+        data: {
+            "template": workspace,
+            "blocks": blocksList
+        },
+        auth: true,
+        error: 'Failed to update the toolbox for the day'
+    })
+)
+
+export const deleteDay = async (id) => (
+    makeRequest({
+        method: DELETE,
+        path: `${server}/days/${id}`,
+        auth: true,
+        error: 'Failed to delete day.'
+    })
+);
+
+export const deleteLearningStandard = async (id) => (
+    makeRequest({
+        method: DELETE,
+        path: `${server}/learning-standards/${id}`,
+        auth: true,
+        error: 'Failed to delete student.'
+    })
+);
+
+export const createLearningStandard = async (description,name,number,unit) =>(
+    makeRequest({
+        method: POST,
+        path: `${server}/learning-standards`,
+        data: {
+            "expectations": description,
+            "name": name,
+            "number": number,
+            "unit": unit
+        },
+        auth: true,
+        error: "Login failed."
+    })
+);
+
+export const createUnit = async(name,teksID,teksDescrip,grade)=>(
+    makeRequest({
+        method: POST,
+        path: `${server}/units`,
+        data: {
+            "name": name,
+            "grade": grade,
+            "teks_id": teksID,
+            "teks_description": teksDescrip,
+        },
+        auth: true,
+        error: "Login failed."
+    })
+    
+)
