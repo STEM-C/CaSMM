@@ -27,15 +27,8 @@ function Student(props) {
     const handleSelection = (day) => {
         setSelectedDay(day);
         localStorage.setItem("my-day", JSON.stringify(day));
-    };
 
-    const handleLaunchActivity = () => {
-        const loadedDay = localStorage.getItem("my-day");
-        if (selectedDay.id && loadedDay) {
-            props.history.push("/workspace")
-        } else {
-            message.error('Please select a day.')
-        }
+        props.history.push("/workspace")
     };
 
     return (
@@ -63,14 +56,6 @@ function Student(props) {
                             </div>
                     }
                 </ul>
-                {
-                    learningStandard.days ?
-                        <div id='launcher' className='flex flex-column' onClick={handleLaunchActivity}>
-                            <i className="fa fa-rocket" aria-hidden="true"/>
-                            Launch Activity
-                        </div>
-                        : null
-                }
             </div>
         </div>
     )
