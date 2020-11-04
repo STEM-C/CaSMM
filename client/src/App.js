@@ -15,6 +15,7 @@ import Classroom from "./views/Classroom/Classroom"
 import TeacherLogin from "./views/TeacherLogin/TeacherLogin"
 import ContentCreator from './views/ContentCreator/ContentCreator'
 import UnitCreator from './views/ContentCreator/UnitCreator/UnitCreator'
+import UploadBlocks from './views/UploadBlocks/UploadBlocks'
 
 const App = () => {
     let history = useHistory();
@@ -34,6 +35,7 @@ const App = () => {
                 <PrivateRoute path={"/classroom/:id"} render={() => <Classroom history={history} /> } />
                 <Route exact path={"/ccdashboard"} render={() => <ContentCreator history={history} />}/>
                 <Route exact path={"/unitcreator"} render={() => <UnitCreator history={history} />}/>
+                <Route exact path={"/addblocks"} render={() => <UploadBlocks history={history} />}/>
                
                 <Route component={NotFound}/>
             </Switch>
