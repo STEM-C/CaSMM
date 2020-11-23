@@ -62,6 +62,8 @@ export default function About(props) {
                     Megha Nagarmunoli
                     <br/>
                     Adam Tamargo
+                    <br/>
+                    Gus Segovia
                 </p>
             </div>
         </div>
