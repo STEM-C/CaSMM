@@ -350,11 +350,12 @@ export const createLearningStandard = async (description,name,number,unit) =>(
     })
 );
 
-export const createUnit = async(name,teksID,teksDescrip,grade)=>(
+export const createUnit = async(number, name,teksID,teksDescrip,grade)=>(
     makeRequest({
         method: POST,
         path: `${server}/units`,
         data: {
+            "number": number,
             "name": name,
             "grade": grade,
             "teks_id": teksID,

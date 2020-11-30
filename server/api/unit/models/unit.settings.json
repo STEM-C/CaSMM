@@ -26,6 +26,10 @@
     "learning_standards": {
       "collection": "learning-standard",
       "via": "unit"
+    },
+    "number": {	
+      "type": "integer",	
+      "required": true	
     }
   }
 }
