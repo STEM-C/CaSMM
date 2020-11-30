@@ -10,13 +10,14 @@ export default function UnitCreator(props){
 
     const [visible, setVisible] = useState(false);
     const [numOfdays, setNumofDays] = useState(0);
-   
-    const [unitObject, setUnitObject] = useState({
-    unitName: "",
-    unitGrade: 0,
-    unitNumber: 0,
-    unitDescrip: "",
-    unitTeksId: 0,})
+    const unitDefaultState = {
+        unitName: "",
+        unitGrade: "",
+        unitNumber: "",
+        unitDescrip: "",
+        unitTeksId: "",}
+
+    const [unitObject, setUnitObject] = useState(unitDefaultState)
 
     const [learningstandObj, setStandObj]= useState({
         learningStandName:"",
@@ -37,8 +38,7 @@ export default function UnitCreator(props){
     const completeUnitCreation = () => {
         setVisible(false)
     }
-
-
+    
     const addButtonStyle={
         background: "#F4F4F5",
         borderRadius: "20px",
@@ -79,6 +79,8 @@ export default function UnitCreator(props){
         //     creatLeanrAndDays(each,unit,newArr)
           
         // })
+        //setUnitObject()
+        setUnitObject({...unitDefaultState})
         completeUnitCreation()
     }
 
@@ -105,6 +107,57 @@ export default function UnitCreator(props){
             }
     }
 
+
+
+    // const unitNameOnChange = (e) => {
+    //     e.preventDefault()
+    //     const target = event.target
+    //     const input = target.value
+    //     const name = target.name
+    //     setVisible(false)
+    // }
+
+    const unitNameOnChange = (e) => { 
+        const {value} = e.target; 
+        setUnitObject((unitObject) => ({
+        ...unitObject,
+        unitName: value
+        }));
+    }
+    
+    const unitGradeOnChange = (e) => {
+        const {value} = e.target; 
+        setUnitObject((unitObject) => ({
+            ...unitObject,
+            unitGrade: value
+         }));
+    }
+    
+
+    const unitNumberOnChange = (e) => {  
+        const {value} = e.target; 
+        setUnitObject((unitObject) => ({
+            ...unitObject,
+            unitNumber: value
+        }));
+    }
+    
+    const unitDescripOnChange = (e) => { 
+        const {value} = e.target; 
+        setUnitObject((unitObject) => ({
+            ...unitObject,
+            unitDescrip: value
+        }));
+    }
+
+    const unitTeksIdOnChange = (e) => {
+        const {value} = e.target; setUnitObject((unitObject) => ({
+            ...unitObject,
+            unitTeksId: value
+         }));
+    }
+    
+    
     return(
         <div>
             <Button style={addButtonStyle} onClick={showModal}  icon={<PlusOutlined/>}>
@@ -126,38 +179,19 @@ export default function UnitCreator(props){
               layout="horizontal"
               size="default">
             <Form.Item label="Unit Name">
-                <Input onChange={(e)=>{ const {value} = e.target; setUnitObject((unitObject) => ({
-                ...unitObject,
-                unitName: value
-                }));}}/>
+                <Input onChange={unitNameOnChange} value ={unitObject.unitName}/>
             </Form.Item >
-            <Form.Item label="Grade"
-            onChange={(e)=>{ const {value} = e.target; setUnitObject((unitObject) => ({
-                ...unitObject,
-                unitGrade: parseInt(value,10)
-             }));}}>
-                <Input/>
+            <Form.Item label="Grade">
+                <Input onChange={unitGradeOnChange} value = {unitObject.unitGrade} />
             </Form.Item>
-            <Form.Item label="Number"
-            onChange={(e)=>{ const {value} = e.target; setUnitObject((unitObject) => ({
-                ...unitObject,
-                unitNumber: parseInt(value,10)
-             }));}}>
-                <Input />
+            <Form.Item label="Number">
+                <Input onChange={unitNumberOnChange} value = {unitObject.unitNumber}/>
             </Form.Item>
-            <Form.Item label="Description"
-            onChange={(e)=>{ const {value} = e.target; setUnitObject((unitObject) => ({
-                ...unitObject,
-                unitDescrip: value
-             }));}}>
-                <Input />
+            <Form.Item label="Description">
+                <Input onChange={unitDescripOnChange} value = {unitObject.unitDescrip}/>
             </Form.Item>
-            <Form.Item label="TekS"
-            onChange={(e)=>{ const {value} = e.target; setUnitObject((unitObject) => ({
-                ...unitObject,
-                unitTeksId: value
-             }));}}>
-                <Input />
+            <Form.Item label="TekS">
+                <Input onChange={unitTeksIdOnChange} value = {unitObject.unitTeksId}/>
             </Form.Item>
             {/* <div>Learning Standards</div>
             <Form.List name="names">
