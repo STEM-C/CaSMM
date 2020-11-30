@@ -11,7 +11,7 @@ export default function UnitCreator(props) {
     const [unitObject, setUnitObject] = useState({
         unitName: "",
         unitGrade: 0,
-        // unitNumber: 0,
+        unitNumber: 0,
         unitDescrip: "",
         unitTeksId: 0,
     })
@@ -86,13 +86,13 @@ export default function UnitCreator(props) {
                                }}>
                         <Input defaultValue={unitObject.unitGrade}/>
                     </Form.Item>
-                    {/* <Form.Item label="Number"
+                    <Form.Item label="Number"
             onChange={(e)=>{ const {value} = e.target; setUnitObject((unitObject) => ({
                 ...unitObject,
                 unitNumber: parseInt(value,10)
              }));}}>
                 <Input />
-            </Form.Item> */}
+            </Form.Item>
                     <Form.Item label="Description"
                                onChange={(e) => {
                                    const { value } = e.target;
