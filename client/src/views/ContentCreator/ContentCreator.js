@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from 'react';
 
-import { Tabs, Table, Popconfirm } from 'antd'
+import { Tabs, Table, Popconfirm, message } from 'antd'
 import Navbar from '../../components/NavBar/NavBar'
 import { QuestionCircleOutlined } from '@ant-design/icons';
 
 import DayEditor from './LearningStandardDayCreator/DayEditor'
 import UnitCreator from './UnitCreator/UnitCreator';
 import LearningStandardDayCreator from './LearningStandardCreator/LearningStandardCreator'
-import {getLearningStandard, getLearningStandardAll,deleteLearningStandard} from '../../Utils/requests'
+import {getLearningStandard, getLearningStandardAll,deleteLearningStandard, getGrades} from '../../Utils/requests'
 import ViewDayModal from './viewDayModal/viewDayModal';
 import UnitEditor from './UnitEditor/UnitEditor'
 
@@ -18,9 +18,18 @@ export default function ContentCreator(props) {
     const [dataSource, setDataSource] = useState([])
     const [dataSourceGrade5, setDataSourceGrade5] = useState([])
     const [dataSourceGrade6, setDataSourceGrade6] = useState([])
+    const [gradeMenu, setGradeMenu] = useState([])
+
     useEffect(() => {
         //console.log(getLearningStandardcount())
-        
+        getGrades().then(res => {
+            if(res.data){
+                setGradeMenu(res.data)
+                console.log("this is the grade menu", gradeMenu)
+            }else{
+                message.error(res.err)
+            }
+        })
         axiosCallAll()
         axiosCallgrade(4)
     }, [])
@@ -148,6 +157,8 @@ export default function ContentCreator(props) {
         return day1;
     }
 
+
+    
     const axiosCallAll = async() =>{
         const newArr=[]
         const allreq = getLearningStandardAll();
@@ -169,6 +180,7 @@ export default function ContentCreator(props) {
             getTempStandardGrade(learningStand,newArr,grade)
         })
     }
+
     const getTempStandardGrade = async(learningStand, newArr, grade)=>{
 
         const request = getLearningStandard(learningStand.id);
@@ -194,7 +206,6 @@ export default function ContentCreator(props) {
             }
         }
         
-
     }
 
     const getTempStandard = async(learningStand, newArr)=>{
@@ -241,7 +252,7 @@ export default function ContentCreator(props) {
                     <h1>Units & Learning Standards:</h1>
                     </div>
                     <div id='table-container'>
-                    <UnitCreator datasource={dataSource} changeDataSource={addTodataSource}></UnitCreator>
+                    <UnitCreator datasource={dataSource} changeDataSource={addTodataSource} gradeMenu={gradeMenu}></UnitCreator>
                     <LearningStandardDayCreator dataSource = {dataSource} changeDataSource={addTodataSource}></LearningStandardDayCreator>
                     <Table columns={columns}  dataSource={dataSource} rowClassName="editable-row">
                 </Table>
@@ -252,7 +263,7 @@ export default function ContentCreator(props) {
                             <h1>Units & Learning Standards:</h1>
                     </div>
                     <div id='table-container'>
-                        <UnitCreator datasource={dataSource} changeDataSource={addTodataSource}></UnitCreator>
+                        <UnitCreator datasource={dataSource} changeDataSource={addTodataSource} gradeMenu={gradeMenu}></UnitCreator>
                         <LearningStandardDayCreator dataSource = {dataSourceGrade5} changeDataSource={addTodataSource}></LearningStandardDayCreator>
                         <Table columns={columns}  dataSource={dataSourceGrade5} rowClassName="editable-row">
                         </Table>
@@ -263,7 +274,7 @@ export default function ContentCreator(props) {
                             <h1>Units & Learning Standards:</h1>
                     </div>
                     <div id='table-container'>
-                        <UnitCreator datasource={dataSource} changeDataSource={addTodataSource}></UnitCreator>
+                        <UnitCreator datasource={dataSource} changeDataSource={addTodataSource} gradeMenu={gradeMenu}></UnitCreator>
                         <LearningStandardDayCreator dataSource = {dataSourceGrade6} changeDataSource={addTodataSource}></LearningStandardDayCreator>
                         <Table columns={columns}  dataSource={dataSourceGrade6} rowClassName="editable-row">
                         </Table>
