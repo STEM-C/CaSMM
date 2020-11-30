@@ -363,3 +363,13 @@ export const createUnit = async(number, name,teksID,teksDescrip,grade)=>(
     })
     
 )
+
+
+export const getGrades = async() => (
+    makeRequest({
+        method: GET,
+        path: `${server}/grades`,
+        auth: true,
+        error: "Grades could not be retrieved"
+    })
+)

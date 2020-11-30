@@ -2,8 +2,6 @@ import React,{useState} from 'react'
 import {Form, Input, Button, Modal} from 'antd'
 import {PlusOutlined} from '@ant-design/icons'
 import {createUnit,createLearningStandard, createDay,getUnit} from '../../../Utils/requests'
-
-
 import './UnitCreator.less'
 
 export default function UnitCreator(props){
@@ -157,6 +155,13 @@ export default function UnitCreator(props){
          }));
     }
     
+    const setGradeOptions = () => {
+        let options = [];
+        for(let i = 0; i < props.gradeMenu.length; i++){
+            options.push(<option key={i+1} value={props.gradeMenu[i].id}>{props.gradeMenu[i].name}</option>)
+        }
+        return options
+    };
     
     return(
         <div>
@@ -169,7 +174,7 @@ export default function UnitCreator(props){
                onCancel={handleCancel}
                onOk={onclickhandler}
             >
-            <Form 
+            <Form id="add-units"
             labelCol={{
                 span: 4
               }}
@@ -178,19 +183,23 @@ export default function UnitCreator(props){
               }}
               layout="horizontal"
               size="default">
-            <Form.Item label="Unit Name">
+            <Form.Item id="form-label" label="Unit Name">
                 <Input onChange={unitNameOnChange} value ={unitObject.unitName}/>
             </Form.Item >
-            <Form.Item label="Grade">
-                <Input onChange={unitGradeOnChange} value = {unitObject.unitGrade} />
+            <Form.Item id="form-label" label="Grade">
+                <select id="grade" name='grade' defaultValue={unitObject.unitGrade} onChange={unitGradeOnChange}>
+                    <option key={0} value={unitObject.unitGrade} disabled id='disabled-option'>Grade</option>
+                    {setGradeOptions().map(option => option)}
+                </select>
+                {/* <Input value = {unitObject.unitGrade} /> */}
             </Form.Item>
-            <Form.Item label="Number">
+            <Form.Item id="form-label" label="Number">
                 <Input onChange={unitNumberOnChange} value = {unitObject.unitNumber}/>
             </Form.Item>
-            <Form.Item label="Description">
+            <Form.Item id="form-label" label="Description">
                 <Input onChange={unitDescripOnChange} value = {unitObject.unitDescrip}/>
             </Form.Item>
-            <Form.Item label="TekS">
+            <Form.Item id="form-label" label="TekS">
                 <Input onChange={unitTeksIdOnChange} value = {unitObject.unitTeksId}/>
             </Form.Item>
             {/* <div>Learning Standards</div>
