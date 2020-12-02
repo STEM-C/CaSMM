@@ -44,8 +44,6 @@ export default function LearningStandardCreator(props){
            creaStandard(element,newArr)
         });
        
-        
-        
     }
 
     const creaStandard = async(element,newArr)=>{
@@ -97,11 +95,12 @@ export default function LearningStandardCreator(props){
                 Add Learning Standard
                 </Button>
             <Modal
-               title="Learning Standard Creator"
+               title="Create Learning Standard"
                visible={visible}
                onCancel={handleCancel}
+               onOk={onclickhandler}
             >
-            <Form 
+            <Form id="add-learning-standard"
             labelCol={{
                 span: 4
               }}
@@ -153,13 +152,6 @@ export default function LearningStandardCreator(props){
              }));}}>
                 <Input />
             </Form.Item>
-            
-
-        <Form.Item>
-            <Button type="primary" htmlType="submit" onClick={onclickhandler}>
-            Create a Learning Standards
-            </Button>
-        </Form.Item>
 
         </Form>
     

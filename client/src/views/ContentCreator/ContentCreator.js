@@ -76,7 +76,7 @@ export default function ContentCreator(props) {
             width: '10%',
             align: 'right',
             render: (_, key) => (
-                <DayEditor history={props.history} days = {getDays(key)} learningStandard={key.edit} linkBtn={true}/>
+                <DayEditor history={props.history} days = {getDays(key)} learningStandardId={key.edit} learningStandardName = {getLearningStandardName(key.edit)} linkBtn={true}/>
             )
         },
         // {
@@ -132,28 +132,49 @@ export default function ContentCreator(props) {
         setDataSource(dataSource.filter(item => item.delete !== id1))
     }
 
+
+    const getLearningStandardName = (id) => {
+        console.log("magu")
+        const returnData = []
+        const res = getLearningStandard(id);
+        res.then((result) => {
+            returnData.push(result.data.name);
+        })
+
+        
+        // request.then( (result) => { 
+        //     console.log("result  : " + result)
+        //     res = result.data.name})    
+        console.log("Std : ",returnData)
+        return returnData;
+        
+    }
+
     const getDays = (i) => {
         //console.log(i.edit)
         const day1 = []
         //console.log(i)
         const request = getLearningStandard(i.edit);
         //console.log(request)
-        var j = 1;
+        // var j = 1;
         //console.log(request)
         request.then(function (result) {
             //console.log(result)
             //console.log(result.data.days)
-            result.data.days.forEach(el => {
-                day1.push({
-                    id: el.id,
-                    day: j,
-                    template: el.template
-                })
-                j++;
-                //console.log(day1)
-            });
-            //console.log(day1)
+            // result.data.days.forEach(el => {
+            //     day1.push({
+            //         id: el.id,
+            //         number: el.number,
+            //         // day: j,
+            //         // template: el.template                    
+            //     })
+            //     // j++;
+            //     //console.log(day1)
+            // });
+            day1.push(...result.data.days)
+            
         })
+        console.log("Day ",day1)
         return day1;
     }
 

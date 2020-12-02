@@ -169,7 +169,7 @@ export default function UnitCreator(props){
                 Add Unit
                 </Button>
             <Modal
-               title="Unit Creator"
+               title="Create Unit"
                visible={visible}
                onCancel={handleCancel}
                onOk={onclickhandler}

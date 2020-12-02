@@ -23,13 +23,13 @@
     "teks_description": {
       "type": "text"
     },
+    "number": {
+      "type": "integer",
+      "required": true
+    },
     "learning_standards": {
       "collection": "learning-standard",
       "via": "unit"
-    },
-    "number": {	
-      "type": "integer",	
-      "required": true	
     }
   }
 }

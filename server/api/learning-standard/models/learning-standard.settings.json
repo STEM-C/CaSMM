@@ -9,10 +9,6 @@
     "timestamps": true
   },
   "attributes": {
-    "unit": {
-      "via": "learning_standards",
-      "model": "unit"
-    },
     "number": {
       "type": "decimal",
       "required": true
@@ -25,8 +21,12 @@
       "type": "text"
     },
     "days": {
-      "via": "learning_standard",
-      "collection": "day"
+      "collection": "day",
+      "via": "learning_standard"
+    },
+    "unit": {
+      "via": "learning_standards",
+      "model": "unit"
     }
   }
 }

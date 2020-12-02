@@ -43,6 +43,7 @@ export default function UnitCreator(props) {
         // console.log(returnUnit)
         setUnitObject({
             unitName: returnUnit.data.unit.name,
+            unitNumber: returnUnit.data.unit.number,
             unitGrade: returnUnit.data.unit.grade,
             unitDescrip: returnUnit.data.unit.teks_description,
             unitTeksId: returnUnit.data.unit.teks_id
@@ -87,20 +88,23 @@ export default function UnitCreator(props) {
                         <Input defaultValue={unitObject.unitGrade}/>
                     </Form.Item>
                     <Form.Item label="Number"
-            onChange={(e)=>{ const {value} = e.target; setUnitObject((unitObject) => ({
-                ...unitObject,
-                unitNumber: parseInt(value,10)
-             }));}}>
-                <Input />
-            </Form.Item>
+                        onChange={(e)=>{ 
+                            const {value} = e.target; 
+                            setUnitObject((unitObject) => ({
+                            ...unitObject,
+                            unitNumber: parseInt(value,10)
+                        }));
+                        }}>
+                        <Input defaultValue={unitObject.unitNumber}/>
+                    </Form.Item>
                     <Form.Item label="Description"
-                               onChange={(e) => {
-                                   const { value } = e.target;
-                                   setUnitObject((unitObject) => ({
-                                       ...unitObject,
-                                       unitDescrip: value
-                                   }));
-                               }}>
+                        onChange={(e) => {
+                            const { value } = e.target;
+                            setUnitObject((unitObject) => ({
+                                ...unitObject,
+                                unitDescrip: value
+                            }));
+                        }}>
                         <Input defaultValue={unitObject.unitDescrip}/>
                     </Form.Item>
                     <Form.Item label="TekS"
