@@ -7,7 +7,7 @@ import { QuestionCircleOutlined } from '@ant-design/icons';
 import DayEditor from './LearningStandardDayCreator/DayEditor'
 import UnitCreator from './UnitCreator/UnitCreator';
 import LearningStandardDayCreator from './LearningStandardCreator/LearningStandardCreator'
-import {getLearningStandard, getLearningStandardAll,deleteLearningStandard, getGrades} from '../../Utils/requests'
+import {getLearningStandard, getLearningStandardAll,deleteLearningStandard, getGrades, getUnits, getAllUnits} from '../../Utils/requests'
 import ViewDayModal from './viewDayModal/viewDayModal';
 import UnitEditor from './UnitEditor/UnitEditor'
 
@@ -34,14 +34,19 @@ export default function ContentCreator(props) {
         axiosCallgrade(4)
     }, [])
 
+
+
     const columns = [
         {
-            title: 'Name',
+            title: 'Learning Standard',
             dataIndex: 'name',
             key: 'name',
             editable: true,
             width: '22.5%',
             align: 'left',
+            render: (_, key) => (
+                <DayEditor history={props.history} days = {getDays(key)} learningStandardId={key.id} learningStandardName={key.name} linkBtn={true}/>
+            )
         },
         {
             title: 'Unit',
@@ -50,17 +55,20 @@ export default function ContentCreator(props) {
             editable: true,
             width: '22.5%',
             align: 'left',
-        },
-        {
-            title: 'Edit',
-            dataIndex: 'edit',
-            key: 'edit',
-            width: '10%',
-            align: 'right',
             render: (_, key) => (
-                <UnitEditor days={getDays(key)} learningStandard={key.edit} linkBtn={true}/>
+                <UnitEditor days={getDays(key)} learningStandard={key.id} linkBtn={true}/>
             )
         },
+        // {
+        //     title: 'Edit',
+        //     dataIndex: 'edit',
+        //     key: 'edit',
+        //     width: '10%',
+        //     align: 'right',
+        //     render: (_, key) => (
+        //         <UnitEditor days={getDays(key)} learningStandard={key.edit} linkBtn={true}/>
+        //     )
+        // },
         {
             title: 'Desciption',
             dataIndex: 'description',
@@ -69,16 +77,16 @@ export default function ContentCreator(props) {
             width: '22.5%',
             align: 'left',
         },
-        {
-            title: 'View',
-            dataIndex: 'view',
-            key: 'view',
-            width: '10%',
-            align: 'right',
-            render: (_, key) => (
-                <DayEditor history={props.history} days = {getDays(key)} learningStandardId={key.edit} learningStandardName = {getLearningStandardName(key.edit)} linkBtn={true}/>
-            )
-        },
+        // {
+        //     title: 'View',
+        //     dataIndex: 'view',
+        //     key: 'view',
+        //     width: '10%',
+        //     align: 'right',
+        //     render: (_, key) => (
+        //         <DayEditor history={props.history} days = {getDays(key)} learningStandardId={key.edit} learningStandardName = {getLearningStandardName(key.edit)} linkBtn={true}/>
+        //     )
+        // },
         // {
         //     title: 'Edit',
         //     dataIndex: 'edit',
@@ -154,7 +162,7 @@ export default function ContentCreator(props) {
         //console.log(i.edit)
         const day1 = []
         //console.log(i)
-        const request = getLearningStandard(i.edit);
+        const request = getLearningStandard(i.id);
         //console.log(request)
         // var j = 1;
         //console.log(request)
@@ -211,9 +219,8 @@ export default function ContentCreator(props) {
             const value = {
                 name: result.data.name,
                 unit: result.data.unit.name,
-                description: result.data.expectations.length > 5 ? result.data.expectations.substring(0,30) + "..." : result.data.expectations,
-                view: learningStand.id,
-                edit: learningStand.id,
+                description: result.data.expectations.length > 5 ? result.data.expectations.substring(0,40) + "..." : result.data.expectations,
+                id: learningStand.id,
                 delete: learningStand.id
             }
             newArr.push(value)
@@ -234,13 +241,13 @@ export default function ContentCreator(props) {
         const request = getLearningStandard(learningStand.id);
         const result = await request;
         console.log(result)
-
+        
         const value = {
             name: result.data.name,
             unit: result.data.unit.name,
             description: result.data.expectations.length > 5 ? result.data.expectations.substring(0, 30) + "..." : result.data.expectations,
             view: learningStand.id,
-            edit: learningStand.id,
+            id: learningStand.id,
             delete: learningStand.id
         }
         newArr.push(value)
@@ -270,18 +277,18 @@ export default function ContentCreator(props) {
         <Tabs>
              <TabPane tab="Home" key="home">
                 <div id="page-header">
-                    <h1>Units & Learning Standards:</h1>
+                    <h1>Learning Standards & Units:</h1>
                     </div>
                     <div id='table-container'>
                     <UnitCreator datasource={dataSource} changeDataSource={addTodataSource} gradeMenu={gradeMenu}></UnitCreator>
-                    <LearningStandardDayCreator dataSource = {dataSource} changeDataSource={addTodataSource}></LearningStandardDayCreator>
+                    <LearningStandardDayCreator dataSource = {dataSource} changeDataSource={addTodataSource} ></LearningStandardDayCreator>
                     <Table columns={columns}  dataSource={dataSource} rowClassName="editable-row">
                 </Table>
             </div>
                 </TabPane>
             <TabPane tab="5th" key="5th">
                     <div id="page-header">
-                            <h1>Units & Learning Standards:</h1>
+                            <h1>Learning Standards & Units:</h1>
                     </div>
                     <div id='table-container'>
                         <UnitCreator datasource={dataSource} changeDataSource={addTodataSource} gradeMenu={gradeMenu}></UnitCreator>
@@ -292,7 +299,7 @@ export default function ContentCreator(props) {
                 </TabPane>
             <TabPane tab="6th" key="6th">
             <div id="page-header">
-                            <h1>Units & Learning Standards:</h1>
+                            <h1>Learning Standards & Units:</h1>
                     </div>
                     <div id='table-container'>
                         <UnitCreator datasource={dataSource} changeDataSource={addTodataSource} gradeMenu={gradeMenu}></UnitCreator>
@@ -302,8 +309,6 @@ export default function ContentCreator(props) {
                     </div>
             </TabPane>
         </Tabs>
-            
-
         </div>
     )
 

@@ -28,8 +28,8 @@
       "required": true
     },
     "learning_standards": {
-      "collection": "learning-standard",
-      "via": "unit"
+      "via": "unit",
+      "collection": "learning-standard"
     }
   }
 }

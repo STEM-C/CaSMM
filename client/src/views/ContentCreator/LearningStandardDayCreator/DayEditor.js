@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react'
-import { Button, List, Card, Modal, message } from 'antd'
+import { Button, List, Card, Modal, message, Form, Input } from 'antd'
 import { PlusOutlined, CloseOutlined } from '@ant-design/icons';
 import { createDay, deleteDay, getDayToolboxAll, getLearningStandard } from '../../../Utils/requests'
 
 import './DayEditor.less'
-import Form from 'antd/lib/form/Form';
+// import Form from 'antd/lib/form/Form';
 
 
 export default function ContentCreator(props) {
@@ -29,8 +29,8 @@ export default function ContentCreator(props) {
     };
 
 
-    const addBasicDay = (day) => {
-        const res = createDay(day, learningStandardId)
+    const addBasicDay = () => {
+        const res = createDay(newDay, learningStandardId)
         res.then(function (a) {
             //console.log(res1)
             let res1 = getLearningStandard(learningStandardId)
@@ -40,6 +40,7 @@ export default function ContentCreator(props) {
             })
             
         })
+        setNewDay("")
     }
 
     const removeBasicDay = (currDay) => {
@@ -115,7 +116,7 @@ export default function ContentCreator(props) {
         <div>
             {/* {console.log(props)} */}
 
-            <button id={linkBtn ? 'link-btn' : null} onClick={showModal}>View</button>
+            <button id={linkBtn ? 'link-btn' : null} onClick={showModal}>{learningStandardName}</button>
 
             <Modal
                 title={learningStandardName}
@@ -139,14 +140,32 @@ export default function ContentCreator(props) {
                             )}
                         /> : null}
                     <div>
-                    <form onSubmit={handleSubmit}>
+
+                    <Form id="add-day"
+                        // labelCol={{
+                        // span: 4
+                        // }}
+                        wrapperCol={{
+                            span: 14
+                        }}
+                        layout="horizontal"
+                        size="default">
+                        Add Day
+                        <Form.Item label="Number">
+                            <Input onChange={handleDayChange} value={newDay} />
+                        </Form.Item >
+                        <Button onClick={addBasicDay} type="primary">
+                                Add
+                        </Button>
+                    </Form>
+                    {/* <form id="add-day" onSubmit={handleSubmit}>
                         <legend>Add Day</legend>
                         <label>
                         Number:  
                         <input type="text" value={newDay} onChange={handleDayChange} />
                         </label>
                         <input type="submit" value="Add" />
-                    </form>
+                    </form> */}
                         {/* <Button style={addButtonStyle} onClick={addBasicDay} size="default" icon={<PlusOutlined/>}/> */}
                     </div>
                 </div>

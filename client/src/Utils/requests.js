@@ -332,7 +332,7 @@ export const deleteLearningStandard = async (id) => (
     })
 );
 
-export const createLearningStandard = async (description,name,number,unit) =>(
+export const createLearningStandard = async (description,name,number,unit, teks) =>(
     makeRequest({
         method: POST,
         path: `${server}/learning-standards`,
@@ -340,7 +340,8 @@ export const createLearningStandard = async (description,name,number,unit) =>(
             "expectations": description,
             "name": name,
             "number": number,
-            "unit": unit
+            "unit": unit,
+            "teks": teks
         },
         auth: true,
         error: "Login failed."

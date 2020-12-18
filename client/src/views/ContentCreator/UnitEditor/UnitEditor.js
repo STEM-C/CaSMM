@@ -53,7 +53,7 @@ export default function UnitCreator(props) {
 
     return (
         <div>
-            <button id={linkBtn ? 'link-btn' : null} onClick={showModal}>Edit</button>
+            <button id={linkBtn ? 'link-btn' : null} onClick={showModal}>{unitObject.unitName}</button>
             <Modal
                 title="Unit Creator"
                 visible={visible}
@@ -118,9 +118,9 @@ export default function UnitCreator(props) {
                         <Input defaultValue={unitObject.unitTeksId}/>
                     </Form.Item>
                     <Form.Item>
-                        <Button type="primary" htmlType="submit">
+                        {/* <Button type="primary" htmlType="submit">
                             Save Unit
-                        </Button>
+                        </Button> */}
                     </Form.Item>
 
                 </Form>
