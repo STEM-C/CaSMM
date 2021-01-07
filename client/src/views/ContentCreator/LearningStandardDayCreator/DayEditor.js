@@ -40,42 +40,12 @@ export default function ContentCreator(props) {
             })
             
         })
-        setNewDay("")
+        setNewDay()
     }
 
     const removeBasicDay = (currDay) => {
         alert("Deleting ", currDay.name)
-        // if (days.length === 1) {
-        //     setDay([])
-        // } else {
-        //     const currIndex = days.indexOf(currDay)
-        //     // console.log(days)
-        //     // console.log(currIndex)
-        //     // console.log(currDay)
-        //     if (currIndex === 0) {
-        //         let pos = 0
-        //         setDay(days.forEach(currDay => {
-        //             if (currIndex === 0 && pos === 0) {
-        //                 currDay.day = -1
-        //             } else {
-        //                 currDay.day -= 1
-        //             }
-        //             pos++;
-        //         }))
-        //         setDay(days.filter((e) => (e.day !== -1)))
-        //     } else {
-        //         let pos = 0
-        //         setDay(days.forEach(currDay => {
-        //             if (pos > currIndex) {
-        //                 currDay.day -= 1
-        //             } else if (pos === currIndex) {
-        //                 currDay.day = -1
-        //             }
-        //             pos++;
-        //         }))
-        //         setDay(days.filter((e) => (e.day !== -1)))
-        //     }
-        // }
+
         const res = deleteDay(currDay.id)
         res.then(function (a) {
             let res1 = getLearningStandard(learningStandardId)
@@ -109,7 +79,7 @@ export default function ContentCreator(props) {
     const handleSubmit = (e) => {
         e.preventDefault();
         addBasicDay(newDay)
-        setNewDay("")
+        setNewDay()
     }
 
     return (
@@ -150,7 +120,7 @@ export default function ContentCreator(props) {
                         }}
                         layout="horizontal"
                         size="default">
-                        Add Day
+                        <b>Add Day</b>
                         <Form.Item label="Number">
                             <Input onChange={handleDayChange} value={newDay} />
                         </Form.Item >

@@ -28,7 +28,7 @@ export default function LearningStandardCreator(props){
         getAllUnits().then(res => {
             if(res.data){
                 setUnitsMenu(res.data)
-                console.log("this is the Units menu", unitsMenu)
+                console.log("this is the Units menu", res.data)
             }else{
                 message.error(res.err)
             }
@@ -91,6 +91,7 @@ export default function LearningStandardCreator(props){
             description:getLearn.data.expectations.length> 5 ? getLearn.data.expectations.substring(0,30) + "...": getLearn.data.expectations,
             view: getLearn.data.id,
             edit: getLearn.data.id,
+            id: getLearn.data.id,
             delete: getLearn.data.id})
         props.changeDataSource(newArr)
 
