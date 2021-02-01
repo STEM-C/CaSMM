@@ -100,7 +100,7 @@ export default function ListView(props) {
             )
         },
         {
-            title: 'Edit',
+            title: 'Edit----',
             dataIndex: 'edit',
             key: 'edit',
             width: '10%',

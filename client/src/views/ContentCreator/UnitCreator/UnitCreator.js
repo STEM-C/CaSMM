@@ -90,6 +90,7 @@ export default function UnitCreator(props){
             description:getLearn.data.expectations.length> 5 ? getLearn.data.expectations.substring(0,30) + "...": getLearn.data.expectations,
             view: getLearn.data.id,
             edit: getLearn.data.id,
+            id: getLearn.data.id,
             delete: getLearn.data.id})
         // props.changeDataSource({
         //     name:getLearn.data.name,
@@ -169,7 +170,7 @@ export default function UnitCreator(props){
                 Add Unit
                 </Button>
             <Modal
-               title="Unit Creator"
+               title="Create Unit"
                visible={visible}
                onCancel={handleCancel}
                onOk={onclickhandler}

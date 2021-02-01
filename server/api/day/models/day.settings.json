@@ -10,8 +10,8 @@
   },
   "attributes": {
     "learning_standard": {
-      "model": "learning-standard",
-      "via": "days"
+      "via": "days",
+      "model": "learning-standard"
     },
     "number": {
       "type": "biginteger",
