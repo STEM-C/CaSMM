@@ -1,0 +1,16 @@
+{
+  "kind": "singleType",
+  "collectionName": "challenges",
+  "info": {
+    "name": "Challenge"
+  },
+  "options": {
+    "increments": true,
+    "timestamps": true
+  },
+  "attributes": {
+    "name": {
+      "type": "string"
+    }
+  }
+}
