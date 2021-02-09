@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react'
-import { Form, Input, Button, Modal } from 'antd'
-import { PlusOutlined } from '@ant-design/icons'
-import { getUnit, getLearningStandard } from '../../../Utils/requests'
+import { Form, Input, Modal } from 'antd'
+import { getLearningStandard } from '../../../Utils/requests'
 
 
 import './UnitEditor.less'
@@ -18,6 +17,7 @@ export default function UnitCreator(props) {
 
     useEffect(() => {
         getUnit()
+        // eslint-disable-next-line
     }, [])
     const [visible, setVisible] = useState(false);
     const linkBtn = props.linkBtn;
@@ -29,13 +29,6 @@ export default function UnitCreator(props) {
     const handleCancel = () => {
         setVisible(false)
     };
-
-    const addButtonStyle = {
-        background: "#F4F4F5",
-        borderRadius: "20px",
-        border: "2px solid #5BABDE",
-        left: '500px',
-    }
 
     const getUnit = async () => {
         const learningStand = getLearningStandard(props.learningStandard)

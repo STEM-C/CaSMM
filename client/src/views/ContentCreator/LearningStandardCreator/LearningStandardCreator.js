@@ -1,7 +1,7 @@
 import React,{useState, useEffect} from 'react'
 import {Form, Input, Button, Modal, message} from 'antd'
 import {PlusOutlined} from '@ant-design/icons'
-import {createUnit,createLearningStandard, createDay,getUnit, getUnits, getAllUnits} from '../../../Utils/requests'
+import {createLearningStandard, createDay, getAllUnits} from '../../../Utils/requests'
 
 
 import './LearningStandardCreator.less'
@@ -9,7 +9,6 @@ import './LearningStandardCreator.less'
 export default function LearningStandardCreator(props){
 
     const [visible, setVisible] = useState(false);
-    const [numOfdays, setNumofDays] = useState(0);
     const [unitsMenu, setUnitsMenu] = useState([])
 
     const defaultLearningObj = {
@@ -82,9 +81,8 @@ export default function LearningStandardCreator(props){
             learningObj.learningStandUnit, learningObj.learningTeks)
         const getLearn = await learningStand;
         console.log("got from adding a learning standard", getLearn)
-        for(var i=0;i<learningObj.learningNumOfDays;i++){
-            const var1 = createDay(i+1,getLearn.data)
-            const var2 = await var1
+        for(let i=0;i<learningObj.learningNumOfDays;i++){
+            await createDay(i+1,getLearn.data)
         }
         newArr.push( { name:getLearn.data.name,
             unit:getLearn.data.unit.name,
