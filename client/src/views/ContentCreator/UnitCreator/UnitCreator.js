@@ -1,13 +1,12 @@
 import React,{useState} from 'react'
 import {Form, Input, Button, Modal} from 'antd'
 import {PlusOutlined} from '@ant-design/icons'
-import {createUnit,createLearningStandard, createDay,getUnit} from '../../../Utils/requests'
+import {createUnit} from '../../../Utils/requests'
 import './UnitCreator.less'
 
 export default function UnitCreator(props){
 
     const [visible, setVisible] = useState(false);
-    const [numOfdays, setNumofDays] = useState(0);
     const unitDefaultState = {
         unitName: "",
         unitGrade: "",
@@ -17,13 +16,6 @@ export default function UnitCreator(props){
 
     const [unitObject, setUnitObject] = useState(unitDefaultState)
 
-    const [learningstandObj, setStandObj]= useState({
-        learningStandName:"",
-        learningStandDescrip:"",
-        learningStandNumber: 0
-    })
-    
-    const [learningStandObjs, setLearningStandard] = useState([])
 
     const showModal = () => {
         setVisible(true)
@@ -43,33 +35,12 @@ export default function UnitCreator(props){
         border: "2px solid #5BABDE",
         left: '500px',
     }
-    const handleChange =(e,index,switchval)=>{
-        const {value} = e.target;
-        //let newArr = [...learningStandObjs];
-        switch(switchval){
-            case 1:
-                learningStandObjs[index.key].learningStandName = value;
-                break;
-            case 2:
-                learningStandObjs[index.key].learningStandDescrip = value;
-                break;
 
-            case 3:
-                learningStandObjs[index.key].learningStandNumber = parseFloat(value);
-                break;
-            default:
-                break;
-        }
-        //setLearningStandard(newArr) ;
-       
-    }
-
-     const onclickhandler= async()=>{
+     const onClickHandler= async()=>{
         //console.log(getLearningStandard(1))
         console.log(unitObject)
       
-        const creatunit = createUnit(unitObject.unitNumber,unitObject.unitName,unitObject.unitTeksId,unitObject.unitDescrip,unitObject.unitGrade)
-        const unitReponse = await creatunit
+        await createUnit(unitObject.unitNumber,unitObject.unitName,unitObject.unitTeksId,unitObject.unitDescrip,unitObject.unitGrade)
         // const getUnitreponse = getUnit(unitReponse.data.id)
         // const unit = await getUnitreponse
         // const newArr = [...props.datasource]
@@ -81,32 +52,6 @@ export default function UnitCreator(props){
         setUnitObject({...unitDefaultState})
         completeUnitCreation()
     }
-
-    const creatLeanrAndDays = async(each,unit,newArr)=>{
-        const learningStand = createLearningStandard(each.learningStandDescrip,each.learningStandName,each.learningStandNumber,unit.data)
-        const getLearn = await learningStand;
-        newArr.push( { name:getLearn.data.name,
-            unit:getLearn.data.unit.name,
-            description:getLearn.data.expectations.length> 5 ? getLearn.data.expectations.substring(0,30) + "...": getLearn.data.expectations,
-            view: getLearn.data.id,
-            edit: getLearn.data.id,
-            id: getLearn.data.id,
-            delete: getLearn.data.id})
-        // props.changeDataSource({
-        //     name:getLearn.data.name,
-        //     unit:getLearn.data.unit.name,
-        //     description:getLearn.data.expectations.length> 5 ? getLearn.data.expectations.substring(0,30) + "...": getLearn.data.expectations,
-        //     view: getLearn.data.id,
-        //     edit: getLearn.data.id,
-        //     delete: getLearn.data.id
-        // })
-        props.changeDataSource(newArr)
-          for(var i=0;i<numOfdays;i++){
-                createDay(i+1,getLearn.data)
-            }
-    }
-
-
 
     // const unitNameOnChange = (e) => {
     //     e.preventDefault()
@@ -131,7 +76,6 @@ export default function UnitCreator(props){
             unitGrade: value
          }));
     }
-    
 
     const unitNumberOnChange = (e) => {  
         const {value} = e.target; 
@@ -173,7 +117,7 @@ export default function UnitCreator(props){
                title="Create Unit"
                visible={visible}
                onCancel={handleCancel}
-               onOk={onclickhandler}
+               onOk={onClickHandler}
             >
             <Form id="add-units"
             labelCol={{

@@ -1,6 +1,5 @@
-import React, { useState, useEffect } from 'react'
-import { Button, List, Card, Modal, message, Form, Input } from 'antd'
-import { PlusOutlined, CloseOutlined } from '@ant-design/icons';
+import React, { useState } from 'react'
+import { Button, List, Card, Modal, Form, Input } from 'antd'
 import { createDay, deleteDay, getDayToolboxAll, getLearningStandard } from '../../../Utils/requests'
 
 import './DayEditor.less'
@@ -56,12 +55,6 @@ export default function ContentCreator(props) {
         })
     }
 
-    const addButtonStyle = {
-        background: "#F4F4F5",
-        borderRadius: "20px",
-        border: "2px solid #5BABDE",
-
-    }
     const handleViewDay = async day => {
         const res = await getDayToolboxAll();
         day.toolbox = res.data.toolbox;
@@ -74,12 +67,6 @@ export default function ContentCreator(props) {
     const handleDayChange = (e) => {
         let {value} = e.target
         setNewDay(parseInt(value))
-    }
-
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        addBasicDay(newDay)
-        setNewDay()
     }
 
     return (
