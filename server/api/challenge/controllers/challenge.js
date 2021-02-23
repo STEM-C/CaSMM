@@ -7,107 +7,94 @@
 
 module.exports = {
     async find() {
-        return [
-            {
+        return {
+            "classroom": {
                 "id": 1,
-                "name": "Topic #1",
-                "description": "This is it",
-                "type": 1,
-                "created_at": "2020-04-14T04:52:39.000Z",
-                "updated_at": "2020-05-26T02:13:47.153Z",
-                "activities": [
-                    {
-                        "id": 4,
-                        "name": "Activity #3",
-                        "description": "This is the third activity, meant to show off just the Control block category.",
-                        "difficulty": {
-                            "id": 1,
-                            "name": "LOW",
-                            "created_at": "2020-03-31T15:47:22.000Z",
-                            "updated_at": "2020-03-31T15:47:22.000Z"
-                        },
-                        "learning_category": {
-                            "id": 3,
-                            "name": "MAKER_TOOLS",
-                            "created_at": "2020-03-31T15:45:14.000Z",
-                            "updated_at": "2020-03-31T15:45:14.000Z"
-                        },
-                        "topic": 1,
-                        "created_at": "2020-04-02T15:15:34.000Z",
-                        "updated_at": "2020-05-26T02:13:47.151Z"
-                    }
-                ]
+                "name": "Pedros Science Classroom",
+                "school": 1,
+                "code": "0450",
+                "grade": {
+                    "id": 4,
+                    "name": "5th",
+                    "created_at": "2020-07-24T16:21:42.095Z",
+                    "updated_at": "2020-07-24T16:21:42.095Z"
+                },
+    
+                "created_at": "2020-07-24T16:31:53.641Z",
+                "updated_at": "2021-02-03T18:43:43.869Z"
             },
-            {
-                "id": 2,
-                "name": "Topic #2",
-                "description": "This is it",
-                "type": 2,
-                "created_at": "2020-04-14T04:52:46.000Z",
-                "updated_at": "2020-05-26T02:13:39.054Z",
-                "activities": [
-                    {
-                        "id": 2,
-                        "name": "Activity #1",
-                        "description": "This is the first activity, meant to show off two of the categories in the toolbox.",
-                        "difficulty": {
-                            "id": 2,
-                            "name": "MEDIUM",
-                            "created_at": "2020-03-31T15:47:26.000Z",
-                            "updated_at": "2020-03-31T15:47:26.000Z"
-                        },
-                        "learning_category": {
-                            "id": 1,
-                            "name": "ENABLED_LEARNING",
-                            "created_at": "2020-03-31T15:45:01.000Z",
-                            "updated_at": "2020-03-31T15:45:01.000Z"
-                        },
-                        "topic": 2,
-                        "created_at": "2020-03-31T15:56:45.000Z",
-                        "updated_at": "2020-05-26T02:13:39.052Z"
-                    },
-                    {
+            "learning_standards": [{
+                    "id": 1,
+                    "unit": 1,
+                    "number": 1.3,
+                    "name": "Mixtures and Solutions",
+                    "expectations": "Demonstrate that some mixtures maintain physical properties of their ingredients such as iron fillings and sand and sand and water.\nIdentify changes that can occur in the physical properties of the ingredients or solutions such as dissolving salt in water or adding lemon juice to water.",
+                    "created_at": "2020-07-24T16:53:26.737Z",
+                    "updated_at": "2020-10-26T15:55:56.582Z",
+                    "teks": null,
+                    "days": [{
                         "id": 3,
-                        "name": "Activity #2",
-                        "description": "This is the second activity, meant to show off just the logic block category.",
-                        "difficulty": {
-                            "id": 2,
-                            "name": "MEDIUM",
-                            "created_at": "2020-03-31T15:47:26.000Z",
-                            "updated_at": "2020-03-31T15:47:26.000Z"
-                        },
-                        "learning_category": {
-                            "id": 2,
-                            "name": "DEMONSTRATE_LEARNING",
-                            "created_at": "2020-03-31T15:45:10.000Z",
-                            "updated_at": "2020-03-31T15:45:10.000Z"
-                        },
-                        "topic": 2,
-                        "created_at": "2020-03-31T18:07:23.000Z",
-                        "updated_at": "2020-05-26T02:13:39.052Z"
-                    },
-                    {
+                        "learning_standard": 1,
+                        "number": "3",
+                        "template": "<xml xmlns=\"http://www.w3.org/1999/xhtml\"><block type=\"io_digitalwrite\" id=\"j#m#H23NIQH5Wz^I2c^G\" x=\"70\" y=\"224\"><field name=\"PIN\">0</field><value name=\"STATE\"><block type=\"io_highlow\" id=\"7.^n|ek_3R;_Q`K9M!;/\"><field name=\"STATE\">HIGH</field></block></value></block></xml>",
+                        "created_at": "2020-07-24T16:57:43.433Z",
+                        "updated_at": "2020-07-24T17:15:26.202Z"
+                    }, {
+                        "id": 17,
+                        "learning_standard": 1,
+                        "number": "1",
+                        "template": "<xml xmlns=\"http://www.w3.org/1999/xhtml\"></xml>)",
+                        "created_at": "2020-11-30T15:45:33.387Z",
+                        "updated_at": "2020-11-30T15:45:33.496Z"
+                    }, {
+                        "id": 18,
+                        "learning_standard": 1,
+                        "number": "2",
+                        "template": "<xml xmlns=\"http://www.w3.org/1999/xhtml\"></xml>)",
+                        "created_at": "2020-11-30T15:45:35.939Z",
+                        "updated_at": "2020-11-30T15:45:35.991Z"
+                    }]
+                },
+                {
+                    "id": 3,
+                    "unit": 1,
+                    "number": 3,
+                    "name": "Water Cycle",
+                    "expectations": "Students Learn about Water Cycle",
+                    "created_at": "2020-11-02T18:26:22.320Z",
+                    "updated_at": "2020-11-02T18:26:22.344Z",
+                    "teks": null,
+                    "days": [{
+                        "id": 4,
+                        "learning_standard": 3,
+                        "number": "1",
+                        "template": "<xml xmlns=\"http://www.w3.org/1999/xhtml\"></xml>",
+                        "created_at": "2020-11-02T18:26:22.445Z",
+                        "updated_at": "2021-01-27T18:25:30.001Z"
+                    }, {
                         "id": 5,
-                        "name": "Activity #5",
-                        "description": "This is the fifth activity, meant to show off every possible category in the toolbox.",
-                        "difficulty": {
-                            "id": 3,
-                            "name": "HIGH",
-                            "created_at": "2020-03-31T15:47:29.000Z",
-                            "updated_at": "2020-03-31T15:47:29.000Z"
-                        },
-                        "learning_category": {
-                            "id": 1,
-                            "name": "ENABLED_LEARNING",
-                            "created_at": "2020-03-31T15:45:01.000Z",
-                            "updated_at": "2020-03-31T15:45:01.000Z"
-                        },
-                        "topic": 2,
-                        "created_at": "2020-04-15T21:30:02.000Z",
-                        "updated_at": "2020-05-26T02:13:39.052Z"
-                    }
-                ]
-            }
-        ]
+                        "learning_standard": 3,
+                        "number": "2",
+                        "template": "<xml xmlns=\"http://www.w3.org/1999/xhtml\"></xml>)",
+                        "created_at": "2020-11-02T18:26:22.607Z",
+                        "updated_at": "2020-11-02T18:26:22.621Z"
+                    }, {
+                        "id": 6,
+                        "learning_standard": 3,
+                        "number": "3",
+                        "template": "<xml xmlns=\"http://www.w3.org/1999/xhtml\"></xml>)",
+                        "created_at": "2020-11-02T18:26:22.735Z",
+                        "updated_at": "2020-11-02T18:26:22.750Z"
+                    }, {
+                        "id": 7,
+                        "learning_standard": 3,
+                        "number": "4",
+                        "template": "<xml xmlns=\"http://www.w3.org/1999/xhtml\"></xml>)",
+                        "created_at": "2020-11-02T18:26:22.848Z",
+                        "updated_at": "2020-11-02T18:26:22.865Z"
+                    }]
+                }
+            ]
+        }
     },
 };
