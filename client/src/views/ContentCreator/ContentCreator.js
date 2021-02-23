@@ -7,8 +7,7 @@ import { QuestionCircleOutlined } from '@ant-design/icons';
 import DayEditor from './LearningStandardDayCreator/DayEditor'
 import UnitCreator from './UnitCreator/UnitCreator';
 import LearningStandardDayCreator from './LearningStandardCreator/LearningStandardCreator'
-import {getLearningStandard, getLearningStandardAll,deleteLearningStandard, getGrades, getUnits, getAllUnits} from '../../Utils/requests'
-import ViewDayModal from './viewDayModal/viewDayModal';
+import {getLearningStandard, getLearningStandardAll,deleteLearningStandard, getGrades} from '../../Utils/requests'
 import UnitEditor from './UnitEditor/UnitEditor'
 
 const { TabPane } = Tabs;
@@ -17,8 +16,6 @@ export default function ContentCreator(props) {
 
     const [dataSource, setDataSource] = useState([])
     const [dataSourceMap, setDataSourceMap] = useState([])
-    const [dataSourceGrade6, setDataSourceGrade6] = useState([])
-    const [dataSourceGrade5, setDataSourceGrade5] = useState([])
     const [gradeMenu, setGradeMenu] = useState([])
 
     useEffect(() => {
@@ -33,6 +30,7 @@ export default function ContentCreator(props) {
         })
         axiosCallAll()
         // axiosCallgrade(4)
+        // eslint-disable-next-line
     }, [])
 
 
@@ -224,8 +222,8 @@ export default function ContentCreator(props) {
                     <h1>Learning Standards & Units:</h1>
                     </div>
                     <div id='table-container'>
-                    <UnitCreator datasource={dataSource} changeDataSource={addTodataSource} gradeMenu={gradeMenu}></UnitCreator>
-                    <LearningStandardDayCreator dataSource = {dataSource} changeDataSource={addTodataSource} ></LearningStandardDayCreator>
+                    <UnitCreator datasource={dataSource} changeDataSource={addTodataSource} gradeMenu={gradeMenu}/>
+                    <LearningStandardDayCreator dataSource = {dataSource} changeDataSource={addTodataSource} />
                     <Table columns={columns}  dataSource={dataSource} rowClassName="editable-row">
                 </Table>
                 </div>
