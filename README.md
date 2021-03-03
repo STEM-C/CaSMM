@@ -106,7 +106,7 @@ This is by far the largest and most important dependency we have. Staying up to 
 
 ## CI/CD
 
-All of the deployments and releases are handled automatically with [GitHub Actions](https://docs.github.com/en/actions). The workflows implement custom [Actions](/actions) that live in the [auto](https://github.com/STEM-C/auto) repo.
+All of the deployments and releases are handled automatically with [GitHub Actions](https://docs.github.com/en/actions). The workflows implement custom [Actions](https://github.com/STEM-C/CaSMM/actions) that live in the [auto](https://github.com/STEM-C/auto) repo.
 
 <br/>
 
