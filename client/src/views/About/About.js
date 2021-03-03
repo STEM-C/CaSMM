@@ -64,6 +64,8 @@ export default function About(props) {
                     Adam Tamargo
                     <br/>
                     Gus Segovia
+                    <br/>
+                    Michael Pascuzzi
                 </p>
             </div>
         </div>
