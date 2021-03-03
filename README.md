@@ -35,9 +35,15 @@ Cloud-based programming interface
 The development environment is composed of five servers. The first one is run with the [Create React App](https://create-react-app.dev/docs/getting-started/) dev server. The later four are containerized with docker and run with [docker compose](https://docs.docker.com/compose/).
 
 * `casmm-client-dev` - localhost:3000
+
 * `casmm-server-dev` - localhost:1337
+
 * `casmm-compile-dev` 
+
 * `casmm-db-dev` - localhost:5432
+
+  > The first time the db is started, the [init_db.sh](/scripts/init_db.sh) script will run and seed the database with an environment specific dump. Read about Postgres initialization scripts [here](https://github.com/docker-library/docs/blob/master/postgres/README.md#initialization-scripts)
+
 * `casmm-compile_queue-dev`
 
 #### Running
@@ -56,6 +62,7 @@ The development environment is composed of five servers. The first one is run wi
 3. Run `docker-compose up` from `/`
 
    > Grant permission to the **scripts** and **server** directories if you are prompted
+   
 
 ### Staging
 
@@ -84,6 +91,22 @@ The production environment is a Heroku app. It is composed of a web dyno, compil
 #### Running
 
 `casmm` is automatically built from the latest commits to `master`. Heroku runs the container orchestration from there.
+
+<br/>
+
+## Maintenance
+
+All three components of the application have their own dependencies managed in their respective `package.json` files. Run `npm outdated` in each folder to see what packages have new releases. Before updating a package (especially new major versions), ensure that there are no breaking changes. Avoid updating all of the packages at once by running `npm update` because it could lead to breaking changes. 
+
+### Strapi
+
+This is by far the largest and most important dependency we have. Staying up to date with its [releases](https://github.com/strapi/strapi/releases) is important for bug/security fixes and new features. When it comes to actually upgrading Strapi make sure to follow the [migration guides](https://strapi.io/documentation/developer-docs/latest/migration-guide/#instructions)!
+
+<br/>
+
+## CI/CD
+
+All of the deployments and releases are handled automatically with [GitHub Actions](https://docs.github.com/en/actions). The workflows implement custom [Actions](/actions) that live in the [auto](https://github.com/STEM-C/auto) repo.
 
 <br/>
 
@@ -120,4 +143,3 @@ Before submitting a pull request, merge the target branch into the working branc
 
 - PRs to **master** should squash and merge
 - PRs to all other branches should create a merge commit
-
