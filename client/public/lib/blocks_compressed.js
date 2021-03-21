@@ -206,3 +206,60 @@ onchange:function(){var a=Blockly.Arduino.valueToCode(this,"FREQUENCY",Blockly.A
 Blockly.Blocks.io_notone={init:function(){this.appendDummyInput().appendField(Blockly.Msg.ARD_NOTONE).appendField(new Blockly.FieldDropdown(Blockly.Arduino.Boards.selected.digitalPins),"TONEPIN");this.setPreviousStatement(!0);this.setNextStatement(!0);this.setColour(Blockly.Blocks.tone.HUE);this.setTooltip(Blockly.Msg.ARD_NOTONE_TIP);this.setHelpUrl("https://www.arduino.cc/en/Reference/noTone")},getBlockType:function(){return Blockly.Types.NUMBER}};Blockly.Blocks.variables.HUE=330;
 Blockly.Blocks.variables_set_type={init:function(){this.setHelpUrl("http://arduino.cc/en/Reference/HomePage");this.setColour(Blockly.Blocks.variables.HUE);this.appendValueInput("VARIABLE_SETTYPE_INPUT");this.appendDummyInput().appendField(Blockly.Msg.ARD_VAR_AS).appendField(new Blockly.FieldDropdown(Blockly.Types.getValidTypeArray()),"VARIABLE_SETTYPE_TYPE");this.setInputsInline(!0);this.setOutput(!0);this.setTooltip(Blockly.Msg.ARD_VAR_AS_TIP)},getBlockType:function(){var a=this.getFieldValue("VARIABLE_SETTYPE_TYPE");
 return Blockly.Types[a]}};
+
+//inline comment
+Blockly.Blocks.comment = {
+  init: function() {
+    this.appendDummyInput()
+      .appendField("//")
+      .appendField(new Blockly.FieldTextInput("Enter your comment"), "comment_input");
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setColour(Blockly.Blocks.texts.HUE);
+    this.setTooltip(Blockly.Msg.COMMENT_TIP);
+    this.setHelpUrl("https://www.arduino.cc/reference/en/language/structure/further-syntax/singlelinecomment/");
+  }
+};
+
+//block comment
+Blockly.Blocks.block_comment= {
+  init: function() {
+    this.appendDummyInput()
+        .appendField("/*");
+    this.appendStatementInput("comment")
+        .setCheck(null)
+        .appendField("*/");
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setColour(Blockly.Blocks.texts.HUE);
+    this.setTooltip(Blockly.Msg.BLOCK_COMMENT_TIP);
+    this.setHelpUrl("https://www.arduino.cc/reference/tr/language/structure/further-syntax/blockcomment/");
+  }
+};
+
+//Serial Print
+Blockly.Blocks.serial_print={
+  init:function(){
+    this.setColour(Blockly.Blocks.io.HUE);
+    this.appendValueInput("VARIABLE_SETTYPE_INPUT")
+        .appendField("Serial Print");
+    this.setPreviousStatement(true,null);
+    this.setNextStatement(true,null);
+    this.setTooltip(Blockly.Msg.SERIAL_PRINT_TIP);
+    this.setHelpUrl("http://www.arduino.cc/en/Serial/Print");
+  }
+};
+
+//Delay
+Blockly.Blocks.delay= {
+  init: function() {
+    this.appendDummyInput()
+        .appendField("delay")
+        .appendField(new Blockly.FieldNumber(1000, 0), "milliseconds");
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setColour(Blockly.Blocks.io.HUE);
+    this.setTooltip(Blockly.Msg.Delay_TIP);
+    this.setHelpUrl("https://www.arduino.cc/reference/en/language/functions/time/delay/");
+  }
+};

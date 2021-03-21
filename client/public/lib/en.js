@@ -510,3 +510,10 @@ Blockly.Msg.NEW_INSTANCE = "New instance...";
 Blockly.Msg.NEW_INSTANCE_TITLE = "New instance name:";
 Blockly.Msg.RENAME_INSTANCE = "Rename instance...";
 Blockly.Msg.RENAME_INSTANCE_TITLE = "Rename all '%1' instances to:";
+Blockly.Msg.COMMENT_TIP = "Put comment in the same line";
+Blockly.Msg.SERIAL_PRINT_TIP = "Prints data to the console/serial port as human-readable ASCII text.";
+Blockly.Msg.BLOCK_COMMENT_TIP = "Put multiple line comment";
+Blockly.Msg.Delay_TIP = "Delay program in milliseconds";
+
+
+

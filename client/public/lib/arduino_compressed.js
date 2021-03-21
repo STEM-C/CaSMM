@@ -1205,3 +1205,28 @@ Blockly.Arduino.variables_set_type = function(a) {
     var b = Blockly.Arduino.valueToCode(a, "VARIABLE_SETTYPE_INPUT", Blockly.Arduino.ORDER_ASSIGNMENT) || "0";
     return ["(" + Blockly.Arduino.getArduinoType_(Blockly.Types[a.getFieldValue("VARIABLE_SETTYPE_TYPE")]) + ")(" + b + ")", Blockly.Arduino.ORDER_ATOMIC]
 };
+
+//inline comment
+Blockly.Arduino.comment = function(a) {
+    return "// " + a.getFieldValue("comment_input") + "\n"
+};
+
+//block comment
+Blockly.Arduino.block_comment = function(a) {
+    var b = Blockly.Arduino.statementToCode(a, 'comment');
+    return "/*\n" + b + "*/\n";
+};
+
+//Serial Print
+Blockly.Arduino.serial_print = function(a) {
+    var b = Blockly.Arduino.valueToCode(a, "VARIABLE_SETTYPE_INPUT", Blockly.Arduino.ORDER_ASSIGNMENT) || '0';
+
+    Blockly.Arduino.setups_['setup_serial_' + 9600] = 'Serial.begin(' + 9600 + ');\n';
+    return "Serial.println(" + b + ");\n";
+};
+
+//Delay
+Blockly.Arduino.delay = function(a) {
+    var b = a.getFieldValue('milliseconds');
+    return "delay(" + b + ");\n";
+  };
