@@ -225,7 +225,8 @@ Blockly.Blocks.comment = {
 Blockly.Blocks.block_comment= {
   init: function() {
     this.appendDummyInput()
-        .appendField("/*");
+        .appendField("/*")
+        .appendField(new Blockly.FieldTextInput("Block comment"), "comment_input");
     this.appendStatementInput("comment")
         .setCheck(null)
         .appendField("*/");
@@ -237,29 +238,3 @@ Blockly.Blocks.block_comment= {
   }
 };
 
-//Serial Print
-Blockly.Blocks.serial_print={
-  init:function(){
-    this.setColour(Blockly.Blocks.io.HUE);
-    this.appendValueInput("VARIABLE_SETTYPE_INPUT")
-        .appendField("Serial Print");
-    this.setPreviousStatement(true,null);
-    this.setNextStatement(true,null);
-    this.setTooltip(Blockly.Msg.SERIAL_PRINT_TIP);
-    this.setHelpUrl("http://www.arduino.cc/en/Serial/Print");
-  }
-};
-
-//Delay
-Blockly.Blocks.delay= {
-  init: function() {
-    this.appendDummyInput()
-        .appendField("delay")
-        .appendField(new Blockly.FieldNumber(1000, 0), "milliseconds");
-    this.setPreviousStatement(true, null);
-    this.setNextStatement(true, null);
-    this.setColour(Blockly.Blocks.io.HUE);
-    this.setTooltip(Blockly.Msg.Delay_TIP);
-    this.setHelpUrl("https://www.arduino.cc/reference/en/language/functions/time/delay/");
-  }
-};
