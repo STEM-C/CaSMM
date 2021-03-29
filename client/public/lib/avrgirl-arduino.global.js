@@ -13151,7 +13151,6 @@ THE SOFTWARE.
                                         if (done) {
                                             break;
                                         }
-                                        console.log("read");
                                         this.emit('data', Buffer.from(value));
                                     } catch (e) {
                                         console.error(e);
@@ -13197,7 +13196,6 @@ THE SOFTWARE.
                     }
 
                     write(buffer, callback) {
-                        console.log("write");
                         this.writer.write(buffer);
                         if (callback) return callback(null);
                     }
