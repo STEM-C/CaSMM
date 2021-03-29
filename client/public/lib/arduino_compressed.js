@@ -1214,19 +1214,5 @@ Blockly.Arduino.comment = function(a) {
 //block comment
 Blockly.Arduino.block_comment = function(a) {
     var b = Blockly.Arduino.statementToCode(a, 'comment');
-    return "/*\n" + b + "*/\n";
+    return "/* " + a.getFieldValue("comment_input") + "\n" + b + "*/\n";
 };
-
-//Serial Print
-Blockly.Arduino.serial_print = function(a) {
-    var b = Blockly.Arduino.valueToCode(a, "VARIABLE_SETTYPE_INPUT", Blockly.Arduino.ORDER_ASSIGNMENT) || '0';
-
-    Blockly.Arduino.setups_['setup_serial_' + 9600] = 'Serial.begin(' + 9600 + ');\n';
-    return "Serial.println(" + b + ");\n";
-};
-
-//Delay
-Blockly.Arduino.delay = function(a) {
-    var b = a.getFieldValue('milliseconds');
-    return "delay(" + b + ");\n";
-  };
