@@ -140,7 +140,7 @@ this.appendDummyInput("ORDINAL"+a).appendField(Blockly.Msg.ORDINAL_NUMBER_SUFFIX
 "WHERE"+a);1==a&&this.moveInputBefore("AT1","AT2")}};
 Blockly.Blocks.text_changeCase={init:function(){var a=[[Blockly.Msg.TEXT_CHANGECASE_OPERATOR_UPPERCASE,"UPPERCASE"],[Blockly.Msg.TEXT_CHANGECASE_OPERATOR_LOWERCASE,"LOWERCASE"],[Blockly.Msg.TEXT_CHANGECASE_OPERATOR_TITLECASE,"TITLECASE"]];this.setHelpUrl(Blockly.Msg.TEXT_CHANGECASE_HELPURL);this.setColour(Blockly.Blocks.texts.HUE);this.appendValueInput("TEXT").setCheck(Blockly.Types.TEXT.checkList).appendField(new Blockly.FieldDropdown(a),"CASE");this.setOutput(!0,Blockly.Types.TEXT.output);this.setTooltip(Blockly.Msg.TEXT_CHANGECASE_TOOLTIP)}};
 Blockly.Blocks.text_trim={init:function(){var a=[[Blockly.Msg.TEXT_TRIM_OPERATOR_BOTH,"BOTH"],[Blockly.Msg.TEXT_TRIM_OPERATOR_LEFT,"LEFT"],[Blockly.Msg.TEXT_TRIM_OPERATOR_RIGHT,"RIGHT"]];this.setHelpUrl(Blockly.Msg.TEXT_TRIM_HELPURL);this.setColour(Blockly.Blocks.texts.HUE);this.appendValueInput("TEXT").setCheck(Blockly.Types.TEXT.checkList).appendField(new Blockly.FieldDropdown(a),"MODE");this.setOutput(!0,Blockly.Types.TEXT.output);this.setTooltip(Blockly.Msg.TEXT_TRIM_TOOLTIP)},getBlockType:function(){return Blockly.Types.TEXT}};
-//Blockly.Blocks.text_print={init:function(){this.jsonInit({message0:Blockly.Msg.TEXT_PRINT_TITLE,args0:[{type:"input_value",name:"TEXT"}],previousStatement:null,nextStatement:null,colour:Blockly.Blocks.texts.HUE,tooltip:Blockly.Msg.TEXT_PRINT_TOOLTIP,helpUrl:Blockly.Msg.TEXT_PRINT_HELPURL})}};
+Blockly.Blocks.text_print={init:function(){this.jsonInit({message0:Blockly.Msg.TEXT_PRINT_TITLE,args0:[{type:"input_value",name:"TEXT"}],previousStatement:null,nextStatement:null,colour:Blockly.Blocks.texts.HUE,tooltip:Blockly.Msg.TEXT_PRINT_TOOLTIP,helpUrl:Blockly.Msg.TEXT_PRINT_HELPURL})}};
 Blockly.Blocks.text_prompt_ext={init:function(){var a=[[Blockly.Msg.TEXT_PROMPT_TYPE_TEXT,Blockly.Types.TEXT.output],[Blockly.Msg.TEXT_PROMPT_TYPE_NUMBER,Blockly.Types.NUMBER.output]];this.setHelpUrl(Blockly.Msg.TEXT_PROMPT_HELPURL);this.setColour(Blockly.Blocks.texts.HUE);var b=this,a=new Blockly.FieldDropdown(a,function(a){b.updateType_(a)});this.appendValueInput("TEXT").appendField(a,"TYPE");this.setOutput(!0,Blockly.Types.TEXT.output);this.setTooltip(function(){return b.getFieldValue("TYPE")==
 Blockly.Types.TEXT.output?Blockly.Msg.TEXT_PROMPT_TOOLTIP_TEXT:Blockly.Msg.TEXT_PROMPT_TOOLTIP_NUMBER})},updateType_:function(a){this.outputConnection.setCheck(a==Blockly.Types.NUMBER.output?Blockly.Types.NUMBER.checkList:Blockly.Types.TEXT.checkList)},mutationToDom:function(){var a=document.createElement("mutation");a.setAttribute("type",this.getFieldValue("TYPE"));return a},domToMutation:function(a){this.updateType_(a.getAttribute("type"))},getBlockType:function(){return this.getFieldValue("TYPE")==
 Blockly.Types.TEXT.output?Blockly.Types.TEXT:Blockly.Types.NUMBER}};
@@ -237,16 +237,3 @@ Blockly.Blocks.block_comment= {
     this.setHelpUrl("https://www.arduino.cc/reference/tr/language/structure/further-syntax/blockcomment/");
   }
 };
-
-Blockly.Blocks.text_print={
-  init:function(){
-    this.setColour(Blockly.Blocks.io.HUE);
-    this.appendValueInput("VARIABLE_SETTYPE_INPUT")
-        .appendField("Serial Print");
-    this.setPreviousStatement(true,null);
-    this.setNextStatement(true,null);
-    this.setTooltip(Blockly.Msg.TEXT_PRINT_TIP);
-    this.setHelpUrl("http://www.arduino.cc/en/Serial/Print");
-  }
-};
-      
