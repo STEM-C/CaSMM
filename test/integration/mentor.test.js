@@ -19,6 +19,7 @@ var contentcreatorRequest
 //
 // Setup before running tests
 //
+/*
 beforeAll(async () => {
 
     // login as an admin
@@ -69,7 +70,7 @@ beforeAll(async () => {
     
     unitId = units.id
 })
-
+*/
 //
 // Mentor tests
 //

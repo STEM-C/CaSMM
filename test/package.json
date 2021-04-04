@@ -3,13 +3,14 @@
     "@babel/preset-env": "^7.10.4",
     "axios": "^0.19.2",
     "babel-jest": "^26.1.0",
-    "jest": "^26.1.0",
+    "jest": "^26.6.3",
     "k6": "^0.0.0"
   },
   "scripts": {
     "start": "docker-compose -f ../docker-compose.test.yml up",
-    "functional": "jest ./functional/*.test.js",
-    "integration": "jest ./integration/*.test.js",
+    "student": "jest ./functional/studentLogin.test.js",
+    "dashboard": "jest ./functional/dashboard.test.js",
+    "integration": "jest ./integration/contentcreator.test.js",
     "performance": "k6 run ./performance/*.test.js"
   },
   "type": "module"

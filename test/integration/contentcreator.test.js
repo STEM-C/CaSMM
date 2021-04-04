@@ -19,6 +19,7 @@ var contentcreatorRequest
 //
 // Setup before running tests
 //
+/*
 beforeAll(async () => {
 
     // login as an admin
@@ -69,6 +70,7 @@ beforeAll(async () => {
     
     unitId = units.id
 })
+*/
 
 //Content Creator Tests
 
@@ -84,10 +86,10 @@ test('content creator can login', async () => {
     expect(response.data).toHaveProperty('user')
 
     contentcreatorRequest = getAuthorizedRequestModule(response.data.jwt)
-    // console.log("Mentor Request", mentorRequest)
+    console.log("Content Creator Request", response.data.jwt)
 })
 
-test('content creator can create units', async () => {
+test('content creator can create units', async () => { 
     const response = await contentcreatorRequest.post('/units',{
         name: 'UnitName',
         number: 123,
@@ -98,27 +100,33 @@ test('content creator can create units', async () => {
 
 })
 
-test('content creator can edit units', async () => {
+//this will pass on first pass when we actually set unitId 
+test('content creator can edit units', async () => {   
+    //console.log("unitID: ", unitId)
+    //unitId = 2;
     const response = await contentcreatorRequest.put(`/units/${unitId}`,{
-        name: 'NewUnitName'        
+        name: "NewUnitName"        
     })
     expect(response.status).toBe(200)
 
 })
 
+//Lily edit - added description/expectation as requirement or the dashboard will error out. 
 test('content creator can create learning standard', async () => {
     const response = await contentcreatorRequest.post('/learning-standards',{
         name: 'LS',
         unit: unitId,
         number: 122,
         teks: '2A',
+        expectations: "Test expecation description so defaultcontentcreator doesnt error out",
 
     })
     expect(response.status).toBe(200)
 
 })
 
-test('content creator can edit learning Standards', async () => {
+//this will pass on first pass when we actually set learningStandardId
+test('content creator can edit learning Standards', async () => { 
     const response = await contentcreatorRequest.put(`/learning-standards/${learningStandardId}`,{
         name: 'NewLearningStandard'        
     })
@@ -127,7 +135,7 @@ test('content creator can edit learning Standards', async () => {
 })
 
 test('content creator can create days', async () => {
-    const response = await contentcreatorRequest.post('/days',{
+    const response = await contentcreatorRequest.post('/days',{ //didnt seem to add learning standard 'something' but it did create the day and it passed..
         number: 123,
         learning_standard: learningStandardId,
         template: '<xml xmlns="http://www.w3.org/1999/xhtml"><block type="io_digitalwrite" id="j#m#H23NIQH5Wz^I2c^G" x="70" y="224"><field name="PIN">0</field><value name="STATE"><block type="io_highlow" id="7.^n|ek_3R;_Q`K9M!;/"><field name="STATE">HIGH</field></block></value></block></xml>'

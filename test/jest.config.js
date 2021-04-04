@@ -1,4 +1,4 @@
   
-export default {
-    testTimeout: 20000
-} 
+//export default {
+  //  testTimeout: 20000
+//} 
