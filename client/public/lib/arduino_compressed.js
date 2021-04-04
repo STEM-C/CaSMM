@@ -1115,14 +1115,12 @@ Blockly.Arduino.text_trim = function(a) {
     a = Blockly.Arduino.valueToCode(a, "TEXT", Blockly.Arduino.ORDER_UNARY_POSTFIX);
     return [("" == a ? '""' : "String(" + a + ")") + b, Blockly.Arduino.ORDER_UNARY_POSTFIX]
 };
-
 Blockly.Arduino.text_print = function(a) {
     var b = Blockly.Arduino.Boards.selected.serial[0][1];
     Blockly.Arduino.addSetup("serial_" + b, b + ".begin(9600);", !1);
     a = Blockly.Arduino.valueToCode(a, "TEXT", Blockly.Arduino.ORDER_NONE);
     return b + ".print(" + ("" == a ? '""' : "String(" + a + ")") + ");\n"
 };
-
 Blockly.Arduino.text_prompt_ext = function(a) {
     var b = Blockly.Arduino.Boards.selected.serial[0][1],
         c = a.getFieldValue("TYPE"),
