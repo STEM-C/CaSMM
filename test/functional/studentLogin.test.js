@@ -70,12 +70,23 @@ var studentRequest
 //student.js
 test('student can view day selections', async () => {
     //const response = await getStudentClassroom(adminToken);
-
-    const res = await postJoin('0450', 3, adminToken);
+    //const students = await getStudents('0450', adminToken);
+    const res = await postJoin('0450',[1,2,3], adminToken);
     studentRequest = getAuthorizedRequestModule(res.data);
-    console.log("Student token: ", res.data);
 
-    const response = await studentRequest.get('/classrooms/student');
+    expect(studentRequest.status).toBe(200)
+   /* console.log("Student token: ", res.data);
+    const res = await postJoin('0450', {entryNum = 1,
+      updateStudentUsers=1,
+      studentList=students,
+      updateStudentAnimals={updateStudentAnimals},
+      animalList=['Lion', 'Dog', 'Frog', 'Fish', 'Cow'],
+      handleLogin={handleLogin}
+    },
+      
+      , adminToken);
+*/
+   /* const response = await studentRequest.get('/classrooms/student');
     expect(response).toMatchObject({
         "data": [
             {
@@ -86,9 +97,9 @@ test('student can view day selections', async () => {
           ],
           "err": null,
 
-    })
+    })*/
 })
-test('correct day save is received in specific day workspace for student', async () =>{
-    const response = await adminRequest.get('/classrooms/student');
+//test('correct day save is received in specific day workspace for student', async () =>{
+    //const response = await adminRequest.get('/classrooms/student');
 
-})
+//})

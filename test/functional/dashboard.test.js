@@ -79,32 +79,8 @@
  //const axios = require('axios');
  //jest.mock('axios')
 
- /*
-mentor:
-dashboard main calls are:
--classroom/1: gets the students and classroom data
--learning_standard/1: gets the classroom descriptions and such
-
- */
-
-/*
-content creator:
-3/25/21: issue in testing env where initally some of the learning standards have null expectation descriptions and it fails to load page
-        fix: every learning standard needs to have some kind of text in it
-
-Create (some kind of) test to make sure that functionality of the addition of "something" still makes the web function
-
-ccdashboard main calls:
-- /grades  ;; these are actual year grades - not student grades
--/units
--/learning-standards
-
-
-*/
 //tomatchobject - or ; objectcontaining - and->unlelss property specified
 
-
- //logging in prepopulated mentor - classroom 0450 ; name: basic mentor
  test('Mentor can login', async () => {
     const response = await publicRequest.post('/auth/local', {
         identifier: 'defaultmentor',
@@ -123,9 +99,6 @@ ccdashboard main calls:
 //looking specifically that classroom name, classroom code, and number of students are correct
 test('Mentor dashboard information is populated correctly', async () => {
     const response = await mentorRequest.get('/classrooms/1');
-
-    //const response = getMentorLoginData(mentorToken);
-    //console.log("Mentor Request2", mentorToken)
     expect(response).toMatchObject(({
         "data": 
             {
@@ -164,16 +137,23 @@ test('Mentor dashboard contains correct learning standards', async () =>{
     }))
 })
 
-test('Mentor dashboard contains correct days', async () => {
+//test('Mentor dashboard contains correct days', async () => {
     
 
-})
+//})
 
 test('Mentor can view correct day - with the correct blocks populated in day panel per learning standard', async () => {
-    const response = await mentorRequest.get('/days/1');
+    const { data: admin } = await publicRequest.post('/admin/auth/local', {
+        identifier: 'test',
+        password: '123456'
+    })
+    adminRequest = getAuthorizedRequestModule(admin.jwt)
+
+     console.log("admin token: ", admin.jwt)
+    const response = await adminRequest.get('/days/1');
     expect(response).toMatchObject({
             "data": { 
-                "id": "1",
+                "id": 1,
                 "learning_standard": {
                     "id": 1,
                     "unit": 1,
