@@ -14,6 +14,7 @@ function Student(props) {
                 const res = await getStudentClassroom();
                 if (res.data) {
                     if(res.data.learning_standard){
+                        console.log(res.data);
                         setLearningStandard(res.data.learning_standard)
                     }
                 } else {
@@ -36,14 +37,14 @@ function Student(props) {
             <NavBar isStudent={true}/>
             <div id='activity-container'>
                 <div id='header'>
-                    <h1>Select your Day</h1>
+                    <div>Select your Day</div>
                 </div>
                 <ul>
                     {
                         learningStandard.days ?
-                            learningStandard.days.map(day =>
+                            learningStandard.days.sort((day1, day2) => day1.number - day2.number).map(day =>
                                 <div key={day.id}
-                                     id={selectedDay.id !== day.id ? 'list-item-wrapper' : 'selected-activity'}
+                                     id='list-item-wrapper'
                                      onClick={() => handleSelection(day)}>
                                     <li>
                                         {`${learningStandard.name}: Day ${day.number}`}
