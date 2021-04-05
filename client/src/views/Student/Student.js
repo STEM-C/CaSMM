@@ -14,7 +14,6 @@ function Student(props) {
                 const res = await getStudentClassroom();
                 if (res.data) {
                     if(res.data.learning_standard){
-                        console.log(res.data);
                         setLearningStandard(res.data.learning_standard)
                     }
                 } else {
