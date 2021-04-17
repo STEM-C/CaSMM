@@ -21,7 +21,7 @@
  //
  // Setup before running tests
  //
- /*
+ 
  beforeAll(async () => {
  
      // login as an admin
@@ -31,48 +31,13 @@
      })
  
      // create an admin request instance
-     const adminRequest = getAuthorizedRequestModule(admin.jwt)
+     adminRequest = getAuthorizedRequestModule(admin.jwt)
  
      console.log("token: ", admin.jwt)
  
-     // 
-     // populate the database
-     //
-     const { data: school } = await adminRequest.post('/schools', {
-         name: 'UF1'
-     })
-     console.log("School ID: ", school.id)
-     schoolId = school.id
-     
-     const { data: grade } = await adminRequest.post('/grades',{
-         name: '11th'
-     })
-     gradeId = grade.id
- 
-     const { data: classroom } = await adminRequest.post('/classrooms', {
-         name: 'test',
-         school: school.id,
-         grade: grade.id
-     })
-     classroomId = classroom.id
-     console.log("This is classroom id", classroomId)
- 
-     const { data: learningStandard } = await adminRequest.post('/learning-standards', {
-         number: 1.1,
-         name: learningStandardName
-     })
- 
-     learningStandardId = learningStandard.id
- 
-     const { data: units } = await adminRequest.post('units', {
-         number: 1,
-         name: 'Unit',
-         grade: gradeId
-     })
-     
-     unitId = units.id
+    
  })
- */
+ 
  //Tests
 
  //localhost:1337/api/classrooms/join/0450
@@ -143,13 +108,6 @@ test('Mentor dashboard contains correct learning standards', async () =>{
 //})
 
 test('Mentor can view correct day - with the correct blocks populated in day panel per learning standard', async () => {
-    const { data: admin } = await publicRequest.post('/admin/auth/local', {
-        identifier: 'test',
-        password: '123456'
-    })
-    adminRequest = getAuthorizedRequestModule(admin.jwt)
-
-     console.log("admin token: ", admin.jwt)
     const response = await adminRequest.get('/days/1');
     expect(response).toMatchObject({
             "data": { 

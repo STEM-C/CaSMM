@@ -10,7 +10,7 @@
     "start": "docker-compose -f ../docker-compose.test.yml up",
     "student": "jest ./functional/studentLogin.test.js",
     "dashboard": "jest ./functional/dashboard.test.js",
-    "integration": "jest ./integration/*.test.js",
+    "integration": "jest ./integration/mentor.test.js",
     "performance": "k6 run ./performance/*.test.js"
   },
   "type": "module"

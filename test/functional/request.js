@@ -14,7 +14,7 @@ const PUT = 'PUT';
 const POST = 'POST';
 const DELETE = 'DELETE'
 
-const makeRequest = async ( {method, path, data, auth = false, error, token}) => {
+const makeRequest = async ( {method, path, data, auth = false, error}) => {
     let res = null;
     let err = null;
     const config = auth ? {
@@ -60,13 +60,12 @@ export const getAuthorizedRequestModule = (token) => axios.create({
     }
 })
 
-export const getStudentLoginData = async (token) => (
+export const getStudentLoginData = async () => (
     makeRequest({
         method: 'GET',
         path: `${host}/classrooms/join/0450`,
         auth: true,
         error: "Student login data information could not be retrieved",
-        token: token
     })
 )
 
@@ -80,16 +79,15 @@ makeRequest({
     })
 )
 
-export const getStudents = async (code, token) => (
+export const getStudents = async (code) => (
     makeRequest({
         method: 'GET',
         path: `${host}/classrooms/join/${code}`,
         error: "Student info could not be retrieved.",
-        token: token
     })
 )
 
-export const postJoin = async (code, ids, token) => (
+export const postJoin = async (code, ids) => (
     makeRequest({
         method: POST,
         path: `${host}/classrooms/join/${code}`,
@@ -97,16 +95,14 @@ export const postJoin = async (code, ids, token) => (
             "students": ids,
         },
         error: "Login failed.",
-        token: token
     })
 );
 
-export const getStudentClassroom = async (token) => (
+export const getStudentClassroom = async () => (
     makeRequest({
         method: 'GET',
         path: `${host}/classrooms/student`,
         auth: true,
         error: "Classroom information could not be retrieved",
-        token: token
     })
 );
