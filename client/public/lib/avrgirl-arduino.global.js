@@ -12930,7 +12930,6 @@ THE SOFTWARE.
                     baudRate: this.board.baud,
                     autoOpen: false
                 });
-                console.log(this.serialPort);
                 this.serialPort.on('open', function() {
                     //    _this.emit('connection:open');
                 })
@@ -13134,10 +13133,8 @@ THE SOFTWARE.
                     }
 
                     open(callback) {
-                        console.log(this.requestOptions);
                         window.navigator.serial.requestPort(this.requestOptions)
                             .then(serialPort => {
-                                console.log(serialPort);
                                 this.port = serialPort;
                                 if (this.isOpen) return;
                                 return this.port.open({ baudRate: this.baudRate || 57600 });
