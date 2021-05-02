@@ -9,10 +9,6 @@
     "timestamps": true
   },
   "attributes": {
-    "number": {
-      "type": "decimal",
-      "required": true
-    },
     "name": {
       "type": "string",
       "required": true
