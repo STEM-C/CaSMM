@@ -29,7 +29,9 @@ module.exports = ({ env }) => ({
 				username: env('DATABASE_USERNAME', 'postgres'),
 				password: env('DATABASE_PASSWORD', 'postgres'),
 				schema: 'public',
-				ssl: env('DATABASE_SSL', false)
+				ssl: env('NODE_ENV') == 'production' 
+				? { rejectUnauthorized: false }
+				: false
 			},
 			options: {
 				// ssl: {
