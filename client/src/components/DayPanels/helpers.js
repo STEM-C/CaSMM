@@ -51,7 +51,7 @@ export const compileArduinoCode = async (workspaceRef, setSelectedCompile, day, 
     try {
         // create an initial submission
         const initialSubmission = await createSubmission(day, workspaceText, sketch, path, isStudent);
-
+        console.log(initialSubmission);
         // get the submission result when it's ready and flash the board
         await getAndFlashSubmission(initialSubmission.data.id, path, isStudent, setSelectedCompile)
     } catch (e) {
@@ -62,7 +62,7 @@ export const compileArduinoCode = async (workspaceRef, setSelectedCompile, day, 
 const getAndFlashSubmission = async (id, path, isStudent, setSelectedCompile) => {
     // get the submission
     const response = await getSubmission(id, path, isStudent)
-
+    console.log(response);
     // if the submission is not complete, try again later
     if (response.data.status !== "COMPLETED") {
         setTimeout(() => getAndFlashSubmission(id, path, isStudent, setSelectedCompile), 250)
