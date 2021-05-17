@@ -6,17 +6,9 @@
  import { getPublicRequestModule, getAuthorizedRequestModule, getMentorLoginData } from '../functional/request'
  
  const publicRequest = getPublicRequestModule()
- var schoolId  
- var userId 
- var classroomId 
- var learningStandardId,  learningStandardName = 'Something'
- var studentId
- var unitId, gradeId
  var adminRequest
  var mentorRequest
  var contentcreatorRequest
- var mentorToken //calling different times gives diff tokens
- var adminToken 
  
  //
  // Setup before running tests
@@ -34,17 +26,9 @@
      adminRequest = getAuthorizedRequestModule(admin.jwt)
  
      console.log("token: ", admin.jwt)
- 
-    
  })
  
  //Tests
-
- //localhost:1337/api/classrooms/join/0450
- //const axios = require('axios');
- //jest.mock('axios')
-
-//tomatchobject - or ; objectcontaining - and->unlelss property specified
 
  test('Mentor can login', async () => {
     const response = await publicRequest.post('/auth/local', {
@@ -58,7 +42,7 @@
 
     mentorRequest = getAuthorizedRequestModule(response.data.jwt)
      console.log("Mentor Request", response.data.jwt)
-     mentorToken = response.data.jwt
+     
 })
 
 //looking specifically that classroom name, classroom code, and number of students are correct
@@ -102,10 +86,6 @@ test('Mentor dashboard contains correct learning standards', async () =>{
     }))
 })
 
-//test('Mentor dashboard contains correct days', async () => {
-    
-
-//})
 
 test('Mentor can view correct day - with the correct blocks populated in day panel per learning standard', async () => {
     const response = await adminRequest.get('/days/1');
@@ -172,17 +152,25 @@ test('content creator dashboard contains all grades for dropdown of add unit', a
                 "id": 4,
                 "name": "5th",
             },
-            {
-                "id": 5,
-                "name": "11th",
-            }  ]   
+            ]   
      })
     
 })
 
-//test('content creator dashboard contains all units for dropdown of add learning standard', async () =>{
- //   const response = await contentcreatorRequest.get('/grades');
-//})
+/*test('content creator dashboard contains all units for dropdown of add learning standard', async () =>{
+    const response = await contentcreatorRequest.get('/grades');
 
-//test('content creator has access to correct days ')
+    expect(response).toMatchObject({
+        data:[ 
+            {
+                "id": 4,
+           "units":[{ "name" : "Unit name"},],
+        },
+    ]
+
+    })
+
+})*/
+
+
 

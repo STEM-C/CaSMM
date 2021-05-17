@@ -6,16 +6,7 @@
  import { getPublicRequestModule, getAuthorizedRequestModule, getStudentLoginData, getStudents, getStudentClassroom, postJoin } from '../functional/request'
  
  const publicRequest = getPublicRequestModule()
- var schoolId  
- var userId 
- var classroomId 
- var learningStandardId,  learningStandardName = 'Something'
- var studentId
- var unitId, gradeId
  var adminRequest
- var mentorRequest
- var contentcreatorRequest
- var adminToken
 var studentRequest
  
  //Tests
@@ -27,8 +18,6 @@ var studentRequest
              password: '123456'
       })
     adminRequest = getAuthorizedRequestModule(admin.jwt)
-
-     //const response = await getStudentLoginData(admin.jwt);
     console.log("admin token: ", admin.jwt)
  })
 
@@ -53,15 +42,10 @@ var studentRequest
                     "name": "Dakota R.",
                   },
                ],
-
-     
     })
-  
-
  })
 
  test('A user can login with classroom code', async () => {
-    //const response = await getStudents('0450'); //seems like returns undefined if passed without adminauth
    const response = await adminRequest.get(`/classrooms/join/0450`);
     expect(response.status).toBe(200)
 })
@@ -102,7 +86,3 @@ test('student can view day selections', async () => {
            }
     })
 })
-/*test('correct day save is received in specific day workspace for student', async () =>{
-    const response = await adminRequest.get('/classrooms/student');
-
-})*/

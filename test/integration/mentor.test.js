@@ -71,6 +71,34 @@ beforeAll(async () => {
     unitId = units.id
 })
 */
+beforeAll(async () => {
+ 
+    // login as an admin
+    const { data: admin } = await publicRequest.post('/admin/auth/local', {
+        identifier: 'test',
+        password: '123456'
+    })
+
+    // create an admin request instance
+    adminRequest = getAuthorizedRequestModule(admin.jwt)
+
+    console.log("token: ", admin.jwt)
+
+
+    const response = await publicRequest.post('/auth/local', {
+        identifier: 'defaultmentor',
+        password: '123456'
+    })
+
+    expect(response.status).toBe(200)
+    expect(response.data).toHaveProperty('jwt')
+    expect(response.data).toHaveProperty('user')
+
+    mentorRequest = getAuthorizedRequestModule(response.data.jwt)
+
+})
+
+
 //
 // Mentor tests
 //
@@ -88,6 +116,20 @@ test('an unauthenticated user can register', async () => {
     expect(response.data).toHaveProperty('jwt')
     expect(response.data).toHaveProperty('user')
     userId = response.data.user.id
+    console.log("userID", userId)
+
+    /*
+    //Reverting - for (possible) async tests 
+    const responseRevert = await adminRequest.delete('/auth/local/register/' + response.data.user.id, {
+        username: 'testuser',
+        email: 'tu@mail.com',
+        password: '123456'
+    })
+
+    expect(responseRevert.status).toBe(200)
+    expect(responseRevert.data).toHaveProperty('jwt')
+    expect(responseRevert.data).toHaveProperty('user')
+*/
 })
 
 
@@ -101,21 +143,31 @@ test('an unauthenticated user can login', async () => {
     expect(response.data).toHaveProperty('jwt')
     expect(response.data).toHaveProperty('user')
 
-    mentorRequest = getAuthorizedRequestModule(response.data.jwt)
+   // mentorRequest = getAuthorizedRequestModule(response.data.jwt)
     // console.log("Mentor Request", mentorRequest)
 })
 
+//changed the school, classroom, and user to be what is preloaded into the staging/testing init data
 test('an authenticated user can create a mentor profile', async () => {
-
     const response = await mentorRequest.post('/mentors', {
         first_name: 'test',
         last_name: 'user',
-        school: schoolId,
-        classrooms: classroomId,
-        user: userId
+        school: 1,
+        classrooms: 1,
+        user: 1
     })
 
     expect(response.status).toBe(200)
+
+    /*//Reverting for async tests
+    const responseRevert = await mentorRequest.delete('/mentors/' + response.data.id, {
+        id: response.data.id,
+        first_name: 'test',
+        last_name: 'user',
+    })
+
+    expect(responseRevert.status).toBe(200)
+*/
 })
 
 
@@ -123,9 +175,8 @@ test.skip('an authenticated user cannot create a mentor profile without user id'
     const response = await mentorRequest.post('/mentors', {
         first_name: 'test',
         last_name: 'user',
-        school: schoolId,
+        school: 1,
     })
-    // console.log(response.status)
     expect(response.status).toBe(400)
 })
 
@@ -133,11 +184,19 @@ test('an authenticated user can create a teacher profile', async () => {
     const response = await mentorRequest.post('/teachers', {
         first_name: 'test',
         last_name: 'user',
-        school: schoolId,
-        user: userId
+        school: 1,
+        user: 3
     })
 
     expect(response.status).toBe(200)
+/*
+    //reverting for async tests
+    const responseRevert = await mentorRequest.delete('/teachers/' + response.data.id, {
+        first_name: 'test',
+        user: 3
+    })
+
+    expect(responseRevert.status).toBe(200)*/
 })
 
 
@@ -145,9 +204,9 @@ test.skip('an authenticated user cannot create a teacher profile without user id
     const response = await mentorRequest.post('/teachers', {
         first_name: 'test',
         last_name: 'user',
-        school: schoolId
+        school: 1
     })
-    console.log(response.status)
+    //console.log(response.status)
     expect(response.status).toBe(400)
 })
 
@@ -155,11 +214,17 @@ test('an authenticated user can create a student profile', async () => {
     const response = await mentorRequest.post('/students', {
         name: "Student N.",
         enrolled: true,
-        classroom: classroomId
+        classroom: 1
     })
 
     expect(response.status).toBe(200)
-    studentId = response.data.id
+
+    //reverting for async tests
+    const responseRevert = await mentorRequest.delete('/students/' + response.data.id, {
+        name: "Student N."
+    })
+
+    expect(responseRevert.status).toBe(200)
 })
 
 test('an authenticated user can access own info', async () => {
@@ -168,13 +233,13 @@ test('an authenticated user can access own info', async () => {
     expect(response.status).toBe(200)
     expect(response.data).toHaveProperty('school')
     expect(response.data).toHaveProperty('classrooms')    
-    expect(response.data.classrooms[0].id).toBe(classroomId)
+    expect(response.data.classrooms[0].id).toBe(1)
 
 })
 
 
 test.skip('an unauthenticated user cannot access a classroom', async () => {
-    const response = await publicRequest.get(`/classrooms/${classroomId}`, {})
+    const response = await publicRequest.get(`/classrooms/1`, {})
 
     expect(response.status).toBe(403)
     
@@ -182,22 +247,22 @@ test.skip('an unauthenticated user cannot access a classroom', async () => {
 
 test('an authenticated user can access a classroom by id', async () => {
 
-    const response = await mentorRequest.get(`/classrooms/${classroomId}`, {})
+    const response = await mentorRequest.get(`/classrooms/1`, {})
 
     expect(response.status).toBe(200)
     expect(response.data).toHaveProperty('school')
     expect(response.data).toHaveProperty('students')
-    expect(response.data.students[0].id).toBe(studentId)
+    expect(response.data.students[0].id).toBe(1)
     
 })
 
 test('an authenticated user can access a learning standards', async () => {
 
-    const response = await mentorRequest.get(`/learning-standards/${learningStandardId}`, {})
+    const response = await mentorRequest.get(`/learning-standards/1`, {})
 
     expect(response.status).toBe(200)
     expect(response.data).toHaveProperty('name')
-    expect(response.data.name).toBe(learningStandardName)
+    expect(response.data.name).toBe('Mixtures and Solutions') //double check on this
     
 })
 
@@ -205,8 +270,8 @@ test('an authenticated user can access a learning standards', async () => {
 test('an authenticated user can access a classroom by id', async () => {
 
     const response = await mentorRequest.post(`/selections`, {
-        classroom: classroomId,
-        learning_standard: learningStandardId
+        classroom: 1,
+        learning_standard: 1
     })
 
     expect(response.status).toBe(200)
@@ -221,7 +286,7 @@ test('an authenticated user can update a student profile', async () => {
     // })
     let response
     
-    response = await mentorRequest.put(`/students/enrolled/${studentId}`, {
+    response = await mentorRequest.put(`/students/enrolled/1`, {
 
         enrolled: true
 
@@ -231,14 +296,14 @@ test('an authenticated user can update a student profile', async () => {
     expect(response.status).toBe(200)
     studentId = response.data.id
 
-    response = await mentorRequest.get(`/classrooms/${classroomId}`, {})
+    response = await mentorRequest.get(`/classrooms/1`, {})
     // console.log("response for classroom is", response.status)
 
     expect(response.status).toBe(200)
     expect(response.data).toHaveProperty('school')
     expect(response.data).toHaveProperty('students')
     response.data.students.forEach(student => {
-        if(student.id == studentId)
+        if(student.id == 1)
             expect(student.enrolled).toBe(true)
     });
     
@@ -247,10 +312,10 @@ test('an authenticated user can update a student profile', async () => {
 
 test('an authenticated user can access a units by grade', async () => {
 
-    const response = await mentorRequest.get(`/units?grade=${gradeId}`, {})
+    const response = await mentorRequest.get(`/units?grade=4`, {})
 
     expect(response.status).toBe(200)
-    expect(response.data[0].id).toBe(unitId)
+    expect(response.data[0].id).toBe(1)
 })
 
 test('an authenticated user can access a units', async () => {
