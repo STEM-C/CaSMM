@@ -6,7 +6,7 @@
       display: block;
       background: none;
       margin: 20px auto 0px;
-      border: 2px solid;
+      border: 1px solid;
       border-color: #colors[secondary];
       padding: 10px 10px;
       width: 40%;
@@ -16,29 +16,28 @@
       transition: 0.25s;
     }
 
-    input[type = "text"]:focus {
-      width: 45%;
-    }
   }
 
   input[type = "button"] {
-    background: darken(#colors[tertiary], 30%);
-    width: 55%;
-    display: block;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #colors[quaternary];
+    width: 40%;
+    height: 6vh;
     margin: 0 auto;
-    border: 2px solid;
-    border-color: #colors[secondary];
-    padding: 14px 40px;
-    outline: none;
-    color: #colors[text-secondary];
-    font-size: 1.5em;
-    font-weight: 550;
+    border: none;
+    color: #colors[text-primary];
+    font-size: 1em;
+    font-weight: 500;
     border-radius: 30px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.377);
     cursor: pointer;
     transition: 0.25s;
 
     &:hover {
-      width: 60%;
+      width: 42%;
+      background: #colors[quinary];
     }
   }
 

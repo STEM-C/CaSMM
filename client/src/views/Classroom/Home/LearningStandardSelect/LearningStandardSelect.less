@@ -4,12 +4,11 @@
   margin-bottom: 1vh;
 
   .ant-select {
-    float: left;
-    //margin-left: 12.5vw;
+    float: right;
     width: 200px;
 
     .ant-select-selector {
-      border: 2px solid;
+      border: 1px solid;
       border-color: #colors[secondary];
     }
   }
@@ -27,26 +26,27 @@
     border-radius: 80px;
     margin: 0 auto 1.2em auto;
     width: 80%;
-    height: 60px;
+    height: 6vh;
     line-height: 45px;
     text-align: center;
-    font-size: 2.75vh;
+    font-size: 1em;
   }
 
   #list-item-wrapper {
-    background-color: darken(#colors[tertiary], 5%);
-    border-color: #colors[secondary];
-    font-weight: 450;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #colors[quaternary];
+    border: none;
+    border-radius: 10px;
+    font-weight: 600;
+    font-size: 1em;
     color: #colors[text-primary];
     transition: 0.25s;
 
     &:hover {
       cursor: pointer;
-      color: #colors[text-secondary];
-      background-color: #colors[secondary];
-      border-color: darken(#colors[secondary], 10%);
-      opacity: .9;
-      font-weight: 500;
+      background-color: #colors[quinary];
       width: 85%;
     }
   }
@@ -63,11 +63,16 @@
   }
 
   #selected-learning-standard {
-    background-color: #colors[secondary];
-    border-color: darken(#colors[secondary], 10%);
-    font-weight: 500;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #colors[quinary];
+    border: none;
+    border-radius: 10px;
+    font-size: 1em;
+    font-weight: 600;
     width: 85%;
-    color: #colors[text-secondary];
+    color: #colors[text-primary];
   }
 }
 
@@ -87,7 +92,7 @@
   border: none;
   padding: 0 !important;
   display: inline-block;
-  margin-left: 10px;
+  padding: 10px;
   float: left;
 
   &:focus {
@@ -106,32 +111,52 @@
 }
 
 #ls-info {
+  margin: 0 auto 2vh auto;
+
+  #learning-standard-expectations-title {
+    font-size: 1.2em;
+    font-weight: 600;
+  }
+
+  #learning-standard-expectations {
+    font-size: 1.1em;
+    line-height: 1.2em;
+  }
+
   #btn-container {
     width: 80%;
     margin: auto;
-
-    button {
-      width: 8vw;
+    
+    #view-day-button {
+      width: 14vw;
       min-height: 8vh;
-      font-size: 1em;
-      border-radius: 4px;
-      margin: auto;
-      padding-left: 0;
-      padding-right: 0;
-      background: darken(#colors[tertiary], 30%);
-      border: 2px solid;
-      border-color: #colors[secondary];
-      color: #colors[text-secondary];
-      transition: 0.25s;
-      cursor: pointer;
+      box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.377);
+      border-radius: 10px;
 
-      &:focus {
-        outline: none;
+      #view-day-title {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 1em;
+        padding: 8px;
+        min-height: 8vh;
+        background-color: #colors[quaternary];
+        border-top-left-radius: 10px;
+        border-top-right-radius: 10px;
       }
-
-      &:hover {
-        width: 10vw;
+  
+      #view-day-description {
+        display: flex;
+        flex-direction: column;
+        margin: 20px;
+        font-size: 1em;
+        line-height: 1em;
       }
     }
+   
   }
+}
+
+#check-units {
+  text-align: left;
 }

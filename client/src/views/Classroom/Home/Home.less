@@ -1,19 +1,76 @@
 @import "../../../assets/style.less";
 
+#home-header {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #colors[secondary];
+  border-radius: 80px;
+  width: 30%;
+  min-height: 6vh;
+  color: #colors[text-secondary];
+  font-size: 2.4vh;
+  font-weight: bold;
+  position: relative;
+  left: 8vw;
+  top: 8vh;
+  text-align: center;
+}
+
 #home-content-container {
-  margin: 8vh auto 5vh auto;
+  margin: 5vh auto 5vh auto;
   padding: 5vh 5vw;
   width: 80vw;
-  background: #colors[tertiary];
-  border-radius: 20px;
+  background: rgb(233, 233, 233);
+  border-radius: 5px;
   border: 2px solid #colors[secondary];
+
+  #active-learning-standard-title-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+  }
+
+  #learning-standard-expectations {
+    font-size: 1.2em;
+    line-height: 1.2em;
+  }
 
   #divider {
     width: 95%;
     height: 0;
     margin: 5vh 0;
-    border-bottom: 1px solid #colors[secondary];
+    border-bottom: 2px solid #colors[secondary];
     opacity: 20%;
+  }
+
+  #view-day-card {
+    width: 14vw;
+    min-height: 24vh;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.377);
+    border-radius: 10px;
+
+    #view-day-title {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 1em;
+      padding: 8px;
+      min-height: 8vh;
+      background-color: #colors[quaternary];
+      border-top-left-radius: 10px;
+      border-top-right-radius: 10px;
+
+    }
+
+    #view-day-description {
+      display: flex;
+      flex-direction: column;
+      margin: 20px;
+      font-size: 1em;
+      line-height: 1em;
+    }
+    
   }
 
   button {
@@ -22,7 +79,7 @@
     padding-left: 0;
     padding-right: 0;
     background: darken(#colors[tertiary], 30%);
-    border: 2px solid;
+    border: none;
     border-color: #colors[secondary];
     color: #colors[text-secondary];
     transition: 0.25s;
@@ -36,11 +93,16 @@
   #btn-container {
     width: 80%;
     margin: auto;
+    padding-top: 14px;
 
     button {
-      width: 8vw;
-      min-height: 8vh;
+      width: 10vw;
+      min-height: 12vh;
       font-size: 1em;
+      font-weight: 500;
+      background: #colors[tertiary];
+      color: #000;
+      box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.377);
 
       &:hover {
         width: 10vw;
@@ -49,35 +111,47 @@
   }
 
   #learning-standard-modal {
-
     #change-lesson-btn {
-      width: 18vw;
-      min-height: 10vh;
       font-size: 1em;
-      margin-top: 3vh;
+      font-weight: 500;
+      background: none;
+      color: #colors[text-primary];
+      transition: 0.25s;
+      cursor: pointer;
+      margin-left: 10px;
 
       &:hover {
-        width: 20vw;
+        color: #colors[quinary];
       }
     }
   }
 }
 
 #display-code-modal {
-
-
+  position: absolute;
+  right: 9vw;
+  margin: 10px;
+  
   #display-code-btn {
-    width: 15vw;
-    min-height: 10vh;
+    width: 20vw;
+    min-height: 6vh;
     font-size: 1em;
+    font-weight: 500;
+    border-radius: 30px;
+    border: none;
+    background: #colors[quaternary];
+    color: #colors[text-primary];
+    transition: 0.25s;
+    cursor: pointer;
 
     &:hover {
       width: 18vw;
+      background-color: #colors[quinary];
     }
   }
 }
 
 #code-display-text {
-  font-size: 30vh;
+  font-size: 15em;
   text-align: center;
 }

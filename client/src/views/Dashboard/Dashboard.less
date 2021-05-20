@@ -2,60 +2,161 @@
 
 #main-header {
     color: #colors[text-secondary];
-    font-size: 3em;
+    font-size: 2em;
     font-weight: bolder;
     margin-left: 10%;
     margin-bottom: 3%;
-    text-align: left;
+    text-align: center;
+    padding-top: 20px;
 }
 
-#card-container {
+#dashboard-subheader {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #colors[secondary];
+    border-radius: 80px;
+    width: 30%;
+    min-height: 6vh;
+    color: #colors[text-secondary];
+    font-size: 2.5vh;
+    font-weight: bold;
+    position: relative;
+    left: 8vw;
+    top: 3vh;
+    text-align: center;
+  }
+
+#classrooms-container {
+      margin: 0 auto 2vh auto;
+      padding-top: 40px;
+      padding-bottom: 40px;
+      width: 80vw;
+      background: #colors[senary];
+      border-radius: 5px;
+      border: 2px solid #colors[secondary];
+  }
+
+#dashboard-card-container {
+    display: flex;
+    justify-content: center;
     width: 80vw;
-    padding: 0 0 5vh 0;
     margin: 0 auto 0 auto;
     display: inline-grid;
     grid-template-columns: auto auto;
 }
 
-#class-card {
-    text-align: left;
-    width: 35vw;
-    height: 45vh;
+#dashboard-class-card {
+    display: flex;
+    flex-direction: row;
+    text-align: center;
+    width: 26vw;
+    min-height: 34vh;
     margin: 2vw auto 0 auto;
     background: #colors[tertiary];
     color: #colors[text-primary];
-    border: solid 4px;
+    border: none;
     border-color: #colors[secondary];
     border-radius: 10px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.377);
+    
 
     #card-button-container {
-        margin: 10% auto 0 auto;
-
+        // margin: 10% auto 0 auto;
+        
         button {
-            width: 20vw;
-            min-height: 10vh;
+            width: 10vw;
+            min-height: 5vh;
             font-size: 1em;
-            border-radius: 4px;
+            font-weight: 500;
+            border-radius: 30px;
             margin: auto;
             padding-left: 0;
             padding-right: 0;
-            background: darken(#colors[tertiary], 30%);
-            border: 2px solid;
-            border-color: #colors[secondary];
-            color: #colors[text-secondary];
+            background: #colors[quaternary];
+            border: none;
+            color: #colors[text-primary];
             transition: 0.25s;
             cursor: pointer;
+            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.377);
 
             &:hover {
-                width: 22vw;
-                color: lighten(#colors[secondary], 20%);
+                width: 12vw;
+                background: #colors[quinary];
             }
         }
     }
 
-    #card-content-container {
+    #card-left-content-container {
         position: relative;
-        bottom: 0;
-        margin-bottom: 1vh;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        width: 72%;
+
+
+        #card-title {
+            text-align: center;
+            font-size: 1.4em;
+            margin: 10px;
+            padding: 8px;
+        }
     }
+
+    #card-right-content-container {
+        display: flex;
+        flex-direction: column;
+        width: 28%;
+
+        #number {
+            font-size: 1.4em;
+            margin: 0;
+        }
+
+        #label {
+            font-size: 1em;
+        }
+
+        #dashboard-display-code-btn {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            width: 100%;
+            height: 17vh;
+            padding: 16px;
+            background-color:  #colors[quaternary];
+            border-top-right-radius: 10px;
+            border: none;
+
+            &:hover {
+                background: #colors[quinary];
+            }
+
+            #code-display-text {
+                font-size: 15em;
+                text-align: center;
+              }
+        }
+        
+        #divider {
+            background-color: #colors[tertiary];
+            height: 2px;
+        }
+
+        #student-number-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            width: 100%;
+            height: 17vh;
+            padding: 16px;
+            background-color: #colors[quaternary];
+            border-bottom-right-radius: 10px;
+        }
+    }
+
 }
+  
