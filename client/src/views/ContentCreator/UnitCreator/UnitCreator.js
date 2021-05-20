@@ -114,39 +114,39 @@ export default function UnitCreator(props){
                 Add Unit
                 </Button>
             <Modal
-               title="Create a Unit"
+               title="Create Unit"
                visible={visible}
                onCancel={handleCancel}
                onOk={onClickHandler}
             >
             <Form id="add-units"
             labelCol={{
-                span: 5
+                span: 4
               }}
               wrapperCol={{
                 span: 14
               }}
               layout="horizontal"
               size="default">
-                <Form.Item id="form-label" label="Grade">
-                    <select id="grade" name='grade' defaultValue={unitObject.unitGrade} onChange={unitGradeOnChange}>
-                        <option key={0} value={unitObject.unitGrade} disabled id='disabled-option'>Grade</option>
-                        {setGradeOptions().map(option => option)}
-                    </select>
-                    {/* <Input value = {unitObject.unitGrade} /> */}
-                </Form.Item>
-                <Form.Item id="form-label" label="Unit Name">
-                    <Input onChange={unitNameOnChange} value ={unitObject.unitName}/>
-                </Form.Item >
-                <Form.Item id="form-label" label="Unit Number">
-                    <Input onChange={unitNumberOnChange} value = {unitObject.unitNumber}/>
-                </Form.Item>
-                <Form.Item id="form-label" label="Description">
-                    <Input onChange={unitDescripOnChange} value = {unitObject.unitDescrip}/>
-                </Form.Item>
-                <Form.Item id="form-label" label="TekS">
-                    <Input onChange={unitTeksIdOnChange} value = {unitObject.unitTeksId}/>
-                </Form.Item>
+            <Form.Item id="form-label" label="Unit Name">
+                <Input onChange={unitNameOnChange} value ={unitObject.unitName}/>
+            </Form.Item >
+            <Form.Item id="form-label" label="Grade">
+                <select id="grade" name='grade' defaultValue={unitObject.unitGrade} onChange={unitGradeOnChange}>
+                    <option key={0} value={unitObject.unitGrade} disabled id='disabled-option'>Grade</option>
+                    {setGradeOptions().map(option => option)}
+                </select>
+                {/* <Input value = {unitObject.unitGrade} /> */}
+            </Form.Item>
+            <Form.Item id="form-label" label="Number">
+                <Input onChange={unitNumberOnChange} value = {unitObject.unitNumber}/>
+            </Form.Item>
+            <Form.Item id="form-label" label="Description">
+                <Input onChange={unitDescripOnChange} value = {unitObject.unitDescrip}/>
+            </Form.Item>
+            <Form.Item id="form-label" label="TekS">
+                <Input onChange={unitTeksIdOnChange} value = {unitObject.unitTeksId}/>
+            </Form.Item>
             {/* <div>Learning Standards</div>
             <Form.List name="names">
         {(fields, { add, remove }) => {

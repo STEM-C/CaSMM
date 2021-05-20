@@ -339,6 +339,7 @@ export const createLearningStandard = async (description,name,number,unit, teks)
         data: {
             "expectations": description,
             "name": name,
+            "number": number,
             "unit": unit,
             "teks": teks
         },
