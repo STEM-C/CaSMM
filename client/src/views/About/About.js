@@ -66,6 +66,8 @@ export default function About(props) {
                     Gus Segovia
                     <br/>
                     Lily Hinkeldey
+                    <br/>
+                    Siyu Chen
                 </p>
             </div>
         </div>
