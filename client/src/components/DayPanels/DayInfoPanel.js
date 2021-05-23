@@ -6,6 +6,7 @@ import PlaceHolderImg1 from "../../assets/science.png";
 import PlaceHolderImg2 from "../../assets/arduino.png";
 import PlaceHolderImg3 from "../../assets/maker.png";
 
+// THIS PAGE IS NO LONGER IN USE,  SOME OF THE STYLING MAY NO LONGER APPLY
 export default function DayInfoPanel(props) {
     const {day} = props;
 
