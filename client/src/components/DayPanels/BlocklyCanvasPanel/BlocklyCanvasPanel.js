@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { Link } from "react-router-dom";
 import '../DayPanels.less'
 import { compileArduinoCode, handleCreatorSaveDay, handleSave } from "../helpers";
-import { message, Spin, Menu, Checkbox, Row, Col, Input } from "antd";
+import { message, Spin, Menu, Checkbox } from "antd";
 import { getSaves } from "../../../Utils/requests";
 import CodeModal from "./CodeModal";
 import VersionHistoryModal from "./VersionHistoryModal"
@@ -16,7 +16,6 @@ export default function BlocklyCanvasPanel(props) {
     const [studentToolbox, setStudentToolbox] = useState([]);
     const [lastSavedTime, setLastSavedTime] = useState(null);
     const [lastAutoSave, setLastAutoSave] = useState(null);
-    const [searchFilter, setSearchFilter] = useState('');
     const { day, homePath, handleGoBack, isStudent, isMentor, isContentCreator, lessonName } = props;
 
     const workspaceRef = useRef(null);
@@ -138,25 +137,7 @@ export default function BlocklyCanvasPanel(props) {
         }
     }
 
-    const selectEntireToolbox = (event) => {
-
-        if(event.target.checked){
-            let tempToolBox = [];
-            day && day.toolbox && day.toolbox.forEach(
-                ([category, blocks])=>{
-                    blocks.filter(block => block.name.includes(searchFilter)).forEach((block) => {
-                        tempToolBox = [...tempToolBox, block.name];
-                    })
-                }
-            )
-            setStudentToolbox(tempToolBox);
-        }
-        else{
-            setStudentToolbox([]);
-        }
-    }
-
-    const handleToolboxSelection = (event, blockName) => {
+    const handleToolboxSelection = (blockName) => {
         let index = studentToolbox.indexOf(blockName);
         if(index > -1) {
             setStudentToolbox(studentToolbox.filter(item => item !== blockName));
@@ -194,149 +175,112 @@ export default function BlocklyCanvasPanel(props) {
     return (
 
         <div id='horizontal-container' className="flex flex-column">
-            
+            <Spin tip="Compiling Code Please Wait..." className="compilePop" spinning={selectedCompile}>
+                <div id='top-container' className="flex flex-column vertical-container">
+                    <div id='description-container' className="flex flex-row space-between card">
+                        <div className='flex flex-row'>
+                            {homePath ? <Link id='link' to={homePath} className="flex flex-column">
+                                <i className="fa fa-home"/>
+                            </Link> : null}
+                            {handleGoBack ? <button onClick={handleGoBack} id='link' className="flex flex-column">
+                                <i id='icon-btn' className="fa fa-arrow-left"/>
+                            </button> : null}
+                        </div>
+                        <div>
+                            {isStudent && lastSavedTime ?
+                                `Last changes saved ${lastSavedTime}`
+                                : null
+                            }
+                        </div>
+                        <div className='flex flex-row'>
+                            {isStudent ?
+                                <div className='flex flex-row'>
+                                    <VersionHistoryModal
+                                        saves={saves}
+                                        lastAutoSave={lastAutoSave}
+                                        defaultTemplate={day}
+                                        getFormattedDate={getFormattedDate}
+                                        loadSave={loadSave}
+                                    />
+                                    <button onClick={handleManualSave} id='link' className="flex flex-column">
+                                        <i id='icon-btn' className="fa fa-save"/>
+                                    </button>
+                                </div>
+                                : null
+                            }
+                            {isContentCreator ?
+                                <div className='flex flex-row'>
+                                    <button onClick={handleCreatorSave} id='link' className="flex flex-column">
+                                        <i id='icon-btn' className="fa fa-save"/>
+                                    </button>
+                                </div>
+                                : null}
+                            <div className='flex flex-row'>
+                                <button onClick={handleUndo} id='link' className="flex flex-column">
+                                    <i id='icon-btn' className="fa fa-undo-alt"
+                                       style={workspaceRef.current ?
+                                           workspaceRef.current.undoStack_.length < 1 ?
+                                               { color: 'grey', cursor: 'default' } : null
+                                           : null}
+                                    />
+                                </button>
+                                <button onClick={handleRedo} id='link' className="flex flex-column">
+                                    <i id='icon-btn' className="fa fa-redo-alt"
+                                       style={workspaceRef.current ?
+                                           workspaceRef.current.redoStack_.length < 1 ?
+                                               { color: 'grey', cursor: 'default' } : null
+                                           : null}
+                                    />
+                                </button>
+                            </div>
+                        </div>
+                        <div style={{ "width": "10%" }}>
+                            <div id='action-btn-container' className="flex space-between">
+                                {!isStudent ?
+                                    <CodeModal
+                                        title={'XML'}
+                                        workspaceRef={workspaceRef.current}
+                                        setHover={setHoverXml}
+                                        hover={hoverXml}
+                                    />
+                                    : null}
+                                <CodeModal
+                                    title={'Arduino Code'}
+                                    workspaceRef={workspaceRef.current}
+                                    setHover={setHoverArduino}
+                                    hover={hoverArduino}
+                                />
+                                <i onClick={() => compileArduinoCode(workspaceRef.current, setSelectedCompile, day, isStudent)}
+                                   className="fas fa-upload hvr-info"
+                                   onMouseEnter={() => setHoverCompile(true)}
+                                   onMouseLeave={() => setHoverCompile(false)}/>
+
+                                {hoverCompile && <div className="popup ModalCompile">Upload to Arduino</div>}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </Spin>
             <div className='flex flex-row'>
                 <div id='bottom-container' className="flex flex-column vertical-container overflow-visible">
-                    <Row>
-                        <Col flex="none" id="section-header">
-                            {lessonName ? lessonName : "Program your Arduino..."}
-                        </Col>
-                        <Col flex="auto">
-                        
-                        <Spin tip="Compiling Code Please Wait..." className="compilePop" spinning={selectedCompile}>
-                            
-                            <Row align='middle' justify='end' id='description-container' >
-                                <Col span={1}>
-                                    <Row>
-                                        {homePath ? 
-                                        <Col>
-                                            <Link id='link' to={homePath} className="flex flex-column">
-                                                <i className="fa fa-home"/>
-                                            </Link>
-                                        </Col>
-                                         : null}
-                                        {handleGoBack ? 
-                                        <Col>
-                                            <button onClick={handleGoBack} id='link' className="flex flex-column">
-                                                <i id='icon-btn' className="fa fa-arrow-left"/>
-                                            </button>
-                                        </Col>
-                                         : null}
-                                    </Row>
-                                </Col>
-                                <Col flex='auto' />
-                            
-                                <Col span={6}>
-                                    {isStudent && lastSavedTime ?
-                                        `Last changes saved ${lastSavedTime}`
-                                        : null
-                                    }
-                                </Col>
-                                <Col span={isStudent? 8 : 5}>
-                                    <Row>
-                                    {isStudent ?
-                                        <Col className='flex flex-row'>
-                                            <VersionHistoryModal
-                                                saves={saves}
-                                                lastAutoSave={lastAutoSave}
-                                                defaultTemplate={day}
-                                                getFormattedDate={getFormattedDate}
-                                                loadSave={loadSave}
-                                            />
-                                            <button onClick={handleManualSave} id='link' className="flex flex-column">
-                                                <i id='icon-btn' className="fa fa-save"/>
-                                            </button>
-                                        </Col>
-                                        : null
-                                    }
-                                    {isContentCreator ?
-                                        <Col className='flex flex-row'>
-                                            <button onClick={handleCreatorSave} id='link' className="flex flex-column">
-                                                <i id='icon-btn' className="fa fa-save"/>
-                                            </button>
-                                        </Col>
-                                        : null}
-                                    <Col className='flex flex-row'>
-                                        <button onClick={handleUndo} id='link' className="flex flex-column">
-                                            <i id='icon-btn' className="fa fa-undo-alt"
-                                            style={workspaceRef.current ?
-                                                workspaceRef.current.undoStack_.length < 1 ?
-                                                    { color: 'grey', cursor: 'default' } : null
-                                                : null}
-                                            />
-                                        </button>
-                                        <button onClick={handleRedo} id='link' className="flex flex-column">
-                                            <i id='icon-btn' className="fa fa-redo-alt"
-                                            style={workspaceRef.current ?
-                                                workspaceRef.current.redoStack_.length < 1 ?
-                                                    { color: 'grey', cursor: 'default' } : null
-                                                : null}
-                                            />
-                                        </button>
-                                    </Col>
-                                    </Row>
-                                    
-                                </Col>
-                                <Col span={isStudent ? 3: 5}>
-                                    <div id='action-btn-container' className="flex space-around">
-                                        {!isStudent ?
-                                            <CodeModal
-                                                title={'XML'}
-                                                workspaceRef={workspaceRef.current}
-                                                setHover={setHoverXml}
-                                                hover={hoverXml}
-                                            />
-                                            : null}
-                                        <CodeModal
-                                            title={'Arduino Code'}
-                                            workspaceRef={workspaceRef.current}
-                                            setHover={setHoverArduino}
-                                            hover={hoverArduino}
-                                        />
-                                        <i onClick={() => compileArduinoCode(workspaceRef.current, setSelectedCompile, day, isStudent)}
-                                        className="fas fa-upload hvr-info"
-                                        onMouseEnter={() => setHoverCompile(true)}
-                                        onMouseLeave={() => setHoverCompile(false)}/>
-                                        {hoverCompile && <div className="popup ModalCompile">Upload to Arduino</div>}
-                                    </div>
-                                </Col>
-                            </Row>
-                        
-                        </Spin>
-                        </Col>
-                    </Row>
-                   
+                    <div id="section-header">
+                        {lessonName ? lessonName : "Program your Arduino..."}
+                    </div>
                     <div id="blockly-canvas"/>
                 </div>
                 {isContentCreator ?
                     <div id='side-container'>
                         Current Student Toolbox Selection
-
-                        <Input
-                            placeholder="Search Block"
-                            prefix={<i className="fa fa-search" />}
-                            onChange={e => setSearchFilter(e.target.value)}
-                        />
-
-                        <Checkbox onClick={selectEntireToolbox}>
-                            Select All
-                        </Checkbox>
-                        
                         <Menu mode="inline">
-                                
                             {
                                 // Maps out block categories
                                 day && day.toolbox && day.toolbox.map(([category, blocks]) => (
                                     <SubMenu key={category} title={category}>
                                         {
-                                            //filter out blocks not in search term
-                                            blocks.filter(block => block.name.includes(searchFilter)).map((block) => {
+                                            blocks.map((block) => {
                                                 return(
                                                     <Menu.Item key={block.name}>
-                                                        <Checkbox 
-                                                            checked={studentToolbox.indexOf(block.name) > -1 ? true : false}
-                                                            onClick={e => handleToolboxSelection(e, block.name)}
-                                                        >{block.name}</Checkbox>
+                                                        <Checkbox onClick={e => handleToolboxSelection(block.name)}>{block.name}</Checkbox>
                                                     </Menu.Item>
                                                 )
                                         })

@@ -36,14 +36,14 @@ function Student(props) {
             <NavBar isStudent={true}/>
             <div id='activity-container'>
                 <div id='header'>
-                    <div>Select your Day</div>
+                    <h1>Select your Day</h1>
                 </div>
                 <ul>
                     {
                         learningStandard.days ?
-                            learningStandard.days.sort((day1, day2) => day1.number - day2.number).map(day =>
+                            learningStandard.days.map(day =>
                                 <div key={day.id}
-                                     id='list-item-wrapper'
+                                     id={selectedDay.id !== day.id ? 'list-item-wrapper' : 'selected-activity'}
                                      onClick={() => handleSelection(day)}>
                                     <li>
                                         {`${learningStandard.name}: Day ${day.number}`}

@@ -30,8 +30,8 @@ module.exports = ({ env }) => ({
 				password: env('DATABASE_PASSWORD', 'postgres'),
 				schema: 'public',
 				ssl: env('NODE_ENV') == 'production' 
-				? { rejectUnauthorized: false }
-				: false
+					? { rejectUnauthorized: false }
+					: false
 			},
 			options: {
 				'pool': {

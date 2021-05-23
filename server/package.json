@@ -12,7 +12,7 @@
   },
   "devDependencies": {},
   "dependencies": {
-    "bull": "^3.22.5",
+    "bull": "^3.18.0",
     "knex": "<0.20.0",
     "pg": "^8.1.0",
     "strapi": "3.0.1",
