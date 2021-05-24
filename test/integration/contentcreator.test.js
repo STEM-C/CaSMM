@@ -31,8 +31,7 @@ beforeAll(async () => {
     // create an admin request instance
     adminRequest = getAuthorizedRequestModule(admin.jwt)
 
-    console.log("token: ", admin.jwt)
-
+    //console.log("token: ", admin.jwt)
 
     const response = await publicRequest.post('/auth/local', {
         identifier: 'defaultcontentcreator',
@@ -44,7 +43,7 @@ beforeAll(async () => {
     expect(response.data).toHaveProperty('user')
 
     contentcreatorRequest = getAuthorizedRequestModule(response.data.jwt)
-    console.log("Content Creator Request", response.data.jwt)
+    //console.log("Content Creator Request", response.data.jwt)
 })
 //Content Creator Tests
 
@@ -58,9 +57,6 @@ test('content creator can login', async () => {
     expect(response.status).toBe(200)
     expect(response.data).toHaveProperty('jwt')
     expect(response.data).toHaveProperty('user')
-
-    //contentcreatorRequest = getAuthorizedRequestModule(response.data.jwt)
-    //console.log("Content Creator Request", response.data.jwt)
 })
 
 test('content creator can create units', async () => { 
@@ -137,7 +133,7 @@ test('content creator can edit learning Standards', async () => {
 
 //just modified the learning_standard to be hardcoded to the data that is preloaded into the database
 test('content creator can create days', async () => {
-    const response = await contentcreatorRequest.post('/days',{ //didnt seem to add learning standard 'something' but it did create the day and it passed..
+    const response = await contentcreatorRequest.post('/days',{ 
         number: 123,
         learning_standard: 1,
         template: '<xml xmlns="http://www.w3.org/1999/xhtml"><block type="io_digitalwrite" id="j#m#H23NIQH5Wz^I2c^G" x="70" y="224"><field name="PIN">0</field><value name="STATE"><block type="io_highlow" id="7.^n|ek_3R;_Q`K9M!;/"><field name="STATE">HIGH</field></block></value></block></xml>'
@@ -146,7 +142,7 @@ test('content creator can create days', async () => {
     expect(response.status).toBe(200)
 
     //reverting for async
-    const responseDelete = await contentcreatorRequest.delete('/days/'+ response.data.id,{ //didnt seem to add learning standard 'something' but it did create the day and it passed..
+    const responseDelete = await contentcreatorRequest.delete('/days/'+ response.data.id,{ 
         number: 123,
     })
     expect(responseDelete.status).toBe(200)

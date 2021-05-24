@@ -18,7 +18,7 @@ var studentRequest
              password: '123456'
       })
     adminRequest = getAuthorizedRequestModule(admin.jwt)
-    console.log("admin token: ", admin.jwt)
+    //console.log("admin token: ", admin.jwt)
  })
 
 
@@ -54,11 +54,10 @@ test('A student can login', async () =>{
   const res = await postJoin('0450',[1,2,3]);
 
   expect(res.data).toHaveProperty('jwt');
-  console.log("student token", res.data.jwt);
+  //console.log("student token", res.data.jwt);
    studentRequest = getAuthorizedRequestModule(res.data.jwt);
 })
 
-//student.js
 test('student can view day selections', async () => {
     const response = await studentRequest.get('/classrooms/student');
     expect(response).toMatchObject({

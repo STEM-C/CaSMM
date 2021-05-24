@@ -25,7 +25,7 @@
      // create an admin request instance
      adminRequest = getAuthorizedRequestModule(admin.jwt)
  
-     console.log("token: ", admin.jwt)
+     //console.log("token: ", admin.jwt)
  })
  
  //Tests
@@ -41,7 +41,7 @@
     expect(response.data).toHaveProperty('user')
 
     mentorRequest = getAuthorizedRequestModule(response.data.jwt)
-     console.log("Mentor Request", response.data.jwt)
+    // console.log("Mentor Request", response.data.jwt)
      
 })
 
@@ -130,7 +130,7 @@ test('content creator can login', async () => {
     expect(response.data).toHaveProperty('user')
 
     contentcreatorRequest = getAuthorizedRequestModule(response.data.jwt)
-     console.log("Content Creator Request", response.data.jwt)
+     //console.log("Content Creator Request", response.data.jwt)
 })
 
 
@@ -157,20 +157,6 @@ test('content creator dashboard contains all grades for dropdown of add unit', a
     
 })
 
-/*test('content creator dashboard contains all units for dropdown of add learning standard', async () =>{
-    const response = await contentcreatorRequest.get('/grades');
-
-    expect(response).toMatchObject({
-        data:[ 
-            {
-                "id": 4,
-           "units":[{ "name" : "Unit name"},],
-        },
-    ]
-
-    })
-
-})*/
 
 
 
