@@ -59,9 +59,8 @@
 
 #student-card {
   text-align: left;
-  width: 17.5vw;
-  min-width: 260px;
-  height: 40vh;
+  min-width: 20vw;
+  min-height: 40vh;
   margin: 2vh auto 0 auto;
   background: #colors[tertiary];
   color: #colors[text-primary];
@@ -83,14 +82,11 @@
       text-align: center;
       background: white;
       margin: 0;
-      
     }
 
     #student-card-title {
       font-size: 1.5em;
     }
-
-  
   }
 
   #card-button-container {
@@ -102,8 +98,8 @@
 
     button {
       width: 7vw;
-      min-height: 40px;
-      min-width: 75px;
+      min-height: 5vh;
+      min-width: 8vw;
       font-size: 1em;
       font-weight: 600;
       border-radius: 30px;
@@ -126,8 +122,22 @@
     position: relative;
     bottom: 0;
     margin-bottom: 1vh;
-    font-size: 1em;
+    font-size: 1.1em;
     line-height: 1em;
     padding: 20px 20px 0 20px;
+
+    #description-container {
+      height: 4vh;
+
+      #label {
+        display: inline-block;
+        font-weight: 600;
+      }
+
+      #label-info {
+        display: inline-block;
+        margin-left: 6px;
+      }
+    }
   }
 }

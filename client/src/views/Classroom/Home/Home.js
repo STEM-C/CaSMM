@@ -41,10 +41,17 @@ export default function Home(props) {
         history.push('/day')
     };
 
+    const handleBack = () => {
+        history.push("/dashboard");
+    };
+
     return (
         <div>
+            <button id='home-back-btn' onClick={handleBack}>
+                <i className="fa fa-arrow-left" aria-hidden="true"/>
+            </button>
             <DisplayCodeModal code={classroom.code}/>
-            <div id='home-header'>{classroom.name}</div>
+            <MentorSubHeader title={classroom.name}></MentorSubHeader>
             <div id="home-content-container">
                 <div id="active-learning-standard">
                     {activeLearningStandard ? <div>
@@ -59,7 +66,6 @@ export default function Home(props) {
                             <p id='learning-standard-expectations'>{`Expectations: ${activeLearningStandard.expectations}`}</p>
                             <div id="btn-container" className='flex space-between'>
                                 {activeLearningStandard.days.map(day =>
-                                    // <button key={day.id} onClick={() => handleViewDay(day)}>{`View Day ${day.number}`}</button>
                                     <div id='view-day-card' key={day.id} onClick={() => handleViewDay(day)}>
                                         <h3 id='view-day-title'>{`View Day ${day.number}`}</h3>
                                         <div id='view-day-description'>  
@@ -73,8 +79,6 @@ export default function Home(props) {
                         : 'There is currently no active learning standard set. ' +
                         'Click the button below to browse available learning standards'}
                 </div>
-                {/* <div id="divider"/> */}
-                {/* <DisplayCodeModal code={classroom.code}/> */}
             </div>
         </div>
     );

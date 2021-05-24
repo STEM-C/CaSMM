@@ -54,7 +54,10 @@ export default function LearningStandardModal(props) {
 
     return (
         <div id='learning-standard-modal'>
-            <button id="change-lesson-btn" onClick={showModal}><i class="far fa-edit"></i></button>
+            <button id="change-lesson-btn" onClick={showModal}>
+                {/* <i class="far fa-edit"></i> */}
+                <p>Change</p>
+            </button>
             <Modal
                 title={activePanel === 'panel-1' ? 'Select a Learning Standard:' : selected.name}
                 visible={visible}

@@ -16,6 +16,7 @@ export default function Dashboard(props) {
         let classroomIds = [];
         getMentor().then(res => {
             if (res.data) {
+                console.log(res.data)
                 res.data.classrooms.forEach(classroom => {
                     classroomIds.push(classroom.id)
                 });
@@ -36,7 +37,7 @@ export default function Dashboard(props) {
         <div className="container nav-padding">
             <NavBar isMentor={true}/>
             <div id='main-header'>Welcome {user.username}</div>
-            <div id='dashboard-subheader'>Your Classrooms</div>
+            <MentorSubHeader title={'Your Classrooms:'}></MentorSubHeader>
             <div id='classrooms-container'>
                 <div id='dashboard-card-container'>
                     {classrooms.map(classroom =>
@@ -48,11 +49,7 @@ export default function Dashboard(props) {
                                 </div>
                             </div>
                             <div id='card-right-content-container'>
-                                <div id='join-code-container'>
                                     <DashboardDisplayCodeModal code={classroom.code}/>
-                                    {/* <h1 id='number'>{classroom.code}</h1> */}
-                                    {/* <p id='label'>Join code</p> */}
-                                </div>
                                 <div id='divider'/>
                                 <div id='student-number-container'>     
                                     <h1 id='number'>{classroom.students.length}</h1>
