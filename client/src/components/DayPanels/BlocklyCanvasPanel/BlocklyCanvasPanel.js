@@ -17,6 +17,7 @@ export default function BlocklyCanvasPanel(props) {
     const [lastSavedTime, setLastSavedTime] = useState(null);
     const [lastAutoSave, setLastAutoSave] = useState(null);
     const [searchFilter, setSearchFilter] = useState('');
+    const [selectAll, setSelectAll] = useState(false);
     const [openedToolBoxCategories, setOpenedToolBoxCategories] = useState([]);
     const [selectedToolBoxCategories, setSelectedToolBoxCategories] = useState([]);
 
@@ -171,10 +172,12 @@ export default function BlocklyCanvasPanel(props) {
 
             setSelectedToolBoxCategories(tempCategories);
             setStudentToolbox(tempToolBox);
+            setSelectAll(true);
         }
         else{
             setStudentToolbox([]);
             setSelectedToolBoxCategories([]);
+            setSelectAll(false);
         }
     }
 
@@ -198,6 +201,7 @@ export default function BlocklyCanvasPanel(props) {
         else {
             setSelectedToolBoxCategories(selectedToolBoxCategories.filter(item => item !== category))
             setStudentToolbox(studentToolbox.filter(item => !blockNames.includes(item)));
+            setSelectAll(false);
         }
     }
 
@@ -208,13 +212,23 @@ export default function BlocklyCanvasPanel(props) {
      */
     const handleToolboxSelection = (checked, blockName) => {
 
+        //reverse, checked = just unchecked, !check = just checked
         if (checked) {
             setStudentToolbox(studentToolbox.filter(item => item !== blockName));
-        } else {
+            setSelectAll(false);
+        }
+        else {
             setStudentToolbox([...studentToolbox, blockName]);
         }
     }
 
+    /** set opened categories to the passed in categories
+     * 
+     * @param {[string]} categories 
+     */
+    const openCategories = (categories) => {
+        setOpenedToolBoxCategories(categories);
+    }
 
     const handleUndo = () => {
         if (workspaceRef.current.undoStack_.length > 0)
@@ -367,9 +381,13 @@ export default function BlocklyCanvasPanel(props) {
                             placeholder="Search Block"
                             prefix={<i className="fa fa-search" />}
                             onChange={e => setSearchFilter(e.target.value)}
+                            onInput={() => openCategories(day && day.toolbox &&
+                                day.toolbox.reduce((accume, curr) => [...accume, curr[0]], []))}
                         />
 
-                        <Checkbox onClick={handleSelectEntireToolBox}>
+                        <Checkbox
+                            checked={selectAll}
+                            onClick={handleSelectEntireToolBox}>
                         Select All
                         </Checkbox>
                         
