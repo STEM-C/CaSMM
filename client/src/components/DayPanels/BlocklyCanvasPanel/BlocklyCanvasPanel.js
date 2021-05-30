@@ -227,7 +227,11 @@ export default function BlocklyCanvasPanel(props) {
      * @param {[string]} categories 
      */
     const openCategories = (categories) => {
-        setOpenedToolBoxCategories(categories);
+
+        if (categories) {
+            setOpenedToolBoxCategories(categories);
+        }
+        
     }
 
     const handleUndo = () => {
