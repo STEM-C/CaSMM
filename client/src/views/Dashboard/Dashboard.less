@@ -21,19 +21,18 @@
   }
 
 #dashboard-card-container {
-    display: flex;
+    display: inline-grid;
+    grid-template-columns: auto auto;
     justify-content: center;
     width: 80vw;
     margin: auto;
-    display: inline-grid;
-    grid-template-columns: auto auto;
 }
 
 #dashboard-class-card {
     display: flex;
     flex-direction: row;
     text-align: center;
-    width: 26vw;
+    width: 24vw;
     min-height: 34vh;
     margin: auto 6vh 6vh auto;
     background: #colors[tertiary];
@@ -48,7 +47,7 @@
         // margin: 10% auto 0 auto;
         
         button {
-            width: 10vw;
+            width: 9vw;
             min-height: 5vh;
             font-size: 1em;
             font-weight: 500;
@@ -62,7 +61,7 @@
             box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.377);
 
             &:hover {
-                width: 12vw;
+                width: 10vw;
                 background: #colors[quinary];
             }
         }

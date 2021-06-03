@@ -55,7 +55,6 @@ export default function LearningStandardModal(props) {
     return (
         <div id='learning-standard-modal'>
             <button id="change-lesson-btn" onClick={showModal}>
-                {/* <i class="far fa-edit"></i> */}
                 <p>Change</p>
             </button>
             <Modal
