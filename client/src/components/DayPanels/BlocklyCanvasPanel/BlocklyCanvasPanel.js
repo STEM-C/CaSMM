@@ -163,10 +163,15 @@ export default function BlocklyCanvasPanel(props) {
             let tempCategories = [];
             day && day.toolbox && day.toolbox.forEach(
                 ([category, blocks]) => {
-                    tempCategories.push(category);
-                    applySearchFilter(blocks).forEach((block) => {
-                        tempToolBox.push(block.name);
-                    })
+                    let validBlocks = applySearchFilter(blocks);
+
+                    if (validBlocks.length !== 0) {
+                        tempCategories.push(category);
+                        validBlocks.forEach((block) => {
+                            tempToolBox.push(block.name);
+                        })
+                    }
+                    
                 }
             );
 
@@ -275,7 +280,7 @@ export default function BlocklyCanvasPanel(props) {
                         <Spin tip="Compiling Code Please Wait..." className="compilePop" spinning={selectedCompile}>
                             
                             <Row align='middle' justify='end' id='description-container' >
-                                <Col span={1}>
+                                    <Col flex={homePath && handleGoBack ? "60px" : "30px"}>
                                     <Row>
                                         {homePath ? 
                                         <Col>
@@ -295,13 +300,13 @@ export default function BlocklyCanvasPanel(props) {
                                 </Col>
                                 <Col flex='auto' />
                             
-                                <Col span={6}>
+                                <Col flex="300px">
                                     {isStudent && lastSavedTime ?
                                         `Last changes saved ${lastSavedTime}`
                                         : null
                                     }
                                 </Col>
-                                <Col span={isStudent? 8 : 5}>
+                                <Col flex={isStudent ? "350px" : "200px"}>
                                     <Row>
                                     {isStudent ?
                                         <Col className='flex flex-row'>
@@ -346,7 +351,7 @@ export default function BlocklyCanvasPanel(props) {
                                     </Row>
                                     
                                 </Col>
-                                <Col span={isStudent ? 3: 5}>
+                                <Col flex={isStudent ? "150px" : "200px"}>
                                     <div id='action-btn-container' className="flex space-around">
                                         {!isStudent ?
                                             <CodeModal
