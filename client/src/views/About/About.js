@@ -70,6 +70,8 @@ export default function About(props) {
                     Siyu Chen
                     <br/>
                     Anna Le
+                    <br/>
+                    Yerika Jimenez
                 </p>
             </div>
         </div>
