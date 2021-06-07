@@ -3,7 +3,7 @@
  */
  'use strict'
 
- import { getPublicRequestModule, getAuthorizedRequestModule, getStudentLoginData, getStudents, getStudentClassroom, postJoin } from '../functional/request'
+ import { getPublicRequestModule, getAuthorizedRequestModule, getStudentLoginData, getStudents, getStudentClassroom, postJoin } from './request'
  
  const publicRequest = getPublicRequestModule()
  var adminRequest

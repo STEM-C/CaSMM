@@ -30,9 +30,7 @@ beforeAll(async () => {
 
     // create an admin request instance
     adminRequest = getAuthorizedRequestModule(admin.jwt)
-
-    console.log("token: ", admin.jwt)
-
+    //console.log("token: ", admin.jwt)
 
     const response = await publicRequest.post('/auth/local', {
         identifier: 'defaultmentor',
@@ -65,7 +63,7 @@ test('an unauthenticated user can register', async () => {
     expect(response.data).toHaveProperty('jwt')
     expect(response.data).toHaveProperty('user')
     userId = response.data.user.id
-    console.log("userID", userId)
+    //console.log("userID", userId)
 })
 
 

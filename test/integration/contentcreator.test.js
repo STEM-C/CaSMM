@@ -76,7 +76,6 @@ test('content creator can create units', async () => {
 
 })
 
-//this will pass on first pass when we actually set unitId 
 test('content creator can edit units', async () => {   
     const response = await contentcreatorRequest.put(`/units/1`,{ //changed the unitID to be what is preloaded already 
         name: "NewUnitName"        
@@ -90,9 +89,7 @@ test('content creator can edit units', async () => {
     expect(responseRevert.status).toBe(200)
 
 })
-
-//Lily edit - added description/expectation as requirement or the dashboard will error out.
-//as well as changed the unit to be hardcoded as the preloaded unit so that it can actually find the right learning standard 
+ 
 test('content creator can create learning standard', async () => {
     const response = await contentcreatorRequest.post('/learning-standards',{
         name: 'LS',
