@@ -19,8 +19,9 @@ var contentcreatorRequest
 //
 // Setup before running tests
 //
-beforeAll(async () => {
 
+beforeAll(async () => {
+ 
     // login as an admin
     const { data: admin } = await publicRequest.post('/admin/auth/local', {
         identifier: 'test',
@@ -28,48 +29,22 @@ beforeAll(async () => {
     })
 
     // create an admin request instance
-    const adminRequest = getAuthorizedRequestModule(admin.jwt)
+    adminRequest = getAuthorizedRequestModule(admin.jwt)
 
-    console.log("token: ", admin.jwt)
+    //console.log("token: ", admin.jwt)
 
-    // 
-    // populate the database
-    //
-    const { data: school } = await adminRequest.post('/schools', {
-        name: 'UF1'
-    })
-    console.log("School ID: ", school.id)
-    schoolId = school.id
-    
-    const { data: grade } = await adminRequest.post('/grades',{
-        name: '11th'
-    })
-    gradeId = grade.id
-
-    const { data: classroom } = await adminRequest.post('/classrooms', {
-        name: 'test',
-        school: school.id,
-        grade: grade.id
-    })
-    classroomId = classroom.id
-    console.log("This is classroom id", classroomId)
-
-    const { data: learningStandard } = await adminRequest.post('/learning-standards', {
-        number: 1.1,
-        name: learningStandardName
+    const response = await publicRequest.post('/auth/local', {
+        identifier: 'defaultcontentcreator',
+        password: '123456'
     })
 
-    learningStandardId = learningStandard.id
+    expect(response.status).toBe(200)
+    expect(response.data).toHaveProperty('jwt')
+    expect(response.data).toHaveProperty('user')
 
-    const { data: units } = await adminRequest.post('units', {
-        number: 1,
-        name: 'Unit',
-        grade: gradeId
-    })
-    
-    unitId = units.id
+    contentcreatorRequest = getAuthorizedRequestModule(response.data.jwt)
+    //console.log("Content Creator Request", response.data.jwt)
 })
-
 //Content Creator Tests
 
 
@@ -82,58 +57,92 @@ test('content creator can login', async () => {
     expect(response.status).toBe(200)
     expect(response.data).toHaveProperty('jwt')
     expect(response.data).toHaveProperty('user')
-
-    contentcreatorRequest = getAuthorizedRequestModule(response.data.jwt)
-    // console.log("Mentor Request", mentorRequest)
 })
 
-test('content creator can create units', async () => {
+test('content creator can create units', async () => { 
     const response = await contentcreatorRequest.post('/units',{
         name: 'UnitName',
         number: 123,
-        grade: gradeId,
+        grade: 5,
         
     })
     expect(response.status).toBe(200)
 
+    //reverting for async tests
+    const responseDelete = await contentcreatorRequest.delete('/units/'+response.data.id,{
+        name: 'UnitName'
+    })
+    expect(responseDelete.status).toBe(200)
+
 })
 
-test('content creator can edit units', async () => {
-    const response = await contentcreatorRequest.put(`/units/${unitId}`,{
-        name: 'NewUnitName'        
+test('content creator can edit units', async () => {   
+    const response = await contentcreatorRequest.put(`/units/1`,{ //changed the unitID to be what is preloaded already 
+        name: "NewUnitName"        
     })
     expect(response.status).toBe(200)
 
-})
+    //Reverting it back to what it was for async tests
+    const responseRevert = await contentcreatorRequest.put(`/units/1`,{ //changed the unitID to be what is preloaded already 
+        name: "Unit Name"        
+    })
+    expect(responseRevert.status).toBe(200)
 
+})
+ 
 test('content creator can create learning standard', async () => {
     const response = await contentcreatorRequest.post('/learning-standards',{
         name: 'LS',
-        unit: unitId,
+        unit: 1,
         number: 122,
         teks: '2A',
+        expectations: "Test expecation description so defaultcontentcreator doesnt error out",
 
     })
     expect(response.status).toBe(200)
+    
+    //Deleting for async tests 
+    const responseDelete = await contentcreatorRequest.delete('/learning-standards/' + response.data.id,{
+        name: 'LS',
+        unit: 1,
+        number: 122,
+        teks: '2A',
+        expectations: "Test expecation description so defaultcontentcreator doesnt error out",
 
+    })
+
+    expect(responseDelete.status).toBe(200)
 })
 
-test('content creator can edit learning Standards', async () => {
-    const response = await contentcreatorRequest.put(`/learning-standards/${learningStandardId}`,{
+test('content creator can edit learning Standards', async () => { 
+    const response = await contentcreatorRequest.put(`/learning-standards/1`,{ //changed learned standard to be what is alread preloaded 
         name: 'NewLearningStandard'        
     })
     expect(response.status).toBe(200)
+    
+    //reverting it back to what it was - for async tests
+    const responseRevert = await contentcreatorRequest.put(`/learning-standards/1`,{ 
+        name: 'Mixtures and Solutions'        
+    })
+    expect(responseRevert.status).toBe(200)
 
 })
 
+//just modified the learning_standard to be hardcoded to the data that is preloaded into the database
 test('content creator can create days', async () => {
-    const response = await contentcreatorRequest.post('/days',{
+    const response = await contentcreatorRequest.post('/days',{ 
         number: 123,
-        learning_standard: learningStandardId,
+        learning_standard: 1,
         template: '<xml xmlns="http://www.w3.org/1999/xhtml"><block type="io_digitalwrite" id="j#m#H23NIQH5Wz^I2c^G" x="70" y="224"><field name="PIN">0</field><value name="STATE"><block type="io_highlow" id="7.^n|ek_3R;_Q`K9M!;/"><field name="STATE">HIGH</field></block></value></block></xml>'
         
     })
     expect(response.status).toBe(200)
+
+    //reverting for async
+    const responseDelete = await contentcreatorRequest.delete('/days/'+ response.data.id,{ 
+        number: 123,
+    })
+    expect(responseDelete.status).toBe(200)
 
 })
 
