@@ -72,6 +72,12 @@ export default function About(props) {
                     Anna Le
                     <br/>
                     Yerika Jimenez
+                    <br/>
+                    Siyu Chen
+                    <br/>
+                    Michael Pascuzzi
+                    <br/>
+                    Mack Hummel
                 </p>
             </div>
         </div>
