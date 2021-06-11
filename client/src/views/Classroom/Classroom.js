@@ -32,8 +32,8 @@ export default function Classroom(props) {
         <div className="container nav-padding">
             <NavBar isMentor={true}/>
             <div id='main-header' className='s'>
-                <div id='classroom'>{classroom.name}</div>
-                <div id='code'>Join code: {classroom.code}</div>
+                {/* <div id='classroom'>{classroom.name}</div> */}
+                {/* <div id='code'>Join code: {classroom.code}</div> */}
             </div>
             <Tabs
                 defaultActiveKey={tab ? tab : "home"}

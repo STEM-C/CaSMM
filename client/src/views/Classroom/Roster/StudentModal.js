@@ -21,7 +21,7 @@ export default function StudentModal(props) {
         <div>
             <button id={linkBtn ? 'link-btn' : null} onClick={showModal}>View</button>
             <Modal
-                title={student.name}
+                // title={student.name}
                 visible={visible}
                 onCancel={handleCancel}
                 footer={[
@@ -30,9 +30,21 @@ export default function StudentModal(props) {
                     </Button>,
                 ]}
             >
-                <p>Animal: {student.character}</p>
-                <p>Last logged in: {student.last_logged_in ? student.last_logged_in.toLocaleString() : "N/A"}</p>
-                <p>Status: {student.enrolled.enrolled ? 'Enrolled' : 'Unenrolled'}</p>
+                 <div id='modal-student-card-header'>
+                    <p id='animal'>{student.character}</p>
+                    <h1 id='student-card-title'>{student.name}</h1>
+                </div>
+                <div id='modal-card-content-container'>
+                    <div id="description-container">
+                        <p id="label">Last logged in:</p>
+                        <p id="label-info"> {student.last_logged_in ? student.last_logged_in.toLocaleString() : "N/A"}</p>
+                        <br></br>
+                    </div>
+                    <div id="description-container">
+                        <p id="label">Status:</p>
+                        <p id="label-info">{student.enrolled.enrolled ? 'Enrolled' : 'Unenrolled'}</p>
+                    </div>
+                </div>
             </Modal>
         </div>
     );

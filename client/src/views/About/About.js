@@ -68,6 +68,10 @@ export default function About(props) {
                     Lily Hinkeldey
                     <br/>
                     Siyu Chen
+                    <br/>
+                    Anna Le
+                    <br/>
+                    Yerika Jimenez
                 </p>
             </div>
         </div>
