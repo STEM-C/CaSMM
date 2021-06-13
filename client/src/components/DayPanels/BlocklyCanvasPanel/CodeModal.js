@@ -1,7 +1,6 @@
 import {Modal, Button, Typography} from 'antd';
 import React, {useState} from "react";
 import {getArduino, getXml} from "../helpers";
-import icon from "./textIcon.json";
 
 export default function CodeModal(props) {
     const [visible, setVisible] = useState(false);
@@ -22,26 +21,9 @@ export default function CodeModal(props) {
 
     return (
         <div id='code-modal'>
-            {
-                title === 'XML' ? 
-                    <i onClick={showModal} id='link' className="fa fa-code hvr-info"
-                    onMouseEnter={() => setHover(true)}
-                    onMouseLeave={() => setHover(false)}/>
-                :
-                    <svg xmlns="http://www.w3.org/2000/svg" 
-                    className="hvr-info"
-                    viewBox="0 0 172 172"
-                    onClick={showModal} 
-                    onMouseEnter={() => setHover(true)}
-                    onMouseLeave={() => setHover(false)}
-                    >
-                        <g>
-                            <path d={icon.path}></path>
-                        </g>
-                    </svg>
-            }
-            
-              
+            <i onClick={showModal} className={title === 'XML' ? "fa fa-code hvr-info" : "fa fa-font hvr-info"}
+               onMouseEnter={() => setHover(true)}
+               onMouseLeave={() => setHover(false)}/>
             {hover &&
             (title === 'XML' ?
                 <div className="popup ModalCompile2">Shows XML</div> :
