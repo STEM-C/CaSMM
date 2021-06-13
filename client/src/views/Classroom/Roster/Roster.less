@@ -9,7 +9,7 @@
 
 .ant-table {
   border-radius: 4px;
-  border: solid 4px;
+  border: solid 2px;
   border-color: #colors[secondary];
 }
 
@@ -45,50 +45,75 @@
 
 // Card View
 #card-container {
+  position: relative;
+  top: -6vh;
   width: 80vw;
-  padding: 0 0 5vh 0;
-  margin: 0 auto 0 auto;
+  padding: 6vh 0 8vh 0;
+  margin: 12vh auto 0 auto;
   display: flex;
   flex-wrap: wrap;
+  background: #colors[senary];
+  border-radius: 5px;
+  border: 2px solid #colors[secondary];
 }
 
-#card {
+#student-card {
   text-align: left;
-  width: 17.5vw;
-  min-width: 250px;
-  height: 25vh;
+  min-width: 20vw;
+  min-height: 40vh;
   margin: 2vh auto 0 auto;
   background: #colors[tertiary];
   color: #colors[text-primary];
-  border: solid 4px;
-  border-color: #colors[secondary];
+  border: none;
   border-radius: 10px;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.377);
+
+  #student-card-header {
+    background-color: #colors[quaternary];
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    padding: 45px 20px 1px 20px;
+    
+    #animal {
+      width: 50px;
+      height: 50px;
+      font-size: 30px;
+      border-radius: 50%;
+      text-align: center;
+      background: white;
+      margin: 0;
+    }
+
+    #student-card-title {
+      font-size: 1.5em;
+    }
+  }
 
   #card-button-container {
-    margin: 5% auto 5% auto;
-
+    margin: 5% auto 10% auto;
+    
     div {
       margin: auto;
     }
 
     button {
-      width: 5vw;
-      min-height: 50px;
-      min-width: 75px;
+      width: 7vw;
+      min-height: 5vh;
+      min-width: 8vw;
       font-size: 1em;
-      border-radius: 4px;
+      font-weight: 600;
+      border-radius: 30px;
       margin: auto;
       padding-left: 0;
       padding-right: 0;
-      background: darken(#colors[tertiary], 30%);
-      border: 2px solid;
-      border-color: #colors[secondary];
-      color: #colors[text-secondary];
-      transition: 0.25s;
+      background-color: #colors[quaternary];
+      border: none;
+      color: #colors[text-primary];
       cursor: pointer;
+      box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.377);
 
       &:hover {
-        width: 11vw;
+        background-color: #colors[quinary];
       }
     }
   }
@@ -97,5 +122,67 @@
     position: relative;
     bottom: 0;
     margin-bottom: 1vh;
+    font-size: 1.1em;
+    line-height: 1em;
+    padding: 20px 20px 0 20px;
+
+    #description-container {
+      height: 4vh;
+
+      #label {
+        display: inline-block;
+        font-weight: 600;
+      }
+
+      #label-info {
+        display: inline-block;
+        margin-left: 6px;
+      }
+    }
+  }
+}
+
+//StudentModal View
+#modal-student-card-header {
+
+  #animal {
+    background: #colors[quaternary];
+    display: inline-block;
+    width: 50px;
+    height: 50px;
+    font-size: 30px;
+    border-radius: 50%;
+    text-align: center;
+    border: none;
+    border-color: #colors[secondary];
+    margin: 0;
+  }
+
+  #student-card-title {
+    display: inline-block;
+    font-size: 1.5em;
+    margin-left: 10px;
+  }
+}
+
+#modal-card-content-container {
+  position: relative;
+  bottom: 0;
+  font-size: 1.1em;
+  line-height: 1em;
+  padding: 12px 0px 0 0px;
+
+  #description-container {
+    height: 4vh;
+
+    #label {
+      display: inline-block;
+      font-weight: 600;
+    }
+
+    #label-info {
+      display: inline-block;
+      margin-left: 6px;
+    }
   }
 }

@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { Link } from "react-router-dom";
 import '../DayPanels.less'
 import { compileArduinoCode, handleCreatorSaveDay, handleSave } from "../helpers";
-import { message, Spin, Menu, Checkbox } from "antd";
+import { message, Spin, Menu, Checkbox, Row, Col, Input, Switch } from "antd";
 import { getSaves } from "../../../Utils/requests";
 import CodeModal from "./CodeModal";
 import VersionHistoryModal from "./VersionHistoryModal"
@@ -16,6 +16,11 @@ export default function BlocklyCanvasPanel(props) {
     const [studentToolbox, setStudentToolbox] = useState([]);
     const [lastSavedTime, setLastSavedTime] = useState(null);
     const [lastAutoSave, setLastAutoSave] = useState(null);
+    const [searchFilter, setSearchFilter] = useState('');
+    const [selectAll, setSelectAll] = useState(false);
+    const [openedToolBoxCategories, setOpenedToolBoxCategories] = useState([]);
+    const [selectedToolBoxCategories, setSelectedToolBoxCategories] = useState([]);
+
     const { day, homePath, handleGoBack, isStudent, isMentor, isContentCreator, lessonName } = props;
 
     const workspaceRef = useRef(null);
@@ -137,11 +142,110 @@ export default function BlocklyCanvasPanel(props) {
         }
     }
 
-    const handleToolboxSelection = (blockName) => {
-        let index = studentToolbox.indexOf(blockName);
-        if(index > -1) {
+    const handleSearchFilterChange = (value) => {
+
+        let validCategories = [];
+       
+        if (value === "") {
+            validCategories = day && day.toolbox && day.toolbox.reduce(
+                (accume, [category, blocks]) => {
+                    if (blocks.some(block => studentToolbox.includes(block.name))) {
+                        return [...accume, category];
+                    }
+                    else { return accume; }
+                }, []
+            );
+        }
+        else {
+            validCategories = day && day.toolbox && day.toolbox.reduce(
+                (accume, [category, blocks]) => {
+                    if (blocks.some(block => block.name.includes(value))) {
+                        return [...accume, category];
+                    }
+                    else { return accume; }
+                }, []
+            );
+        }
+
+        setOpenedToolBoxCategories(validCategories);
+        setSearchFilter(value);
+    }
+    /**
+     * filters out blocks not in searchFilter
+     * @param {object} blocks {name, description} 
+     */
+    const applySearchFilter = (blocks) => {
+
+        return blocks.filter(block => block.name.includes(searchFilter));
+    
+    }
+
+    /**
+     * select or deselect entire toolbox
+     * @param {object} event 
+     */
+    const handleSelectEntireToolBox = (event) => {
+
+        if(event.target.checked){
+            let tempToolBox = [];
+            let tempCategories = [];
+            day && day.toolbox && day.toolbox.forEach(
+                ([category, blocks]) => {
+                        tempCategories.push(category);
+                        tempToolBox = [...tempToolBox, ...blocks.map(block => block.name)]
+                }
+            );
+
+            setSelectedToolBoxCategories(tempCategories);
+            setStudentToolbox(tempToolBox);
+            setSelectAll(true);
+        }
+        else{
+            setStudentToolbox([]);
+            setSelectedToolBoxCategories([]);
+            setSelectAll(false);
+        }
+    }
+
+    /**
+     * select or deselect toolbox category
+     * @param {boolean} checked if the switch has just be checked or not 
+     * @param {string} category the category being selected
+     * @param {[object]} blocks the avaliable blocks inside the category
+     * @param {object} event 
+     */
+    const handleSelectToolBoxCategory = (checked, category, blocks, event) => {
+
+        event.stopPropagation(); //prevent the submenu from being clicked on
+
+        let blockNames = blocks.map(block => block.name);
+
+        if (checked) {
+            setSelectedToolBoxCategories([...selectedToolBoxCategories, category])
+            setStudentToolbox([...studentToolbox, ...blockNames.filter(item => !studentToolbox.includes(item))]);
+        }
+        else {
+            setSelectedToolBoxCategories(selectedToolBoxCategories.filter(item => item !== category))
+            setStudentToolbox(studentToolbox.filter(item => !blockNames.includes(item)));
+            setSelectAll(false);
+        }
+    }
+
+    /**
+     * handle selecting a single block
+     * @param {boolean} checked 
+     * @param {string} blockName 
+     * @param {string} category the category block belongs to
+     */
+    const handleSelectToolBoxBlock = (checked, blockName, category) => {
+
+        //reverse, checked = just unchecked, !check = just checked
+        if (checked) {
             setStudentToolbox(studentToolbox.filter(item => item !== blockName));
-        } else {
+            setSelectAll(false);
+            setSelectedToolBoxCategories(selectedToolBoxCategories.filter(x => x !== category))
+        }
+        else {
             setStudentToolbox([...studentToolbox, blockName]);
         }
     }
@@ -263,24 +367,168 @@ export default function BlocklyCanvasPanel(props) {
             </Spin>
             <div className='flex flex-row'>
                 <div id='bottom-container' className="flex flex-column vertical-container overflow-visible">
-                    <div id="section-header">
-                        {lessonName ? lessonName : "Program your Arduino..."}
-                    </div>
+                    <Row>
+                        <Col flex="none" id="section-header">
+                            {lessonName ? lessonName : "Program your Arduino..."}
+                        </Col>
+                        <Col flex="auto">
+                        
+                        <Spin tip="Compiling Code Please Wait..." className="compilePop" spinning={selectedCompile}>
+                            
+                            <Row align='middle' justify='end' id='description-container' >
+                                    <Col flex={homePath && handleGoBack ? "60px" : "30px"}>
+                                    <Row>
+                                        {homePath ? 
+                                        <Col>
+                                            <Link id='link' to={homePath} className="flex flex-column">
+                                                <i className="fa fa-home"/>
+                                            </Link>
+                                        </Col>
+                                         : null}
+                                        {handleGoBack ? 
+                                        <Col>
+                                            <button onClick={handleGoBack} id='link' className="flex flex-column">
+                                                <i id='icon-btn' className="fa fa-arrow-left"/>
+                                            </button>
+                                        </Col>
+                                         : null}
+                                    </Row>
+                                </Col>
+                                <Col flex='auto' />
+                            
+                                <Col  flex={isStudent ? "300px" : "auto"}>
+                                    {isStudent && lastSavedTime ?
+                                        `Last changes saved ${lastSavedTime}`
+                                        : null
+                                    }
+                                </Col>
+                                <Col flex={isStudent ? "350px" : "200px"}>
+                                    <Row>
+                                    {isStudent ?
+                                        <Col className='flex flex-row'>
+                                            <VersionHistoryModal
+                                                saves={saves}
+                                                lastAutoSave={lastAutoSave}
+                                                defaultTemplate={day}
+                                                getFormattedDate={getFormattedDate}
+                                                loadSave={loadSave}
+                                            />
+                                            <button onClick={handleManualSave} id='link' className="flex flex-column">
+                                                <i id='icon-btn' className="fa fa-save"/>
+                                            </button>
+                                        </Col>
+                                        : null
+                                    }
+                                    {isContentCreator ?
+                                        <Col className='flex flex-row'>
+                                            <button onClick={handleCreatorSave} id='link' className="flex flex-column">
+                                                <i id='icon-btn' className="fa fa-save"/>
+                                            </button>
+                                        </Col>
+                                        : null}
+                                    <Col className='flex flex-row'>
+                                        <button onClick={handleUndo} id='link' className="flex flex-column">
+                                            <i id='icon-btn' className="fa fa-undo-alt"
+                                            style={workspaceRef.current ?
+                                                workspaceRef.current.undoStack_.length < 1 ?
+                                                    { color: 'grey', cursor: 'default' } : null
+                                                : null}
+                                            />
+                                        </button>
+                                        <button onClick={handleRedo} id='link' className="flex flex-column">
+                                            <i id='icon-btn' className="fa fa-redo-alt"
+                                            style={workspaceRef.current ?
+                                                workspaceRef.current.redoStack_.length < 1 ?
+                                                    { color: 'grey', cursor: 'default' } : null
+                                                : null}
+                                            />
+                                        </button>
+                                    </Col>
+                                    </Row>
+                                    
+                                </Col>
+                                <Col flex={isStudent ? "150px" : "200px"}>
+                                    <div id='action-btn-container' className="flex space-around">
+                                        {!isStudent ?
+                                            <CodeModal
+                                                title={'XML'}
+                                                workspaceRef={workspaceRef.current}
+                                                setHover={setHoverXml}
+                                                hover={hoverXml}
+                                            />
+                                            : null}
+                                        <CodeModal
+                                            title={'Arduino Code'}
+                                            workspaceRef={workspaceRef.current}
+                                            setHover={setHoverArduino}
+                                            hover={hoverArduino}
+                                        />
+                                        <i onClick={() => compileArduinoCode(workspaceRef.current, setSelectedCompile, day, isStudent)}
+                                        className="fas fa-upload hvr-info"
+                                        onMouseEnter={() => setHoverCompile(true)}
+                                        onMouseLeave={() => setHoverCompile(false)}/>
+                                        {hoverCompile && <div className="popup ModalCompile">Upload to Arduino</div>}
+                                    </div>
+                                </Col>
+                            </Row>
+                        
+                        </Spin>
+                        </Col>
+                    </Row>
+                   
                     <div id="blockly-canvas"/>
                 </div>
                 {isContentCreator ?
                     <div id='side-container'>
                         Current Student Toolbox Selection
-                        <Menu mode="inline">
+                        <Input
+                            placeholder="Search Block"
+                            prefix={<i className="fa fa-search" />}
+                            onChange={e => handleSearchFilterChange(e.target.value)}
+                        />
+
+                        <Checkbox
+                            checked={selectAll}
+                            onClick={handleSelectEntireToolBox}
+                            disabled={searchFilter}>
+                        Select All
+                        </Checkbox>
+                        
+                        <Menu
+                            mode="inline"
+                            openKeys={openedToolBoxCategories}
+                            onOpenChange={keys => setOpenedToolBoxCategories(keys)}
+                        >
+                                
                             {
                                 // Maps out block categories
                                 day && day.toolbox && day.toolbox.map(([category, blocks]) => (
-                                    <SubMenu key={category} title={category}>
+                                    <SubMenu
+                                        key={category}
+                                        title={
+                                            <span>
+                                                <span>{category}</span>
+                                                {openedToolBoxCategories.some(c => c === category) ? //check if the submenu is open
+                                                <span id="category-switch">
+                                                    <Switch
+                                                        disabled={searchFilter}
+                                                        checked={selectedToolBoxCategories.includes(category)}
+                                                        checkedChildren="category selected" unCheckedChildren="select category"
+                                                        onChange={(checked, event) => handleSelectToolBoxCategory(checked, category, blocks, event)} />
+                                                </span>
+                                                : null
+                                                }
+                                            </span>
+                                    }>
                                         {
-                                            blocks.map((block) => {
+                                            //filter out blocks not in search term
+                                            applySearchFilter(blocks).map((block) => {
                                                 return(
                                                     <Menu.Item key={block.name}>
-                                                        <Checkbox onClick={e => handleToolboxSelection(block.name)}>{block.name}</Checkbox>
+                                                        <Checkbox 
+                                                            checked={studentToolbox.indexOf(block.name) > -1 ? true : false}
+                                                            onClick={e => handleSelectToolBoxBlock(!e.target.checked, block.name, category)}
+                                                        >{block.name}</Checkbox>
                                                     </Menu.Item>
                                                 )
                                         })

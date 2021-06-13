@@ -66,6 +66,18 @@ export default function About(props) {
                     Gus Segovia
                     <br/>
                     Lily Hinkeldey
+                    <br/>
+                    Siyu Chen
+                    <br/>
+                    Anna Le
+                    <br/>
+                    Yerika Jimenez
+                    <br/>
+                    Siyu Chen
+                    <br/>
+                    Michael Pascuzzi
+                    <br/>
+                    Mack Hummel
                 </p>
             </div>
         </div>

@@ -1,4 +1,3 @@
-  
-export default {
+  export default {
     testTimeout: 20000
 } 
