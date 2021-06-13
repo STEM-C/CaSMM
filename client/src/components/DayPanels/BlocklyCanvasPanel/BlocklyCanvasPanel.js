@@ -279,92 +279,7 @@ export default function BlocklyCanvasPanel(props) {
     return (
 
         <div id='horizontal-container' className="flex flex-column">
-            <Spin tip="Compiling Code Please Wait..." className="compilePop" spinning={selectedCompile}>
-                <div id='top-container' className="flex flex-column vertical-container">
-                    <div id='description-container' className="flex flex-row space-between card">
-                        <div className='flex flex-row'>
-                            {homePath ? <Link id='link' to={homePath} className="flex flex-column">
-                                <i className="fa fa-home"/>
-                            </Link> : null}
-                            {handleGoBack ? <button onClick={handleGoBack} id='link' className="flex flex-column">
-                                <i id='icon-btn' className="fa fa-arrow-left"/>
-                            </button> : null}
-                        </div>
-                        <div>
-                            {isStudent && lastSavedTime ?
-                                `Last changes saved ${lastSavedTime}`
-                                : null
-                            }
-                        </div>
-                        <div className='flex flex-row'>
-                            {isStudent ?
-                                <div className='flex flex-row'>
-                                    <VersionHistoryModal
-                                        saves={saves}
-                                        lastAutoSave={lastAutoSave}
-                                        defaultTemplate={day}
-                                        getFormattedDate={getFormattedDate}
-                                        loadSave={loadSave}
-                                    />
-                                    <button onClick={handleManualSave} id='link' className="flex flex-column">
-                                        <i id='icon-btn' className="fa fa-save"/>
-                                    </button>
-                                </div>
-                                : null
-                            }
-                            {isContentCreator ?
-                                <div className='flex flex-row'>
-                                    <button onClick={handleCreatorSave} id='link' className="flex flex-column">
-                                        <i id='icon-btn' className="fa fa-save"/>
-                                    </button>
-                                </div>
-                                : null}
-                            <div className='flex flex-row'>
-                                <button onClick={handleUndo} id='link' className="flex flex-column">
-                                    <i id='icon-btn' className="fa fa-undo-alt"
-                                       style={workspaceRef.current ?
-                                           workspaceRef.current.undoStack_.length < 1 ?
-                                               { color: 'grey', cursor: 'default' } : null
-                                           : null}
-                                    />
-                                </button>
-                                <button onClick={handleRedo} id='link' className="flex flex-column">
-                                    <i id='icon-btn' className="fa fa-redo-alt"
-                                       style={workspaceRef.current ?
-                                           workspaceRef.current.redoStack_.length < 1 ?
-                                               { color: 'grey', cursor: 'default' } : null
-                                           : null}
-                                    />
-                                </button>
-                            </div>
-                        </div>
-                        <div style={{ "width": "10%" }}>
-                            <div id='action-btn-container' className="flex space-between">
-                                {!isStudent ?
-                                    <CodeModal
-                                        title={'XML'}
-                                        workspaceRef={workspaceRef.current}
-                                        setHover={setHoverXml}
-                                        hover={hoverXml}
-                                    />
-                                    : null}
-                                <CodeModal
-                                    title={'Arduino Code'}
-                                    workspaceRef={workspaceRef.current}
-                                    setHover={setHoverArduino}
-                                    hover={hoverArduino}
-                                />
-                                <i onClick={() => compileArduinoCode(workspaceRef.current, setSelectedCompile, day, isStudent)}
-                                   className="fas fa-upload hvr-info"
-                                   onMouseEnter={() => setHoverCompile(true)}
-                                   onMouseLeave={() => setHoverCompile(false)}/>
-
-                                {hoverCompile && <div className="popup ModalCompile">Upload to Arduino</div>}
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </Spin>
+            
             <div className='flex flex-row'>
                 <div id='bottom-container' className="flex flex-column vertical-container overflow-visible">
                     <Row>
@@ -481,6 +396,7 @@ export default function BlocklyCanvasPanel(props) {
                 {isContentCreator ?
                     <div id='side-container'>
                         Current Student Toolbox Selection
+
                         <Input
                             placeholder="Search Block"
                             prefix={<i className="fa fa-search" />}

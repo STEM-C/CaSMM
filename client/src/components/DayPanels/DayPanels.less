@@ -15,6 +15,7 @@ h3, p {
   background-color: #colors[primary];
   min-height: 92vh;
   max-height: 92vh;
+  padding-top: 20px;
 }
 
 .compilePop {
@@ -27,7 +28,7 @@ h3, p {
   padding: 10px;
   border: 1px solid #colors[secondary];
   border-radius: 5px;
-  position: fixed;
+  position: absolute;
   z-index: 1;
 }
 
@@ -47,45 +48,61 @@ h3, p {
 }
 
 .ModalCompile{
-  top: 15vh;
-  right: 4vh;
+  top: 80%;
+  right: 3vh;
 }
 .ModalCompile2{
-  top: 15vh;
-  right: 6vh;
+  top: 80%;
+  right: 12vh;
 }
 .ModalCompile3{
-  top: 15vh;
-  right: 3vh;
+  top: 80%;
+  right: 5vh;
 }
 
 #action-btn-container {
-  flex: 1;
-  margin: 1em;
 
   margin-top: 0.5vh;
 
   i {
     color: #colors[primary];
-    font-size: 16px;
+    
+    font-size: 32px;
 
     &:hover {
       color: #colors[secondary];
+      
     }
   }
-}
 
-#top-container {
-  flex: 1;
-  margin-bottom: 1.5vh;
-  margin-top: 1vh;
-  max-height: 8vh;
+  svg {
+    width: 35px;
+    height: 35px;
+    x: 0px;
+    y: 0px;
+    
+    g {
+      fill: #colors[primary];
+    }
+
+    &:hover {
+
+      g {
+        fill: #colors[secondary];
+      }
+    }
+  }
+  
 }
 
 #description-container {
-  height: 8vh;
-  border-radius: 10px;
+  height: 1vh;
   align-items: center;
+  flex: 1;
+  margin-bottom: 1.5vh;
+  margin-top: 0vh;
+  max-height: 8vh;
+  width: 100%;
 
   #logo {
     max-width: 145px;
@@ -100,6 +117,10 @@ h3, p {
     width: 100%;
     text-align: right;
   }
+}
+
+#lastsave-container {
+  min-width: 50%;
 }
 
 #side-container {
@@ -121,6 +142,7 @@ h3, p {
   border-radius: 10px;
   height: 100%;
   max-height: 78vh;
+  position: relative;
 }
 
 #blockly-canvas {
