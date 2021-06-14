@@ -13,10 +13,6 @@
       "model": "grade",
       "via": "units"
     },
-    "number": {
-      "type": "integer",
-      "required": true
-    },
     "name": {
       "type": "string",
       "required": true
@@ -26,6 +22,10 @@
     },
     "teks_description": {
       "type": "text"
+    },
+    "number": {
+      "type": "integer",
+      "required": true
     },
     "learning_standards": {
       "via": "unit",

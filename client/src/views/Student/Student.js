@@ -27,15 +27,8 @@ function Student(props) {
     const handleSelection = (day) => {
         setSelectedDay(day);
         localStorage.setItem("my-day", JSON.stringify(day));
-    };
 
-    const handleLaunchActivity = () => {
-        const loadedDay = localStorage.getItem("my-day");
-        if (selectedDay.id && loadedDay) {
-            props.history.push("/workspace")
-        } else {
-            message.error('Please select a day.')
-        }
+        props.history.push("/workspace")
     };
 
     return (
@@ -43,14 +36,14 @@ function Student(props) {
             <NavBar isStudent={true}/>
             <div id='activity-container'>
                 <div id='header'>
-                    <h1>Select your Day</h1>
+                    <div>Select your Day</div>
                 </div>
                 <ul>
                     {
                         learningStandard.days ?
-                            learningStandard.days.map(day =>
+                            learningStandard.days.sort((day1, day2) => day1.number - day2.number).map(day =>
                                 <div key={day.id}
-                                     id={selectedDay.id !== day.id ? 'list-item-wrapper' : 'selected-activity'}
+                                     id='list-item-wrapper'
                                      onClick={() => handleSelection(day)}>
                                     <li>
                                         {`${learningStandard.name}: Day ${day.number}`}
@@ -63,14 +56,6 @@ function Student(props) {
                             </div>
                     }
                 </ul>
-                {
-                    learningStandard.days ?
-                        <div id='launcher' className='flex flex-column' onClick={handleLaunchActivity}>
-                            <i className="fa fa-rocket" aria-hidden="true"/>
-                            Launch Activity
-                        </div>
-                        : null
-                }
             </div>
         </div>
     )

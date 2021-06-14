@@ -10,7 +10,7 @@
     "@testing-library/react": "^9.3.2",
     "@testing-library/user-event": "^7.1.2",
     "antd": "^4.3.5",
-    "axios": "^0.19.2",
+    "axios": "^0.21.1",
     "craco-less": "^1.17.0",
     "cross-env": "^7.0.2",
     "emoji-picker-react": "^3.2.1",
@@ -19,7 +19,8 @@
     "react-dom": "^16.13.1",
     "react-papaparse": "^3.7.0",
     "react-router-dom": "^5.1.2",
-    "react-scripts": "3.4.1"
+    "react-scripts": "3.4.1",
+    "yarn": "^1.22.10"
   },
   "scripts": {
     "start": "craco start",

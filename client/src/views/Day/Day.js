@@ -3,11 +3,19 @@ import BlocklyCanvasPanel from "../../components/DayPanels/BlocklyCanvasPanel/Bl
 import NavBar from "../../components/NavBar/NavBar";
 import {getDayToolbox} from "../../Utils/requests";
 import {message} from "antd";
+import { getUser } from "../../Utils/AuthRequests";
 
 
 export default function Day(props) {
     const [day, setDay] = useState({});
     const {history} = props;
+
+    const user = getUser();
+    const userType = user.role.type;
+    let isContentCreator = false;
+    let isMentor = false;
+
+    userType === "content_creator" ? isContentCreator = true : isMentor = true;
 
     useEffect(() => {
         const localDay = JSON.parse(localStorage.getItem("my-day"));
@@ -43,7 +51,8 @@ export default function Day(props) {
             <div className="flex flex-row">
                 <BlocklyCanvasPanel
                     day={day}
-                    isMentor={true}
+                    isMentor={isMentor}
+                    isContentCreator={isContentCreator}
                     lessonName={`Learning Standard ${day.learning_standard}, Day ${day.number}`}
                     handleGoBack={handleGoBack}/>
             </div>

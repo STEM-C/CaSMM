@@ -105,7 +105,7 @@ export default function LearningStandardSelect(props) {
                             onSearch={onSearch}
                         />
                     </div>
-                    <div>
+                    <div id="check-units">
                         <CheckUnits
                             plainOptions={plainOptions}
                             checkedList={checkedList}
@@ -140,10 +140,18 @@ export default function LearningStandardSelect(props) {
                     <i className="fa fa-arrow-left" aria-hidden="true"/>
                 </button>
                 <div id='ls-info'>
-                    <p>Expectations: {selected.expectations}</p>
+                    <p id='learning-standard-expectations-title'>Expectations:</p>
+                    <p id='learning-standard-expectations'>{selected.expectations}</p>
                     <div id="btn-container" className='flex space-between'>
                         {selected.days ? selected.days.map(day =>
-                                <button key={day.id} onClick={() => handleViewDay(day)}>{`View Day ${day.number}`}</button>
+                                // <button key={day.id} onClick={() => handleViewDay(day)}>{`View Day ${day.number}`}</button>
+                            <div id='view-day-button' key={day.id} onClick={() => handleViewDay(day)}>
+                                <h3 id='view-day-title'>{`View Day ${day.number}`}</h3>
+                                <div id='view-day-description'>  
+                                    <p>Science Module</p>
+                                    <p>More infomation here</p>
+                                </div>
+                            </div>
                             )
                             : null}
                     </div>

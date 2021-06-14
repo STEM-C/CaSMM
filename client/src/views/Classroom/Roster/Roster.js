@@ -12,7 +12,7 @@ export default function Roster(props) {
     const [editingKey, setEditingKey] = useState('');
     const [listView, setListView] = useState(true);
     const [classroom, setClassroom] = useState({});
-    const {classroomId} = props;
+    const {classroomId, history} = props;
 
     useEffect(() => {
         let data = [];
@@ -162,8 +162,16 @@ export default function Roster(props) {
         }
     };
 
+    const handleBack = () => {
+        history.push("/dashboard");
+    };
+
+
     return (
         <div>
+             <button id='home-back-btn' onClick={handleBack}>
+                <i className="fa fa-arrow-left" aria-hidden="true"/>
+            </button>
             <MentorSubHeader title={'Your Students:'} addStudentsToTable={addStudentsToTable} addUserActive={true}
                              classroomId={classroomId}
                              cardViewActive={listView} listViewActive={!listView} setListView={setListView}/>

@@ -43,7 +43,7 @@
     {
       "method": "PUT",
       "path": "/days/:id",
-      "handler": "day.update",
+      "handler": "day.fullUpdate",
       "config": {
         "policies": []
       }
