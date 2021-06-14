@@ -1,0 +1,3 @@
+FROM node:alpine
+RUN apk add docker
+RUN yarn global add heroku

@@ -1,0 +1,19 @@
+name: 'Test Mocks'
+description: 'Mocks data for student, content creator, and mentor tests'
+inputs:
+  image_tag: 
+    description: 'Tag of the github package repo image'
+    required: true
+  app_name:
+    description: 'Target Heroku app name'
+    required: true    
+github_token:
+    description: 'API token of the heroku account'
+    required: true
+runs:
+  using: 'docker'
+  image: 'Dockerfile'
+  args:
+    - ${{ inputs.image_tag }}
+    - ${{ inputs.app_name }}
+    - ${{ inputs.github_token }}

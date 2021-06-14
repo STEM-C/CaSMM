@@ -1,0 +1,19 @@
+
+name: Run Tests
+on:
+  pull_request:
+    branches: [ 'develop', 'master' ]
+jobs:
+  run-test-suites:
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout repo
+        uses: actions/checkout@v2
+      - name: run tests
+        uses: STEM-C/CASMM/mocks@v0.7
+        with:
+          image_tag: staging-${{ steps.get_version.outputs.VERSION }}
+          app_name: casmm-staging
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+        env:
+          HEROKU_TOKEN: ${{ secrets.HEROKU_TOKEN }}
