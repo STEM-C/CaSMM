@@ -311,7 +311,7 @@ export default function BlocklyCanvasPanel(props) {
                                 </Col>
                                 <Col flex='auto' />
                             
-                                <Col  flex={isStudent ? "300px" : "auto"}>
+                                <Col  flex={isStudent && lastSavedTime ? "300px" : "auto"}>
                                     {isStudent && lastSavedTime ?
                                         `Last changes saved ${lastSavedTime}`
                                         : null
