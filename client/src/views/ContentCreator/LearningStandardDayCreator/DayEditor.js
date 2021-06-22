@@ -99,22 +99,20 @@ export default function ContentCreator(props) {
                     <div>
 
                     <Form id="add-day"
-                        // labelCol={{
-                        // span: 4
-                        // }}
                         wrapperCol={{
                             span: 14
                         }}
                         layout="horizontal"
                         size="default">
-                        <b>Add Day</b>
+                        {/* <b>Add Day</b>
                         <Form.Item label="Number">
                             <Input onChange={handleDayChange} value={newDay} />
-                        </Form.Item >
+                        </Form.Item > */}
                         <Button onClick={addBasicDay} type="primary">
-                                Add
+                                Add Day
                         </Button>
                     </Form>
+                    
                     {/* <form id="add-day" onSubmit={handleSubmit}>
                         <legend>Add Day</legend>
                         <label>

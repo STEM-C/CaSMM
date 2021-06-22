@@ -110,14 +110,18 @@ export default function UnitCreator(props){
     
     return(
         <div>
-            <Button style={addButtonStyle} onClick={showModal}  icon={<PlusOutlined/>}>
-                Add Unit
-                </Button>
+            <button onClick={showModal} id="add-unit-btn">
+               + Add Unit
+            </button>
             <Modal
                title="Create Unit"
                visible={visible}
-               onCancel={handleCancel}
-               onOk={onClickHandler}
+            //    onCancel={handleCancel}
+            //    onOk={onClickHandler}
+               footer={[
+                   <Button onClick={handleCancel}>Cancel</Button>,
+                   <Button type="primary">Next</Button>
+               ]}
             >
             <Form id="add-units"
             labelCol={{

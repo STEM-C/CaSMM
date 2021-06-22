@@ -193,9 +193,12 @@ export default function LearningStandardCreator(props){
 
     return(
         <div>
-            <Button style={addButtonStyle} onClick={showModal}  icon={<PlusOutlined/>}>
+            {/* <Button style={addButtonStyle} onClick={showModal}  icon={<PlusOutlined/>}>
                 Add Learning Standard
-                </Button>
+            </Button> */}
+            <button onClick={showModal} id="add-learning-standard-btn">
+                + Add Learning Standard
+            </button>
             <Modal
                title="Create Learning Standard"
                visible={visible}
