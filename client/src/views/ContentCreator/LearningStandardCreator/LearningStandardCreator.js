@@ -200,14 +200,14 @@ export default function LearningStandardCreator(props){
                 + Add Learning Standard
             </button>
             <Modal
-               title="Create Learning Standard"
+               title="Create a Lesson"
                visible={visible}
                onCancel={handleCancel}
                onOk={onclickhandler}
             >
                 <Form id="add-learning-standard"
                     labelCol={{
-                        span: 4
+                        span: 6
                     }}
                     wrapperCol={{
                         span: 14
@@ -215,33 +215,27 @@ export default function LearningStandardCreator(props){
                     layout="horizontal"
                     size="default"
                 >
-                    <Form.Item label="Name">
-                        <Input onChange={lsNameOnChange} value={learningObj.learningName} />
-                    </Form.Item >
-
-                    <Form.Item label="Number">
-                        <Input onChange={lsNumberOnChange} value={learningObj.learningNum} />
-                    </Form.Item>
-                
                     <Form.Item label="Unit Name">
-                        <select id="unit" name='unit' defaultValue={learningObj.learningStandUnit} onChange={lsUnitsOnChange}>
+                        <select id="unit-name-dropdown" name='unit' defaultValue={learningObj.learningStandUnit} onChange={lsUnitsOnChange}>
                             <option key={0} value={learningObj.learningStandUnit} id='disabled-option'>Units</option>
                             {setUnitsOption().map(option => option)}
                         </select>
                     </Form.Item>
-
+                    <Form.Item label="Lesson Name">
+                        <Input onChange={lsNameOnChange} value={learningObj.learningName} />
+                    </Form.Item >
+                    <Form.Item label="Number">
+                        <Input onChange={lsNumberOnChange} value={learningObj.learningNum} />
+                    </Form.Item>
+                    <Form.Item label="Number of Days">
+                        <Input onChange={lsNoOfDaysOnChange} value={learningObj.learningNumOfDays} />
+                    </Form.Item>
                     <Form.Item label="Description">
                         <Input onChange={lsDescriptionOnChange} value={learningObj.learningdescrip} />
                     </Form.Item>
-
                     <Form.Item label="Teks">
                         <Input onChange={lsTeksOnChange} value={learningObj.learningTeks} />
                     </Form.Item>
-
-                    <Form.Item label="# of Days">
-                        <Input onChange={lsNoOfDaysOnChange} value={learningObj.learningNumOfDays} />
-                    </Form.Item>
-
                 </Form>
     
             </Modal>
