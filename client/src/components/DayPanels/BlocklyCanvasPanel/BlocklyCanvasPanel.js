@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { Link } from "react-router-dom";
 import '../DayPanels.less'
 import { compileArduinoCode, handleCreatorSaveDay, handleSave } from "../helpers";
+import { openConnection, disconnect } from "../ConsoleView";
 import { message, Spin, Menu, Checkbox, Row, Col, Input, Switch } from "antd";
 import { getSaves } from "../../../Utils/requests";
 import CodeModal from "./CodeModal";
@@ -11,6 +12,8 @@ export default function BlocklyCanvasPanel(props) {
     const [hoverXml, setHoverXml] = useState(false);
     const [hoverArduino, setHoverArduino] = useState(false);
     const [hoverCompile, setHoverCompile] = useState(false);
+    const [hoverConsole, setHoverConsole] = useState(false);
+    const [connectionOpen, setConnectionOpen] = useState(false);
     const [selectedCompile, setSelectedCompile] = useState(false);
     const [saves, setSaves] = useState({});
     const [studentToolbox, setStudentToolbox] = useState([]);
@@ -260,6 +263,19 @@ export default function BlocklyCanvasPanel(props) {
             workspaceRef.current.undo(true)
     };
 
+    const handleConsole = () => {
+        if(!connectionOpen){
+            openConnection();
+            if(typeof window['port'] !== 'undefined')
+                setConnectionOpen(true);
+        }
+        else{
+            console.log('Close connection');
+            disconnect();
+            setConnectionOpen(false);
+        }
+    }
+
     const getFormattedDate = dt => {
         const d = new Date(Date.parse(dt));
         const day = d.getDate();
@@ -383,6 +399,12 @@ export default function BlocklyCanvasPanel(props) {
                                         onMouseEnter={() => setHoverCompile(true)}
                                         onMouseLeave={() => setHoverCompile(false)}/>
                                         {hoverCompile && <div className="popup ModalCompile">Upload to Arduino</div>}
+
+                                        <i onClick={() => handleConsole()}
+                                        className="fas fa-upload hvr-info"
+                                        onMouseEnter={() => setHoverConsole(true)}
+                                        onMouseLeave={() => setHoverConsole(false)}/>
+                                        {hoverConsole && <div className="popup ModalCompile">get Console</div>}
                                     </div>
                                 </Col>
                             </Row>
