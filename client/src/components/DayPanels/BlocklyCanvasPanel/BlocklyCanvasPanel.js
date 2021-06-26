@@ -24,10 +24,11 @@ export default function BlocklyCanvasPanel(props) {
     let undoLength = 0;
     const { SubMenu } = Menu;
 
-    const setWorkspace = () =>
+    const setWorkspace = () => {
         workspaceRef.current = window.Blockly.inject('blockly-canvas',
             { toolbox: document.getElementById('toolbox') }
         );
+    }
 
     const loadSave = selectedSave => {
         try {
