@@ -15,22 +15,34 @@ export const openConnection = async () => {
         console.log("no port selected");
         return port;
     }
+
+    var options = {
+        baudRate: 9600,
+        parity: 'none',
+        dataBits: 8,
+        stopBits: 1,
+        bufferSize: 256
+      };
     
     // connect to port on baudRate 9600.
-    await port.open({ baudRate: 9600 });
+    await port.open(options);
     console.log("port opened")
 
-    // const textDecoder = new TextDecoderStream();
-    // const readableStreamClosed = port.readable.pipeTo(textDecoder.writable);
-    // const reader = textDecoder.readable.getReader();
     readUntilClose();
 }
 
 const readUntilClose = async () => {
     const port = window['port'];
     
+        // const textDecoder = new TextDecoderStream();
+    // const readableStreamClosed = port.readable.pipeTo(textDecoder.writable);
+    // const reader = textDecoder.readable.getReader();
     // console.log(port.readable);
-    reader = port.readable.getReader();
+    reader = port.readable
+    .pipeThrough(new TextDecoderStream())
+    .pipeThrough(new TransformStream(new LineBreakTransformer()))
+    .getReader();
+    // reader = port.readable.getReader();
     console.log("reader opened")
     try{
         while (true) {
@@ -49,6 +61,24 @@ const readUntilClose = async () => {
         console.log(error);
     }
 }
+
+class LineBreakTransformer {
+    constructor() {
+      this.container = '';
+    }
+  
+    transform(chunk, controller) {
+      this.container += chunk;
+      const lines = this.container.split('\r\n');
+      this.container = lines.pop();
+      lines.forEach(line => controller.enqueue(line));
+    }
+  
+    flush(controller) {
+      controller.enqueue(this.container);
+    }
+  }
+
 
 export const disconnect = async () => {
     if (reader) {
