@@ -1,6 +1,6 @@
-let reader;
 let port;
-
+let reader;
+let readableStreamClosed;
 
 export const openConnection = async () => {
     
@@ -17,7 +17,8 @@ export const openConnection = async () => {
         parity: 'none',
         dataBits: 8,
         stopBits: 1,
-        bufferSize: 256
+        bufferSize: 1024,
+        flowControl: "hardware"
       };
     
     // connect to port on baudRate 9600.
@@ -28,38 +29,34 @@ export const openConnection = async () => {
 }
 
 const readUntilClose = async () => {
-    const port = window['port'];
+    port = window['port'];
     
-    // const textDecoder = new TextDecoderStream();
-    // const readableStreamClosed = port.readable.pipeTo(textDecoder.writable);
-    // reader = textDecoder.readable.getReader();
-    // console.log(port.readable);
-    reader = port.readable.getReader();
+    // reader = port.readable.getReader();
+
+    const textDecoder = new window.TextDecoderStream();
+    readableStreamClosed = port.readable.pipeTo(textDecoder.writable);
+    reader = textDecoder.readable.getReader();
 
     console.log("reader opened")
-    try{
-        while (true) {
-            const { value, done } = await reader.read();
-            if (done) {
-            // Allow the serial port to be closed later.
-                reader.releaseLock();
-                break;
-            }
-            // value is a string.
-            var string = new TextDecoder().decode(value);
-            console.log(string);
+
+    while (true) {
+        const { value, done } = await reader.read();
+        if (done) {
+        // Allow the serial port to be closed later.
+            reader.releaseLock();
+            break;
         }
+        console.log(value);
     }
-    catch (error) {
-        console.log(error);
-    }
+
 }
+
   
 export const disconnect = async () => {
     if (reader) {
         await reader.cancel();
         reader = null;
     }
+    await readableStreamClosed.catch(() => { /* Ignore the error */ });
     await port.close();
-    port = null;
 }
