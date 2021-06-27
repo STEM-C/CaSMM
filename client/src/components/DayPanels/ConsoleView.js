@@ -18,7 +18,6 @@ export const openConnection = async () => {
         dataBits: 8,
         stopBits: 1,
         bufferSize: 1024,
-        flowControl: "hardware"
       };
     
     // connect to port on baudRate 9600.
@@ -38,7 +37,7 @@ const readUntilClose = async () => {
     reader = textDecoder.readable.getReader();
 
     console.log("reader opened")
-
+    let string = "";
     while (true) {
         const { value, done } = await reader.read();
         if (done) {
@@ -47,6 +46,8 @@ const readUntilClose = async () => {
             break;
         }
         console.log(value);
+        string+=value;
+        document.getElementById("console-content").innerHTML = string;
     }
 
 }

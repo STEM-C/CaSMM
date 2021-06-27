@@ -479,6 +479,11 @@ export default function BlocklyCanvasPanel(props) {
                     : null}
             </div>
 
+            <div id="console-container">
+                <p id="console-content">Waiting for input...</p>
+
+            </div>
+
             {/* This xml is for the blocks' menu we will provide. Here are examples on how to include categories and subcategories */}
             <xml id="toolbox" is="Blockly workspace">
                 {
