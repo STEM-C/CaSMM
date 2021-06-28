@@ -393,7 +393,7 @@ export default function BlocklyCanvasPanel(props) {
 
                                         <i onClick={() => handleConsole()}
                                         className="fas fa-terminal hvr-info"
-                                        style={{marginLeft: '4px'}}
+                                        style={{marginLeft: '6px'}}
                                         onMouseEnter={() => setHoverConsole(true)}
                                         onMouseLeave={() => setHoverConsole(false)}/>
                                         {hoverConsole && <div className="popup ModalCompile">Show Console</div>}
