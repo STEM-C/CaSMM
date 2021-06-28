@@ -39,17 +39,6 @@ export default function ContentCreator(props) {
 
     const columns = [
         {
-            title: 'Learning Standard',
-            dataIndex: 'name',
-            key: 'name',
-            editable: true,
-            width: '22.5%',
-            align: 'left',
-            render: (_, key) => (
-                <DayEditor history={props.history} days = {getDays(key)} learningStandardId={key.id} learningStandardName={key.name} linkBtn={true}/>
-            )
-        },
-        {
             title: 'Unit',
             dataIndex: 'unit',
             key: 'unit',
@@ -58,6 +47,17 @@ export default function ContentCreator(props) {
             align: 'left',
             render: (_, key) => (
                 <UnitEditor days={getDays(key)} learningStandard={key.id} linkBtn={true}/>
+            )
+        },
+        {
+            title: 'Learning Standard',
+            dataIndex: 'name',
+            key: 'name',
+            editable: true,
+            width: '22.5%',
+            align: 'left',
+            render: (_, key) => (
+                <DayEditor history={props.history} days = {getDays(key)} learningStandardId={key.id} learningStandardName={key.name} linkBtn={true}/>
             )
         },
         // {

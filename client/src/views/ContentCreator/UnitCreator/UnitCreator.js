@@ -1,14 +1,14 @@
 import React,{useState} from 'react'
-import {Form, Input, Button, Modal} from 'antd'
+import {Form, Input, Button, Modal, List, Card} from 'antd'
 import {PlusOutlined} from '@ant-design/icons'
-import {createUnit} from '../../../Utils/requests'
+import {createUnit, getLearningStandardAll} from '../../../Utils/requests'
 import './UnitCreator.less'
+import SelectedDayDetailsModal from '../SelectedDayDetailsModal/SelectedDayDetailsModal.js'
 
 export default function UnitCreator(props){
-
     const [visible, setVisible] = useState(false);
     const [visibleSelectDay, setVisibleSelectDay] = useState(false);
-    const [visibleAddLessonDetails, setVisibleAddLessonDetails] = useState(false);
+    // const [visibleAddLessonDetails, setVisibleAddLessonDetails] = useState(false);
     const unitDefaultState = {
         unitName: "",
         unitGrade: "",
@@ -28,19 +28,19 @@ export default function UnitCreator(props){
         handleCancel();
     };
 
-    const showAddLessonDetailsModal = () => {
-        setVisibleAddLessonDetails(true);
-    };
+    // const showAddLessonDetailsModal = () => {
+    //     setVisibleAddLessonDetails(true);
+    // };
 
     const handleBackCreateUnit= () => {
         setVisibleSelectDay(false);
         showModal();
     };
 
-    const handleBackSelectDay = () => {
-        setVisibleAddLessonDetails(false);
-        showSelectDayModal();
-    };
+    // const handleBackSelectDay = () => {
+    //     // setVisibleAddLessonDetails(false);
+    //     showSelectDayModal();
+    // };
 
     const handleCancel = () => {
         setVisible(false)
@@ -48,6 +48,16 @@ export default function UnitCreator(props){
 
     const handleCancelSelectDay = () => {
         setVisibleSelectDay(false);
+    };
+
+    const handleViewDay = async day => {
+        // const res = await getDayToolboxAll();
+        // day.toolbox = res.data.toolbox;
+
+        // localStorage.setItem("my-day", JSON.stringify(day));
+        // props.history.push('/day')
+        const result = getLearningStandardAll();
+        console.log(result);
     };
 
     const completeUnitCreation = () => {
@@ -136,7 +146,7 @@ export default function UnitCreator(props){
             >
             <Form id="add-units"
             labelCol={{
-                span: 4
+                span: 6
               }}
               wrapperCol={{
                 span: 14
@@ -144,7 +154,7 @@ export default function UnitCreator(props){
               layout="horizontal"
               size="default">
                   <Form.Item id="form-label" label="Grade">
-                    <select id="grade" name='grade' defaultValue={unitObject.unitGrade} onChange={unitGradeOnChange}>
+                    <select id="grade-dropdown" name='grade' defaultValue={unitObject.unitGrade} onChange={unitGradeOnChange}>
                         <option key={0} value={unitObject.unitGrade} disabled id='disabled-option'>Grade</option>
                         {setGradeOptions().map(option => option)}
                     </select>
@@ -173,10 +183,16 @@ export default function UnitCreator(props){
                 <Button type="primary" onClick={handleBackCreateUnit}>Back</Button>,
                 <Button type="primary" onClick={onClickHandler}>Done</Button>
             ]}>
-                <Button onClick={showAddLessonDetailsModal}>Temp button to test "Add Selected Day Lesson Details Module"</Button>
+                {/* <Button onClick={showAddLessonDetailsModal}>Temp button to test "Add Selected Day Lesson Details Module"</Button> */}
+                <SelectedDayDetailsModal
+                    linkBtn={true}>
+                </SelectedDayDetailsModal>
+                <Button onClick={handleViewDay}>Testing Day</Button>
         </Modal> 
 
-        <Modal
+      
+
+        {/* <Modal
             title="Add Selected Day Lesson Details"
             visible={visibleAddLessonDetails}
             footer={[
@@ -202,7 +218,7 @@ export default function UnitCreator(props){
             <Form.Item id="form-label" label="Computer Science Component">
                 <Input></Input>
             </Form.Item>
-        </Modal>
+        </Modal> */}
             </div>
     )
 }

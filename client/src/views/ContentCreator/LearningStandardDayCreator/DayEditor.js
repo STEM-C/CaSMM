@@ -19,14 +19,12 @@ export default function ContentCreator(props) {
         setVisible(false)
     };
 
-
     const showModal = () => {
         console.log("got days", props.days)
         setDay([...props.days])
         console.log("set days", days)
         setVisible(true)
     };
-
 
     const addBasicDay = () => {
         const res = createDay(newDay, learningStandardId)

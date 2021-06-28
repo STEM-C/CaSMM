@@ -48,19 +48,30 @@ export default function UnitCreator(props) {
         <div>
             <button id={linkBtn ? 'link-btn' : null} onClick={showModal}>{unitObject.unitName}</button>
             <Modal
-                title="Unit Creator"
+                title="Unit Editor"
                 visible={visible}
                 onCancel={handleCancel}
+                onOk={handleCancel}
             >
                 <Form
                     labelCol={{
-                        span: 4
+                        span: 6
                     }}
                     wrapperCol={{
                         span: 14
                     }}
                     layout="horizontal"
                     size="default">
+                    <Form.Item label="Grade"
+                        onChange={(e) => {
+                            const { value } = e.target;
+                            setUnitObject((unitObject) => ({
+                                ...unitObject,
+                                unitGrade: parseInt(value, 10)
+                            }));
+                        }}>
+                        <Input defaultValue={unitObject.unitGrade}/>
+                    </Form.Item>
                     <Form.Item label="Unit Name">
                         <Input defaultValue={unitObject.unitName} onChange={(e) => {
                             const { value } = e.target;
@@ -70,17 +81,7 @@ export default function UnitCreator(props) {
                             }));
                         }}/>
                     </Form.Item>
-                    <Form.Item label="Grade"
-                               onChange={(e) => {
-                                   const { value } = e.target;
-                                   setUnitObject((unitObject) => ({
-                                       ...unitObject,
-                                       unitGrade: parseInt(value, 10)
-                                   }));
-                               }}>
-                        <Input defaultValue={unitObject.unitGrade}/>
-                    </Form.Item>
-                    <Form.Item label="Number"
+                    <Form.Item label="Unit Number"
                         onChange={(e)=>{ 
                             const {value} = e.target; 
                             setUnitObject((unitObject) => ({
