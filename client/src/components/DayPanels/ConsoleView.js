@@ -2,7 +2,7 @@ let port;
 let reader;
 let readableStreamClosed;
 
-export const openConnection = async () => {
+export const openConnection = async (baudRate_) => {
     
     //requesting port on the pop up window.
     port = window['port'];
@@ -13,7 +13,7 @@ export const openConnection = async () => {
     }
 
     var options = {
-        baudRate: 9600,
+        baudRate: baudRate_,
         parity: 'none',
         dataBits: 8,
         stopBits: 1,
@@ -22,7 +22,7 @@ export const openConnection = async () => {
     
     // connect to port on baudRate 9600.
     await port.open(options);
-    console.log("port opened")
+    console.log(`port opened at baud rate: ${baudRate_} `);
 
     readUntilClose();
 }

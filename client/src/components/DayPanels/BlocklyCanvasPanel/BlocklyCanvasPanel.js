@@ -2,10 +2,10 @@ import React, { useEffect, useRef, useState } from 'react';
 import { Link } from "react-router-dom";
 import '../DayPanels.less'
 import { compileArduinoCode, handleCreatorSaveDay, handleSave } from "../helpers";
-import { openConnection, disconnect } from "../ConsoleView";
 import { message, Spin, Menu, Checkbox, Row, Col, Input, Switch } from "antd";
 import { getSaves } from "../../../Utils/requests";
 import CodeModal from "./CodeModal";
+import ConsoleModal from "./ConsoleModal";
 import VersionHistoryModal from "./VersionHistoryModal"
 
 export default function BlocklyCanvasPanel(props) {
@@ -13,7 +13,7 @@ export default function BlocklyCanvasPanel(props) {
     const [hoverArduino, setHoverArduino] = useState(false);
     const [hoverCompile, setHoverCompile] = useState(false);
     const [hoverConsole, setHoverConsole] = useState(false);
-    const [connectionOpen, setConnectionOpen] = useState(false);
+    const [showConsole, setShowConsole] = useState(false);
     const [selectedCompile, setSelectedCompile] = useState(false);
     const [saves, setSaves] = useState({});
     const [studentToolbox, setStudentToolbox] = useState([]);
@@ -264,16 +264,7 @@ export default function BlocklyCanvasPanel(props) {
     };
 
     const handleConsole = () => {
-        if(!connectionOpen){
-            openConnection();
-            if(typeof window['port'] !== 'undefined')
-                setConnectionOpen(true);
-        }
-        else{
-            console.log('Close connection');
-            disconnect();
-            setConnectionOpen(false);
-        }
+        setShowConsole(!showConsole);
     }
 
     const getFormattedDate = dt => {
@@ -401,10 +392,11 @@ export default function BlocklyCanvasPanel(props) {
                                         {hoverCompile && <div className="popup ModalCompile">Upload to Arduino</div>}
 
                                         <i onClick={() => handleConsole()}
-                                        className="fas fa-upload hvr-info"
+                                        className="fas fa-terminal hvr-info"
+                                        style={{marginLeft: '4px'}}
                                         onMouseEnter={() => setHoverConsole(true)}
                                         onMouseLeave={() => setHoverConsole(false)}/>
-                                        {hoverConsole && <div className="popup ModalCompile">get Console</div>}
+                                        {hoverConsole && <div className="popup ModalCompile">Show Console</div>}
                                     </div>
                                 </Col>
                             </Row>
@@ -478,11 +470,10 @@ export default function BlocklyCanvasPanel(props) {
                     </div>
                     : null}
             </div>
+            {showConsole?   <
+                ConsoleModal></ConsoleModal> : null 
+            }
 
-            <div id="console-container">
-                <p id="console-content">Waiting for input...</p>
-
-            </div>
 
             {/* This xml is for the blocks' menu we will provide. Here are examples on how to include categories and subcategories */}
             <xml id="toolbox" is="Blockly workspace">
