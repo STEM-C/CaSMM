@@ -67,6 +67,7 @@ const readUntilClose = async (newLine) => {
             newP.innerHTML = value;
             newP.style.margin = 0;
             document.getElementById("console-content").appendChild(newP);
+            newP.scrollIntoView();
         }
     }
 }
