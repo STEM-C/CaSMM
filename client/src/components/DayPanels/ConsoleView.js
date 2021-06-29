@@ -65,6 +65,7 @@ const readUntilClose = async (newLine) => {
         else{
             let newP = document.createElement('p');
             newP.innerHTML = value;
+            newP.style.margin = 0;
             document.getElementById("console-content").appendChild(newP);
         }
     }
