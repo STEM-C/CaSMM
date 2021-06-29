@@ -1,19 +1,26 @@
-import {Button} from 'antd';
+import {Button, Checkbox} from 'antd';
 import React, {useState} from "react";
-import { openConnection, disconnect } from "../ConsoleView";
+import { openConnection, disconnect, writeToPort } from "../ConsoleView";
 
 export default function ConsoleModal(props) {
     const [connectionOpen, setConnectionOpen] = useState(false);
     const [baudRate, setBaudRate] = useState(9600);
+    const [input, setInput] = useState('');
+    const [newLine, setnewLine] = useState(false);
 
-
-    const handleConnect = () => {
+    const handleConnect = async () => {
         if(!connectionOpen){
-            openConnection(baudRate);
-            if(typeof window['port'] !== 'undefined'){
-                setConnectionOpen(true);
-                document.getElementById("connect-button").innerHTML = "Disconnect";
+            if(typeof window['port'] === 'undefined'){
+                const filters = [
+                    { usbVendorId: 0x2341, usbProductId: 0x0043 },
+                    { usbVendorId: 0x2341, usbProductId: 0x0001 }
+                  ];
+                const port = await navigator.serial.requestPort({ filters });
+                window['port'] = port;
             }
+            setConnectionOpen(true);
+            document.getElementById("connect-button").innerHTML = "Disconnect";
+            openConnection(baudRate, newLine);
         }
         else{
             console.log('Close connection');
@@ -25,6 +32,15 @@ export default function ConsoleModal(props) {
 
     const handleChange = (event) => {
         setBaudRate(event.target.value);
+    }
+
+    const sendInput = () =>{
+        if(!connectionOpen){
+            window.alert("Connection not opened.");
+            return;
+        }
+        console.log(input);
+        writeToPort(input);
     }
 
     return(
@@ -50,6 +66,12 @@ export default function ConsoleModal(props) {
                 <option value="50">50</option>
             </select>
             <Button id="connect-button" onClick = {()=>handleConnect()}>Connect</Button>
+            <Checkbox checked={newLine} disabled={connectionOpen} onClick={()=>{setnewLine(!newLine)}}>New Line</Checkbox>
+
+            <div>
+                <input type="text" value={input} placeholder="Enter your message" onChange={e => {setInput(e.target.value)}}></input>
+                <Button id="connect-button" onClick = {()=>sendInput()}>Submit</Button>
+            </div>
             <div id="content-container">
                 <p id="console-content">Waiting for input...</p>
             </div>

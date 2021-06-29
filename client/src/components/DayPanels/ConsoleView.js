@@ -1,16 +1,29 @@
 let port;
 let reader;
+let writer;
 let readableStreamClosed;
 
-export const openConnection = async (baudRate_) => {
+class LineBreakTransformer {
+    constructor() {
+      this.container = '';
+    }
+  
+    transform(chunk, controller) {
+      this.container += chunk;
+      const lines = this.container.split('\r\n');
+      this.container = lines.pop();
+      lines.forEach(line => controller.enqueue(line));
+    }
+  
+    flush(controller) {
+      controller.enqueue(this.container);
+    }
+  }
+
+export const openConnection = async (baudRate_, newLine) => {
     
     //requesting port on the pop up window.
     port = window['port'];
-
-    if(typeof port === 'undefined'){
-        console.log("no port selected");
-        return port;
-    }
 
     var options = {
         baudRate: baudRate_,
@@ -23,18 +36,17 @@ export const openConnection = async (baudRate_) => {
     // connect to port on baudRate 9600.
     await port.open(options);
     console.log(`port opened at baud rate: ${baudRate_} `);
-
-    readUntilClose();
+    document.getElementById("console-content").innerHTML = ('');
+    readUntilClose(newLine);
 }
 
-const readUntilClose = async () => {
-    port = window['port'];
-    
-    // reader = port.readable.getReader();
-
+const readUntilClose = async (newLine) => {    
     const textDecoder = new window.TextDecoderStream();
     readableStreamClosed = port.readable.pipeTo(textDecoder.writable);
-    reader = textDecoder.readable.getReader();
+    // reader = textDecoder.readable.getReader();
+    reader = textDecoder.readable
+        .pipeThrough(new window.TransformStream(new LineBreakTransformer()))
+        .getReader();
 
     console.log("reader opened")
     let string = "";
@@ -46,18 +58,36 @@ const readUntilClose = async () => {
             break;
         }
         console.log(value);
-        string+=value;
-        document.getElementById("console-content").innerHTML = string;
+        if(!newLine){
+            string+=value;
+            document.getElementById("console-content").innerHTML = string;
+        }
+        else{
+            let newP = document.createElement('p');
+            newP.innerHTML = value;
+            document.getElementById("console-content").appendChild(newP);
+        }
     }
-
 }
 
+export const writeToPort = async (data) => {
+    const textEncoder = new window.TextEncoder();
+    writer = port.writable.getWriter();
+    data += '\n';
+    await writer.write(textEncoder.encode(data));
+    console.log(textEncoder.encode(data));
+    writer.releaseLock();
+}
   
 export const disconnect = async () => {
-    if (reader) {
-        await reader.cancel();
-        reader = null;
-    }
+    reader.cancel();
     await readableStreamClosed.catch(() => { /* Ignore the error */ });
+    if(typeof writer !== "undefined")
+    {
+        const textEncoder = new window.TextEncoder();
+        writer = port.writable.getWriter();
+        await writer.write(textEncoder.encode(''));
+        await writer.close();
+    }
     await port.close();
 }
