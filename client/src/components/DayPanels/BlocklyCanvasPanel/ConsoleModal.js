@@ -1,5 +1,5 @@
 import {Button, Checkbox} from 'antd';
-import React, {useState} from "react";
+import React, {useState, useEffect} from "react";
 import { openConnection, disconnect, writeToPort } from "../ConsoleView";
 
 export default function ConsoleModal(props) {
@@ -7,6 +7,16 @@ export default function ConsoleModal(props) {
     const [baudRate, setBaudRate] = useState(9600);
     const [input, setInput] = useState('');
     const [newLine, setnewLine] = useState(false);
+
+    useEffect(() => {
+        navigator.serial.addEventListener("disconnect", (e) => {
+            console.log("device disconnected");
+            window.port = undefined;
+            console.log("cleaned");
+            setConnectionOpen(false);
+            document.getElementById("connect-button").innerHTML = "Connect";
+          });
+    });
 
     const handleConnect = async () => {
         if(!connectionOpen){
