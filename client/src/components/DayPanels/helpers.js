@@ -1,5 +1,5 @@
 import { createSubmission, getSubmission, saveWorkspace, updateDay } from "../../Utils/requests";
-import {message} from "antd";
+import { message } from "antd";
 
 const AvrboyArduino = window.AvrgirlArduino;
 
@@ -8,18 +8,18 @@ export const setLocalSandbox = (workspaceRef) => {
     let workspaceText = window.Blockly.Xml.domToText(workspaceDom)
     const localActivity = JSON.parse(localStorage.getItem('sandbox-day'))
 
-    let lastActivity = {...localActivity, template: workspaceText}
+    let lastActivity = { ...localActivity, template: workspaceText }
     localStorage.setItem('sandbox-day', JSON.stringify(lastActivity))
 }
 
 // Generates xml from blockly canvas
 export const getXml = (workspaceRef, shouldAlert = true) => {
 
-    const {Blockly} = window
+    const { Blockly } = window
 
     let xml = Blockly.Xml.workspaceToDom(workspaceRef)
     let xml_text = Blockly.Xml.domToText(xml)
-    if(shouldAlert) alert(xml_text)
+    if (shouldAlert) alert(xml_text)
     return (xml_text)
 };
 
@@ -76,7 +76,7 @@ const getAndFlashSubmission = async (id, path, isStudent, setSelectedCompile) =>
 const flashArduino = async (response) => {
     if (response.data) {
         // converting base 64 to hex
-        if(response.data.success){
+        if (response.data.success) {
             let Hex = atob(response.data.hex).toString();
 
             const avrgirl = new AvrboyArduino({

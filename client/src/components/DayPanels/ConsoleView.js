@@ -5,23 +5,23 @@ let readableStreamClosed;
 
 class LineBreakTransformer {
     constructor() {
-      this.container = '';
+        this.container = '';
     }
-  
+
     transform(chunk, controller) {
-      this.container += chunk;
-      const lines = this.container.split('\r\n');
-      this.container = lines.pop();
-      lines.forEach(line => controller.enqueue(line));
+        this.container += chunk;
+        const lines = this.container.split('\r\n');
+        this.container = lines.pop();
+        lines.forEach(line => controller.enqueue(line));
     }
-  
+
     flush(controller) {
-      controller.enqueue(this.container);
+        controller.enqueue(this.container);
     }
-  }
+}
 
 export const openConnection = async (baudRate_, newLine) => {
-    
+
     //requesting port on the pop up window.
     port = window['port'];
 
@@ -31,8 +31,8 @@ export const openConnection = async (baudRate_, newLine) => {
         dataBits: 8,
         stopBits: 1,
         bufferSize: 1024,
-      };
-    
+    };
+
     // connect to port on baudRate 9600.
     await port.open(options);
     console.log(`port opened at baud rate: ${baudRate_} `);
@@ -40,7 +40,7 @@ export const openConnection = async (baudRate_, newLine) => {
     readUntilClose(newLine);
 }
 
-const readUntilClose = async (newLine) => {    
+const readUntilClose = async (newLine) => {
     const textDecoder = new window.TextDecoderStream();
     readableStreamClosed = port.readable.pipeTo(textDecoder.writable);
     // reader = textDecoder.readable.getReader();
@@ -53,16 +53,16 @@ const readUntilClose = async (newLine) => {
     while (true) {
         const { value, done } = await reader.read();
         if (done) {
-        // Allow the serial port to be closed later.
+            // Allow the serial port to be closed later.
             reader.releaseLock();
             break;
         }
         console.log(value);
-        if(!newLine){
-            string+=value;
+        if (!newLine) {
+            string += value;
             document.getElementById("console-content").innerHTML = string;
         }
-        else{
+        else {
             let newP = document.createElement('p');
             newP.innerHTML = value;
             newP.style.margin = 0;
@@ -80,12 +80,11 @@ export const writeToPort = async (data) => {
     console.log(textEncoder.encode(data));
     writer.releaseLock();
 }
-  
+
 export const disconnect = async () => {
     reader.cancel();
     await readableStreamClosed.catch(() => { /* Ignore the error */ });
-    if(typeof writer !== "undefined")
-    {
+    if (typeof writer !== "undefined") {
         const textEncoder = new window.TextEncoder();
         writer = port.writable.getWriter();
         await writer.write(textEncoder.encode(''));
