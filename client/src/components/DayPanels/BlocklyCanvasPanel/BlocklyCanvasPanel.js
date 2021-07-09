@@ -148,7 +148,7 @@ export default function BlocklyCanvasPanel(props) {
     const handleSearchFilterChange = (value) => {
 
         let validCategories = [];
-       
+
         if (value === "") {
             validCategories = day && day.toolbox && day.toolbox.reduce(
                 (accume, [category, blocks]) => {
@@ -180,7 +180,7 @@ export default function BlocklyCanvasPanel(props) {
     const applySearchFilter = (blocks) => {
 
         return blocks.filter(block => block.name.includes(searchFilter));
-    
+
     }
 
     /**
@@ -189,13 +189,13 @@ export default function BlocklyCanvasPanel(props) {
      */
     const handleSelectEntireToolBox = (event) => {
 
-        if(event.target.checked){
+        if (event.target.checked) {
             let tempToolBox = [];
             let tempCategories = [];
             day && day.toolbox && day.toolbox.forEach(
                 ([category, blocks]) => {
-                        tempCategories.push(category);
-                        tempToolBox = [...tempToolBox, ...blocks.map(block => block.name)]
+                    tempCategories.push(category);
+                    tempToolBox = [...tempToolBox, ...blocks.map(block => block.name)]
                 }
             );
 
@@ -203,7 +203,7 @@ export default function BlocklyCanvasPanel(props) {
             setStudentToolbox(tempToolBox);
             setSelectAll(true);
         }
-        else{
+        else {
             setStudentToolbox([]);
             setSelectedToolBoxCategories([]);
             setSelectAll(false);
@@ -286,7 +286,7 @@ export default function BlocklyCanvasPanel(props) {
     return (
 
         <div id='horizontal-container' className="flex flex-column">
-            
+
             <div className='flex flex-row'>
                 <div id='bottom-container' className="flex flex-column vertical-container overflow-visible">
                     <Row>
@@ -294,186 +294,185 @@ export default function BlocklyCanvasPanel(props) {
                             {lessonName ? lessonName : "Program your Arduino..."}
                         </Col>
                         <Col flex="auto">
-                        
-                        <Spin tip="Compiling Code Please Wait..." className="compilePop" spinning={selectedCompile}>
-                            
-                            <Row align='middle' justify='end' id='description-container' >
-                                    <Col flex={homePath && handleGoBack ? "60px" : "30px"}>
-                                    <Row>
-                                        {homePath ? 
-                                        <Col>
-                                            <Link id='link' to={homePath} className="flex flex-column">
-                                                <i className="fa fa-home"/>
-                                            </Link>
-                                        </Col>
-                                         : null}
-                                        {handleGoBack ? 
-                                        <Col>
-                                            <button onClick={handleGoBack} id='link' className="flex flex-column">
-                                                <i id='icon-btn' className="fa fa-arrow-left"/>
-                                            </button>
-                                        </Col>
-                                         : null}
-                                    </Row>
-                                </Col>
-                                <Col flex='auto' />
-                            
-                                <Col  flex={isStudent ? "300px" : "auto"}>
-                                    {isStudent && lastSavedTime ?
-                                        `Last changes saved ${lastSavedTime}`
-                                        : null
-                                    }
-                                </Col>
-                                <Col flex={isStudent ? "350px" : "200px"}>
-                                    <Row>
-                                    {isStudent ?
-                                        <Col className='flex flex-row'>
-                                            <VersionHistoryModal
-                                                saves={saves}
-                                                lastAutoSave={lastAutoSave}
-                                                defaultTemplate={day}
-                                                getFormattedDate={getFormattedDate}
-                                                loadSave={loadSave}
-                                            />
-                                            <button onClick={handleManualSave} id='link' className="flex flex-column">
-                                                <i id='icon-btn' className="fa fa-save"/>
-                                            </button>
-                                        </Col>
-                                        : null
-                                    }
-                                    {isContentCreator ?
-                                        <Col className='flex flex-row'>
-                                            <button onClick={handleCreatorSave} id='link' className="flex flex-column">
-                                                <i id='icon-btn' className="fa fa-save"/>
-                                            </button>
-                                        </Col>
-                                        : null}
-                                    <Col className='flex flex-row'>
-                                        <button onClick={handleUndo} id='link' className="flex flex-column">
-                                            <i id='icon-btn' className="fa fa-undo-alt"
-                                            style={workspaceRef.current ?
-                                                workspaceRef.current.undoStack_.length < 1 ?
-                                                    { color: 'grey', cursor: 'default' } : null
-                                                : null}
-                                            />
-                                        </button>
-                                        <button onClick={handleRedo} id='link' className="flex flex-column">
-                                            <i id='icon-btn' className="fa fa-redo-alt"
-                                            style={workspaceRef.current ?
-                                                workspaceRef.current.redoStack_.length < 1 ?
-                                                    { color: 'grey', cursor: 'default' } : null
-                                                : null}
-                                            />
-                                        </button>
-                                    </Col>
-                                    </Row>
-                                    
-                                </Col>
-                                <Col flex={isStudent ? "150px" : "200px"}>
-                                    <div id='action-btn-container' className="flex space-around">
-                                        {!isStudent ?
-                                            <CodeModal
-                                                title={'XML'}
-                                                workspaceRef={workspaceRef.current}
-                                                setHover={setHoverXml}
-                                                hover={hoverXml}
-                                            />
-                                            : null}
-                                        <CodeModal
-                                            title={'Arduino Code'}
-                                            workspaceRef={workspaceRef.current}
-                                            setHover={setHoverArduino}
-                                            hover={hoverArduino}
-                                        />
-                                        <i onClick={() => compileArduinoCode(workspaceRef.current, setSelectedCompile, day, isStudent)}
-                                        className="fas fa-upload hvr-info"
-                                        onMouseEnter={() => setHoverCompile(true)}
-                                        onMouseLeave={() => setHoverCompile(false)}/>
-                                        {hoverCompile && <div className="popup ModalCompile">Upload to Arduino</div>}
 
-                                        <i onClick={() => handleConsole()}
-                                        className="fas fa-terminal hvr-info"
-                                        style={{marginLeft: '6px'}}
-                                        onMouseEnter={() => setHoverConsole(true)}
-                                        onMouseLeave={() => setHoverConsole(false)}/>
-                                        {hoverConsole && <div className="popup ModalCompile">Show Console</div>}
-                                    </div>
-                                </Col>
-                            </Row>
-                        
-                        </Spin>
+                            <Spin tip="Compiling Code Please Wait..." className="compilePop" spinning={selectedCompile}>
+
+                                <Row align='middle' justify='end' id='description-container' >
+                                    <Col flex={homePath && handleGoBack ? "60px" : "30px"}>
+                                        <Row>
+                                            {homePath ?
+                                                <Col>
+                                                    <Link id='link' to={homePath} className="flex flex-column">
+                                                        <i className="fa fa-home" />
+                                                    </Link>
+                                                </Col>
+                                                : null}
+                                            {handleGoBack ?
+                                                <Col>
+                                                    <button onClick={handleGoBack} id='link' className="flex flex-column">
+                                                        <i id='icon-btn' className="fa fa-arrow-left" />
+                                                    </button>
+                                                </Col>
+                                                : null}
+                                        </Row>
+                                    </Col>
+                                    <Col flex='auto' />
+
+                                    <Col flex={isStudent ? "300px" : "auto"}>
+                                        {isStudent && lastSavedTime ?
+                                            `Last changes saved ${lastSavedTime}`
+                                            : null
+                                        }
+                                    </Col>
+                                    <Col flex={isStudent ? "350px" : "200px"}>
+                                        <Row>
+                                            {isStudent ?
+                                                <Col className='flex flex-row'>
+                                                    <VersionHistoryModal
+                                                        saves={saves}
+                                                        lastAutoSave={lastAutoSave}
+                                                        defaultTemplate={day}
+                                                        getFormattedDate={getFormattedDate}
+                                                        loadSave={loadSave}
+                                                    />
+                                                    <button onClick={handleManualSave} id='link' className="flex flex-column">
+                                                        <i id='icon-btn' className="fa fa-save" />
+                                                    </button>
+                                                </Col>
+                                                : null
+                                            }
+                                            {isContentCreator ?
+                                                <Col className='flex flex-row'>
+                                                    <button onClick={handleCreatorSave} id='link' className="flex flex-column">
+                                                        <i id='icon-btn' className="fa fa-save" />
+                                                    </button>
+                                                </Col>
+                                                : null}
+                                            <Col className='flex flex-row'>
+                                                <button onClick={handleUndo} id='link' className="flex flex-column">
+                                                    <i id='icon-btn' className="fa fa-undo-alt"
+                                                        style={workspaceRef.current ?
+                                                            workspaceRef.current.undoStack_.length < 1 ?
+                                                                { color: 'grey', cursor: 'default' } : null
+                                                            : null}
+                                                    />
+                                                </button>
+                                                <button onClick={handleRedo} id='link' className="flex flex-column">
+                                                    <i id='icon-btn' className="fa fa-redo-alt"
+                                                        style={workspaceRef.current ?
+                                                            workspaceRef.current.redoStack_.length < 1 ?
+                                                                { color: 'grey', cursor: 'default' } : null
+                                                            : null}
+                                                    />
+                                                </button>
+                                            </Col>
+                                        </Row>
+
+                                    </Col>
+                                    <Col flex={isStudent ? "180px" : "230px"}>
+                                        <div id='action-btn-container' className="flex space-around">
+                                            {!isStudent ?
+                                                <CodeModal
+                                                    title={'XML'}
+                                                    workspaceRef={workspaceRef.current}
+                                                    setHover={setHoverXml}
+                                                    hover={hoverXml}
+                                                />
+                                                : null}
+                                            <CodeModal
+                                                title={'Arduino Code'}
+                                                workspaceRef={workspaceRef.current}
+                                                setHover={setHoverArduino}
+                                                hover={hoverArduino}
+                                            />
+                                            <i onClick={() => compileArduinoCode(workspaceRef.current, setSelectedCompile, day, isStudent)}
+                                                className="fas fa-upload hvr-info"
+                                                onMouseEnter={() => setHoverCompile(true)}
+                                                onMouseLeave={() => setHoverCompile(false)} />
+                                            {hoverCompile && <div className="popup ModalCompile">Upload to Arduino</div>}
+
+                                            <i onClick={() => handleConsole()}
+                                                className="fas fa-terminal hvr-info"
+                                                style={{ marginLeft: '6px' }}
+                                                onMouseEnter={() => setHoverConsole(true)}
+                                                onMouseLeave={() => setHoverConsole(false)} />
+                                            {hoverConsole && <div className="popup ModalCompile">Show Console</div>}
+                                        </div>
+                                    </Col>
+                                </Row>
+
+                            </Spin>
                         </Col>
                     </Row>
-                   
-                    <div id="blockly-canvas"/>
+                    <div id="blockly-canvas" />
+                    <ConsoleModal show={showConsole}></ConsoleModal>
                 </div>
                 {isContentCreator ?
                     <div id='side-container'>
-                        Current Student Toolbox Selection
+                        <div>
 
-                        <Input
-                            placeholder="Search Block"
-                            prefix={<i className="fa fa-search" />}
-                            onChange={e => handleSearchFilterChange(e.target.value)}
-                        />
+                            Current Student Toolbox Selection
 
-                        <Checkbox
-                            checked={selectAll}
-                            onClick={handleSelectEntireToolBox}
-                            disabled={searchFilter}>
-                        Select All
-                        </Checkbox>
-                        
-                        <Menu
-                            mode="inline"
-                            openKeys={openedToolBoxCategories}
-                            onOpenChange={keys => setOpenedToolBoxCategories(keys)}
-                        >
-                                
-                            {
-                                // Maps out block categories
-                                day && day.toolbox && day.toolbox.map(([category, blocks]) => (
-                                    <SubMenu
-                                        key={category}
-                                        title={
-                                            <span>
-                                                <span>{category}</span>
-                                                {openedToolBoxCategories.some(c => c === category) ? //check if the submenu is open
-                                                <span id="category-switch">
-                                                    <Switch
-                                                        disabled={searchFilter}
-                                                        checked={selectedToolBoxCategories.includes(category)}
-                                                        checkedChildren="category selected" unCheckedChildren="select category"
-                                                        onChange={(checked, event) => handleSelectToolBoxCategory(checked, category, blocks, event)} />
+                            <Input
+                                placeholder="Search Block"
+                                prefix={<i className="fa fa-search" />}
+                                onChange={e => handleSearchFilterChange(e.target.value)}
+                            />
+
+                            <Checkbox
+                                checked={selectAll}
+                                onClick={handleSelectEntireToolBox}
+                                disabled={searchFilter}>
+                                Select All
+                            </Checkbox>
+
+                            <Menu id='menu'
+                                mode="inline"
+                                openKeys={openedToolBoxCategories}
+                                onOpenChange={keys => setOpenedToolBoxCategories(keys)}
+                            >
+
+                                {
+                                    // Maps out block categories
+                                    day && day.toolbox && day.toolbox.map(([category, blocks]) => (
+                                        <SubMenu
+                                            key={category}
+                                            title={
+                                                <span>
+                                                    <span>{category}</span>
+                                                    {openedToolBoxCategories.some(c => c === category) ? //check if the submenu is open
+                                                        <span id="category-switch">
+                                                            <Switch
+                                                                disabled={searchFilter}
+                                                                checked={selectedToolBoxCategories.includes(category)}
+                                                                checkedChildren="category selected" unCheckedChildren="select category"
+                                                                onChange={(checked, event) => handleSelectToolBoxCategory(checked, category, blocks, event)} />
+                                                        </span>
+                                                        : null
+                                                    }
                                                 </span>
-                                                : null
-                                                }
-                                            </span>
-                                    }>
-                                        {
-                                            //filter out blocks not in search term
-                                            applySearchFilter(blocks).map((block) => {
-                                                return(
-                                                    <Menu.Item key={block.name}>
-                                                        <Checkbox 
-                                                            checked={studentToolbox.indexOf(block.name) > -1 ? true : false}
-                                                            onClick={e => handleSelectToolBoxBlock(!e.target.checked, block.name, category)}
-                                                        >{block.name}</Checkbox>
-                                                    </Menu.Item>
-                                                )
-                                        })
-                                        }
-                                    </SubMenu>
-                                ))
-                            }
-                        </Menu>
+                                            }>
+                                            {
+                                                //filter out blocks not in search term
+                                                applySearchFilter(blocks).map((block) => {
+                                                    return (
+                                                        <Menu.Item key={block.name}>
+                                                            <Checkbox
+                                                                checked={studentToolbox.indexOf(block.name) > -1 ? true : false}
+                                                                onClick={e => handleSelectToolBoxBlock(!e.target.checked, block.name, category)}
+                                                            >{block.name}</Checkbox>
+                                                        </Menu.Item>
+                                                    )
+                                                })
+                                            }
+                                        </SubMenu>
+                                    ))
+                                }
+                            </Menu>
+                        </div>
                     </div>
                     : null}
             </div>
-            {showConsole?   <
-                ConsoleModal></ConsoleModal> : null 
-            }
-
 
             {/* This xml is for the blocks' menu we will provide. Here are examples on how to include categories and subcategories */}
             <xml id="toolbox" is="Blockly workspace">
@@ -485,7 +484,7 @@ export default function BlocklyCanvasPanel(props) {
                                 // maps out blocks in category
                                 // eslint-disable-next-line
                                 blocks.map((block) => {
-                                    return <block type={block.name} is="Blockly block" key={block.name}/>
+                                    return <block type={block.name} is="Blockly block" key={block.name} />
                                 })
                             }
                         </category>

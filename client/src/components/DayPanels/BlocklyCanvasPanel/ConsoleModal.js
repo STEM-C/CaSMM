@@ -7,7 +7,7 @@ export default function ConsoleModal(props) {
   const [baudRate, setBaudRate] = useState(9600);
   const [input, setInput] = useState('');
   const [newLine, setnewLine] = useState(false);
-
+  
   useEffect(() => {
     navigator.serial.addEventListener('disconnect', (e) => {
       console.log('device disconnected');
@@ -59,7 +59,7 @@ export default function ConsoleModal(props) {
   };
 
   return (
-    <div id='console-container'>
+    <div id='console-container' className={ props.show ? "open" : ""}>
       <div style={{ margin: '10px 0' }}>
         <strong style={{ fontSize: '10' }}>Baud Rate: </strong>
         <Select
