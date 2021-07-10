@@ -66,6 +66,7 @@ export default function ConsoleModal(props) {
           defaultValue='9600'
           onChange={handleChange}
           className={{ width: '15rem' }}
+          disabled={connectionOpen}
         >
           <Select.Option value='300'>300</Select.Option>
           <Select.Option value='600'>600</Select.Option>
