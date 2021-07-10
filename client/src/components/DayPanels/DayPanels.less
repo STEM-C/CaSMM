@@ -128,8 +128,17 @@ p {
   background-color: #colors[tertiary];
   border-radius: 10px;
   height: 100%;
-  max-height: 78vh;
+  overflow: hidden;
+
+  #menu {
+    overflow-y: auto;
+    overflow-x: hidden;
+    height: 100%;
+    max-height: 78vh;
+
+  }
 }
+
 
 #bottom-container {
   flex: 6;
@@ -147,6 +156,49 @@ p {
   width: 95%;
   height: 100%;
   min-height: 68vh;
+  // position: relative;
+  
+  //   transition: min-height 2s;
+  
+  //   &.contract {
+  //     min-height: 28vh;
+  //   }
+}
+
+#console-container {
+  background-color: white;
+  border: 1px solid #colors[secondary];
+  border-radius: 5px;
+  margin: 0 auto;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  overflow: hidden;
+  height: 0;
+  transition: .5s ease;
+  z-index: 10;
+
+  &.open {
+    height: calc(29vh + 92px);
+  }
+}
+
+#console-content {
+  color: white;
+  text-align: left;
+}
+
+#content-container {
+  width: 98%;
+  border-radius: 5px;
+  height: 27vh;
+  padding: 0.5vh 1vh;
+  margin: 1vh auto;
+  background-color: black;
+  overflow-y: scroll;
+  position: relative;
+  word-break: break-word;
 }
 
 #section-header {
@@ -297,32 +349,4 @@ p {
 #category-switch {
   float: right;
   vertical-align: middle;
-}
-
-#console-container {
-  background-color: white;
-  border: 1px solid #colors[secondary];
-  border-radius: 5px;
-  margin: 0 auto;
-  width: 80%;
-  height: 100%;
-  min-height: 40vh;
-  position: relative;
-}
-
-#console-content {
-  color: white;
-  text-align: left;
-}
-
-#content-container {
-  width: 98%;
-  border-radius: 5px;
-  height: 27vh;
-  padding: 0.5vh 1vh;
-  margin: 1vh auto;
-  background-color: black;
-  overflow-y: scroll;
-  position: relative;
-  word-break: break-word;
 }

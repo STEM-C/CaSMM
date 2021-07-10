@@ -280,9 +280,6 @@ export default function BlocklyCanvasPanel(props) {
   };
 
   const handleConsole = () => {
-    const canvas = document.getElementById('blockly-canvas');
-    console.log(canvas);
-    canvas.style.height = '100px';
     setShowConsole(!showConsole);
   };
 
@@ -422,7 +419,7 @@ export default function BlocklyCanvasPanel(props) {
                       </Col>
                     </Row>
                   </Col>
-                  <Col flex={isStudent ? '150px' : '200px'}>
+                  <Col flex={isStudent ? '180px' : '230px'}>
                     <div
                       id='action-btn-container'
                       className='flex space-around'
@@ -476,97 +473,99 @@ export default function BlocklyCanvasPanel(props) {
               </Spin>
             </Col>
           </Row>
-
           <div id='blockly-canvas' />
         </div>
         {isContentCreator ? (
           <div id='side-container'>
-            Current Student Toolbox Selection
-            <Input
-              placeholder='Search Block'
-              prefix={<i className='fa fa-search' />}
-              onChange={(e) => handleSearchFilterChange(e.target.value)}
-            />
-            <Checkbox
-              checked={selectAll}
-              onClick={handleSelectEntireToolBox}
-              disabled={searchFilter}
-            >
-              Select All
-            </Checkbox>
-            <Menu
-              mode='inline'
-              openKeys={openedToolBoxCategories}
-              onOpenChange={(keys) => setOpenedToolBoxCategories(keys)}
-            >
-              {
-                // Maps out block categories
-                day &&
-                  day.toolbox &&
-                  day.toolbox.map(([category, blocks]) => (
-                    <SubMenu
-                      key={category}
-                      title={
-                        <span>
-                          <span>{category}</span>
-                          {openedToolBoxCategories.some(
-                            (c) => c === category
-                          ) ? ( //check if the submenu is open
-                            <span id='category-switch'>
-                              <Switch
-                                disabled={searchFilter}
-                                checked={selectedToolBoxCategories.includes(
-                                  category
-                                )}
-                                checkedChildren='category selected'
-                                unCheckedChildren='select category'
-                                onChange={(checked, event) =>
-                                  handleSelectToolBoxCategory(
-                                    checked,
-                                    category,
-                                    blocks,
-                                    event
-                                  )
-                                }
-                              />
-                            </span>
-                          ) : null}
-                        </span>
-                      }
-                    >
-                      {
-                        //filter out blocks not in search term
-                        applySearchFilter(blocks).map((block) => {
-                          return (
-                            <Menu.Item key={block.name}>
-                              <Checkbox
-                                checked={
-                                  studentToolbox.indexOf(block.name) > -1
-                                    ? true
-                                    : false
-                                }
-                                onClick={(e) =>
-                                  handleSelectToolBoxBlock(
-                                    !e.target.checked,
-                                    block.name,
+            <div>
+              Current Student Toolbox Selection
+              <Input
+                placeholder='Search Block'
+                prefix={<i className='fa fa-search' />}
+                onChange={(e) => handleSearchFilterChange(e.target.value)}
+              />
+              <Checkbox
+                checked={selectAll}
+                onClick={handleSelectEntireToolBox}
+                disabled={searchFilter}
+              >
+                Select All
+              </Checkbox>
+              <Menu
+                id='menu'
+                mode='inline'
+                openKeys={openedToolBoxCategories}
+                onOpenChange={(keys) => setOpenedToolBoxCategories(keys)}
+              >
+                {
+                  // Maps out block categories
+                  day &&
+                    day.toolbox &&
+                    day.toolbox.map(([category, blocks]) => (
+                      <SubMenu
+                        key={category}
+                        title={
+                          <span>
+                            <span>{category}</span>
+                            {openedToolBoxCategories.some(
+                              (c) => c === category
+                            ) ? ( //check if the submenu is open
+                              <span id='category-switch'>
+                                <Switch
+                                  disabled={searchFilter}
+                                  checked={selectedToolBoxCategories.includes(
                                     category
-                                  )
-                                }
-                              >
-                                {block.name}
-                              </Checkbox>
-                            </Menu.Item>
-                          );
-                        })
-                      }
-                    </SubMenu>
-                  ))
-              }
-            </Menu>
+                                  )}
+                                  checkedChildren='category selected'
+                                  unCheckedChildren='select category'
+                                  onChange={(checked, event) =>
+                                    handleSelectToolBoxCategory(
+                                      checked,
+                                      category,
+                                      blocks,
+                                      event
+                                    )
+                                  }
+                                />
+                              </span>
+                            ) : null}
+                          </span>
+                        }
+                      >
+                        {
+                          //filter out blocks not in search term
+                          applySearchFilter(blocks).map((block) => {
+                            return (
+                              <Menu.Item key={block.name}>
+                                <Checkbox
+                                  checked={
+                                    studentToolbox.indexOf(block.name) > -1
+                                      ? true
+                                      : false
+                                  }
+                                  onClick={(e) =>
+                                    handleSelectToolBoxBlock(
+                                      !e.target.checked,
+                                      block.name,
+                                      category
+                                    )
+                                  }
+                                >
+                                  {block.name}
+                                </Checkbox>
+                              </Menu.Item>
+                            );
+                          })
+                        }
+                      </SubMenu>
+                    ))
+                }
+              </Menu>
+            </div>
           </div>
         ) : null}
+        <ConsoleModal show={showConsole}></ConsoleModal>
       </div>
-      {showConsole ? <ConsoleModal></ConsoleModal> : null}
 
       {/* This xml is for the blocks' menu we will provide. Here are examples on how to include categories and subcategories */}
       <xml id='toolbox' is='Blockly workspace'>
