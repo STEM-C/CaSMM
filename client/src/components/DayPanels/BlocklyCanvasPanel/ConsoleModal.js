@@ -1,13 +1,15 @@
-import { Button, Checkbox, Select } from 'antd';
+import { Button, Checkbox, Select, Input } from 'antd';
 import React, { useState, useEffect } from 'react';
 import { openConnection, disconnect, writeToPort } from '../ConsoleView';
+import Message from '../../Message';
 
 export default function ConsoleModal(props) {
   const [connectionOpen, setConnectionOpen] = useState(false);
   const [baudRate, setBaudRate] = useState(9600);
   const [input, setInput] = useState('');
-  const [newLine, setnewLine] = useState(false);
-  
+  const [newLine, setnewLine] = useState(true);
+  const [deviceDisconnect, setDeviceDisconnect] = useState(false);
+
   useEffect(() => {
     navigator.serial.addEventListener('disconnect', (e) => {
       console.log('device disconnected');
@@ -15,8 +17,13 @@ export default function ConsoleModal(props) {
       console.log('cleaned');
       setConnectionOpen(false);
       document.getElementById('connect-button').innerHTML = 'Connect';
+      setDeviceDisconnect(true);
     });
-  });
+    navigator.serial.addEventListener('connect', (e) => {
+      console.log('device connected');
+      setDeviceDisconnect(false);
+    });
+  }, [deviceDisconnect]);
 
   const handleConnect = async () => {
     if (!connectionOpen) {
@@ -35,6 +42,7 @@ export default function ConsoleModal(props) {
         window['port'] = port;
       }
       setConnectionOpen(true);
+      setDeviceDisconnect(false);
       document.getElementById('connect-button').innerHTML = 'Disconnect';
       openConnection(baudRate, newLine);
     } else {
@@ -59,8 +67,8 @@ export default function ConsoleModal(props) {
   };
 
   return (
-    <div id='console-container' className={ props.show ? "open" : ""}>
-      <div style={{ margin: '10px 0' }}>
+    <div id='console-container' className={props.show ? 'open' : ''}>
+      <div style={{ margin: '5px 0' }}>
         <strong style={{ fontSize: '10' }}>Baud Rate: </strong>
         <Select
           defaultValue='9600'
@@ -100,26 +108,40 @@ export default function ConsoleModal(props) {
           New Line
         </Checkbox>
       </div>
+      <div id='content-container'>
+        <p id='console-content'>Waiting for input...</p>
+      </div>
       <div>
-        <input
+        <Input
           type='text'
           value={input}
-          placeholder='Enter your message'
+          placeholder='Enter your input: '
+          id='console-message'
           onChange={(e) => {
             setInput(e.target.value);
           }}
-          style={{ width: '25rem' }}
-        ></input>
+        ></Input>
         <Button
-          id='connect-button'
           onClick={() => sendInput()}
-          style={{ marginLeft: '10px' }}
+          style={{ float: 'left', marginTop: '0.5vh', marginRight: '2rem' }}
         >
           Send
         </Button>
-      </div>
-      <div id='content-container'>
-        <p id='console-content'>Waiting for input...</p>
+        {deviceDisconnect ? (
+          <Message message='device disconnected, please check connection and try again.'></Message>
+        ) : connectionOpen ? (
+          <Message message='Connection Opened' type='success'></Message>
+        ) : typeof window['port'] !== 'undefined' ? (
+          <Message
+            message='Device Connected. Connection Not Opened'
+            type='info'
+          ></Message>
+        ) : (
+          <Message
+            message='Device Not Connected. Connection Not Opened'
+            type='info'
+          ></Message>
+        )}
       </div>
     </div>
   );
