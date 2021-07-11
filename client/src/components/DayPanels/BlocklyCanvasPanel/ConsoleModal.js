@@ -1,7 +1,12 @@
-import { Button, Checkbox, Select, Input } from 'antd';
+import { Button, Checkbox, Select, Input, message } from 'antd';
 import React, { useState, useEffect } from 'react';
 import { openConnection, disconnect, writeToPort } from '../ConsoleView';
 import Message from '../../Message';
+
+message.config({
+  duration: 2,
+  maxCount: 1,
+});
 
 export default function ConsoleModal(props) {
   const [connectionOpen, setConnectionOpen] = useState(false);
@@ -18,10 +23,12 @@ export default function ConsoleModal(props) {
       setConnectionOpen(false);
       document.getElementById('connect-button').innerHTML = 'Connect';
       setDeviceDisconnect(true);
+      message.error('Device Disconnected');
     });
     navigator.serial.addEventListener('connect', (e) => {
       console.log('device connected');
       setDeviceDisconnect(false);
+      message.success('Device Connected');
     });
   }, [deviceDisconnect]);
 
