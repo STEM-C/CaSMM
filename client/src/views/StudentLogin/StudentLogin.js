@@ -42,7 +42,6 @@ export default function StudentLogin(props) {
   };
 
   const studentAuth = (ids) => {
-    console.log(studentList);
     let authList = [];
     for (let i = 0; i < ids.length; i++) {
       for (let j = 0; j < studentList.length; j++) {
@@ -72,7 +71,7 @@ export default function StudentLogin(props) {
         setUserSession(res.data.jwt, JSON.stringify(res.data.students));
         props.history.push('/student');
       } else {
-        message.error(res.err);
+        message.error('Name or Animal not selected.');
       }
     } else {
       setAttemp(attemp - 1);
