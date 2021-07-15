@@ -11,6 +11,7 @@ import { getSaves } from '../../../Utils/requests';
 import CodeModal from './CodeModal';
 import ConsoleModal from './ConsoleModal';
 import VersionHistoryModal from './VersionHistoryModal';
+import { openConnection, disconnect } from '../ConsoleView';
 
 export default function BlocklyCanvasPanel(props) {
   const [hoverXml, setHoverXml] = useState(false);
@@ -18,6 +19,7 @@ export default function BlocklyCanvasPanel(props) {
   const [hoverCompile, setHoverCompile] = useState(false);
   const [hoverConsole, setHoverConsole] = useState(false);
   const [showConsole, setShowConsole] = useState(false);
+  const [connectionOpen, setConnectionOpen] = useState(false);
   const [selectedCompile, setSelectedCompile] = useState(false);
   const [saves, setSaves] = useState({});
   const [studentToolbox, setStudentToolbox] = useState([]);
@@ -279,8 +281,48 @@ export default function BlocklyCanvasPanel(props) {
       workspaceRef.current.undo(true);
   };
 
-  const handleConsole = () => {
-    setShowConsole(!showConsole);
+  const handleConsole = async () => {
+    if (!showConsole) {
+      setShowConsole(true);
+      if (typeof window['port'] === 'undefined') {
+        const filters = [
+          { usbVendorId: 0x2341, usbProductId: 0x0043 },
+          { usbVendorId: 0x2341, usbProductId: 0x0001 },
+        ];
+        let port;
+        try {
+          port = await navigator.serial.requestPort({ filters });
+        } catch (e) {
+          console.log(e);
+          return;
+        }
+        window['port'] = port;
+      }
+      setConnectionOpen(true);
+      document.getElementById('connect-button').innerHTML = 'Disconnect';
+      openConnection(9600, true);
+    } else {
+      setShowConsole(false);
+      if (connectionOpen) {
+        console.log('Close connection');
+        disconnect();
+        setConnectionOpen(false);
+        document.getElementById('connect-button').innerHTML = 'Connect';
+      }
+    }
+  };
+
+  const handleCompile = () => {
+    if (connectionOpen) {
+      message.warn('Close Serial Monitor before uploading your code');
+    } else {
+      compileArduinoCode(
+        workspaceRef.current,
+        setSelectedCompile,
+        day,
+        isStudent
+      );
+    }
   };
 
   const getFormattedDate = (dt) => {
@@ -439,14 +481,7 @@ export default function BlocklyCanvasPanel(props) {
                         hover={hoverArduino}
                       />
                       <i
-                        onClick={() =>
-                          compileArduinoCode(
-                            workspaceRef.current,
-                            setSelectedCompile,
-                            day,
-                            isStudent
-                          )
-                        }
+                        onClick={handleCompile}
                         className='fas fa-upload hvr-info'
                         onMouseEnter={() => setHoverCompile(true)}
                         onMouseLeave={() => setHoverCompile(false)}
@@ -465,7 +500,9 @@ export default function BlocklyCanvasPanel(props) {
                         onMouseLeave={() => setHoverConsole(false)}
                       />
                       {hoverConsole && (
-                        <div className='popup ModalCompile'>Show Console</div>
+                        <div className='popup ModalCompile'>
+                          Show Serial Monitor
+                        </div>
                       )}
                     </div>
                   </Col>
@@ -564,7 +601,11 @@ export default function BlocklyCanvasPanel(props) {
             </div>
           </div>
         ) : null}
-        <ConsoleModal show={showConsole}></ConsoleModal>
+        <ConsoleModal
+          show={showConsole}
+          connectionOpen={connectionOpen}
+          setConnectionOpen={setConnectionOpen}
+        ></ConsoleModal>
       </div>
 
       {/* This xml is for the blocks' menu we will provide. Here are examples on how to include categories and subcategories */}

@@ -1,4 +1,4 @@
-import { Button, Checkbox, Select, Input, message } from 'antd';
+import { Button, Checkbox, Select, Input, message, Row, Col } from 'antd';
 import React, { useState, useEffect } from 'react';
 import { openConnection, disconnect, writeToPort } from '../ConsoleView';
 import Message from '../../Message';
@@ -9,11 +9,12 @@ message.config({
 });
 
 export default function ConsoleModal(props) {
-  const [connectionOpen, setConnectionOpen] = useState(false);
   const [baudRate, setBaudRate] = useState(9600);
   const [input, setInput] = useState('');
   const [newLine, setnewLine] = useState(true);
   const [deviceDisconnect, setDeviceDisconnect] = useState(false);
+
+  const { connectionOpen, setConnectionOpen } = props;
 
   useEffect(() => {
     navigator.serial.addEventListener('disconnect', (e) => {
@@ -118,38 +119,47 @@ export default function ConsoleModal(props) {
       <div id='content-container'>
         <p id='console-content'>Waiting for input...</p>
       </div>
-      <div>
-        <Input
-          type='text'
-          value={input}
-          placeholder='Enter your input: '
-          id='console-message'
-          onChange={(e) => {
-            setInput(e.target.value);
-          }}
-        ></Input>
-        <Button
-          onClick={() => sendInput()}
-          style={{ float: 'left', marginTop: '0.5vh', marginRight: '2rem' }}
-        >
-          Send
-        </Button>
-        {deviceDisconnect ? (
-          <Message message='device disconnected, please check connection and try again.'></Message>
-        ) : connectionOpen ? (
-          <Message message='Connection Opened' type='success'></Message>
-        ) : typeof window['port'] !== 'undefined' ? (
-          <Message
-            message='Device Connected. Connection Not Opened'
-            type='info'
-          ></Message>
-        ) : (
-          <Message
-            message='Device Not Connected. Connection Not Opened'
-            type='info'
-          ></Message>
-        )}
-      </div>
+      <Row>
+        <Col span={10}>
+          <Input
+            type='text'
+            value={input}
+            placeholder='Enter your input: '
+            id='console-message'
+            onChange={(e) => {
+              setInput(e.target.value);
+            }}
+          ></Input>
+        </Col>
+        <Col span={2}>
+          <Button
+            onClick={() => sendInput()}
+            style={{ float: 'left', marginTop: '0.5vh' }}
+          >
+            Send
+          </Button>
+        </Col>
+        <Col span={6}>
+          {deviceDisconnect ? (
+            <Message message='Device disconnected'></Message>
+          ) : (
+            <Message message='Device Connected' type='success'></Message>
+          )}
+        </Col>
+        <Col span={6}>
+          {connectionOpen ? (
+            <Message
+              message='Serial Monitor Connection Opened'
+              type='success'
+            ></Message>
+          ) : (
+            <Message
+              message='Serial Monitor Connection Not Opened'
+              type='info'
+            ></Message>
+          )}
+        </Col>
+      </Row>
     </div>
   );
 }
