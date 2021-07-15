@@ -54,7 +54,11 @@ export default function Day(props) {
           day={day}
           isMentor={isMentor}
           isContentCreator={isContentCreator}
-          lessonName={`${day.learning_standard_name}, Day ${day.number}`}
+          lessonName={
+            day.learning_standard_name
+              ? `${day.learning_standard_name}, Day ${day.number}`
+              : `Learning Standard ${day.learning_standard}, Day ${day.number}`
+          }
           handleGoBack={handleGoBack}
         />
       </div>

@@ -86,8 +86,19 @@ export default function Home(props) {
               </div>
             </div>
           ) : (
-            'There is currently no active learning standard set. ' +
-            'Click the button below to browse available learning standards'
+            <div>
+              <p>There is currently no active learning standard set.</p>
+              <p>
+                Click the button below to browse available learning standards
+              </p>
+              <LearningStandardModal
+                history={history}
+                setActiveLearningStandard={setActiveLearningStandard}
+                classroomId={classroomId}
+                gradeId={gradeId}
+                viewing={viewing}
+              />
+            </div>
           )}
         </div>
       </div>
