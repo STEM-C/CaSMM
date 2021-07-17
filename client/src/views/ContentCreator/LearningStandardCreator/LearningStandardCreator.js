@@ -1,5 +1,5 @@
 import React,{useState, useEffect} from 'react'
-import {Form, Input, Button, Modal, message} from 'antd'
+import {Form, Input, Button, Modal, message, List, Card} from 'antd'
 import {PlusOutlined} from '@ant-design/icons'
 import {createLearningStandard, createDay, getAllUnits} from '../../../Utils/requests'
 
@@ -9,6 +9,7 @@ import './LearningStandardCreator.less'
 export default function LearningStandardCreator(props){
 
     const [visible, setVisible] = useState(false);
+    const [visibleSelectDay, setVisibleSelectDay] = useState(false);
     const [unitsMenu, setUnitsMenu] = useState([])
 
     const defaultLearningObj = {
@@ -39,8 +40,17 @@ export default function LearningStandardCreator(props){
         setVisible(true)
     };
 
+    const showSelectDayModal = () => {
+        setVisibleSelectDay(true);
+        handleCancel();
+    };
+
     const handleCancel = () => {
         setVisible(false)
+    };
+
+    const handleCancelSelectDay = () => {
+        setVisibleSelectDay(false);
     };
 
     const completeLearningStandard = () => {
@@ -81,9 +91,11 @@ export default function LearningStandardCreator(props){
         // units1.data.forEach(element => {
         //    creaStandard(element,newArr)
         // });
-        creaStandard(newArr) 
-       
+        creaStandard(newArr);
+        
+        showSelectDayModal();
     }
+
 
     const setUnitsOption = () => {
         let options = [];
@@ -111,7 +123,6 @@ export default function LearningStandardCreator(props){
             id: getLearn.data.id,
             delete: getLearn.data.id})
         props.changeDataSource(newArr)
-
         setLearnObj(defaultLearningObj)
 
         completeLearningStandard()
@@ -197,13 +208,17 @@ export default function LearningStandardCreator(props){
                 Add Learning Standard
             </Button> */}
             <button onClick={showModal} id="add-learning-standard-btn">
-                + Add Learning Standard
+                + Add a Lesson
             </button>
             <Modal
                title="Create a Lesson"
                visible={visible}
                onCancel={handleCancel}
                onOk={onclickhandler}
+                // footer={[
+                //     <Button onClick={handleCancel}>Cancel</Button>,
+                //     <Button type="primary" onClick={onclickhandler}>Next</Button>
+                // ]}
             >
                 <Form id="add-learning-standard"
                     labelCol={{
@@ -238,6 +253,32 @@ export default function LearningStandardCreator(props){
                     </Form.Item>
                 </Form>
     
+            </Modal>
+
+            <Modal
+                title="Select a Day"
+                visible={visibleSelectDay}
+                footer={[
+                    <Button onClick={handleCancelSelectDay}>Cancel</Button>,
+                    <Button type="primary">Next</Button>
+                ]}
+                >
+                    <div className="list-position">
+                    {(learningObj.length > 0) ?
+                        <List
+                            grid={{ gutter: 16, column: 3 }}
+                            renderItem={item => (
+                                <List.Item >
+                                        <Card id="card-day" key={item.id} title={"Day " + item.number } hoverable="true"
+                                            //  onClick={() => handleViewDay(item)} 
+                                             />
+                                        {/* <span className="delete-btn" onClick={() => removeBasicDay(item)}>&times;</span> */}
+                                </List.Item>
+                            )}
+                        /> : null}
+                    <div></div>
+                    </div>
+
             </Modal>
 
             

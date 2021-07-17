@@ -56,7 +56,7 @@ export default function ContentCreator(props) {
     const handleViewDay = async day => {
         const res = await getDayToolboxAll();
         day.toolbox = res.data.toolbox;
-
+        
         localStorage.setItem("my-day", JSON.stringify(day));
         props.history.push('/day')
     };

@@ -3,7 +3,6 @@ import {Form, Input, Button, Modal, List, Card} from 'antd'
 import {PlusOutlined} from '@ant-design/icons'
 import {createUnit, getLearningStandardAll} from '../../../Utils/requests'
 import './UnitCreator.less'
-import SelectedDayDetailsModal from '../SelectedDayDetailsModal/SelectedDayDetailsModal.js'
 
 export default function UnitCreator(props){
     const [visible, setVisible] = useState(false);
@@ -23,46 +22,14 @@ export default function UnitCreator(props){
         setVisible(true)
     };
 
-    const showSelectDayModal = () => {
-        setVisibleSelectDay(true);
-        handleCancel();
-    };
-
-    // const showAddLessonDetailsModal = () => {
-    //     setVisibleAddLessonDetails(true);
-    // };
-
-    const handleBackCreateUnit= () => {
-        setVisibleSelectDay(false);
-        showModal();
-    };
-
-    // const handleBackSelectDay = () => {
-    //     // setVisibleAddLessonDetails(false);
-    //     showSelectDayModal();
-    // };
 
     const handleCancel = () => {
         setVisible(false)
     };
 
-    const handleCancelSelectDay = () => {
-        setVisibleSelectDay(false);
-    };
-
-    const handleViewDay = async day => {
-        // const res = await getDayToolboxAll();
-        // day.toolbox = res.data.toolbox;
-
-        // localStorage.setItem("my-day", JSON.stringify(day));
-        // props.history.push('/day')
-        const result = getLearningStandardAll();
-        console.log(result);
-    };
 
     const completeUnitCreation = () => {
-        // setVisible(false)
-        setVisibleSelectDay(false);
+        setVisible(false)
     }
  
     const addButtonStyle={
@@ -137,12 +104,8 @@ export default function UnitCreator(props){
             <Modal
                title="Create Unit"
                visible={visible}
-            //    onCancel={handleCancel}
-            //    onOk={onClickHandler}
-               footer={[
-                   <Button onClick={handleCancel}>Cancel</Button>,
-                   <Button type="primary" onClick={showSelectDayModal}>Next</Button>
-               ]}
+               onCancel={handleCancel}
+               onOk={onClickHandler}
             >
             <Form id="add-units"
             labelCol={{
@@ -174,51 +137,7 @@ export default function UnitCreator(props){
                 </Form.Item>
             </Form>
         </Modal>
-
-        <Modal
-            title="Select a Day"
-            visible={visibleSelectDay}
-            footer={[
-                <Button onClick={handleCancelSelectDay}>Cancel</Button>,
-                <Button type="primary" onClick={handleBackCreateUnit}>Back</Button>,
-                <Button type="primary" onClick={onClickHandler}>Done</Button>
-            ]}>
-                {/* <Button onClick={showAddLessonDetailsModal}>Temp button to test "Add Selected Day Lesson Details Module"</Button> */}
-                <SelectedDayDetailsModal
-                    linkBtn={true}>
-                </SelectedDayDetailsModal>
-                <Button onClick={handleViewDay}>Testing Day</Button>
-        </Modal> 
-
-      
-
-        {/* <Modal
-            title="Add Selected Day Lesson Details"
-            visible={visibleAddLessonDetails}
-            footer={[
-                <Button type="primary" onClick={handleBackSelectDay}>Back</Button>,
-                <Button type="primary">Next</Button>
-            ]}>
-            <Form.Item id="form-label" label="Lesson Name">
-                <Input></Input>
-            </Form.Item>
-            <Form.Item id="form-label" label="Description">
-                <Input></Input>
-            </Form.Item>
-            <Form.Item id="form-label" label="TekS">
-                <Input></Input>
-            </Form.Item>
-            <h3>Lesson Learning Components</h3>
-            <Form.Item id="form-label" label="Science Component">
-            <Input></Input>
-                </Form.Item>
-            <Form.Item id="form-label" label="Maker Component">
-                <Input></Input>
-            </Form.Item>
-            <Form.Item id="form-label" label="Computer Science Component">
-                <Input></Input>
-            </Form.Item>
-        </Modal> */}
+        
             </div>
     )
 }
