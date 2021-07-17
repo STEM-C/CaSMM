@@ -1,49 +1,65 @@
-import React, { useState, useEffect } from 'react'
-import { Form, Input, Modal } from 'antd'
-import { getLearningStandard } from '../../../Utils/requests'
+import React, { useState, useEffect } from 'react';
+import { Form, Input, Modal, message } from 'antd';
+import { getLearningStandard, updateUnit } from '../../../Utils/requests';
 
-
-import './UnitEditor.less'
-
+import './UnitEditor.less';
 
 export default function UnitCreator(props) {
-    const [unitObject, setUnitObject] = useState({
-        unitName: "",
-        unitGrade: 0,
-        unitNumber: 0,
-        unitDescrip: "",
-        unitTeksId: 0,
-    })
+  const [unitObject, setUnitObject] = useState({
+    unitName: '',
+    unitGrade: 0,
+    unitNumber: 0,
+    unitDescrip: '',
+    unitTeksId: 0,
+  });
+  const [unitId, setUnitId] = useState(0);
 
-    useEffect(() => {
-        getUnit()
-        // eslint-disable-next-line
-    }, [])
-    const [visible, setVisible] = useState(false);
-    const linkBtn = props.linkBtn;
+  useEffect(() => {
+    getUnit();
+    // eslint-disable-next-line
+  }, []);
+  const [visible, setVisible] = useState(false);
+  const linkBtn = props.linkBtn;
 
-    const showModal = () => {
-        setVisible(true)
-    };
+  const showModal = () => {
+    setVisible(true);
+  };
 
-    const handleCancel = () => {
-        setVisible(false)
-    };
+  const handleCancel = () => {
+    setVisible(false);
+  };
 
-    const getUnit = async () => {
-        const learningStand = getLearningStandard(props.learningStandard)
-        const returnUnit = await learningStand
-        // console.log(returnUnit)
-        setUnitObject({
-            unitName: returnUnit.data.unit.name,
-            unitNumber: returnUnit.data.unit.number,
-            unitGrade: returnUnit.data.unit.grade,
-            unitDescrip: returnUnit.data.unit.teks_description,
-            unitTeksId: returnUnit.data.unit.teks_id
-        })
+  const getUnit = async () => {
+    const learningStand = getLearningStandard(props.learningStandard);
+    const returnUnit = await learningStand;
+    // console.log(returnUnit)
+    setUnitObject({
+      unitName: returnUnit.data.unit.name,
+      unitNumber: returnUnit.data.unit.number,
+      unitGrade: returnUnit.data.unit.grade,
+      unitDescrip: returnUnit.data.unit.teks_description,
+      unitTeksId: returnUnit.data.unit.teks_id,
+    });
+    setUnitId(returnUnit.data.unit.id);
+  };
+
+  const handleSubmit = async () => {
+    try {
+      await updateUnit(
+        unitId,
+        unitObject.unitNumber,
+        unitObject.unitName,
+        unitObject.unitTeksId,
+        unitObject.unitDescrip,
+        unitObject.unitGrade
+      );
+      message.success('Update Unit Success');
+      setVisible(false);
+    } catch (error) {
+      message.error(error);
+      console.error(error);
     }
-
-
+  };
     return (
         <div>
             <button id={linkBtn ? 'link-btn' : null} onClick={showModal}>{unitObject.unitName}</button>
@@ -70,7 +86,7 @@ export default function UnitCreator(props) {
                                 unitGrade: parseInt(value, 10)
                             }));
                         }}>
-                        <Input defaultValue={unitObject.unitGrade}/>
+                        <Input defaultValue={unitObject.unitGrade} disabled/>
                     </Form.Item>
                     <Form.Item label="Unit Name">
                         <Input defaultValue={unitObject.unitName} onChange={(e) => {
@@ -115,13 +131,9 @@ export default function UnitCreator(props) {
                         {/* <Button type="primary" htmlType="submit">
                             Save Unit
                         </Button> */}
-                    </Form.Item>
-
-                </Form>
-
-            </Modal>
-
-
-        </div>
-    )
+          </Form.Item>
+        </Form>
+      </Modal>
+    </div>
+  );
 }
