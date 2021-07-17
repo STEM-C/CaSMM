@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Form, Input, Modal } from 'antd';
+import { Form, Input, Modal, message } from 'antd';
 import { getLearningStandard, updateUnit } from '../../../Utils/requests';
 
 import './UnitEditor.less';
@@ -53,8 +53,10 @@ export default function UnitCreator(props) {
         unitObject.unitDescrip,
         unitObject.unitGrade
       );
+      message.success('Update Unit Success');
       setVisible(false);
     } catch (error) {
+      message.error(error);
       console.error(error);
     }
   };
