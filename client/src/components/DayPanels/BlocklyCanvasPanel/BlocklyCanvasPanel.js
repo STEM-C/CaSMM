@@ -133,6 +133,23 @@ export default function BlocklyCanvasPanel(props) {
 
         if (!isStudent && !isMentor && !isContentCreator) return;
 
+        if (isContentCreator) {
+          let tempCategories = [],
+            tempToolBox = [];
+          day &&
+            day.selectedToolbox &&
+            day.selectedToolbox.forEach(([category, blocks]) => {
+              tempCategories.push(category);
+              tempToolBox = [
+                ...tempToolBox,
+                ...blocks.map((block) => block.name),
+              ];
+            });
+
+          setOpenedToolBoxCategories(tempCategories);
+          setStudentToolbox(tempToolBox);
+        }
+
         let onLoadSave = null;
         const res = await getSaves(day.id);
         if (res.data) {
@@ -141,47 +158,15 @@ export default function BlocklyCanvasPanel(props) {
         } else {
           console.log(res.err);
         }
-    }, [isStudent]);
 
-    useEffect(() => {
-        // once the day state is set, set the workspace and save
-        const setUp = async () => {
-            dayRef.current = day;
-            if (!workspaceRef.current && day && Object.keys(day).length !== 0) {
-                setWorkspace();
-
-                if (!isStudent && !isMentor && !isContentCreator) return;
-
-                if (isContentCreator) {
-                    let tempCategories = [], tempToolBox = [];
-                    day && day.selectedToolbox && day.selectedToolbox.forEach(
-                        ([category, blocks]) => {
-                                tempCategories.push(category);
-                                tempToolBox = [...tempToolBox, ...blocks.map(block => block.name)]
-                        }
-                    );
-        
-                    setOpenedToolBoxCategories(tempCategories);
-                    setStudentToolbox(tempToolBox);
-                }
-
-                let onLoadSave = null;
-                const res = await getSaves(day.id);
-                if (res.data) {
-                    if (res.data.current) onLoadSave = res.data.current;
-                    setSaves(res.data)
-                } else {
-                    console.log(res.err)
-                }
-
-                if (onLoadSave) {
-                    let xml = window.Blockly.Xml.textToDom(onLoadSave.workspace);
-                    window.Blockly.Xml.domToWorkspace(xml, workspaceRef.current);
-                    setLastSavedTime(getFormattedDate(onLoadSave.updated_at));
-                } else if (day.template) {
-                    let xml = window.Blockly.Xml.textToDom(day.template);
-                    window.Blockly.Xml.domToWorkspace(xml, workspaceRef.current)
-                }
+        if (onLoadSave) {
+          let xml = window.Blockly.Xml.textToDom(onLoadSave.workspace);
+          window.Blockly.Xml.domToWorkspace(xml, workspaceRef.current);
+          setLastSavedTime(getFormattedDate(onLoadSave.updated_at));
+        } else if (day.template) {
+          let xml = window.Blockly.Xml.textToDom(day.template);
+          window.Blockly.Xml.domToWorkspace(xml, workspaceRef.current);
+        }
 
         if (onLoadSave) {
           let xml = window.Blockly.Xml.textToDom(onLoadSave.workspace);
@@ -248,34 +233,40 @@ export default function BlocklyCanvasPanel(props) {
           }
         }, []);
     }
+  };
 
-    /**
-     * select or deselect entire toolbox
-     * @param {object} event 
-     */
-    const handleSelectEntireToolBox = (event) => {
+  /**
+   * filters out blocks not in searchFilter
+   * @param {object} blocks {name, description}
+   */
+  const applySearchFilter = (blocks) => {
+    return blocks.filter((block) => block.name.includes(searchFilter));
+  };
 
-        if(event.target.checked){
-            let tempToolBox = [];
-            let tempCategories = [];
-            day && day.toolbox && day.toolbox.forEach(
-                ([category, blocks]) => {
-                        tempCategories.push(category);
-                        tempToolBox = [...tempToolBox, ...blocks.map(block => block.name)]
-                }
-            );
+  /**
+   * select or deselect entire toolbox
+   * @param {object} event
+   */
+  const handleSelectEntireToolBox = (event) => {
+    if (event.target.checked) {
+      let tempToolBox = [];
+      let tempCategories = [];
+      day &&
+        day.toolbox &&
+        day.toolbox.forEach(([category, blocks]) => {
+          tempCategories.push(category);
+          tempToolBox = [...tempToolBox, ...blocks.map((block) => block.name)];
+        });
 
-            setSelectedToolBoxCategories(tempCategories);
-            setOpenedToolBoxCategories(tempCategories);
-            setStudentToolbox(tempToolBox);
-            setSelectAll(true);
-        }
-        else{
-            setStudentToolbox([]);
-            setSelectedToolBoxCategories([]);
-            setOpenedToolBoxCategories([]);
-            setSelectAll(false);
-        }
+      setSelectedToolBoxCategories(tempCategories);
+      setOpenedToolBoxCategories(tempCategories);
+      setStudentToolbox(tempToolBox);
+      setSelectAll(true);
+    } else {
+      setStudentToolbox([]);
+      setSelectedToolBoxCategories([]);
+      setOpenedToolBoxCategories([]);
+      setSelectAll(false);
     }
   };
 
