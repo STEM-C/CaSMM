@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { Button, List, Card, Modal, Form, Input } from 'antd'
-import { createDay, deleteDay, getDayToolboxAll, getLearningStandard } from '../../../Utils/requests'
+import { createDay, deleteDay, getDayToolbox, getDayToolboxAll, getLearningStandard } from '../../../Utils/requests'
 
 import './DayEditor.less'
 // import Form from 'antd/lib/form/Form';
@@ -56,8 +56,10 @@ export default function ContentCreator(props) {
     }
 
     const handleViewDay = async day => {
-        const res = await getDayToolboxAll();
-        day.toolbox = res.data.toolbox;
+        const allToolBoxRes = await getDayToolboxAll();
+        const selectedToolBoxRes = await getDayToolbox(day.id);
+        day.selectedToolbox = selectedToolBoxRes.data.toolbox;
+        day.toolbox = allToolBoxRes.data.toolbox;
 
         localStorage.setItem("my-day", JSON.stringify(day));
         props.history.push('/day')
