@@ -210,12 +210,14 @@ export default function BlocklyCanvasPanel(props) {
             );
 
             setSelectedToolBoxCategories(tempCategories);
+            setOpenedToolBoxCategories(tempCategories);
             setStudentToolbox(tempToolBox);
             setSelectAll(true);
         }
         else{
             setStudentToolbox([]);
             setSelectedToolBoxCategories([]);
+            setOpenedToolBoxCategories([]);
             setSelectAll(false);
         }
     }
