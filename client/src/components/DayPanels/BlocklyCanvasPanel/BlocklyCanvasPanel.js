@@ -95,6 +95,19 @@ export default function BlocklyCanvasPanel(props) {
 
                 if (!isStudent && !isMentor && !isContentCreator) return;
 
+                if (isContentCreator) {
+                    let tempCategories = [], tempToolBox = [];
+                    day && day.selectedToolbox && day.selectedToolbox.forEach(
+                        ([category, blocks]) => {
+                                tempCategories.push(category);
+                                tempToolBox = [...tempToolBox, ...blocks.map(block => block.name)]
+                        }
+                    );
+        
+                    setOpenedToolBoxCategories(tempCategories);
+                    setStudentToolbox(tempToolBox);
+                }
+
                 let onLoadSave = null;
                 const res = await getSaves(day.id);
                 if (res.data) {
@@ -197,12 +210,14 @@ export default function BlocklyCanvasPanel(props) {
             );
 
             setSelectedToolBoxCategories(tempCategories);
+            setOpenedToolBoxCategories(tempCategories);
             setStudentToolbox(tempToolBox);
             setSelectAll(true);
         }
         else{
             setStudentToolbox([]);
             setSelectedToolBoxCategories([]);
+            setOpenedToolBoxCategories([]);
             setSelectAll(false);
         }
     }
