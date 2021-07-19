@@ -1,6 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { Form, Input, Modal, message } from 'antd';
-import { getLearningStandard, updateUnit } from '../../../Utils/requests';
+import {
+  getLearningStandard,
+  updateUnit,
+  getGrade,
+} from '../../../Utils/requests';
 
 import './UnitEditor.less';
 
@@ -32,13 +36,24 @@ export default function UnitCreator(props) {
   const getUnit = async () => {
     const learningStand = getLearningStandard(props.learningStandard);
     const returnUnit = await learningStand;
-    // console.log(returnUnit)
+
+    const {
+      name,
+      number,
+      grade,
+      teks_description,
+      teks_id,
+    } = returnUnit.data.unit;
+
+    const returnGrade = await getGrade(grade);
+    const gradeNum = returnGrade.data.name;
+
     setUnitObject({
-      unitName: returnUnit.data.unit.name,
-      unitNumber: returnUnit.data.unit.number,
-      unitGrade: returnUnit.data.unit.grade,
-      unitDescrip: returnUnit.data.unit.teks_description,
-      unitTeksId: returnUnit.data.unit.teks_id,
+      unitName: name,
+      unitNumber: number,
+      unitGrade: gradeNum,
+      unitDescrip: teks_description,
+      unitTeksId: teks_id,
     });
     setUnitId(returnUnit.data.unit.id);
   };
