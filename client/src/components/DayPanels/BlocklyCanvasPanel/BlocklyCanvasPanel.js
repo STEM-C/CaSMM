@@ -87,7 +87,9 @@ export default function BlocklyCanvasPanel(props) {
   const handleCCGoBack = () => {
     if (isContentCreator && !creatorSave) {
       if (
-        window.confirm('Workspace not saved. Do you still want to go back?')
+        window.confirm(
+          'All unsaved progress will be lost. Do you still want to go back?'
+        )
       ) {
         handleGoBack();
       } else {
@@ -105,7 +107,7 @@ export default function BlocklyCanvasPanel(props) {
         setCreatorSave(false);
         console.log('set to false');
       }
-    }, 15000);
+    }, 9000);
   }, [isContentCreator]);
 
   useEffect(() => {
@@ -200,6 +202,7 @@ export default function BlocklyCanvasPanel(props) {
     } else {
       message.success('Day saved successfully');
     }
+    setCreatorSave(true);
   };
 
   const handleSearchFilterChange = (value) => {
