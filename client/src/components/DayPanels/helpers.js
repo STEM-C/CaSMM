@@ -1,3 +1,4 @@
+
 import {
   createSubmission,
   getSubmission,
@@ -12,6 +13,7 @@ export const setLocalSandbox = (workspaceRef) => {
   let workspaceDom = window.Blockly.Xml.workspaceToDom(workspaceRef);
   let workspaceText = window.Blockly.Xml.domToText(workspaceDom);
   const localActivity = JSON.parse(localStorage.getItem('sandbox-day'));
+
 
   let lastActivity = { ...localActivity, template: workspaceText };
   localStorage.setItem('sandbox-day', JSON.stringify(lastActivity));
@@ -103,6 +105,7 @@ const getAndFlashSubmission = async (
 };
 
 const flashArduino = async (response) => {
+
   if (response.data) {
     // converting base 64 to hex
     if (response.data.success) {

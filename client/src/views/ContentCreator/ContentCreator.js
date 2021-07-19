@@ -10,6 +10,8 @@ import LearningStandardDayCreator from './LearningStandardCreator/LearningStanda
 import {getLearningStandard, getLearningStandardAll,deleteLearningStandard, getGrades} from '../../Utils/requests'
 import UnitEditor from './UnitEditor/UnitEditor'
 
+import './ContentCreator.less'
+
 const { TabPane } = Tabs;
 
 export default function ContentCreator(props) {
@@ -37,17 +39,6 @@ export default function ContentCreator(props) {
 
     const columns = [
         {
-            title: 'Learning Standard',
-            dataIndex: 'name',
-            key: 'name',
-            editable: true,
-            width: '22.5%',
-            align: 'left',
-            render: (_, key) => (
-                <DayEditor history={props.history} days = {getDays(key)} learningStandardId={key.id} learningStandardName={key.name} linkBtn={true}/>
-            )
-        },
-        {
             title: 'Unit',
             dataIndex: 'unit',
             key: 'unit',
@@ -56,6 +47,17 @@ export default function ContentCreator(props) {
             align: 'left',
             render: (_, key) => (
                 <UnitEditor days={getDays(key)} learningStandard={key.id} linkBtn={true}/>
+            )
+        },
+        {
+            title: 'Learning Standard',
+            dataIndex: 'name',
+            key: 'name',
+            editable: true,
+            width: '22.5%',
+            align: 'left',
+            render: (_, key) => (
+                <DayEditor history={props.history} days = {getDays(key)} learningStandardId={key.id} learningStandardName={key.name} linkBtn={true}/>
             )
         },
         // {
@@ -219,24 +221,23 @@ export default function ContentCreator(props) {
         <Tabs>
              <TabPane tab="Home" key="home">
                 <div id="page-header">
-                    <h1>Learning Standards & Units:</h1>
+                    <h1>Learning Standards & Units</h1>
+                </div>
+                <div id='content-creator-table-container'>
+                    <div id='content-creator-btn-container'>
+                        <UnitCreator datasource={dataSource} changeDataSource={addTodataSource} gradeMenu={gradeMenu}/>
+                        <LearningStandardDayCreator dataSource = {dataSource} changeDataSource={addTodataSource} />
                     </div>
-                    <div id='table-container'>
-                    <UnitCreator datasource={dataSource} changeDataSource={addTodataSource} gradeMenu={gradeMenu}/>
-                    <LearningStandardDayCreator dataSource = {dataSource} changeDataSource={addTodataSource} />
-                    <Table columns={columns}  dataSource={dataSource} rowClassName="editable-row">
-                </Table>
+                    <Table columns={columns}  dataSource={dataSource} rowClassName="editable-row"></Table>
                 </div>
             </TabPane>
             
             {
                 gradeMenu.map(grade => {
-                    // console.log("logging grades", grade)
                     return setTabs(grade)
                    
                 })
-            }
-                
+            }        
             
         </Tabs>
         </div>
