@@ -16,7 +16,7 @@
     "knex": "<0.20.0",
     "pg": "^8.1.0",
     "sharp": "^0.28.3",
-    "strapi": "3.0.1",
+    "strapi": "3.2.5",
     "strapi-admin": "3.0.1",
     "strapi-connector-bookshelf": "3.0.1",
     "strapi-plugin-content-manager": "3.0.1",
