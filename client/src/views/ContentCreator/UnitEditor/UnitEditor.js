@@ -60,21 +60,20 @@ export default function UnitCreator(props) {
       console.error(error);
     }
   };
-
   return (
     <div>
       <button id={linkBtn ? 'link-btn' : null} onClick={showModal}>
         {unitObject.unitName}
       </button>
       <Modal
-        title='Unit Creator'
+        title='Unit Editor'
         visible={visible}
         onCancel={handleCancel}
         onOk={handleSubmit}
       >
         <Form
           labelCol={{
-            span: 4,
+            span: 6,
           }}
           wrapperCol={{
             span: 14,
@@ -82,6 +81,18 @@ export default function UnitCreator(props) {
           layout='horizontal'
           size='default'
         >
+          <Form.Item
+            label='Grade'
+            onChange={(e) => {
+              const { value } = e.target;
+              setUnitObject((unitObject) => ({
+                ...unitObject,
+                unitGrade: parseInt(value, 10),
+              }));
+            }}
+          >
+            <Input defaultValue={unitObject.unitGrade} disabled />
+          </Form.Item>
           <Form.Item label='Unit Name'>
             <Input
               defaultValue={unitObject.unitName}
@@ -95,19 +106,7 @@ export default function UnitCreator(props) {
             />
           </Form.Item>
           <Form.Item
-            label='Grade'
-            onChange={(e) => {
-              const { value } = e.target;
-              setUnitObject((unitObject) => ({
-                ...unitObject,
-                unitGrade: parseInt(value, 10),
-              }));
-            }}
-          >
-            <Input defaultValue={unitObject.unitGrade} disabled />
-          </Form.Item>
-          <Form.Item
-            label='Number'
+            label='Unit Number'
             onChange={(e) => {
               const { value } = e.target;
               setUnitObject((unitObject) => ({

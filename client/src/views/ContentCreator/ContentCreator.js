@@ -15,6 +15,8 @@ import {
 } from '../../Utils/requests';
 import UnitEditor from './UnitEditor/UnitEditor';
 
+import './ContentCreator.less';
+
 const { TabPane } = Tabs;
 
 export default function ContentCreator(props) {
@@ -236,18 +238,20 @@ export default function ContentCreator(props) {
       <Tabs>
         <TabPane tab='Home' key='home'>
           <div id='page-header'>
-            <h1>Learning Standards & Units:</h1>
+            <h1>Learning Standards & Units</h1>
           </div>
-          <div id='table-container'>
-            <UnitCreator
-              datasource={dataSource}
-              changeDataSource={addTodataSource}
-              gradeMenu={gradeMenu}
-            />
-            <LearningStandardDayCreator
-              dataSource={dataSource}
-              changeDataSource={addTodataSource}
-            />
+          <div id='content-creator-table-container'>
+            <div id='content-creator-btn-container'>
+              <UnitCreator
+                datasource={dataSource}
+                changeDataSource={addTodataSource}
+                gradeMenu={gradeMenu}
+              />
+              <LearningStandardDayCreator
+                dataSource={dataSource}
+                changeDataSource={addTodataSource}
+              />
+            </div>
             <Table
               columns={columns}
               dataSource={dataSource}
@@ -257,7 +261,6 @@ export default function ContentCreator(props) {
         </TabPane>
 
         {gradeMenu.map((grade) => {
-          // console.log("logging grades", grade)
           return setTabs(grade);
         })}
       </Tabs>

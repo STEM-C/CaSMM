@@ -9,14 +9,12 @@ import {
 } from '../../../Utils/requests';
 
 import './DayEditor.less';
-
 // import Form from 'antd/lib/form/Form';
 
 export default function ContentCreator(props) {
   const [visible, setVisible] = useState(false);
   const [days, setDay] = useState([]);
   const linkBtn = props.linkBtn;
-  const [newDay, setNewDay] = useState();
   const learningStandardId = props.learningStandardId;
   const learningStandardName = props.learningStandardName;
 
@@ -32,6 +30,11 @@ export default function ContentCreator(props) {
   };
 
   const addBasicDay = () => {
+    let newDay = 1;
+    if (days.length !== 0) {
+      newDay = parseInt(days[days.length - 1].number) + 1;
+      console.log(newDay);
+    }
     const res = createDay(newDay, learningStandardId);
     res.then(function (a) {
       //console.log(res1)
@@ -41,7 +44,6 @@ export default function ContentCreator(props) {
         setDay([...result.data.days]);
       });
     });
-    setNewDay();
   };
 
   const removeBasicDay = (currDay) => {
@@ -71,7 +73,7 @@ export default function ContentCreator(props) {
 
   const handleDayChange = (e) => {
     let { value } = e.target;
-    setNewDay(parseInt(value));
+    // setNewDay(parseInt(value));
   };
 
   return (
@@ -116,44 +118,42 @@ export default function ContentCreator(props) {
           <div>
             <Form
               id='add-day'
-              // labelCol={{
-              // span: 4
-              // }}
               wrapperCol={{
                 span: 14,
               }}
               layout='horizontal'
               size='default'
             >
-              <b>Add Day</b>
-              <Form.Item label='Number'>
-                <Input onChange={handleDayChange} value={newDay} />
-              </Form.Item>
+              {/* <b>Add Day</b>
+                        <Form.Item label="Number">
+                            <Input onChange={handleDayChange} value={newDay} />
+                        </Form.Item > */}
               <Button onClick={addBasicDay} type='primary'>
-                Add
+                Add Day
               </Button>
             </Form>
+
             {/* <form id="add-day" onSubmit={handleSubmit}>
-                            <legend>Add Day</legend>
-                            <label>
-                            Number:  
-                            <input type="text" value={newDay} onChange={handleDayChange} />
-                            </label>
-                            <input type="submit" value="Add" />
-                        </form> */}
+                        <legend>Add Day</legend>
+                        <label>
+                        Number:  
+                        <input type="text" value={newDay} onChange={handleDayChange} />
+                        </label>
+                        <input type="submit" value="Add" />
+                    </form> */}
             {/* <Button style={addButtonStyle} onClick={addBasicDay} size="default" icon={<PlusOutlined/>}/> */}
           </div>
         </div>
         {/* 
-                    <div id="btn-container" className='flex space-between'>
-                        {days ? days.map(day =>
-                                <div>
-                                    <button key={day.id} onClick={() => handleViewDay(day)}>{`View Day ${day.day}`}</button>
-                                    <span className="delete-btn" onClick={() => removeBasicDay(day)}>&times;</span>
-                                </div>
-                            )
-                            : null}
-                    </div> */}
+                <div id="btn-container" className='flex space-between'>
+                    {days ? days.map(day =>
+                            <div>
+                                <button key={day.id} onClick={() => handleViewDay(day)}>{`View Day ${day.day}`}</button>
+                                <span className="delete-btn" onClick={() => removeBasicDay(day)}>&times;</span>
+                            </div>
+                        )
+                        : null}
+                </div> */}
       </Modal>
     </div>
   );

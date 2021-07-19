@@ -9,12 +9,17 @@ import {
 import { message, Spin, Menu, Checkbox, Row, Col, Input, Switch } from 'antd';
 import { getSaves } from '../../../Utils/requests';
 import CodeModal from './CodeModal';
+import ConsoleModal from './ConsoleModal';
 import VersionHistoryModal from './VersionHistoryModal';
+import { openConnection, disconnect } from '../ConsoleView';
 
 export default function BlocklyCanvasPanel(props) {
   const [hoverXml, setHoverXml] = useState(false);
   const [hoverArduino, setHoverArduino] = useState(false);
   const [hoverCompile, setHoverCompile] = useState(false);
+  const [hoverConsole, setHoverConsole] = useState(false);
+  const [showConsole, setShowConsole] = useState(false);
+  const [connectionOpen, setConnectionOpen] = useState(false);
   const [selectedCompile, setSelectedCompile] = useState(false);
   const [saves, setSaves] = useState({});
   const [studentToolbox, setStudentToolbox] = useState([]);
@@ -168,15 +173,6 @@ export default function BlocklyCanvasPanel(props) {
           window.Blockly.Xml.domToWorkspace(xml, workspaceRef.current);
         }
 
-        if (onLoadSave) {
-          let xml = window.Blockly.Xml.textToDom(onLoadSave.workspace);
-          window.Blockly.Xml.domToWorkspace(xml, workspaceRef.current);
-          setLastSavedTime(getFormattedDate(onLoadSave.updated_at));
-        } else if (day.template) {
-          let xml = window.Blockly.Xml.textToDom(day.template);
-          window.Blockly.Xml.domToWorkspace(xml, workspaceRef.current);
-        }
-
         workspaceRef.current.clearUndo();
       }
     };
@@ -203,7 +199,6 @@ export default function BlocklyCanvasPanel(props) {
       message.error(res.err);
     } else {
       message.success('Day saved successfully');
-      setCreatorSave(true);
     }
   };
 
@@ -233,8 +228,10 @@ export default function BlocklyCanvasPanel(props) {
           }
         }, []);
     }
-  };
 
+    setOpenedToolBoxCategories(validCategories);
+    setSearchFilter(value);
+  };
   /**
    * filters out blocks not in searchFilter
    * @param {object} blocks {name, description}
@@ -259,13 +256,11 @@ export default function BlocklyCanvasPanel(props) {
         });
 
       setSelectedToolBoxCategories(tempCategories);
-      setOpenedToolBoxCategories(tempCategories);
       setStudentToolbox(tempToolBox);
       setSelectAll(true);
     } else {
       setStudentToolbox([]);
       setSelectedToolBoxCategories([]);
-      setOpenedToolBoxCategories([]);
       setSelectAll(false);
     }
   };
@@ -326,6 +321,50 @@ export default function BlocklyCanvasPanel(props) {
   const handleRedo = () => {
     if (workspaceRef.current.redoStack_.length > 0)
       workspaceRef.current.undo(true);
+  };
+
+  const handleConsole = async () => {
+    if (!showConsole) {
+      setShowConsole(true);
+      if (typeof window['port'] === 'undefined') {
+        const filters = [
+          { usbVendorId: 0x2341, usbProductId: 0x0043 },
+          { usbVendorId: 0x2341, usbProductId: 0x0001 },
+        ];
+        let port;
+        try {
+          port = await navigator.serial.requestPort({ filters });
+        } catch (e) {
+          console.log(e);
+          return;
+        }
+        window['port'] = port;
+      }
+      setConnectionOpen(true);
+      document.getElementById('connect-button').innerHTML = 'Disconnect';
+      openConnection(9600, true);
+    } else {
+      setShowConsole(false);
+      if (connectionOpen) {
+        console.log('Close connection');
+        disconnect();
+        setConnectionOpen(false);
+        document.getElementById('connect-button').innerHTML = 'Connect';
+      }
+    }
+  };
+
+  const handleCompile = () => {
+    if (connectionOpen) {
+      message.warn('Close Serial Monitor before uploading your code');
+    } else {
+      compileArduinoCode(
+        workspaceRef.current,
+        setSelectedCompile,
+        day,
+        isStudent
+      );
+    }
   };
 
   const getFormattedDate = (dt) => {
@@ -464,7 +503,7 @@ export default function BlocklyCanvasPanel(props) {
                       </Col>
                     </Row>
                   </Col>
-                  <Col flex={isStudent ? '150px' : '200px'}>
+                  <Col flex={isStudent ? '180px' : '230px'}>
                     <div
                       id='action-btn-container'
                       className='flex space-around'
@@ -484,14 +523,7 @@ export default function BlocklyCanvasPanel(props) {
                         hover={hoverArduino}
                       />
                       <i
-                        onClick={() =>
-                          compileArduinoCode(
-                            workspaceRef.current,
-                            setSelectedCompile,
-                            day,
-                            isStudent
-                          )
-                        }
+                        onClick={handleCompile}
                         className='fas fa-upload hvr-info'
                         onMouseEnter={() => setHoverCompile(true)}
                         onMouseLeave={() => setHoverCompile(false)}
@@ -501,101 +533,121 @@ export default function BlocklyCanvasPanel(props) {
                           Upload to Arduino
                         </div>
                       )}
+
+                      <i
+                        onClick={() => handleConsole()}
+                        className='fas fa-terminal hvr-info'
+                        style={{ marginLeft: '6px' }}
+                        onMouseEnter={() => setHoverConsole(true)}
+                        onMouseLeave={() => setHoverConsole(false)}
+                      />
+                      {hoverConsole && (
+                        <div className='popup ModalCompile'>
+                          Show Serial Monitor
+                        </div>
+                      )}
                     </div>
                   </Col>
                 </Row>
               </Spin>
             </Col>
           </Row>
-
           <div id='blockly-canvas' />
         </div>
         {isContentCreator ? (
           <div id='side-container'>
-            Current Student Toolbox Selection
-            <Input
-              placeholder='Search Block'
-              prefix={<i className='fa fa-search' />}
-              onChange={(e) => handleSearchFilterChange(e.target.value)}
-            />
-            <Checkbox
-              checked={selectAll}
-              onClick={handleSelectEntireToolBox}
-              disabled={searchFilter}
-            >
-              Select All
-            </Checkbox>
-            <Menu
-              mode='inline'
-              openKeys={openedToolBoxCategories}
-              onOpenChange={(keys) => setOpenedToolBoxCategories(keys)}
-            >
-              {
-                // Maps out block categories
-                day &&
-                  day.toolbox &&
-                  day.toolbox.map(([category, blocks]) => (
-                    <SubMenu
-                      key={category}
-                      title={
-                        <span>
-                          <span>{category}</span>
-                          {openedToolBoxCategories.some(
-                            (c) => c === category
-                          ) ? ( //check if the submenu is open
-                            <span id='category-switch'>
-                              <Switch
-                                disabled={searchFilter}
-                                checked={selectedToolBoxCategories.includes(
-                                  category
-                                )}
-                                checkedChildren='category selected'
-                                unCheckedChildren='select category'
-                                onChange={(checked, event) =>
-                                  handleSelectToolBoxCategory(
-                                    checked,
-                                    category,
-                                    blocks,
-                                    event
-                                  )
-                                }
-                              />
-                            </span>
-                          ) : null}
-                        </span>
-                      }
-                    >
-                      {
-                        //filter out blocks not in search term
-                        applySearchFilter(blocks).map((block) => {
-                          return (
-                            <Menu.Item key={block.name}>
-                              <Checkbox
-                                checked={
-                                  studentToolbox.indexOf(block.name) > -1
-                                    ? true
-                                    : false
-                                }
-                                onClick={(e) =>
-                                  handleSelectToolBoxBlock(
-                                    !e.target.checked,
-                                    block.name,
+            <div>
+              Current Student Toolbox Selection
+              <Input
+                placeholder='Search Block'
+                prefix={<i className='fa fa-search' />}
+                onChange={(e) => handleSearchFilterChange(e.target.value)}
+              />
+              <Checkbox
+                checked={selectAll}
+                onClick={handleSelectEntireToolBox}
+                disabled={searchFilter}
+              >
+                Select All
+              </Checkbox>
+              <Menu
+                id='menu'
+                mode='inline'
+                openKeys={openedToolBoxCategories}
+                onOpenChange={(keys) => setOpenedToolBoxCategories(keys)}
+              >
+                {
+                  // Maps out block categories
+                  day &&
+                    day.toolbox &&
+                    day.toolbox.map(([category, blocks]) => (
+                      <SubMenu
+                        key={category}
+                        title={
+                          <span>
+                            <span>{category}</span>
+                            {openedToolBoxCategories.some(
+                              (c) => c === category
+                            ) ? ( //check if the submenu is open
+                              <span id='category-switch'>
+                                <Switch
+                                  disabled={searchFilter}
+                                  checked={selectedToolBoxCategories.includes(
                                     category
-                                  )
-                                }
-                              >
-                                {block.name}
-                              </Checkbox>
-                            </Menu.Item>
-                          );
-                        })
-                      }
-                    </SubMenu>
-                  ))
-              }
-            </Menu>
+                                  )}
+                                  checkedChildren='category selected'
+                                  unCheckedChildren='select category'
+                                  onChange={(checked, event) =>
+                                    handleSelectToolBoxCategory(
+                                      checked,
+                                      category,
+                                      blocks,
+                                      event
+                                    )
+                                  }
+                                />
+                              </span>
+                            ) : null}
+                          </span>
+                        }
+                      >
+                        {
+                          //filter out blocks not in search term
+                          applySearchFilter(blocks).map((block) => {
+                            return (
+                              <Menu.Item key={block.name}>
+                                <Checkbox
+                                  checked={
+                                    studentToolbox.indexOf(block.name) > -1
+                                      ? true
+                                      : false
+                                  }
+                                  onClick={(e) =>
+                                    handleSelectToolBoxBlock(
+                                      !e.target.checked,
+                                      block.name,
+                                      category
+                                    )
+                                  }
+                                >
+                                  {block.name}
+                                </Checkbox>
+                              </Menu.Item>
+                            );
+                          })
+                        }
+                      </SubMenu>
+                    ))
+                }
+              </Menu>
+            </div>
           </div>
         ) : null}
+        <ConsoleModal
+          show={showConsole}
+          connectionOpen={connectionOpen}
+          setConnectionOpen={setConnectionOpen}
+        ></ConsoleModal>
       </div>
 
       {/* This xml is for the blocks' menu we will provide. Here are examples on how to include categories and subcategories */}
