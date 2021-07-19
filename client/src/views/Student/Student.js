@@ -3,11 +3,12 @@ import {getStudentClassroom} from "../../Utils/requests"
 import './Student.less'
 import {message} from "antd";
 import NavBar from "../../components/NavBar/NavBar";
+import {useHistory} from 'react-router-dom';
 
 function Student(props) {
     const [learningStandard, setLearningStandard] = useState({});
     const [selectedDay, setSelectedDay] = useState({});
-
+    const history = useHistory();
     useEffect(() => {
         const fetchData = async () => {
             try {
@@ -28,7 +29,7 @@ function Student(props) {
         setSelectedDay(day);
         localStorage.setItem("my-day", JSON.stringify(day));
 
-        props.history.push("/workspace")
+        history.push("/workspace")
     };
 
     return (

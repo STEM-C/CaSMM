@@ -1,4 +1,5 @@
 import React, {useEffect, useState} from "react"
+import {Link} from 'react-router-dom';
 import {message, Tabs} from 'antd';
 import "./Classroom.less"
 
@@ -27,7 +28,7 @@ export default function Classroom(props) {
             }
         });
     }, [classroomId]);
-
+    console.log(classroom);
     return (
         <div className="container nav-padding">
             <NavBar isMentor={true}/>
@@ -47,6 +48,10 @@ export default function Classroom(props) {
                     <Roster history={history} handleLogout={handleLogout} classroomId={classroomId}/>
                 </TabPane>
             </Tabs>
+            <h2>Student List</h2>
+            <ul>
+                {classroom.students?.map(student => <li key={student.id}><Link to={`/students/${classroom.id}/${student.id}`}>{student.name}</Link></li>)}
+            </ul>
         </div>
     );
 

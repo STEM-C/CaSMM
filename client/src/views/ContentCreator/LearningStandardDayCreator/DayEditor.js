@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import {useHistory} from 'react-router-dom'
 import { Button, List, Card, Modal, Form, Input } from 'antd'
 import { createDay, deleteDay, getDayToolboxAll, getLearningStandard } from '../../../Utils/requests'
 
@@ -13,12 +14,11 @@ export default function ContentCreator(props) {
     const [newDay, setNewDay] = useState();
     const learningStandardId = props.learningStandardId
     const learningStandardName = props.learningStandardName
-    
+    const history = useHistory();
 
     const handleCancel = () => {
         setVisible(false)
     };
-
 
     const showModal = () => {
         console.log("got days", props.days)
@@ -26,7 +26,6 @@ export default function ContentCreator(props) {
         console.log("set days", days)
         setVisible(true)
     };
-
 
     const addBasicDay = () => {
         const res = createDay(newDay, learningStandardId)
@@ -60,7 +59,7 @@ export default function ContentCreator(props) {
         day.toolbox = res.data.toolbox;
 
         localStorage.setItem("my-day", JSON.stringify(day));
-        props.history.push('/day')
+        history.push('/day')
     };
     //figure out how to set these up in the css file colors[] stuff causes problems
 

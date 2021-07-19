@@ -6,15 +6,17 @@ import StudentLoginForm from "./StudentLoginForm";
 import {setUserSession} from "../../Utils/AuthRequests";
 import {message} from "antd";
 import NavBar from "../../components/NavBar/NavBar";
+import { useHistory } from 'react-router-dom';
 
 
-export default function StudentLogin(props) {
+export default function StudentLogin() {
     const [studentList, setStudentList] = useState([]);
     const [animalList, setAnimalList] = useState([])
     const [studentIds, setStudentIds] = useState([null, null, null]);
     const [studentAnimals, setStudentAnimals] = useState(['', '', '']);
     const [numForms, setNumForms] = useState(2);
     const joinCode = localStorage.getItem('join-code');
+    const history = useHistory();
 
     useEffect(() => {
         getStudents(joinCode).then(res => {
@@ -32,7 +34,7 @@ export default function StudentLogin(props) {
         const res = await postJoin(joinCode, ids);
         if (res.data) {
             setUserSession(res.data.jwt, JSON.stringify(res.data.students));
-            props.history.push('/student')
+            history.push('/student')
         } else {
             message.error(res.err);
         }

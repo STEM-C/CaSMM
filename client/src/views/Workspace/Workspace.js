@@ -3,11 +3,12 @@ import {getDayToolbox} from "../../Utils/requests.js"
 import BlocklyCanvasPanel from "../../components/DayPanels/BlocklyCanvasPanel/BlocklyCanvasPanel";
 import {message} from "antd";
 import NavBar from "../../components/NavBar/NavBar";
-
+import { useHistory } from 'react-router-dom';
 
 export default function Workspace(props) {
     const [day, setDay] = useState({});
-    const {handleLogout, history} = props;
+    const {handleLogout} = props;
+    const history = useHistory();
 
     useEffect(() => {
         const localDay = JSON.parse(localStorage.getItem("my-day"));

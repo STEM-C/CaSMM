@@ -21,7 +21,7 @@ export default function BlocklyCanvasPanel(props) {
     const workspaceRef = useRef(null);
     const dayRef = useRef(null);
     const replayRef = useRef([]);
-    let undoLength = 0;
+    const undoLength = useRef(0);
     const { SubMenu } = Menu;
 
     const setWorkspace = () => {
@@ -75,8 +75,8 @@ export default function BlocklyCanvasPanel(props) {
             }
         }, 60000);
         setInterval(async () => {
-            if (workspaceRef.current.undoStack_.length !== undoLength) {
-                undoLength = workspaceRef.current.undoStack_.length;
+            if (workspaceRef.current.undoStack_.length !== undoLength.current) {
+                undoLength.current = workspaceRef.current.undoStack_.length;
                 let xml = window.Blockly.Xml.workspaceToDom(workspaceRef.current);
                 let xml_text = window.Blockly.Xml.domToText(xml);
                 const replay = {

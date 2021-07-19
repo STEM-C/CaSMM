@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-
+import {useHistory} from 'react-router-dom'
 import { Modal } from 'antd';
 import {CloseOutlined} from '@ant-design/icons'
 
@@ -26,7 +26,7 @@ export default function ViewDayModal(props) {
         day.toolbox = res.data.toolbox;
 
         localStorage.setItem("my-day", JSON.stringify(day));
-        props.history.push('/day')
+        history.push('/day')
     };
 
     return (

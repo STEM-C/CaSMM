@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-
+import {useHistory} from 'react-router-dom';
 import { Tabs, Table, Popconfirm, message } from 'antd'
 import Navbar from '../../components/NavBar/NavBar'
 import { QuestionCircleOutlined } from '@ant-design/icons';
@@ -12,11 +12,12 @@ import UnitEditor from './UnitEditor/UnitEditor'
 
 const { TabPane } = Tabs;
 
-export default function ContentCreator(props) {
+export default function ContentCreator() {
 
     const [dataSource, setDataSource] = useState([])
     const [dataSourceMap, setDataSourceMap] = useState([])
     const [gradeMenu, setGradeMenu] = useState([])
+    const history = useHistory();
 
     useEffect(() => {
         //console.log(getLearningStandardcount())
@@ -44,7 +45,7 @@ export default function ContentCreator(props) {
             width: '22.5%',
             align: 'left',
             render: (_, key) => (
-                <DayEditor history={props.history} days = {getDays(key)} learningStandardId={key.id} learningStandardName={key.name} linkBtn={true}/>
+                <DayEditor history={history} days = {getDays(key)} learningStandardId={key.id} learningStandardName={key.name} linkBtn={true}/>
             )
         },
         {
@@ -83,7 +84,7 @@ export default function ContentCreator(props) {
         //     width: '10%',
         //     align: 'right',
         //     render: (_, key) => (
-        //         <DayEditor history={props.history} days = {getDays(key)} learningStandardId={key.edit} learningStandardName = {getLearningStandardName(key.edit)} linkBtn={true}/>
+        //         <DayEditor history={history} days = {getDays(key)} learningStandardId={key.edit} learningStandardName = {getLearningStandardName(key.edit)} linkBtn={true}/>
         //     )
         // },
         // {
@@ -93,7 +94,7 @@ export default function ContentCreator(props) {
         //     width: '10%',
         //     align: 'right',
         //     render: (_, key) => (
-        //         <DayEditor history={props.history} days = {getDays(key)} learningStandard={key.edit} linkBtn={true}/>
+        //         <DayEditor history={history} days = {getDays(key)} learningStandard={key.edit} linkBtn={true}/>
         //     )
         // },
         // {

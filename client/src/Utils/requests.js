@@ -235,6 +235,15 @@ export const getSaves = async (day) => (
     })
 );
 
+export const getAllSaves = async () => (
+    makeRequest({
+        method: GET,
+        path: `${server}/saves`,
+        auth: true,
+        error: 'Past saves could not be retrieved.'
+    })
+);
+
 export const createSubmission = async (day, workspace, sketch, path, isAuth) => (
     makeRequest({
         method: POST,
