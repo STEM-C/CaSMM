@@ -36,9 +36,8 @@ export default function Dashboard(props) {
     return (
         <div className="container nav-padding">
             <NavBar isMentor={true}/>
-            {/* <div id='main-header'>Welcome {user.username}</div> */}
-            {/* <MentorSubHeader title={'Your Classrooms:'}></MentorSubHeader> */}
-            <MentorSubHeader title={'Welcome ' + user.username}></MentorSubHeader>
+            <div id='main-header'>Welcome {user.username}</div>
+            <MentorSubHeader title={'Your Classrooms:'}></MentorSubHeader>
             <div id='classrooms-container'>
                 <div id='dashboard-card-container'>
                     {classrooms.map(classroom =>
