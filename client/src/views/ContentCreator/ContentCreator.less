@@ -1,0 +1,22 @@
+@import "../../assets/style.less";
+#content-creator-table-container {
+    width: 80%;
+    margin: 2vh auto 0 auto;
+
+    #content-creator-btn-container {
+        display: flex;
+        flex-direction: row;
+        float: right;
+        margin-bottom: 5px;
+    }
+
+    .ant-table-row {
+        #quick-look {
+            visibility: hidden;
+            &:hover {
+                visibility: visible;
+            }
+        }
+      }
+}
+

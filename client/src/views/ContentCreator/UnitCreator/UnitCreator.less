@@ -12,23 +12,44 @@
     border-radius: 10px;
 }
 
+#add-unit-btn {
+    width: 9vw;
+    max-height: 5vh;
+    padding: 5px;
+    font-size: 2vh;
+    font-weight: 500;
+    border-radius: 30px;
+    margin: auto;
+    background: #colors[quaternary];
+    border: none;
+    color: #colors[text-primary];
+    transition: 0.25s;
+    cursor: pointer;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.377);
+
+    &:hover {
+        width: 10vw;
+        background: #colors[quinary];
+    }
+}
+
 #add-units {
     input[type = "text"] {
         display: block;
         margin: 5px 5px 0px;
         background: none;
-        border: 2px solid;
+        border: 1px solid;
         border-color: #colors[secondary];
         padding: 10px 10px;
         width: 95%;
         outline: none;
         color: #colors[text-primary];
-        border-radius: 8px;
+        border-radius: 4px;
         transition: 0.25s;
       }
     
       input[type = "text"]:focus {
-        width: 100%;
+        // width: 100%;
       }
 
       label {
@@ -38,17 +59,17 @@
 
 
 
-#grade {
+#grade-dropdown {
     display: block;
     background: none;
     margin: 5px auto 0px;
-    border: 2px solid;
+    border: 1px solid;
     border-color: #colors[secondary];
     padding: 14px 10px;
     width: 95%;
     outline: none;
     color: #colors[text-primary];
-    border-radius: 8px;
+    border-radius: 4px;
     transition: 0.25s;
 }
 
