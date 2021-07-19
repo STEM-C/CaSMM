@@ -15,7 +15,6 @@ export default function ContentCreator(props) {
   const [visible, setVisible] = useState(false);
   const [days, setDay] = useState([]);
   const linkBtn = props.linkBtn;
-  const [newDay, setNewDay] = useState();
   const learningStandardId = props.learningStandardId;
   const learningStandardName = props.learningStandardName;
 
@@ -31,6 +30,11 @@ export default function ContentCreator(props) {
   };
 
   const addBasicDay = () => {
+    let newDay = 1;
+    if (days.length !== 0) {
+      newDay = parseInt(days[days.length - 1].number) + 1;
+      console.log(newDay);
+    }
     const res = createDay(newDay, learningStandardId);
     res.then(function (a) {
       //console.log(res1)
@@ -40,7 +44,6 @@ export default function ContentCreator(props) {
         setDay([...result.data.days]);
       });
     });
-    setNewDay();
   };
 
   const removeBasicDay = (currDay) => {
@@ -69,7 +72,7 @@ export default function ContentCreator(props) {
 
   const handleDayChange = (e) => {
     let { value } = e.target;
-    setNewDay(parseInt(value));
+    // setNewDay(parseInt(value));
   };
 
   return (
