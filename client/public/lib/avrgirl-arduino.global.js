@@ -13121,8 +13121,6 @@ THE SOFTWARE.
                         this.writer = null;
                         this.reader = null;
                         this.baudRate = this.options.baudRate;
-                        this.requestOptions = this.options.requestOptions || {};
-
                         if (this.options.autoOpen) this.open();
                     }
 
@@ -13133,9 +13131,14 @@ THE SOFTWARE.
                     }
 
                     open(callback) {
-                        window.navigator.serial.requestPort(this.requestOptions)
+                        const filters = [
+                            { usbVendorId: 0x2341, usbProductId: 0x0043 },
+                            { usbVendorId: 0x2341, usbProductId: 0x0001 }
+                        ];
+                        window.navigator.serial.requestPort({filters})
                             .then(serialPort => {
                                 this.port = serialPort;
+                                window['port'] = serialPort;
                                 if (this.isOpen) return;
                                 return this.port.open({ baudRate: this.baudRate || 57600 });
                             })

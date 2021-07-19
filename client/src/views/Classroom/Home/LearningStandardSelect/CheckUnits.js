@@ -25,7 +25,7 @@ export default function CheckUnits(props) {
     };
 
     const getOptions = (value) => {
-        return plainOptions.find(option => option.number === parseInt(value.slice(-1)))
+        return plainOptions.find(option => option.number === parseInt(value))
     };
 
     return (
@@ -41,8 +41,8 @@ export default function CheckUnits(props) {
             </div>
             <br/>
             <CheckboxGroup
-                options={plainOptions.map(option => `Unit ${option.number}`)}
-                value={checkedList.map(checked => `Unit ${checked.number}`)}
+                options={plainOptions.map(option => { return { label: `Unit ${option.number}`, value: option.number } })}
+                value={checkedList.map(checked => checked.number)}
                 onChange={onChange}
             />
         </>
