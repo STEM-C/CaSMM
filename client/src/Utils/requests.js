@@ -338,7 +338,7 @@ export const createUnit = async (number, name, teksID, teksDescrip, grade) =>
       teks_description: teksDescrip,
     },
     auth: true,
-    error: 'Login failed.',
+    error: 'Fail to create new unit.',
   });
 
 export const updateUnit = async (

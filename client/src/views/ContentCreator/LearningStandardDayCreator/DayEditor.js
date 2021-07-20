@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Button, List, Card, Modal, Form, Input } from 'antd';
+import { Button, List, Card, Modal, Form, Input, message } from 'antd';
 import {
   createDay,
   deleteDay,
@@ -7,56 +7,50 @@ import {
   getDayToolboxAll,
   getLearningStandard,
 } from '../../../Utils/requests';
-
 import './DayEditor.less';
-// import Form from 'antd/lib/form/Form';
 
-export default function ContentCreator(props) {
+export default function ContentCreator({ learningStandard, history }) {
   const [visible, setVisible] = useState(false);
   const [days, setDay] = useState([]);
-  const linkBtn = props.linkBtn;
-  const learningStandardId = props.learningStandardId;
-  const learningStandardName = props.learningStandardName;
 
   const handleCancel = () => {
     setVisible(false);
   };
 
   const showModal = () => {
-    console.log('got days', props.days);
-    setDay([...props.days]);
-    console.log('set days', days);
+    console.log(learningStandard.days);
+    learningStandard.days.sort((a, b) => (a.number > b.number ? 1 : -1));
+    setDay([...learningStandard.days]);
     setVisible(true);
   };
 
-  const addBasicDay = () => {
+  const addBasicDay = async () => {
     let newDay = 1;
     if (days.length !== 0) {
       newDay = parseInt(days[days.length - 1].number) + 1;
-      console.log(newDay);
     }
-    const res = createDay(newDay, learningStandardId);
-    res.then(function (a) {
-      //console.log(res1)
-      let res1 = getLearningStandard(learningStandardId);
-      res1.then((result) => {
-        console.log('update the days');
-        setDay([...result.data.days]);
-      });
-    });
+
+    const response = await createDay(newDay, learningStandard.id);
+    if (response.err) {
+      message.error(response.err);
+    }
+    setDay([...days, response.data]);
+    console.log(response);
   };
 
-  const removeBasicDay = (currDay) => {
-    alert('Deleting ', currDay.name);
+  const removeBasicDay = async (currDay) => {
+    if (window.confirm(`Deleting Day ${currDay.number}`)) {
+      const response = await deleteDay(currDay.id);
+      if (response.err) {
+        message.error(response.err);
+      }
 
-    const res = deleteDay(currDay.id);
-    res.then(function (a) {
-      let res1 = getLearningStandard(learningStandardId);
-      res1.then((result) => {
-        console.log('update the days');
-        setDay([...result.data.days]);
-      });
-    });
+      const lsResponse = await getLearningStandard(learningStandard.id);
+      if (lsResponse.err) {
+        message.error(lsResponse.err);
+      }
+      setDay([...lsResponse.data.days]);
+    }
   };
 
   const handleViewDay = async (day) => {
@@ -66,25 +60,17 @@ export default function ContentCreator(props) {
     day.toolbox = allToolBoxRes.data.toolbox;
 
     localStorage.setItem('my-day', JSON.stringify(day));
-    props.history.push('/day');
-  };
-  //figure out how to set these up in the css file colors[] stuff causes problems
-
-  const handleDayChange = (e) => {
-    let { value } = e.target;
-    // setNewDay(parseInt(value));
+    history.push('/day');
   };
 
   return (
     <div>
-      {/* {console.log(props)} */}
-
-      <button id={linkBtn ? 'link-btn' : null} onClick={showModal}>
-        {learningStandardName}
+      <button id='link-btn' onClick={showModal}>
+        {learningStandard.name}
       </button>
 
       <Modal
-        title={learningStandardName}
+        title={learningStandard.name}
         visible={visible}
         onCancel={handleCancel}
         onOk={handleCancel}
@@ -123,36 +109,12 @@ export default function ContentCreator(props) {
               layout='horizontal'
               size='default'
             >
-              {/* <b>Add Day</b>
-                        <Form.Item label="Number">
-                            <Input onChange={handleDayChange} value={newDay} />
-                        </Form.Item > */}
               <Button onClick={addBasicDay} type='primary'>
                 Add Day
               </Button>
             </Form>
-
-            {/* <form id="add-day" onSubmit={handleSubmit}>
-                        <legend>Add Day</legend>
-                        <label>
-                        Number:  
-                        <input type="text" value={newDay} onChange={handleDayChange} />
-                        </label>
-                        <input type="submit" value="Add" />
-                    </form> */}
-            {/* <Button style={addButtonStyle} onClick={addBasicDay} size="default" icon={<PlusOutlined/>}/> */}
           </div>
         </div>
-        {/* 
-                <div id="btn-container" className='flex space-between'>
-                    {days ? days.map(day =>
-                            <div>
-                                <button key={day.id} onClick={() => handleViewDay(day)}>{`View Day ${day.day}`}</button>
-                                <span className="delete-btn" onClick={() => removeBasicDay(day)}>&times;</span>
-                            </div>
-                        )
-                        : null}
-                </div> */}
       </Modal>
     </div>
   );

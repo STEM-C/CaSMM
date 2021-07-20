@@ -1,250 +1,149 @@
 import React, { useState, useEffect } from 'react';
 
-import { Tabs, Table, Popconfirm, message } from 'antd'
-import Navbar from '../../components/NavBar/NavBar'
+import { Tabs, Table, Popconfirm } from 'antd';
+import Navbar from '../../components/NavBar/NavBar';
 import { QuestionCircleOutlined } from '@ant-design/icons';
 
-import DayEditor from './LearningStandardDayCreator/DayEditor'
+import DayEditor from './LearningStandardDayCreator/DayEditor';
 import UnitCreator from './UnitCreator/UnitCreator';
-import LearningStandardDayCreator from './LearningStandardCreator/LearningStandardCreator'
-import {getLearningStandard, getLearningStandardAll,deleteLearningStandard, getGrades} from '../../Utils/requests'
-import UnitEditor from './UnitEditor/UnitEditor'
+import LearningStandardDayCreator from './LearningStandardCreator/LearningStandardCreator';
+import {
+  getLearningStandardAll,
+  deleteLearningStandard,
+  getGrades,
+} from '../../Utils/requests';
+import UnitEditor from './UnitEditor/UnitEditor';
 
-import './ContentCreator.less'
+import './ContentCreator.less';
 
 const { TabPane } = Tabs;
 
 export default function ContentCreator(props) {
+  const [gradeList, setGradeList] = useState([]);
+  const [learningStandardList, setLearningStandardList] = useState([]);
 
-    const [dataSource, setDataSource] = useState([])
-    const [dataSourceMap, setDataSourceMap] = useState([])
-    const [gradeMenu, setGradeMenu] = useState([])
+  useEffect(() => {
+    const getLearningStandardList = async () => {
+      const response = await getLearningStandardAll();
+      // console.log(response.data);
+      setLearningStandardList(response.data);
+    };
+    getLearningStandardList();
+  }, []);
 
-    useEffect(() => {
-        //console.log(getLearningStandardcount())
-        getGrades().then(res => {
-            if(res.data){
-                setGradeMenu(res.data)
-                // console.log("this is the grade menu", gradeMenu, res.data)
-            }else{
-                message.error(res.err)
-            }
-        })
-        axiosCallAll()
-        // axiosCallgrade(4)
-        // eslint-disable-next-line
-    }, [])
+  useEffect(() => {
+    const getGradeList = async () => {
+      const response = await getGrades();
+      // console.log(response.data);
+      response.data.sort((a, b) => (a.id > b.id ? 1 : -1));
+      setGradeList(response.data);
+    };
+    getGradeList();
+  }, []);
 
+  const columns = [
+    {
+      title: 'Unit',
+      dataIndex: 'unit',
+      key: 'unit',
+      editable: true,
+      width: '22.5%',
+      align: 'left',
+      render: (_, key) => <UnitEditor id={key.unit.id} linkBtn={true} />,
+    },
+    {
+      title: 'Learning Standard',
+      dataIndex: 'name',
+      key: 'name',
+      editable: true,
+      width: '22.5%',
+      align: 'left',
+      render: (_, key) => (
+        <DayEditor history={props.history} learningStandard={key} />
+      ),
+    },
+    {
+      title: 'Desciption',
+      dataIndex: 'expectations',
+      key: 'character',
+      editable: true,
+      width: '22.5%',
+      align: 'left',
+    },
+    {
+      title: 'Delete',
+      dataIndex: 'delete',
+      key: 'delete',
+      width: '10%',
+      align: 'right',
+      render: (_, key) => (
+        <Popconfirm
+          title={'Are you sure you want to delete this learning standard?'}
+          icon={<QuestionCircleOutlined style={{ color: 'red' }} />}
+          onConfirm={() => {
+            deleteLearningStandard(key.id);
+          }}
+        >
+          <button id={'link-btn'}>Delete</button>
+        </Popconfirm>
+      ),
+    },
+  ];
 
+  const filterLS = (grade) => {
+    return learningStandardList.filter((learningStandard) => {
+      return learningStandard.unit.grade === grade.name;
+    });
+  };
 
-    const columns = [
-        {
-            title: 'Unit',
-            dataIndex: 'unit',
-            key: 'unit',
-            editable: true,
-            width: '22.5%',
-            align: 'left',
-            render: (_, key) => (
-                <UnitEditor days={getDays(key)} learningStandard={key.id} linkBtn={true}/>
-            )
-        },
-        {
-            title: 'Learning Standard',
-            dataIndex: 'name',
-            key: 'name',
-            editable: true,
-            width: '22.5%',
-            align: 'left',
-            render: (_, key) => (
-                <DayEditor history={props.history} days = {getDays(key)} learningStandardId={key.id} learningStandardName={key.name} linkBtn={true}/>
-            )
-        },
-        // {
-        //     title: 'Edit',
-        //     dataIndex: 'edit',
-        //     key: 'edit',
-        //     width: '10%',
-        //     align: 'right',
-        //     render: (_, key) => (
-        //         <UnitEditor days={getDays(key)} learningStandard={key.edit} linkBtn={true}/>
-        //     )
-        // },
-        {
-            title: 'Desciption',
-            dataIndex: 'description',
-            key: 'character',
-            editable: true,
-            width: '22.5%',
-            align: 'left',
-        },
-        // {
-        //     title: 'View',
-        //     dataIndex: 'view',
-        //     key: 'view',
-        //     width: '10%',
-        //     align: 'right',
-        //     render: (_, key) => (
-        //         <DayEditor history={props.history} days = {getDays(key)} learningStandardId={key.edit} learningStandardName = {getLearningStandardName(key.edit)} linkBtn={true}/>
-        //     )
-        // },
-        // {
-        //     title: 'Edit',
-        //     dataIndex: 'edit',
-        //     key: 'edit',
-        //     width: '10%',
-        //     align: 'right',
-        //     render: (_, key) => (
-        //         <DayEditor history={props.history} days = {getDays(key)} learningStandard={key.edit} linkBtn={true}/>
-        //     )
-        // },
-        // {
-        //     title: 'Edit',
-        //     dataIndex: 'edit',
-        //     key: 'edit',
-        //     width: '10%',
-        //     align: 'right',
-        //     render: (_, key) => (
-        //         <DayEditor days={getDays(key)} learningStandard={key.edit} linkBtn={true}/>
-        //     )
-        // },
-        {
-            title: 'Delete',
-            dataIndex: 'delete',
-            key: 'delete',
-            width: '10%',
-            align: 'right',
-            render: (_, key) => (
-                <Popconfirm title={"Are you sure you want to delete this learning standard?"}
-                            icon={<QuestionCircleOutlined style={{ color: 'red' }}/>}
-                            onConfirm={() => {
-                                deleteLearningStandard(key.delete);
-                                handleRemoveItem(key.delete);
-                            }}
-                >
-                    <button id={'link-btn'}>Delete</button>
-                </Popconfirm>
-            )
-            // render: (text, record) =>
-            //     studentData.length >= 1 ? (
-            //         <Popconfirm
-            //             title={`Are you sure you want to delete all data for ${record.name}?`}
-            //             icon={<QuestionCircleOutlined style={{color: 'red'}}/>}
-            //             onConfirm={() => handleDelete(record.key)}>
-            //             <button id='link-btn'> Delete</button>
-            //         </Popconfirm>
-            //     ) : null,
-        }
-    ];
-
-    const handleRemoveItem = id1 => {
-        setDataSource(dataSource.filter(item => item.delete !== id1))
-    }
-
-    const getDays = (i) => {
-        const day1 = []
-        // console.log(i)
-
-        const request = getLearningStandard(i.id);
-
-        request.then(function (result) {
-
-            day1.push(...result.data.days)
-            
-        })
-        // console.log("Day ",day1)
-        return day1;
-    }
-
-
-    
-    const axiosCallAll = async() =>{
-        const newArr=[]
-        const newMap={}
-        const allreq = getLearningStandardAll();
-        //console.log(allreq)
-        const allres1 = await allreq
-        console.log("all Learning Standards", allres1)
-        allres1.data.forEach(learningStand => {
-            const value = {
-                name: learningStand.name,
-                unit: learningStand.unit.name,
-                description: learningStand.expectations.length > 5 ? learningStand.expectations.substring(0, 30) + "..." : learningStand.expectations,
-                view: learningStand.id,
-                id: learningStand.id,
-                delete: learningStand.id
-            }
-            newArr.push(value)
-            newMap[learningStand.unit.grade] = newMap[learningStand.unit.grade] || [];
-            newMap[learningStand.unit.grade].push(value);
-            
-        })
-        setDataSource(dataSource.concat(newArr))
-        setDataSourceMap(newMap)
-    }
-    
-
-    const addTodataSource = (val) => {
-        setDataSource(dataSource.concat(val));
-    }
-
-    const setTabs = (grade) => {
-
-        return (  
-            <TabPane tab={grade.name} key={grade.name}>
-                    <div id="page-header">
-                            <h1>Learning Standards & Units:</h1>
-                    </div>
-                    <div id='table-container'>
-                        <UnitCreator datasource={dataSource} changeDataSource={addTodataSource} gradeMenu={gradeMenu}></UnitCreator>
-                        <LearningStandardDayCreator dataSource = {dataSourceMap[grade.id]} changeDataSource={addTodataSource}></LearningStandardDayCreator>
-                        <Table columns={columns}  dataSource={dataSourceMap[grade.id]} rowClassName="editable-row">
-                        </Table>
-                    </div>
-                </TabPane>
-                )
-    }
-
+  const setTabs = (grade) => {
     return (
-        
-        <div className="container nav-padding">
-
-            <Navbar isContentCreator={true}/>
-            <div id='main-header'>Welcome Content Creator</div>
-
-            {/* <div className= "search-button">
-            <Button type="primary" icon={<SearchOutlined />}>
-                Search
-            </Button>
-        </div> */}
-    
-        <Tabs>
-             <TabPane tab="Home" key="home">
-                <div id="page-header">
-                    <h1>Learning Standards & Units</h1>
-                </div>
-                <div id='content-creator-table-container'>
-                    <div id='content-creator-btn-container'>
-                        <UnitCreator datasource={dataSource} changeDataSource={addTodataSource} gradeMenu={gradeMenu}/>
-                        <LearningStandardDayCreator dataSource = {dataSource} changeDataSource={addTodataSource} />
-                    </div>
-                    <Table columns={columns}  dataSource={dataSource} rowClassName="editable-row"></Table>
-                </div>
-            </TabPane>
-            
-            {
-                gradeMenu.map(grade => {
-                    return setTabs(grade)
-                   
-                })
-            }        
-            
-        </Tabs>
+      <TabPane tab={grade.name} key={grade.name}>
+        <div id='page-header'>
+          <h1>Learning Standards & Units:</h1>
         </div>
-    )
+        <div id='table-container'>
+          <div id='content-creator-btn-container'>
+            <UnitCreator gradeList={gradeList} />
+            <LearningStandardDayCreator />
+          </div>
+          <Table
+            columns={columns}
+            dataSource={filterLS(grade)}
+            rowClassName='editable-row'
+          ></Table>
+        </div>
+      </TabPane>
+    );
+  };
 
+  return (
+    <div className='container nav-padding'>
+      <Navbar isContentCreator={true} />
+      <div id='main-header'>Welcome Content Creator</div>
+
+      <Tabs>
+        <TabPane tab='Home' key='home'>
+          <div id='page-header'>
+            <h1>Learning Standards & Units</h1>
+          </div>
+          <div id='content-creator-table-container'>
+            <div id='content-creator-btn-container'>
+              <UnitCreator gradeList={gradeList} />
+              <LearningStandardDayCreator />
+            </div>
+            <Table
+              columns={columns}
+              dataSource={learningStandardList}
+              rowClassName='editable-row'
+            ></Table>
+          </div>
+        </TabPane>
+
+        {gradeList.map((grade) => {
+          return setTabs(grade);
+        })}
+      </Tabs>
+    </div>
+  );
 }
-
-
-
-
