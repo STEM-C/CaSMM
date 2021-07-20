@@ -31,6 +31,7 @@ export default function BlocklyCanvasPanel(props) {
   const [selectedToolBoxCategories, setSelectedToolBoxCategories] = useState(
     []
   );
+  const [creatorSave, setCreatorSave] = useState(false);
 
   const {
     day,
@@ -82,6 +83,32 @@ export default function BlocklyCanvasPanel(props) {
       message.error('Failed to load save.');
     }
   };
+
+  const handleCCGoBack = () => {
+    if (isContentCreator && !creatorSave) {
+      if (
+        window.confirm(
+          'All unsaved progress will be lost. Do you still want to go back?'
+        )
+      ) {
+        handleGoBack();
+      } else {
+        console.log('You pressed Cancel!');
+      }
+    } else {
+      handleGoBack();
+    }
+  };
+
+  useEffect(() => {
+    // automatically set Creatorsave to false every 15 second.
+    setInterval(async () => {
+      if (isContentCreator && workspaceRef.current && dayRef.current) {
+        setCreatorSave(false);
+        console.log('set to false');
+      }
+    }, 9000);
+  }, [isContentCreator]);
 
   useEffect(() => {
     // automatically save workspace every min
@@ -175,6 +202,7 @@ export default function BlocklyCanvasPanel(props) {
     } else {
       message.success('Day saved successfully');
     }
+    setCreatorSave(true);
   };
 
   const handleSearchFilterChange = (value) => {
@@ -392,7 +420,7 @@ export default function BlocklyCanvasPanel(props) {
                       {handleGoBack ? (
                         <Col>
                           <button
-                            onClick={handleGoBack}
+                            onClick={handleCCGoBack}
                             id='link'
                             className='flex flex-column'
                           >
@@ -404,7 +432,7 @@ export default function BlocklyCanvasPanel(props) {
                   </Col>
                   <Col flex='auto' />
 
-                  <Col flex={isStudent ? '300px' : 'auto'}>
+                  <Col flex={isStudent && lastSavedTime ? '300px' : 'auto'}>
                     {isStudent && lastSavedTime
                       ? `Last changes saved ${lastSavedTime}`
                       : null}

@@ -370,3 +370,11 @@ export const getGrades = async () =>
     auth: true,
     error: 'Grades could not be retrieved',
   });
+
+export const getGrade = async (grade) =>
+  makeRequest({
+    method: GET,
+    path: `${server}/grades/${grade}`,
+    auth: true,
+    error: 'Grade could not be retrieved',
+  });

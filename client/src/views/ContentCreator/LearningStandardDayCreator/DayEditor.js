@@ -3,8 +3,8 @@ import { Button, List, Card, Modal, Form, Input, message } from 'antd';
 import {
   createDay,
   deleteDay,
-  getDayToolbox,
   getDayToolboxAll,
+  getDayToolbox,
   getLearningStandard,
 } from '../../../Utils/requests';
 import './DayEditor.less';
@@ -60,6 +60,7 @@ export default function ContentCreator({ learningStandard, history }) {
     day.selectedToolbox = selectedToolBoxRes.data.toolbox;
     day.toolbox = allToolBoxRes.data.toolbox;
 
+    day.learning_standard_name = learningStandard.name;
     localStorage.setItem('my-day', JSON.stringify(day));
     history.push('/day');
   };
