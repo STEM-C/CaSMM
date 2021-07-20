@@ -1,84 +1,68 @@
 import React, { useState, useEffect } from 'react';
 import { Form, Input, Modal, message } from 'antd';
-import {
-  getLearningStandard,
-  updateUnit,
-  getGrade,
-} from '../../../Utils/requests';
+import { getUnit, updateUnit } from '../../../Utils/requests';
 
 import './UnitEditor.less';
 
-export default function UnitCreator(props) {
-  const [unitObject, setUnitObject] = useState({
-    unitName: '',
-    unitGrade: 0,
-    unitNumber: 0,
-    unitDescrip: '',
-    unitTeksId: 0,
-  });
-  const [unitId, setUnitId] = useState(0);
+export default function UnitCreator({ id }) {
+  const [visible, setVisible] = useState(false);
+  const [gradeId, setGradeId] = useState('');
+  const [grade, setGrade] = useState('');
+  const [name, setName] = useState('');
+  const [number, setNumber] = useState('');
+  const [description, setDescription] = useState('');
+  const [tek, setTek] = useState('');
+
+  const showModal = async () => {
+    setVisible(true);
+    const res = await getUnit(id);
+    setGrade(res.data.grade.name);
+    setGradeId(res.data.grade.id);
+    setName(res.data.name);
+    setNumber(res.data.number);
+    setDescription(res.data.teks_description);
+    setTek(res.data.teks_id);
+  };
 
   useEffect(() => {
-    getUnit();
-    // eslint-disable-next-line
-  }, []);
-  const [visible, setVisible] = useState(false);
-  const linkBtn = props.linkBtn;
-
-  const showModal = () => {
-    setVisible(true);
-  };
+    const fetchUnit = async () => {
+      const res = await getUnit(id);
+      setGrade(res.data.grade.name);
+      setGradeId(res.data.grade.id);
+      setName(res.data.name);
+      setNumber(res.data.number);
+      setDescription(res.data.teks_description);
+      setTek(res.data.teks_id);
+    };
+    fetchUnit();
+  }, [id]);
 
   const handleCancel = () => {
     setVisible(false);
   };
 
-  const getUnit = async () => {
-    const learningStand = getLearningStandard(props.learningStandard);
-    const returnUnit = await learningStand;
-
-    const {
-      name,
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const response = await updateUnit(
+      id,
       number,
-      grade,
-      teks_description,
-      teks_id,
-    } = returnUnit.data.unit;
-
-    const returnGrade = await getGrade(grade);
-    const gradeNum = returnGrade.data.name;
-
-    setUnitObject({
-      unitName: name,
-      unitNumber: number,
-      unitGrade: gradeNum,
-      unitDescrip: teks_description,
-      unitTeksId: teks_id,
-    });
-    setUnitId(returnUnit.data.unit.id);
-  };
-
-  const handleSubmit = async () => {
-    try {
-      await updateUnit(
-        unitId,
-        unitObject.unitNumber,
-        unitObject.unitName,
-        unitObject.unitTeksId,
-        unitObject.unitDescrip,
-        unitObject.unitGrade
-      );
-      message.success('Update Unit Success');
+      name,
+      tek,
+      description,
+      gradeId
+    );
+    if (response.err) {
+      message.error('Fail to update unit');
+    } else {
+      message.success('Update unit success');
       setVisible(false);
-    } catch (error) {
-      message.error(error);
-      console.error(error);
     }
   };
+
   return (
     <div>
-      <button id={linkBtn ? 'link-btn' : null} onClick={showModal}>
-        {unitObject.unitName}
+      <button id='link-btn' onClick={showModal}>
+        {name}
       </button>
       <Modal
         title='Unit Editor'
@@ -87,6 +71,7 @@ export default function UnitCreator(props) {
         onOk={handleSubmit}
       >
         <Form
+          id='add-units'
           labelCol={{
             span: 6,
           }}
@@ -96,70 +81,43 @@ export default function UnitCreator(props) {
           layout='horizontal'
           size='default'
         >
-          <Form.Item
-            label='Grade'
-            onChange={(e) => {
-              const { value } = e.target;
-              setUnitObject((unitObject) => ({
-                ...unitObject,
-                unitGrade: parseInt(value, 10),
-              }));
-            }}
-          >
-            <Input defaultValue={unitObject.unitGrade} disabled />
-          </Form.Item>
-          <Form.Item label='Unit Name'>
+          <Form.Item id='form-label' label='Grade'>
             <Input
-              defaultValue={unitObject.unitName}
-              onChange={(e) => {
-                const { value } = e.target;
-                setUnitObject((unitObject) => ({
-                  ...unitObject,
-                  unitName: value,
-                }));
-              }}
+              onChange={(e) => setName(e.target.value)}
+              value={grade}
+              disabled
             />
           </Form.Item>
-          <Form.Item
-            label='Unit Number'
-            onChange={(e) => {
-              const { value } = e.target;
-              setUnitObject((unitObject) => ({
-                ...unitObject,
-                unitNumber: parseInt(value, 10),
-              }));
-            }}
-          >
-            <Input defaultValue={unitObject.unitNumber} />
+          <Form.Item id='form-label' label='Unit Name'>
+            <Input
+              onChange={(e) => setName(e.target.value)}
+              value={name}
+              placeholder='Enter unit name'
+            />
           </Form.Item>
-          <Form.Item
-            label='Description'
-            onChange={(e) => {
-              const { value } = e.target;
-              setUnitObject((unitObject) => ({
-                ...unitObject,
-                unitDescrip: value,
-              }));
-            }}
-          >
-            <Input defaultValue={unitObject.unitDescrip} />
+          <Form.Item id='form-label' label='Unit Number'>
+            <Input
+              onChange={(e) => setNumber(e.target.value)}
+              type='number'
+              value={number}
+              placeholder='Enter unit number'
+              min={1}
+              max={15}
+            />
           </Form.Item>
-          <Form.Item
-            label='TekS'
-            onChange={(e) => {
-              const { value } = e.target;
-              setUnitObject((unitObject) => ({
-                ...unitObject,
-                unitTeksId: value,
-              }));
-            }}
-          >
-            <Input defaultValue={unitObject.unitTeksId} />
+          <Form.Item id='form-label' label='Description'>
+            <Input
+              onChange={(e) => setDescription(e.target.value)}
+              value={description}
+              placeholder='Enter unit description'
+            />
           </Form.Item>
-          <Form.Item>
-            {/* <Button type="primary" htmlType="submit">
-                            Save Unit
-                        </Button> */}
+          <Form.Item id='form-label' label='TekS'>
+            <Input
+              onChange={(e) => setTek(e.target.value)}
+              value={tek}
+              placeholder='Enter unit Teks'
+            />
           </Form.Item>
         </Form>
       </Modal>

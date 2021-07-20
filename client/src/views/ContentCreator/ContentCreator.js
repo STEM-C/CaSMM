@@ -8,7 +8,6 @@ import DayEditor from './LearningStandardDayCreator/DayEditor';
 import UnitCreator from './UnitCreator/UnitCreator';
 import LearningStandardDayCreator from './LearningStandardCreator/LearningStandardCreator';
 import {
-  getLearningStandard,
   getLearningStandardAll,
   deleteLearningStandard,
   getGrades,
@@ -20,26 +19,38 @@ import './ContentCreator.less';
 const { TabPane } = Tabs;
 
 export default function ContentCreator(props) {
-  const [dataSource, setDataSource] = useState([]);
-  const [dataSourceMap, setDataSourceMap] = useState([]);
-  const [gradeMenu, setGradeMenu] = useState([]);
+  const [gradeList, setGradeList] = useState([]);
+  const [learningStandardList, setLearningStandardList] = useState([]);
 
   useEffect(() => {
-    //console.log(getLearningStandardcount())
-    getGrades().then((res) => {
-      if (res.data) {
-        setGradeMenu(res.data);
-        // console.log("this is the grade menu", gradeMenu, res.data)
-      } else {
-        message.error(res.err);
-      }
-    });
-    axiosCallAll();
-    // axiosCallgrade(4)
-    // eslint-disable-next-line
+    const getLearningStandardList = async () => {
+      const response = await getLearningStandardAll();
+      console.log(response.data);
+      setLearningStandardList(response.data);
+    };
+    getLearningStandardList();
+  }, []);
+
+  useEffect(() => {
+    const getGradeList = async () => {
+      const response = await getGrades();
+      // console.log(response.data);
+      response.data.sort((a, b) => (a.id > b.id ? 1 : -1));
+      setGradeList(response.data);
+    };
+    getGradeList();
   }, []);
 
   const columns = [
+    {
+      title: 'Unit',
+      dataIndex: 'unit',
+      key: 'unit',
+      editable: true,
+      width: '22.5%',
+      align: 'left',
+      render: (_, key) => <UnitEditor id={key.unit.id} linkBtn={true} />,
+    },
     {
       title: 'Learning Standard',
       dataIndex: 'name',
@@ -48,78 +59,17 @@ export default function ContentCreator(props) {
       width: '22.5%',
       align: 'left',
       render: (_, key) => (
-        <DayEditor
-          history={props.history}
-          days={getDays(key)}
-          learningStandardId={key.id}
-          learningStandardName={key.name}
-          linkBtn={true}
-        />
+        <DayEditor history={props.history} learningStandard={key} />
       ),
     },
-    {
-      title: 'Unit',
-      dataIndex: 'unit',
-      key: 'unit',
-      editable: true,
-      width: '22.5%',
-      align: 'left',
-      render: (_, key) => (
-        <UnitEditor
-          days={getDays(key)}
-          learningStandard={key.id}
-          linkBtn={true}
-        />
-      ),
-    },
-    // {
-    //     title: 'Edit',
-    //     dataIndex: 'edit',
-    //     key: 'edit',
-    //     width: '10%',
-    //     align: 'right',
-    //     render: (_, key) => (
-    //         <UnitEditor days={getDays(key)} learningStandard={key.edit} linkBtn={true}/>
-    //     )
-    // },
     {
       title: 'Desciption',
-      dataIndex: 'description',
+      dataIndex: 'expectations',
       key: 'character',
       editable: true,
       width: '22.5%',
       align: 'left',
     },
-    // {
-    //     title: 'View',
-    //     dataIndex: 'view',
-    //     key: 'view',
-    //     width: '10%',
-    //     align: 'right',
-    //     render: (_, key) => (
-    //         <DayEditor history={props.history} days = {getDays(key)} learningStandardId={key.edit} learningStandardName = {getLearningStandardName(key.edit)} linkBtn={true}/>
-    //     )
-    // },
-    // {
-    //     title: 'Edit',
-    //     dataIndex: 'edit',
-    //     key: 'edit',
-    //     width: '10%',
-    //     align: 'right',
-    //     render: (_, key) => (
-    //         <DayEditor history={props.history} days = {getDays(key)} learningStandard={key.edit} linkBtn={true}/>
-    //     )
-    // },
-    // {
-    //     title: 'Edit',
-    //     dataIndex: 'edit',
-    //     key: 'edit',
-    //     width: '10%',
-    //     align: 'right',
-    //     render: (_, key) => (
-    //         <DayEditor days={getDays(key)} learningStandard={key.edit} linkBtn={true}/>
-    //     )
-    // },
     {
       title: 'Delete',
       dataIndex: 'delete',
@@ -130,72 +80,26 @@ export default function ContentCreator(props) {
         <Popconfirm
           title={'Are you sure you want to delete this learning standard?'}
           icon={<QuestionCircleOutlined style={{ color: 'red' }} />}
-          onConfirm={() => {
-            deleteLearningStandard(key.delete);
-            handleRemoveItem(key.delete);
+          onConfirm={async () => {
+            await deleteLearningStandard(key.id);
+            setLearningStandardList(
+              learningStandardList.filter((ls) => {
+                return ls.id !== key.id;
+              })
+            );
+            message.success('Delete success');
           }}
         >
           <button id={'link-btn'}>Delete</button>
         </Popconfirm>
       ),
-      // render: (text, record) =>
-      //     studentData.length >= 1 ? (
-      //         <Popconfirm
-      //             title={`Are you sure you want to delete all data for ${record.name}?`}
-      //             icon={<QuestionCircleOutlined style={{color: 'red'}}/>}
-      //             onConfirm={() => handleDelete(record.key)}>
-      //             <button id='link-btn'> Delete</button>
-      //         </Popconfirm>
-      //     ) : null,
     },
   ];
 
-  const handleRemoveItem = (id1) => {
-    setDataSource(dataSource.filter((item) => item.delete !== id1));
-  };
-
-  const getDays = (i) => {
-    const day1 = [];
-    // console.log(i)
-
-    const request = getLearningStandard(i.id);
-
-    request.then(function (result) {
-      day1.push(...result.data.days);
+  const filterLS = (grade) => {
+    return learningStandardList.filter((learningStandard) => {
+      return learningStandard.unit.grade === grade.id;
     });
-    // console.log("Day ",day1)
-    return day1;
-  };
-
-  const axiosCallAll = async () => {
-    const newArr = [];
-    const newMap = {};
-    const allreq = getLearningStandardAll();
-    //console.log(allreq)
-    const allres1 = await allreq;
-    console.log('all Learning Standards', allres1);
-    allres1.data.forEach((learningStand) => {
-      const value = {
-        name: learningStand.name,
-        unit: learningStand.unit.name,
-        description:
-          learningStand.expectations.length > 5
-            ? learningStand.expectations.substring(0, 30) + '...'
-            : learningStand.expectations,
-        view: learningStand.id,
-        id: learningStand.id,
-        delete: learningStand.id,
-      };
-      newArr.push(value);
-      newMap[learningStand.unit.grade] = newMap[learningStand.unit.grade] || [];
-      newMap[learningStand.unit.grade].push(value);
-    });
-    setDataSource(dataSource.concat(newArr));
-    setDataSourceMap(newMap);
-  };
-
-  const addTodataSource = (val) => {
-    setDataSource(dataSource.concat(val));
   };
 
   const setTabs = (grade) => {
@@ -204,19 +108,14 @@ export default function ContentCreator(props) {
         <div id='page-header'>
           <h1>Learning Standards & Units:</h1>
         </div>
-        <div id='table-container'>
-          <UnitCreator
-            datasource={dataSource}
-            changeDataSource={addTodataSource}
-            gradeMenu={gradeMenu}
-          ></UnitCreator>
-          <LearningStandardDayCreator
-            dataSource={dataSourceMap[grade.id]}
-            changeDataSource={addTodataSource}
-          ></LearningStandardDayCreator>
+        <div id='content-creator-table-container'>
+          <div id='content-creator-btn-container'>
+            <UnitCreator gradeList={gradeList} />
+            <LearningStandardDayCreator />
+          </div>
           <Table
             columns={columns}
-            dataSource={dataSourceMap[grade.id]}
+            dataSource={filterLS(grade)}
             rowClassName='editable-row'
           ></Table>
         </div>
@@ -229,12 +128,6 @@ export default function ContentCreator(props) {
       <Navbar isContentCreator={true} />
       <div id='main-header'>Welcome Content Creator</div>
 
-      {/* <div className= "search-button">
-            <Button type="primary" icon={<SearchOutlined />}>
-                Search
-            </Button>
-        </div> */}
-
       <Tabs>
         <TabPane tab='Home' key='home'>
           <div id='page-header'>
@@ -242,25 +135,20 @@ export default function ContentCreator(props) {
           </div>
           <div id='content-creator-table-container'>
             <div id='content-creator-btn-container'>
-              <UnitCreator
-                datasource={dataSource}
-                changeDataSource={addTodataSource}
-                gradeMenu={gradeMenu}
-              />
+              <UnitCreator gradeList={gradeList} />
               <LearningStandardDayCreator
-                dataSource={dataSource}
-                changeDataSource={addTodataSource}
+                setLearningStandardList={setLearningStandardList}
               />
             </div>
             <Table
               columns={columns}
-              dataSource={dataSource}
+              dataSource={learningStandardList}
               rowClassName='editable-row'
             ></Table>
           </div>
         </TabPane>
 
-        {gradeMenu.map((grade) => {
+        {gradeList.map((grade) => {
           return setTabs(grade);
         })}
       </Tabs>

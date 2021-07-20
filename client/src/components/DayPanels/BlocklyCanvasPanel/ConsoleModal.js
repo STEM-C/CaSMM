@@ -31,7 +31,7 @@ export default function ConsoleModal(props) {
       setDeviceDisconnect(false);
       message.success('Device Connected');
     });
-  }, [deviceDisconnect]);
+  }, [deviceDisconnect, setConnectionOpen]);
 
   const handleConnect = async () => {
     if (!connectionOpen) {
