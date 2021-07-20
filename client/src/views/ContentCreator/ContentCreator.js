@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 
-import { Tabs, Table, Popconfirm } from 'antd';
+import { Tabs, Table, Popconfirm, message } from 'antd';
 import Navbar from '../../components/NavBar/NavBar';
 import { QuestionCircleOutlined } from '@ant-design/icons';
 
@@ -25,7 +25,7 @@ export default function ContentCreator(props) {
   useEffect(() => {
     const getLearningStandardList = async () => {
       const response = await getLearningStandardAll();
-      // console.log(response.data);
+      console.log(response.data);
       setLearningStandardList(response.data);
     };
     getLearningStandardList();
@@ -80,8 +80,14 @@ export default function ContentCreator(props) {
         <Popconfirm
           title={'Are you sure you want to delete this learning standard?'}
           icon={<QuestionCircleOutlined style={{ color: 'red' }} />}
-          onConfirm={() => {
-            deleteLearningStandard(key.id);
+          onConfirm={async () => {
+            await deleteLearningStandard(key.id);
+            setLearningStandardList(
+              learningStandardList.filter((ls) => {
+                return ls.id !== key.id;
+              })
+            );
+            message.success('Delete success');
           }}
         >
           <button id={'link-btn'}>Delete</button>
@@ -92,7 +98,7 @@ export default function ContentCreator(props) {
 
   const filterLS = (grade) => {
     return learningStandardList.filter((learningStandard) => {
-      return learningStandard.unit.grade === grade.name;
+      return learningStandard.unit.grade === grade.id;
     });
   };
 
@@ -102,7 +108,7 @@ export default function ContentCreator(props) {
         <div id='page-header'>
           <h1>Learning Standards & Units:</h1>
         </div>
-        <div id='table-container'>
+        <div id='content-creator-table-container'>
           <div id='content-creator-btn-container'>
             <UnitCreator gradeList={gradeList} />
             <LearningStandardDayCreator />
@@ -129,11 +135,10 @@ export default function ContentCreator(props) {
           </div>
           <div id='content-creator-table-container'>
             <div id='content-creator-btn-container'>
-              <UnitCreator
-                gradeList={gradeList}
+              <UnitCreator gradeList={gradeList} />
+              <LearningStandardDayCreator
                 setLearningStandardList={setLearningStandardList}
               />
-              <LearningStandardDayCreator />
             </div>
             <Table
               columns={columns}

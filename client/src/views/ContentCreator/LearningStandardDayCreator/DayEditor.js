@@ -17,10 +17,11 @@ export default function ContentCreator({ learningStandard, history }) {
     setVisible(false);
   };
 
-  const showModal = () => {
-    console.log(learningStandard.days);
-    learningStandard.days.sort((a, b) => (a.number > b.number ? 1 : -1));
-    setDay([...learningStandard.days]);
+  const showModal = async () => {
+    const lsResponse = await getLearningStandard(learningStandard.id);
+    const myDays = lsResponse.data.days;
+    myDays.sort((a, b) => (a.number > b.number ? 1 : -1));
+    setDay([...myDays]);
     setVisible(true);
   };
 

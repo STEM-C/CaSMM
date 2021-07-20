@@ -4,11 +4,12 @@ import {
   createLearningStandard,
   createDay,
   getAllUnits,
+  getLearningStandardAll,
 } from '../../../Utils/requests';
 
 import './LearningStandardCreator.less';
 
-export default function LearningStandardCreator(props) {
+export default function LearningStandardCreator({ setLearningStandardList }) {
   const [visible, setVisible] = useState(false);
   const [unitList, setUnitList] = useState([]);
 
@@ -26,7 +27,9 @@ export default function LearningStandardCreator(props) {
     getUnits();
   }, []);
 
-  const showModal = () => {
+  const showModal = async () => {
+    const res = await getAllUnits();
+    setUnitList(res.data);
     setDescription('');
     setName('');
     setTeks('');
@@ -52,6 +55,10 @@ export default function LearningStandardCreator(props) {
         }
       }
       message.success('Successfully created lesson');
+      const lsRes = await getLearningStandardAll();
+      // console.log(lsRes);
+      setLearningStandardList(lsRes.data);
+
       setVisible(false);
     }
   };

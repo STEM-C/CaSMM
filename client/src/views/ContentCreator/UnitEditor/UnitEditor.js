@@ -6,20 +6,29 @@ import './UnitEditor.less';
 
 export default function UnitCreator({ id }) {
   const [visible, setVisible] = useState(false);
+  const [gradeId, setGradeId] = useState('');
   const [grade, setGrade] = useState('');
   const [name, setName] = useState('');
   const [number, setNumber] = useState('');
   const [description, setDescription] = useState('');
   const [tek, setTek] = useState('');
 
-  const showModal = () => {
+  const showModal = async () => {
     setVisible(true);
+    const res = await getUnit(id);
+    setGrade(res.data.grade.name);
+    setGradeId(res.data.grade.id);
+    setName(res.data.name);
+    setNumber(res.data.number);
+    setDescription(res.data.teks_description);
+    setTek(res.data.teks_id);
   };
 
   useEffect(() => {
     const fetchUnit = async () => {
       const res = await getUnit(id);
       setGrade(res.data.grade.name);
+      setGradeId(res.data.grade.id);
       setName(res.data.name);
       setNumber(res.data.number);
       setDescription(res.data.teks_description);
@@ -40,7 +49,7 @@ export default function UnitCreator({ id }) {
       name,
       tek,
       description,
-      grade
+      gradeId
     );
     if (response.err) {
       message.error('Fail to update unit');
