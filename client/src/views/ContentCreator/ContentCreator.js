@@ -129,7 +129,10 @@ export default function ContentCreator(props) {
           </div>
           <div id='content-creator-table-container'>
             <div id='content-creator-btn-container'>
-              <UnitCreator gradeList={gradeList} />
+              <UnitCreator
+                gradeList={gradeList}
+                setLearningStandardList={setLearningStandardList}
+              />
               <LearningStandardDayCreator />
             </div>
             <Table

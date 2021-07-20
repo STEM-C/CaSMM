@@ -3,7 +3,7 @@ import { Form, Input, Modal, message } from 'antd';
 import { createUnit } from '../../../Utils/requests';
 import './UnitCreator.less';
 
-export default function UnitCreator({ gradeList }) {
+export default function UnitCreator({ gradeList, setLearningStandardList }) {
   const [visible, setVisible] = useState(false);
   const [grade, setGrade] = useState('');
   const [name, setName] = useState('');
@@ -32,6 +32,14 @@ export default function UnitCreator({ gradeList }) {
       message.error('Fail to create a new unit');
     } else {
       message.success('Successfully created unit');
+      // Options
+      // import getLearningStandardAll
+      // call getLearningStandardAll
+      // setLearningStandardAll to getLearningStandardAll res
+
+      // OR
+      // if the
+      // setLearningStandardAll(...learningStandardList, res.data)
       setVisible(false);
     }
   };
