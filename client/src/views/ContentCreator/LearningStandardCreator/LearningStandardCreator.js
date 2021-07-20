@@ -33,7 +33,6 @@ export default function LearningStandardCreator({ setLearningStandardList }) {
     setDescription('');
     setName('');
     setTeks('');
-    setUnit('');
     setNumofDays('');
     setVisible(true);
   };
@@ -43,6 +42,10 @@ export default function LearningStandardCreator({ setLearningStandardList }) {
   };
 
   const onClickHandler = async (e) => {
+    if (unit == '') {
+      message.error('Please select unit');
+      return;
+    }
     e.preventDefault();
     const res = await createLearningStandard(description, name, 0, unit, teks);
     if (res.err) {
@@ -92,8 +95,8 @@ export default function LearningStandardCreator({ setLearningStandardList }) {
               defaultValue={unit}
               onChange={(e) => setUnit(e.target.value)}
             >
-              <option key={0} value={unit} id='disabled-option'>
-                Units
+              <option key={0} value={unit} id='disabled-option' disabled>
+                Unit
               </option>
               {unitList.map((unit_) => (
                 <option key={unit_.id} value={unit_.id}>

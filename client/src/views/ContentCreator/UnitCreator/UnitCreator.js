@@ -12,7 +12,6 @@ export default function UnitCreator({ gradeList }) {
   const [tek, setTek] = useState('');
 
   const showModal = () => {
-    setGrade('');
     setNumber('');
     setName('');
     setDescription('');
