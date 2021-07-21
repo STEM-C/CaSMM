@@ -23,9 +23,6 @@ module.exports = {
       { classroom: ids, current: true },
       ['learning_standard.days', 'classroom.grade']
     );
-
-    console.log(selection);
-
     // return the classroom and learning standard or 404 if there is no current
     return selection
       ? {
