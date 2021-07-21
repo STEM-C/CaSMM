@@ -12,6 +12,7 @@ function Student(props) {
     const fetchData = async () => {
       try {
         const res = await getStudentClassroom();
+        console.log(res.data);
         if (res.data) {
           if (res.data.learning_standard) {
             setLearningStandard(res.data.learning_standard);
