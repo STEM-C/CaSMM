@@ -11,7 +11,7 @@ jobs:
         uses: actions/checkout@v2
       - name: Create review app
         id: app
-        uses: STEM-C/auto/review@v0.7
+        uses: STEM-C/auto/review@v0.7.1
         with: 
           base: review
           pipeline: ${{ secrets.PIPELINE_ID }}
@@ -23,7 +23,7 @@ jobs:
           DATABASE_URL: ${{ steps.app.outputs.database_url }}
           SCRIPT_PATH: ./scripts
       - name: Built, test, and deploy app
-        uses: STEM-C/auto/build-test-deploy@v0.7
+        uses: STEM-C/auto/build-test-deploy@v0.7.1
         with:
           image_tag: ${{ steps.app.outputs.app_name }}
           app_name: ${{ steps.app.outputs.app_name }}
