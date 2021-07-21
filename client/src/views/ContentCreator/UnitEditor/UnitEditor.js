@@ -1,126 +1,126 @@
-import React, { useState, useEffect } from 'react'
-import { Form, Input, Modal } from 'antd'
-import { getLearningStandard } from '../../../Utils/requests'
+import React, { useState, useEffect } from 'react';
+import { Form, Input, Modal, message } from 'antd';
+import { getUnit, updateUnit } from '../../../Utils/requests';
 
+import './UnitEditor.less';
 
-import './UnitEditor.less'
+export default function UnitCreator({ id }) {
+  const [visible, setVisible] = useState(false);
+  const [gradeId, setGradeId] = useState('');
+  const [grade, setGrade] = useState('');
+  const [name, setName] = useState('');
+  const [number, setNumber] = useState('');
+  const [description, setDescription] = useState('');
+  const [tek, setTek] = useState('');
 
+  const showModal = async () => {
+    setVisible(true);
+    const res = await getUnit(id);
+    setGrade(res.data.grade.name);
+    setGradeId(res.data.grade.id);
+    setName(res.data.name);
+    setNumber(res.data.number);
+    setDescription(res.data.teks_description);
+    setTek(res.data.teks_id);
+  };
 
-export default function UnitCreator(props) {
-    const [unitObject, setUnitObject] = useState({
-        unitName: "",
-        unitGrade: 0,
-        unitNumber: 0,
-        unitDescrip: "",
-        unitTeksId: 0,
-    })
-
-    useEffect(() => {
-        getUnit()
-        // eslint-disable-next-line
-    }, [])
-    const [visible, setVisible] = useState(false);
-    const linkBtn = props.linkBtn;
-
-    const showModal = () => {
-        setVisible(true)
+  useEffect(() => {
+    const fetchUnit = async () => {
+      const res = await getUnit(id);
+      setGrade(res.data.grade.name);
+      setGradeId(res.data.grade.id);
+      setName(res.data.name);
+      setNumber(res.data.number);
+      setDescription(res.data.teks_description);
+      setTek(res.data.teks_id);
     };
+    fetchUnit();
+  }, [id]);
 
-    const handleCancel = () => {
-        setVisible(false)
-    };
+  const handleCancel = () => {
+    setVisible(false);
+  };
 
-    const getUnit = async () => {
-        const learningStand = getLearningStandard(props.learningStandard)
-        const returnUnit = await learningStand
-        // console.log(returnUnit)
-        setUnitObject({
-            unitName: returnUnit.data.unit.name,
-            unitNumber: returnUnit.data.unit.number,
-            unitGrade: returnUnit.data.unit.grade,
-            unitDescrip: returnUnit.data.unit.teks_description,
-            unitTeksId: returnUnit.data.unit.teks_id
-        })
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const response = await updateUnit(
+      id,
+      number,
+      name,
+      tek,
+      description,
+      gradeId
+    );
+    if (response.err) {
+      message.error('Fail to update unit');
+    } else {
+      message.success('Update unit success');
+      setVisible(false);
     }
+  };
 
-
-    return (
-        <div>
-            <button id={linkBtn ? 'link-btn' : null} onClick={showModal}>{unitObject.unitName}</button>
-            <Modal
-                title="Unit Creator"
-                visible={visible}
-                onCancel={handleCancel}
-            >
-                <Form
-                    labelCol={{
-                        span: 4
-                    }}
-                    wrapperCol={{
-                        span: 14
-                    }}
-                    layout="horizontal"
-                    size="default">
-                    <Form.Item label="Unit Name">
-                        <Input defaultValue={unitObject.unitName} onChange={(e) => {
-                            const { value } = e.target;
-                            setUnitObject((unitObject) => ({
-                                ...unitObject,
-                                unitName: value
-                            }));
-                        }}/>
-                    </Form.Item>
-                    <Form.Item label="Grade"
-                               onChange={(e) => {
-                                   const { value } = e.target;
-                                   setUnitObject((unitObject) => ({
-                                       ...unitObject,
-                                       unitGrade: parseInt(value, 10)
-                                   }));
-                               }}>
-                        <Input defaultValue={unitObject.unitGrade}/>
-                    </Form.Item>
-                    <Form.Item label="Number"
-                        onChange={(e)=>{ 
-                            const {value} = e.target; 
-                            setUnitObject((unitObject) => ({
-                            ...unitObject,
-                            unitNumber: parseInt(value,10)
-                        }));
-                        }}>
-                        <Input defaultValue={unitObject.unitNumber}/>
-                    </Form.Item>
-                    <Form.Item label="Description"
-                        onChange={(e) => {
-                            const { value } = e.target;
-                            setUnitObject((unitObject) => ({
-                                ...unitObject,
-                                unitDescrip: value
-                            }));
-                        }}>
-                        <Input defaultValue={unitObject.unitDescrip}/>
-                    </Form.Item>
-                    <Form.Item label="TekS"
-                               onChange={(e) => {
-                                   const { value } = e.target;
-                                   setUnitObject((unitObject) => ({
-                                       ...unitObject,
-                                       unitTeksId: value
-                                   }));
-                               }}>
-                        <Input defaultValue={unitObject.unitTeksId}/>
-                    </Form.Item>
-                    <Form.Item>
-                        {/* <Button type="primary" htmlType="submit">
-                            Save Unit
-                        </Button> */}
-                    </Form.Item>
-
-                </Form>
-
-            </Modal>
-
-
-        </div>
-    )
+  return (
+    <div>
+      <button id='link-btn' onClick={showModal}>
+        {name}
+      </button>
+      <Modal
+        title='Unit Editor'
+        visible={visible}
+        onCancel={handleCancel}
+        onOk={handleSubmit}
+      >
+        <Form
+          id='add-units'
+          labelCol={{
+            span: 6,
+          }}
+          wrapperCol={{
+            span: 14,
+          }}
+          layout='horizontal'
+          size='default'
+        >
+          <Form.Item id='form-label' label='Grade'>
+            <Input
+              onChange={(e) => setName(e.target.value)}
+              value={grade}
+              disabled
+            />
+          </Form.Item>
+          <Form.Item id='form-label' label='Unit Name'>
+            <Input
+              onChange={(e) => setName(e.target.value)}
+              value={name}
+              placeholder='Enter unit name'
+            />
+          </Form.Item>
+          <Form.Item id='form-label' label='Unit Number'>
+            <Input
+              onChange={(e) => setNumber(e.target.value)}
+              type='number'
+              value={number}
+              placeholder='Enter unit number'
+              min={1}
+              max={15}
+            />
+          </Form.Item>
+          <Form.Item id='form-label' label='Description'>
+            <Input
+              onChange={(e) => setDescription(e.target.value)}
+              value={description}
+              placeholder='Enter unit description'
+            />
+          </Form.Item>
+          <Form.Item id='form-label' label='TekS'>
+            <Input
+              onChange={(e) => setTek(e.target.value)}
+              value={tek}
+              placeholder='Enter unit Teks'
+            />
+          </Form.Item>
+        </Form>
+      </Modal>
+    </div>
+  );
 }

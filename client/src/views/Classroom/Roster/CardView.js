@@ -8,22 +8,31 @@ export default function CardView(props) {
     return (
         <div id='card-container'>
             {studentData.map(student =>
-                <Card id='card' title={student.name} key={student.key}>
-                    <div id='card-content-container'>
-                        <p>Animal: {student.character}</p>
-                        <p>Last logged in: {getFormattedDate(student.last_logged_in)}
-                        </p>
-                        <p>Status: {student.enrolled.enrolled ? 'Enrolled' : 'Unenrolled'}</p>
+            <div id='student-card' key={student.key}>
+                <div id='student-card-header'>
+                    <p id='animal'>{student.character}</p>
+                    <h1 id='student-card-title'>{student.name}</h1>
+                </div>
+                <div id='card-content-container'>
+                    <div id="description-container">
+                        <p id="label">Last logged in:</p>
+                        <p id="label-info">{getFormattedDate(student.last_logged_in)}</p>
+                        <br></br>
                     </div>
-                    <div id='card-button-container' className='flex flex-row'>
-                        <StudentModal student={student} linkBtn={false}/>
-                        <button onClick={() => {
-                            onEnrollToggle(student.enrolled.id, !student.enrolled.enrolled)
-                        }}>
-                            {student.enrolled.enrolled ? 'Unenroll' : 'Enroll'}
-                        </button>
+                    <div id="description-container">
+                        <p id="label">Status:</p>
+                        <p id="label-info">{student.enrolled.enrolled ? 'Enrolled' : 'Unenrolled'}</p>
                     </div>
-                </Card>
+                </div>
+                <div id='card-button-container' className='flex flex-row'>
+                    <StudentModal student={student} linkBtn={false}/>
+                    <button onClick={() => {
+                        onEnrollToggle(student.enrolled.id, !student.enrolled.enrolled)
+                    }}>
+                        {student.enrolled.enrolled ? 'Unenroll' : 'Enroll'}
+                    </button>
+                </div>
+            </div>
             )}
         </div>
     )

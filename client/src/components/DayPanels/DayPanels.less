@@ -4,7 +4,8 @@ body {
   margin: 0;
 }
 
-h3, p {
+h3,
+p {
   margin: 0;
 }
 
@@ -15,10 +16,11 @@ h3, p {
   background-color: #colors[primary];
   min-height: 92vh;
   max-height: 92vh;
+  padding-top: 20px;
 }
 
 .compilePop {
-  padding: 30px 50px;
+  margin-top: 11px !important;
 }
 
 .popup {
@@ -27,7 +29,7 @@ h3, p {
   padding: 10px;
   border: 1px solid #colors[secondary];
   border-radius: 5px;
-  position: fixed;
+  position: absolute;
   z-index: 1;
 }
 
@@ -46,44 +48,58 @@ h3, p {
   top: 12.5vh;
 }
 
-.ModalCompile{
-  top: 15vh;
-  right: 4vh;
-}
-.ModalCompile2{
-  top: 15vh;
-  right: 6vh;
-}
-.ModalCompile3{
-  top: 15vh;
+.ModalCompile {
+  top: 80%;
   right: 3vh;
+}
+.ModalCompile2 {
+  top: 80%;
+  right: 12vh;
+}
+.ModalCompile3 {
+  top: 80%;
+  right: 5vh;
 }
 
 #action-btn-container {
-  flex: 1;
-  margin: 1em;
+  margin-top: 0.5vh;
 
   i {
     color: #colors[primary];
-    font-size: 16px;
+
+    font-size: 32px;
 
     &:hover {
       color: #colors[secondary];
     }
   }
-}
 
-#top-container {
-  flex: 1;
-  margin-bottom: 1.5vh;
-  margin-top: 1vh;
-  max-height: 8vh;
+  svg {
+    width: 35px;
+    height: 35px;
+    x: 0px;
+    y: 0px;
+
+    g {
+      fill: #colors[primary];
+    }
+
+    &:hover {
+      g {
+        fill: #colors[secondary];
+      }
+    }
+  }
 }
 
 #description-container {
-  height: 8vh;
-  border-radius: 10px;
+  height: 1vh;
   align-items: center;
+  flex: 1;
+  margin-bottom: 1.5vh;
+  margin-top: 0vh;
+  max-height: 8vh;
+  width: 100%;
 
   #logo {
     max-width: 145px;
@@ -100,6 +116,10 @@ h3, p {
   }
 }
 
+#lastsave-container {
+  min-width: 50%;
+}
+
 #side-container {
   flex: 2;
   margin-top: 1vh;
@@ -108,7 +128,14 @@ h3, p {
   background-color: #colors[tertiary];
   border-radius: 10px;
   height: 100%;
-  max-height: 78vh;
+  overflow: hidden;
+
+  #menu {
+    overflow-y: auto;
+    overflow-x: hidden;
+    height: 100%;
+    max-height: 78vh;
+  }
 }
 
 #bottom-container {
@@ -119,6 +146,7 @@ h3, p {
   border-radius: 10px;
   height: 100%;
   max-height: 78vh;
+  position: relative;
 }
 
 #blockly-canvas {
@@ -126,6 +154,49 @@ h3, p {
   width: 95%;
   height: 100%;
   min-height: 68vh;
+  // position: relative;
+
+  //   transition: min-height 2s;
+
+  //   &.contract {
+  //     min-height: 28vh;
+  //   }
+}
+
+#console-container {
+  background-color: white;
+  border: 1px solid #colors[secondary];
+  border-radius: 5px;
+  margin: 0 auto;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  overflow: hidden;
+  height: 0;
+  transition: 0.5s ease;
+  z-index: 10;
+
+  &.open {
+    height: calc(29vh + 92px);
+  }
+}
+
+#console-content {
+  color: white;
+  text-align: left;
+}
+
+#content-container {
+  width: 98%;
+  border-radius: 5px;
+  height: 30vh;
+  padding: 0.5vh 1vh;
+  margin: 0 auto;
+  background-color: black;
+  overflow-y: scroll;
+  position: relative;
+  word-break: break-word;
 }
 
 #section-header {
@@ -150,7 +221,7 @@ h3, p {
   color: #colors[text-secondary];
   width: 45%;
   min-height: 5%;
-  font-size: .8em;
+  font-size: 0.8em;
   font-weight: bold;
   position: relative;
   left: -10px;
@@ -240,7 +311,7 @@ h3, p {
   }
 
   #disabled-option {
-    opacity: .6;
+    opacity: 0.6;
     background-color: darken(#colors[tertiary], 10%);
   }
 }
@@ -254,7 +325,7 @@ h3, p {
 #history-item {
   display: flex;
   justify-content: space-between;
-  margin-bottom: .5vh;
+  margin-bottom: 0.5vh;
   background: #colors[tertiary];
   width: 100%;
   height: 8vh;
@@ -271,4 +342,16 @@ h3, p {
 #eye-icon {
   line-height: 22px;
   margin-right: 15px;
+}
+
+#category-switch {
+  float: right;
+  vertical-align: middle;
+}
+
+#console-message {
+  float: left;
+  margin: 0.5vh 2rem;
+  width: 39rem;
+  height: 32px;
 }
