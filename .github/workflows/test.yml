@@ -11,5 +11,5 @@ jobs:
         uses: actions/checkout@v2
       - name: Test App
         uses: STEM-C/auto/mocks@v0.7.1
-        with:
-          github_token: "${{ secrets.GITHUB_TOKEN }}"
+        #with:
+          #github_token: "${{ secrets.GITHUB_TOKEN }}"
