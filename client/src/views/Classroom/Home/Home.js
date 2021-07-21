@@ -57,7 +57,7 @@ export default function Home(props) {
           {activeLearningStandard ? (
             <div>
               <div id='active-learning-standard-title-container'>
-                <h3>{`Learning Standard ${activeLearningStandard.number} - ${activeLearningStandard.name}`}</h3>
+                <h3>{`Learning Standard - ${activeLearningStandard.name}`}</h3>
                 <LearningStandardModal
                   history={history}
                   setActiveLearningStandard={setActiveLearningStandard}
