@@ -21,6 +21,9 @@
     "workspace": {
       "type": "text",
       "required": true
+    },
+    "replay": {
+      "type": "json"
     }
   }
 }
