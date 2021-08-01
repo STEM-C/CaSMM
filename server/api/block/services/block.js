@@ -1,13 +1,11 @@
 'use strict'
 
 const sortCategory = (toolbox) =>{
-    console.log('Original: ', toolbox)
     const order = ['Logic', 'Control', 'Math', 'Text', 'Variables', 'Functions', 'IO', 'Time', 'Audio', 'Motors', 'Comms'];
 
     const sorted = toolbox.sort(function(a,b) {
         return order.indexOf(a[0]) - order.indexOf(b[0]);
     })
-    console.log('After: ', sorted)
     return sorted;
 }
 
