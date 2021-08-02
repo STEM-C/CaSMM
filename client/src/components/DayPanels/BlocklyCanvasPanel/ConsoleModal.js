@@ -1,6 +1,6 @@
 import { Button, Checkbox, Select, Input, message, Row, Col } from 'antd';
 import React, { useState, useEffect } from 'react';
-import { openConnection, disconnect, writeToPort } from '../ConsoleView';
+import { openConnection, disconnect, writeToPort } from '../consoleHelpers';
 import Message from '../../Message';
 
 message.config({

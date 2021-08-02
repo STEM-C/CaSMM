@@ -11,10 +11,13 @@ import { getSaves } from '../../../Utils/requests';
 import CodeModal from './CodeModal';
 import ConsoleModal from './ConsoleModal';
 import VersionHistoryModal from './VersionHistoryModal';
-import { openConnection, disconnect } from '../ConsoleView';
+import { openConnection, disconnect } from '../consoleHelpers';
 
 export default function BlocklyCanvasPanel(props) {
   const [hoverXml, setHoverXml] = useState(false);
+  const [hoverSave, setHoverSave] = useState(false);
+  const [hoverUndo, setHoverUndo] = useState(false);
+  const [hoverRedo, setHoverRedo] = useState(false);
   const [hoverArduino, setHoverArduino] = useState(false);
   const [hoverCompile, setHoverCompile] = useState(false);
   const [hoverConsole, setHoverConsole] = useState(false);
@@ -31,7 +34,6 @@ export default function BlocklyCanvasPanel(props) {
   const [selectedToolBoxCategories, setSelectedToolBoxCategories] = useState(
     []
   );
-  const [creatorSave, setCreatorSave] = useState(false);
 
   const {
     day,
@@ -85,30 +87,13 @@ export default function BlocklyCanvasPanel(props) {
   };
 
   const handleCCGoBack = () => {
-    if (isContentCreator && !creatorSave) {
-      if (
-        window.confirm(
-          'All unsaved progress will be lost. Do you still want to go back?'
-        )
-      ) {
-        handleGoBack();
-      } else {
-        console.log('You pressed Cancel!');
-      }
-    } else {
+    if (
+      window.confirm(
+        'All unsaved progress will be lost. Do you still want to go back?'
+      )
+    )
       handleGoBack();
-    }
   };
-
-  useEffect(() => {
-    // automatically set Creatorsave to false every 15 second.
-    setInterval(async () => {
-      if (isContentCreator && workspaceRef.current && dayRef.current) {
-        setCreatorSave(false);
-        console.log('set to false');
-      }
-    }, 9000);
-  }, [isContentCreator]);
 
   useEffect(() => {
     // automatically save workspace every min
@@ -202,7 +187,6 @@ export default function BlocklyCanvasPanel(props) {
     } else {
       message.success('Day saved successfully');
     }
-    setCreatorSave(true);
   };
 
   const handleSearchFilterChange = (value) => {
@@ -326,23 +310,31 @@ export default function BlocklyCanvasPanel(props) {
       workspaceRef.current.undo(true);
   };
 
+  const connectToPort = async () => {
+    const filters = [
+      { usbVendorId: 0x2341, usbProductId: 0x0043 },
+      { usbVendorId: 0x2341, usbProductId: 0x0001 },
+    ];
+    let port;
+    try {
+      port = await navigator.serial.requestPort({ filters });
+    } catch (e) {
+      console.log(e);
+      return;
+    }
+    window['port'] = port;
+  };
+
   const handleConsole = async () => {
     if (!showConsole) {
-      setShowConsole(true);
       if (typeof window['port'] === 'undefined') {
-        const filters = [
-          { usbVendorId: 0x2341, usbProductId: 0x0043 },
-          { usbVendorId: 0x2341, usbProductId: 0x0001 },
-        ];
-        let port;
-        try {
-          port = await navigator.serial.requestPort({ filters });
-        } catch (e) {
-          console.log(e);
-          return;
-        }
-        window['port'] = port;
+        await connectToPort();
       }
+      if (typeof window['port'] === 'undefined') {
+        message.error('Fail to select serial device');
+        return;
+      }
+      setShowConsole(true);
       setConnectionOpen(true);
       document.getElementById('connect-button').innerHTML = 'Disconnect';
       openConnection(9600, true);
@@ -357,10 +349,17 @@ export default function BlocklyCanvasPanel(props) {
     }
   };
 
-  const handleCompile = () => {
+  const handleCompile = async () => {
     if (connectionOpen) {
-      message.warn('Close Serial Monitor before uploading your code');
+      message.error('Close Serial Monitor before uploading your code');
     } else {
+      if (typeof window['port'] === 'undefined') {
+        await connectToPort();
+      }
+      if (typeof window['port'] === 'undefined') {
+        message.error('Fail to select serial device');
+        return;
+      }
       compileArduinoCode(
         workspaceRef.current,
         setSelectedCompile,
@@ -453,7 +452,15 @@ export default function BlocklyCanvasPanel(props) {
                             id='link'
                             className='flex flex-column'
                           >
-                            <i id='icon-btn' className='fa fa-save' />
+                            <i
+                              id='icon-btn'
+                              className='fa fa-save'
+                              onMouseEnter={() => setHoverSave(true)}
+                              onMouseLeave={() => setHoverSave(false)}
+                            />
+                            {hoverSave && (
+                              <div className='popup ModalCompile4'>Save</div>
+                            )}
                           </button>
                         </Col>
                       ) : null}
@@ -464,7 +471,15 @@ export default function BlocklyCanvasPanel(props) {
                             id='link'
                             className='flex flex-column'
                           >
-                            <i id='icon-btn' className='fa fa-save' />
+                            <i
+                              id='icon-btn'
+                              className='fa fa-save'
+                              onMouseEnter={() => setHoverSave(true)}
+                              onMouseLeave={() => setHoverSave(false)}
+                            />
+                            {hoverSave && (
+                              <div className='popup ModalCompile4'>Save</div>
+                            )}
                           </button>
                         </Col>
                       ) : null}
@@ -484,7 +499,12 @@ export default function BlocklyCanvasPanel(props) {
                                   : null
                                 : null
                             }
+                            onMouseEnter={() => setHoverUndo(true)}
+                            onMouseLeave={() => setHoverUndo(false)}
                           />
+                          {hoverUndo && (
+                            <div className='popup ModalCompile4'>Undo</div>
+                          )}
                         </button>
                         <button
                           onClick={handleRedo}
@@ -501,7 +521,12 @@ export default function BlocklyCanvasPanel(props) {
                                   : null
                                 : null
                             }
+                            onMouseEnter={() => setHoverRedo(true)}
+                            onMouseLeave={() => setHoverRedo(false)}
                           />
+                          {hoverRedo && (
+                            <div className='popup ModalCompile4'>Redo</div>
+                          )}
                         </button>
                       </Col>
                     </Row>
