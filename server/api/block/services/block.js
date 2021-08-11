@@ -1,5 +1,14 @@
 'use strict'
 
+const sortCategory = (toolbox) =>{
+    const order = ['Logic', 'Control', 'Math', 'Text', 'Variables', 'Functions', 'IO', 'Time', 'Audio', 'Motors', 'Comms'];
+
+    const sorted = toolbox.sort(function(a,b) {
+        return order.indexOf(a[0]) - order.indexOf(b[0]);
+    })
+    return sorted;
+}
+
 // get all the blocks for a day
 module.exports.findByDay = async (id) => {
 
@@ -13,7 +22,7 @@ module.exports.findByDay = async (id) => {
 // create a blockly friendly toolbox from blocks
 module.exports.blocksToToolbox = (blocks) => {
 
-    let toolbox = {}
+    let toolbox = {};
     blocks.forEach(block => {
 
         // validate the block fields
@@ -31,6 +40,7 @@ module.exports.blocksToToolbox = (blocks) => {
             toolbox[blocks_category.name] = [sanitizedBlock]
         }
     })
-
-    return Object.entries(toolbox)
+    const arr = Object.entries(toolbox)
+    
+    return sortCategory(arr);
 }

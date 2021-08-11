@@ -13121,8 +13121,6 @@ THE SOFTWARE.
                         this.writer = null;
                         this.reader = null;
                         this.baudRate = this.options.baudRate;
-                        this.requestOptions = this.options.requestOptions || {};
-
                         if (this.options.autoOpen) this.open();
                     }
 
@@ -13132,32 +13130,25 @@ THE SOFTWARE.
                             .catch((error) => {if (callback) {return callback(error)}});
                     }
 
-                    open(callback) {
-                        window.navigator.serial.requestPort(this.requestOptions)
-                            .then(serialPort => {
-                                this.port = serialPort;
-                                if (this.isOpen) return;
-                                return this.port.open({ baudRate: this.baudRate || 57600 });
-                            })
-                            .then(() => this.writer = this.port.writable.getWriter())
-                            .then(() => this.reader = this.port.readable.getReader())
-                            .then(async () => {
-                                this.emit('open');
-                                this.isOpen = true;
-                                callback(null);
-                                while (this.port.readable.locked) {
-                                    try {
-                                        const { value, done } = await this.reader.read();
-                                        if (done) {
-                                            break;
-                                        }
-                                        this.emit('data', Buffer.from(value));
-                                    } catch (e) {
-                                        console.error(e);
+                    async open(callback) {
+                            this.port = window['port']
+                            await this.port.open({ baudRate: this.baudRate || 57600 })
+                            this.writer = this.port.writable.getWriter()
+                            this.reader = this.port.readable.getReader()
+                            this.emit('open');
+                            this.isOpen = true;
+                            callback(null);
+                            while (this.port.readable.locked) {
+                                try {
+                                    const { value, done } = await this.reader.read();
+                                    if (done) {
+                                        break;
                                     }
+                                    this.emit('data', Buffer.from(value));
+                                } catch (e) {
+                                    console.error(e);
                                 }
-                            })
-                            .catch(error => {callback(error)});
+                            }
                     }
 
                     async close(callback) {
