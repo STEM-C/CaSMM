@@ -47,6 +47,7 @@ export const getArduino = (workspaceRef, shouldAlert = true) => {
 export const compileArduinoCode = async (
   workspaceRef,
   setSelectedCompile,
+  setCompileError,
   day,
   isStudent
 ) => {
@@ -73,7 +74,8 @@ export const compileArduinoCode = async (
       initialSubmission.data.id,
       path,
       isStudent,
-      setSelectedCompile
+      setSelectedCompile,
+      setCompileError
     );
   } catch (e) {
     console.log(e.message);
@@ -84,7 +86,8 @@ const getAndFlashSubmission = async (
   id,
   path,
   isStudent,
-  setSelectedCompile
+  setSelectedCompile,
+  setCompileError
 ) => {
   // get the submission
   const response = await getSubmission(id, path, isStudent);
@@ -92,17 +95,23 @@ const getAndFlashSubmission = async (
   // if the submission is not complete, try again later
   if (response.data.status !== 'COMPLETED') {
     setTimeout(
-      () => getAndFlashSubmission(id, path, isStudent, setSelectedCompile),
+      () =>
+        getAndFlashSubmission(
+          id,
+          path,
+          isStudent,
+          setSelectedCompile,
+          setCompileError
+        ),
       250
     );
     return;
   }
-  setSelectedCompile(false);
   // flash the board with the output
-  await flashArduino(response);
+  await flashArduino(response, setSelectedCompile, setCompileError);
 };
 
-const flashArduino = async (response) => {
+const flashArduino = async (response, setSelectedCompile, setCompileError) => {
   if (response.data) {
     // converting base 64 to hex
     if (response.data.success) {
@@ -118,10 +127,15 @@ const flashArduino = async (response) => {
           console.log(err);
         } else {
           console.log('done correctly.');
+          message.success('Compile Success', 3);
+          setSelectedCompile(false);
+          setCompileError('');
         }
       });
     } else if (response.data.stderr) {
-      message.error(response.data.stderr, 10);
+      message.error('Compile Fail', 3);
+      setSelectedCompile(false);
+      setCompileError(response.data.stderr);
     }
   } else {
     message.error(response.err);
