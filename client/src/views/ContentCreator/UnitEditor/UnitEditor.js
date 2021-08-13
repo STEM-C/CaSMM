@@ -4,14 +4,16 @@ import { getUnit, updateUnit } from '../../../Utils/requests';
 
 import './UnitEditor.less';
 
-export default function UnitCreator({ id }) {
+export default function UnitCreator({ id, unitName }) {
   const [visible, setVisible] = useState(false);
   const [gradeId, setGradeId] = useState('');
   const [grade, setGrade] = useState('');
-  const [name, setName] = useState('');
+  const [name, setName] = useState(unitName);
   const [number, setNumber] = useState('');
   const [description, setDescription] = useState('');
   const [tek, setTek] = useState('');
+
+  const [displayName, setDisplayName] = useState(unitName);
 
   const showModal = async () => {
     setVisible(true);
@@ -55,6 +57,7 @@ export default function UnitCreator({ id }) {
       message.error('Fail to update unit');
     } else {
       message.success('Update unit success');
+      setDisplayName(name);
       setVisible(false);
     }
   };
@@ -62,7 +65,7 @@ export default function UnitCreator({ id }) {
   return (
     <div>
       <button id='link-btn' onClick={showModal}>
-        {name}
+        {displayName}
       </button>
       <Modal
         title='Unit Editor'
