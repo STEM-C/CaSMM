@@ -8,6 +8,7 @@ import Workspace from "./views/Workspace/Workspace"
 import Dashboard from "./views/Dashboard/Dashboard"
 import Student from "./views/Student/Student"
 import NotFound from "./views/NotFound"
+import NotChrome from './views/NotChrome'
 import StudentLogin from "./views/StudentLogin/StudentLogin";
 import Sandbox from "./views/Sandbox/Sandbox"
 import Day from "./views/Day/Day";
@@ -19,7 +20,11 @@ import UploadBlocks from './views/UploadBlocks/UploadBlocks'
 
 const App = () => {
     let history = useHistory();
+    const isChrome = !!window.chrome && (!!window.chrome.webstore || !!window.chrome.runtime);
 
+    if(!isChrome){
+        return <Route component={NotChrome}></Route>
+    }
     return (
         <div>
             <Switch>
