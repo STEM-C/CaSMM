@@ -57,7 +57,7 @@ export const compileArduinoCode = async (
   let workspaceText = window.Blockly.Xml.domToText(workspaceDom);
   let path;
   isStudent ? (path = '/submissions') : (path = '/sandbox/submission');
-  isStudent ? (day = day) : (day.id = undefined);
+  day.id = isStudent ? day.id : undefined;
 
   try {
     // create an initial submission
