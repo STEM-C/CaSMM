@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Form, Input, Modal, message, List, Card } from 'antd';
+import { Form, Input, Modal, message } from 'antd';
 import {
   createLearningStandard,
   createDay,
@@ -42,7 +42,7 @@ export default function LearningStandardCreator({ setLearningStandardList }) {
   };
 
   const onClickHandler = async (e) => {
-    if (unit == '') {
+    if (unit === '') {
       message.error('Please select unit');
       return;
     }
@@ -125,7 +125,8 @@ export default function LearningStandardCreator({ setLearningStandardList }) {
             />
           </Form.Item>
           <Form.Item label='Description'>
-            <Input
+            <Input.TextArea
+              rows={3}
               onChange={(e) => {
                 setDescription(e.target.value);
               }}

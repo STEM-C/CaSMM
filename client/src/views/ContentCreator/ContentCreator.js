@@ -23,22 +23,18 @@ export default function ContentCreator(props) {
   const [learningStandardList, setLearningStandardList] = useState([]);
 
   useEffect(() => {
-    const getLearningStandardList = async () => {
-      const response = await getLearningStandardAll();
-      console.log(response.data);
-      setLearningStandardList(response.data);
-    };
-    getLearningStandardList();
-  }, []);
+    const fetchData = async () => {
+      const [lsResponse, gradeResponse] = await Promise.all([
+        getLearningStandardAll(),
+        getGrades(),
+      ]);
+      await setLearningStandardList(lsResponse.data);
 
-  useEffect(() => {
-    const getGradeList = async () => {
-      const response = await getGrades();
-      // console.log(response.data);
-      response.data.sort((a, b) => (a.id > b.id ? 1 : -1));
-      setGradeList(response.data);
+      const grades = await gradeResponse.data;
+      grades.sort((a, b) => (a.id > b.id ? 1 : -1));
+      setGradeList(grades);
     };
-    getGradeList();
+    fetchData();
   }, []);
 
   const columns = [
@@ -49,7 +45,9 @@ export default function ContentCreator(props) {
       editable: true,
       width: '22.5%',
       align: 'left',
-      render: (_, key) => <UnitEditor id={key.unit.id} linkBtn={true} />,
+      render: (_, key) => (
+        <UnitEditor id={key.unit.id} unitName={key.unit.name} linkBtn={true} />
+      ),
     },
     {
       title: 'Learning Standard',

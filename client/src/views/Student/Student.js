@@ -6,13 +6,11 @@ import NavBar from '../../components/NavBar/NavBar';
 
 function Student(props) {
   const [learningStandard, setLearningStandard] = useState({});
-  const [selectedDay, setSelectedDay] = useState({});
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const res = await getStudentClassroom();
-        console.log(res.data);
         if (res.data) {
           if (res.data.learning_standard) {
             setLearningStandard(res.data.learning_standard);
@@ -26,7 +24,6 @@ function Student(props) {
   }, []);
 
   const handleSelection = (day) => {
-    setSelectedDay(day);
     day.learning_standard_name = learningStandard.name;
     localStorage.setItem('my-day', JSON.stringify(day));
 

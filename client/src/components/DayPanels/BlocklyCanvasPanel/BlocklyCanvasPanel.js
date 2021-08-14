@@ -6,7 +6,17 @@ import {
   handleCreatorSaveDay,
   handleSave,
 } from '../helpers';
-import { message, Spin, Menu, Checkbox, Row, Col, Input, Switch } from 'antd';
+import {
+  message,
+  Spin,
+  Menu,
+  Checkbox,
+  Row,
+  Col,
+  Input,
+  Switch,
+  Alert,
+} from 'antd';
 import { getSaves } from '../../../Utils/requests';
 import CodeModal from './CodeModal';
 import ConsoleModal from './ConsoleModal';
@@ -24,6 +34,7 @@ export default function BlocklyCanvasPanel(props) {
   const [showConsole, setShowConsole] = useState(false);
   const [connectionOpen, setConnectionOpen] = useState(false);
   const [selectedCompile, setSelectedCompile] = useState(false);
+  const [compileError, setCompileError] = useState('');
   const [saves, setSaves] = useState({});
   const [studentToolbox, setStudentToolbox] = useState([]);
   const [lastSavedTime, setLastSavedTime] = useState(null);
@@ -363,6 +374,7 @@ export default function BlocklyCanvasPanel(props) {
       compileArduinoCode(
         workspaceRef.current,
         setSelectedCompile,
+        setCompileError,
         day,
         isStudent
       );
@@ -703,6 +715,15 @@ export default function BlocklyCanvasPanel(props) {
             ))
         }
       </xml>
+
+      {compileError && (
+        <Alert
+          message={compileError}
+          type='error'
+          closable
+          onClose={(e) => setCompileError('')}
+        ></Alert>
+      )}
     </div>
   );
 }

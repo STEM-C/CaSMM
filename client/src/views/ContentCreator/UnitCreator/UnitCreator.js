@@ -94,7 +94,8 @@ export default function UnitCreator({ gradeList }) {
             />
           </Form.Item>
           <Form.Item id='form-label' label='Description'>
-            <Input
+            <Input.TextArea
+              rows={3}
               onChange={(e) => setDescription(e.target.value)}
               value={description}
               placeholder='Enter unit description'
