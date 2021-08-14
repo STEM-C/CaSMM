@@ -109,9 +109,10 @@ export default function UnitCreator({ id, unitName }) {
             />
           </Form.Item>
           <Form.Item id='form-label' label='Description'>
-            <Input
+            <Input.TextArea
               onChange={(e) => setDescription(e.target.value)}
               value={description}
+              rows={3}
               placeholder='Enter unit description'
             />
           </Form.Item>

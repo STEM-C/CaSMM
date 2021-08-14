@@ -125,7 +125,8 @@ export default function LearningStandardCreator({ setLearningStandardList }) {
             />
           </Form.Item>
           <Form.Item label='Description'>
-            <Input
+            <Input.TextArea
+              rows={3}
               onChange={(e) => {
                 setDescription(e.target.value);
               }}
