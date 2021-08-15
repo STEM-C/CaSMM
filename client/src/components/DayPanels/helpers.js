@@ -43,6 +43,8 @@ export const getArduino = (workspaceRef, shouldAlert = true) => {
   return code;
 };
 
+let intervalId;
+
 // Sends compiled arduino code to server and returns hex to flash board with
 export const compileArduinoCode = async (
   workspaceRef,
@@ -68,15 +70,31 @@ export const compileArduinoCode = async (
       path,
       isStudent
     );
-
-    // get the submission result when it's ready and flash the board
-    await getAndFlashSubmission(
-      initialSubmission.data.id,
-      path,
-      isStudent,
-      setSelectedCompile,
-      setCompileError
+    // Get the submission Id and send a request to get the submission every
+    // 0.25 second until the submission status equal to COMPLETE.
+    intervalId = setInterval(
+      () =>
+        getAndFlashSubmission(
+          initialSubmission.data.id,
+          path,
+          isStudent,
+          setSelectedCompile,
+          setCompileError
+        ),
+      250
     );
+
+    // Set a timeout of 20 second. If the submission status fail to update to
+    // COMPLETE, show error.
+    setTimeout(() => {
+      if (intervalId) {
+        clearInterval(intervalId);
+        intervalId = undefined;
+        setSelectedCompile(false);
+        message.error('Compile Fail', 3);
+        setCompileError('Compile timeout. Please try it again.');
+      }
+    }, 20000);
   } catch (e) {
     console.log(e.message);
   }
@@ -94,18 +112,13 @@ const getAndFlashSubmission = async (
 
   // if the submission is not complete, try again later
   if (response.data.status !== 'COMPLETED') {
-    setTimeout(
-      () =>
-        getAndFlashSubmission(
-          id,
-          path,
-          isStudent,
-          setSelectedCompile,
-          setCompileError
-        ),
-      250
-    );
     return;
+  }
+
+  // If the submission is ready
+  if (intervalId) {
+    clearInterval(intervalId);
+    intervalId = undefined;
   }
   // flash the board with the output
   await flashArduino(response, setSelectedCompile, setCompileError);
@@ -113,8 +126,9 @@ const getAndFlashSubmission = async (
 
 const flashArduino = async (response, setSelectedCompile, setCompileError) => {
   if (response.data) {
-    // converting base 64 to hex
+    // if we get a success status from the submission, send it to arduino
     if (response.data.success) {
+      // converting base 64 to hex
       let Hex = atob(response.data.hex).toString();
 
       const avrgirl = new AvrboyArduino({
@@ -129,10 +143,11 @@ const flashArduino = async (response, setSelectedCompile, setCompileError) => {
           console.log('done correctly.');
           message.success('Compile Success', 3);
           setSelectedCompile(false);
-          setCompileError('');
         }
       });
-    } else if (response.data.stderr) {
+    }
+    // else if there is error on the Arduino code, show error
+    else if (response.data.stderr) {
       message.error('Compile Fail', 3);
       setSelectedCompile(false);
       setCompileError(response.data.stderr);
