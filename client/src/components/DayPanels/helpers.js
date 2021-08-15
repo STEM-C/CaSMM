@@ -108,7 +108,18 @@ const getAndFlashSubmission = async (
   setCompileError
 ) => {
   // get the submission
-  const response = await getSubmission(id, path, isStudent);
+  let response;
+  try {
+    response = await getSubmission(id, path, isStudent);
+  } catch (err) {
+    if (intervalId) {
+      clearInterval(intervalId);
+      intervalId = undefined;
+      setSelectedCompile(false);
+      message.error('Compile Fail', 3);
+      setCompileError(err);
+    }
+  }
 
   // if the submission is not complete, try again later
   if (response.data.status !== 'COMPLETED') {
