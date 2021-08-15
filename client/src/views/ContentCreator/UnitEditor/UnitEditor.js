@@ -27,6 +27,10 @@ export default function UnitCreator({ id, unitName }) {
   };
 
   useEffect(() => {
+    setDisplayName(unitName);
+  }, [unitName]);
+
+  useEffect(() => {
     const fetchUnit = async () => {
       const res = await getUnit(id);
       setGrade(res.data.grade.name);
