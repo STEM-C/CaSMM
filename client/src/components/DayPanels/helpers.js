@@ -61,43 +61,46 @@ export const compileArduinoCode = async (
   isStudent ? (path = '/submissions') : (path = '/sandbox/submission');
   day.id = isStudent ? day.id : undefined;
 
-  try {
-    // create an initial submission
-    const initialSubmission = await createSubmission(
-      day,
-      workspaceText,
-      sketch,
-      path,
-      isStudent
-    );
-    // Get the submission Id and send a request to get the submission every
-    // 0.25 second until the submission status equal to COMPLETE.
-    intervalId = setInterval(
-      () =>
-        getAndFlashSubmission(
-          initialSubmission.data.id,
-          path,
-          isStudent,
-          setSelectedCompile,
-          setCompileError
-        ),
-      250
-    );
+  // create an initial submission
+  const initialSubmission = await createSubmission(
+    day,
+    workspaceText,
+    sketch,
+    path,
+    isStudent
+  );
 
-    // Set a timeout of 20 second. If the submission status fail to update to
-    // COMPLETE, show error.
-    setTimeout(() => {
-      if (intervalId) {
-        clearInterval(intervalId);
-        intervalId = undefined;
-        setSelectedCompile(false);
-        message.error('Compile Fail', 3);
-        setCompileError('Compile timeout. Please try it again.');
-      }
-    }, 20000);
-  } catch (e) {
-    console.log(e.message);
+  if (!initialSubmission.data) {
+    setSelectedCompile(false);
+    message.error('Compile Fail', 3);
+    setCompileError('Fail to create submission. Please try again.');
+    return;
   }
+  // Get the submission Id and send a request to get the submission every
+  // 0.25 second until the submission status equal to COMPLETE.
+  intervalId = setInterval(
+    () =>
+      getAndFlashSubmission(
+        initialSubmission.data.id,
+        path,
+        isStudent,
+        setSelectedCompile,
+        setCompileError
+      ),
+    250
+  );
+
+  // Set a timeout of 20 second. If the submission status fail to update to
+  // COMPLETE, show error.
+  setTimeout(() => {
+    if (intervalId) {
+      clearInterval(intervalId);
+      intervalId = undefined;
+      setSelectedCompile(false);
+      message.error('Compile Fail', 3);
+      setCompileError('Compile timeout. Please try again.');
+    }
+  }, 20000);
 };
 
 const getAndFlashSubmission = async (
@@ -108,18 +111,7 @@ const getAndFlashSubmission = async (
   setCompileError
 ) => {
   // get the submission
-  let response;
-  try {
-    response = await getSubmission(id, path, isStudent);
-  } catch (err) {
-    if (intervalId) {
-      clearInterval(intervalId);
-      intervalId = undefined;
-      setSelectedCompile(false);
-      message.error('Compile Fail', 3);
-      setCompileError(err);
-    }
-  }
+  const response = await getSubmission(id, path, isStudent);
 
   // if the submission is not complete, try again later
   if (response.data.status !== 'COMPLETED') {
