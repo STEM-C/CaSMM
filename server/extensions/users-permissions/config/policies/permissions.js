@@ -3,9 +3,6 @@ const _ = require('lodash');
 module.exports = async (ctx, next) => {
   let role;
 
-  console.log(ctx);
-  console.log(ctx.state);
-
   if (ctx.state.user) {
     // request is already authenticated in a different way
     return next();
