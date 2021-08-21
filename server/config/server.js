@@ -3,13 +3,8 @@ module.exports = ({ env }) => ({
   port: env.int('PORT', 1337),
   // url: 'localhost:1337',
   admin: {
-    url: env('URL', '/admin'),
-    // serveAdminPanel: false
     auth: {
-      secret: env(
-        'ADMIN_JWT_SECRET',
-        process.env.JWT_SECRET || '58cb969b-bb0e-4492-9d8f-1306100e1f90'
-      ),
+      secret: env('ADMIN_JWT_SECRET', 'fd6af0fac10670ef12e9d518d1604298'),
     },
   },
 });
