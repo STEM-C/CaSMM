@@ -4,7 +4,11 @@ module.exports = ({ env }) => ({
   // url: 'localhost:1337',
   admin: {
     auth: {
-      secret: env('ADMIN_JWT_SECRET', 'fd6af0fac10670ef12e9d518d1604298'),
+      secret: env(
+        'ADMIN_JWT_SECRET',
+        process.env.ADMIN_JWT_TOKEN ||
+          'fd6af0fac1067asfasf0ef12AGWADGJe9d518d1604298'
+      ),
     },
   },
 });
