@@ -1,7 +1,11 @@
 import en from './en.json';
 
 const trads = {
-  en
-}
+  en,
+};
 
-export default trads
+export const languageNativeNames = {
+  en: 'English',
+};
+
+export default trads;

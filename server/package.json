@@ -16,15 +16,14 @@
     "knex": "<0.20.0",
     "pg": "^8.1.0",
     "sharp": "^0.28.3",
-    "strapi": "3.0.1",
-    "strapi-admin": "3.0.1",
-    "strapi-connector-bookshelf": "3.0.1",
-    "strapi-plugin-content-manager": "3.0.1",
-    "strapi-plugin-content-type-builder": "3.0.1",
-    "strapi-plugin-email": "3.0.1",
-    "strapi-plugin-upload": "3.0.1",
-    "strapi-plugin-users-permissions": "3.0.1",
-    "strapi-utils": "3.0.1"
+    "strapi": "3.1.7",
+    "strapi-admin": "3.1.7",
+    "strapi-connector-bookshelf": "3.1.7",
+    "strapi-plugin-content-manager": "3.1.7",
+    "strapi-plugin-content-type-builder": "3.1.7",
+    "strapi-plugin-email": "3.1.7",
+    "strapi-plugin-users-permissions": "3.1.7",
+    "strapi-utils": "3.1.7"
   },
   "author": {
     "name": "Nicholas Ionata"
