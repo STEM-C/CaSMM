@@ -731,7 +731,7 @@ ALTER SEQUENCE public.sessions_students__students_sessions_id_seq OWNED BY publi
 
 CREATE TABLE public.strapi_administrator (
     id integer NOT NULL,
-    username character varying(255) NOT NULL,
+    username character varying(255),
     email character varying(255) NOT NULL,
     password character varying(255) NOT NULL,
     "resetPasswordToken" character varying(255),
