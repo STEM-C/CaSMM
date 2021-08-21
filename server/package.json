@@ -15,17 +15,17 @@
     "bull": "^3.22.5",
     "knex": "<0.20.0",
     "pg": "^8.1.0",
-    "strapi": "3.4.0",
-    "strapi-admin": "3.4.0",
-    "strapi-connector-bookshelf": "3.4.0",
-    "strapi-plugin-content-manager": "3.4.0",
-    "strapi-plugin-content-type-builder": "3.4.0",
-    "strapi-plugin-email": "3.4.0",
-    "strapi-plugin-users-permissions": "3.4.0",
-    "strapi-utils": "3.4.0"
+    "strapi": "3.4.4",
+    "strapi-admin": "3.4.4",
+    "strapi-connector-bookshelf": "3.4.4",
+    "strapi-plugin-content-manager": "3.4.4",
+    "strapi-plugin-content-type-builder": "3.4.4",
+    "strapi-plugin-email": "3.4.4",
+    "strapi-plugin-users-permissions": "3.4.4",
+    "strapi-utils": "3.4.4"
   },
   "author": {
-    "name": "Nicholas Ionata"
+    "name": "Nicholas Ionata, Siyu Chen"
   },
   "strapi": {
     "uuid": "d9c4d9b6-4733-4e82-80ee-0a812c951edb"
