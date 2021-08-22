@@ -32,14 +32,14 @@ module.exports = {
 
         // ensure the request has the right number of params
         const params = Object.keys(ctx.request.body).length
-        if (params !== 2) return ctx.badRequest(
+        if (params !== 3) return ctx.badRequest(
             'Invalid number of params!',
             { id: 'Save.create.body.invalid', error: 'ValidationError' }
         )
 
         // validate the request
         // at somept validate the xml...could lead to bad things...
-        const { day, workspace } = ctx.request.body
+        const { day, workspace, replay } = ctx.request.body
         if (!strapi.services.validator.isInt(day) || !workspace) return ctx.badRequest(
             'A day and workspace must be provided!',
             { id: 'Save.create.body.invalid', error: 'ValidationError' }
@@ -66,10 +66,10 @@ module.exports = {
         return await Promise.all(ids.map(id => {
             // save exists, update
             const saveId = studentSaves[id]
-            if (saveId) return strapi.services.save.update({id: saveId}, {workspace: workspace})
+            if (saveId) return strapi.services.save.update({id: saveId}, {workspace, replay})
 
             // else, create a new save
-            return strapi.services.save.create({ student: id, day, workspace, session }) 
+            return strapi.services.save.create({ student: id, day, workspace, session, replay }) 
         }))
     },
 }

@@ -196,13 +196,14 @@ export const setSelection = async (classroom, learningStandard) =>
     error: 'Failed to set active learning standard.',
   });
 
-export const saveWorkspace = async (day, workspace) =>
+export const saveWorkspace = async (day, workspace, replay) =>
   makeRequest({
     method: POST,
     path: `${server}/saves`,
     data: {
-      day: day,
-      workspace: workspace,
+      day,
+      workspace,
+      replay
     },
     auth: true,
     error: 'Failed to save your workspace.',

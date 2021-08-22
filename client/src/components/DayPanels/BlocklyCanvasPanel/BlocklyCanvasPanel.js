@@ -58,12 +58,15 @@ export default function BlocklyCanvasPanel(props) {
 
   const workspaceRef = useRef(null);
   const dayRef = useRef(null);
+  const replayRef = useRef([]);
+  const undoLength = useRef(0);
   const { SubMenu } = Menu;
 
-  const setWorkspace = () =>
-    (workspaceRef.current = window.Blockly.inject('blockly-canvas', {
+  const setWorkspace = () => {
+    workspaceRef.current = window.Blockly.inject('blockly-canvas', {
       toolbox: document.getElementById('toolbox'),
-    }));
+    });
+  }
 
   const loadSave = (selectedSave) => {
     try {
@@ -108,24 +111,52 @@ export default function BlocklyCanvasPanel(props) {
 
   useEffect(() => {
     // automatically save workspace every min
-    setInterval(async () => {
+    let autosaveInterval = setInterval(async () => {
       if (isStudent && workspaceRef.current && dayRef.current) {
-        const res = await handleSave(dayRef.current.id, workspaceRef);
+        const res = await handleSave(dayRef.current.id, workspaceRef, replayRef.current);
         if (res.data) {
           setLastAutoSave(res.data[0]);
           setLastSavedTime(getFormattedDate(res.data[0].updated_at));
         }
       }
     }, 60000);
-
+    let replaySaveInterval = setInterval(async () => {
+      if (workspaceRef.current.undoStack_.length !== undoLength.current) {
+          undoLength.current = workspaceRef.current.undoStack_.length;
+          let xml = window.Blockly.Xml.workspaceToDom(workspaceRef.current);
+          let xml_text = window.Blockly.Xml.domToText(xml);
+          const replay = {
+              xml: xml_text,
+              timestamp: Date.now()
+          }
+          replayRef.current.push(replay);
+          console.log(replayRef.current);
+      }
+    }, 1000);
     // clean up - saves workspace and removes blockly div from DOM
     return async () => {
+      clearInterval(autosaveInterval);
+      clearInterval(replaySaveInterval)
       if (isStudent && dayRef.current && workspaceRef.current)
         await handleSave(dayRef.current.id, workspaceRef);
       if (workspaceRef.current) workspaceRef.current.dispose();
       dayRef.current = null;
     };
   }, [isStudent]);
+
+  setInterval(async () => {
+    if (workspaceRef.current.undoStack_.length !== undoLength.current) {
+        undoLength.current = workspaceRef.current.undoStack_.length;
+        let xml = window.Blockly.Xml.workspaceToDom(workspaceRef.current);
+        let xml_text = window.Blockly.Xml.domToText(xml);
+        const replay = {
+            xml: xml_text,
+            timestamp: Date.now()
+        }
+        replayRef.current.push(replay);
+        console.log(replayRef.current);
+    }
+  }, 1000);
 
   useEffect(() => {
     // once the day state is set, set the workspace and save
@@ -165,6 +196,7 @@ export default function BlocklyCanvasPanel(props) {
         if (onLoadSave) {
           let xml = window.Blockly.Xml.textToDom(onLoadSave.workspace);
           window.Blockly.Xml.domToWorkspace(xml, workspaceRef.current);
+          replayRef.current = onLoadSave.replay;
           setLastSavedTime(getFormattedDate(onLoadSave.updated_at));
         } else if (day.template) {
           let xml = window.Blockly.Xml.textToDom(day.template);
@@ -179,7 +211,7 @@ export default function BlocklyCanvasPanel(props) {
 
   const handleManualSave = async () => {
     // save workspace then update load save options
-    const res = await handleSave(day.id, workspaceRef);
+    const res = await handleSave(day.id, workspaceRef, replayRef.current);
     if (res.err) {
       message.error(res.err);
     } else {
