@@ -371,6 +371,7 @@ export default function BlocklyCanvasPanel(props) {
         message.error('Fail to select serial device');
         return;
       }
+      setCompileError('');
       compileArduinoCode(
         workspaceRef.current,
         setSelectedCompile,
