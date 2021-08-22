@@ -6,10 +6,10 @@
   "license": "MIT",
   "dependencies": {
     "body-parser": "^1.18.2",
-    "bull": "^3.18.0",
+    "bull": "^3.29.0",
     "express": "^4.16.2",
     "properties": "^1.2.1",
-    "throng": "^4.0.0",
-    "tmp": "0.0.33"
+    "throng": "^5.0.0",
+    "tmp": "0.2.1"
   }
 }
