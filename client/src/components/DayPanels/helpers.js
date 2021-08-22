@@ -44,10 +44,10 @@ export const getArduino = (workspaceRef, shouldAlert = true) => {
 };
 
 let intervalId;
-const compileFail = (setSelectedCompile, setCompileError) => {
+const compileFail = (setSelectedCompile, setCompileError, msg) => {
   setSelectedCompile(false);
   message.error('Compile Fail', 3);
-  setCompileError('Compile Failed. Please try again.');
+  setCompileError(msg);
 };
 // Sends compiled arduino code to server and returns hex to flash board with
 export const compileArduinoCode = async (
@@ -74,8 +74,13 @@ export const compileArduinoCode = async (
     isStudent
   );
 
+  // if we fail to create submission
   if (!initialSubmission.data) {
-    compileFail(setSelectedCompile, setCompileError);
+    compileFail(
+      setSelectedCompile,
+      setCompileError,
+      'Oops. Something went wrong, please check your internet connection.'
+    );
     return;
   }
   // Get the submission Id and send a request to get the submission every
@@ -98,7 +103,11 @@ export const compileArduinoCode = async (
     if (intervalId) {
       clearInterval(intervalId);
       intervalId = undefined;
-      compileFail(setSelectedCompile, setCompileError);
+      compileFail(
+        setSelectedCompile,
+        setCompileError,
+        'Oops. Something went wrong, please try again.'
+      );
     }
   }, 20000);
 };
@@ -112,12 +121,17 @@ const getAndFlashSubmission = async (
 ) => {
   // get the submission
   const response = await getSubmission(id, path, isStudent);
+  // If we fail to retrive submission
   if (!response.data) {
     if (intervalId) {
       clearInterval(intervalId);
       intervalId = undefined;
     }
-    compileFail(setSelectedCompile, setCompileError);
+    compileFail(
+      setSelectedCompile,
+      setCompileError,
+      'Oops. Something went wrong, please check your internet connection.'
+    );
     return;
   }
 
