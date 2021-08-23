@@ -1,5 +1,4 @@
 import React, {useState} from 'react'
-import { useHistory } from 'react-router';
 import {message} from 'antd'
 import './Home.less'
 import { getStudents } from "../../Utils/requests";
@@ -7,7 +6,7 @@ import { getStudents } from "../../Utils/requests";
 export default function HomeJoin(props) {
     const [loading, setLoading] = useState(false);
     const [joinCode, setJoinCode] = useState('');
-    const history = useHistory();
+
     const handleLogin = () => {
         setLoading(true);
 
@@ -15,7 +14,7 @@ export default function HomeJoin(props) {
             if(res.data){
                 setLoading(false);
                 localStorage.setItem('join-code', joinCode);
-                history.push('/login');
+                props.history.push('/login');
             } else {
                 setLoading(false);
                 message.error('Join failed. Please input a valid join code.');

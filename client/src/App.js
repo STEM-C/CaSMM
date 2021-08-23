@@ -28,37 +28,19 @@ const App = () => {
     return (
         <div>
             <Switch>
-                <Route exact path="/">
-                    <Home />
-                </Route>
-                <Route exact path="/about">
-                    <About/>
-                </Route>
-                <Route exact path="/teacherlogin">
-                    <TeacherLogin history={history}/>
-                </Route>
-                <Route exact path="/login">
-                    <StudentLogin history={history} />
-                </Route>
-                <PrivateRoute exact path="/dashboard" render={() => <Dashboard history={history}/>}/>
-                <PrivateRoute exact path="/student" render={() => <Student history={history} /> } />
-                <Route path="/workspace">
-                    <Workspace history={history} />
-                </Route>
-                <Route path="/sandbox">
-                    <Sandbox history={history}/>
-                </Route>
-                <PrivateRoute exact path="/day" render={() => <Day history={history} /> } />
-                <PrivateRoute path="/classroom/:id" render={() => <Classroom history={history} /> } />
-                <Route exact path="/ccdashboard">
-                    <ContentCreator history={history} />
-                </Route>
-                <Route exact path="/unitcreator">
-                    <UnitCreator history={history} />
-                </Route>
-                <Route exact path="/addblocks">
-                    <UploadBlocks history={history} />
-                </Route>
+                <Route exact path={"/"} render={() => <Home history={history}/>}/>
+                <Route exact path={"/about"} render={() => <About history={history}/>}/>
+                <Route exact path={"/teacherlogin"} render={() => <TeacherLogin history={history}/>}/>
+                <Route exact path={"/login"} render={() => <StudentLogin history={history} />}/>
+                <PrivateRoute exact path={"/dashboard"} render={() => <Dashboard history={history}/>}/>
+                <PrivateRoute exact path={"/student"} render={() => <Student history={history} /> } />
+                <Route path={"/workspace"} render={() => <Workspace history={history} />}/>
+                <Route path={"/sandbox"} render={() => <Sandbox history={history}/>} />
+                <PrivateRoute exact path={"/day"} render={() => <Day history={history} /> } />
+                <PrivateRoute path={"/classroom/:id"} render={() => <Classroom history={history} /> } />
+                <Route exact path={"/ccdashboard"} render={() => <ContentCreator history={history} />}/>
+                <Route exact path={"/unitcreator"} render={() => <UnitCreator history={history} />}/>
+                <Route exact path={"/addblocks"} render={() => <UploadBlocks history={history} />}/>
                
                 <Route component={NotFound}/>
             </Switch>
