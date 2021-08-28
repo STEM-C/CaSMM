@@ -42,8 +42,16 @@
     },
     {
       "method": "PUT",
+      "path": "/days/template/:id",
+      "handler": "day.templateUpdate",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "PUT",
       "path": "/days/:id",
-      "handler": "day.fullUpdate",
+      "handler": "day.update",
       "config": {
         "policies": []
       }

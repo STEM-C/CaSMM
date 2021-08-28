@@ -203,7 +203,7 @@ export const saveWorkspace = async (day, workspace, replay) =>
     data: {
       day,
       workspace,
-      replay
+      replay,
     },
     auth: true,
     error: 'Failed to save your workspace.',
@@ -269,19 +269,10 @@ export const deleteStudent = async (student) =>
     error: 'Failed to delete student.',
   });
 
-export const updateDayTemplate = async (id, workspace) =>
+export const updateDayTemplate = async (id, workspace, blocksList) =>
   makeRequest({
     method: PUT,
-    path: `${server}/days/${id}`,
-    data: { template: workspace },
-    auth: true,
-    error: 'Failed to update Day',
-  });
-
-export const updateDay = async (id, workspace, blocksList) =>
-  makeRequest({
-    method: PUT,
-    path: `${server}/days/${id}`,
+    path: `${server}/days/template/${id}`,
     data: {
       template: workspace,
       blocks: blocksList,
