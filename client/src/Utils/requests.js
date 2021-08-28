@@ -370,3 +370,38 @@ export const getGrade = async (grade) =>
     auth: true,
     error: 'Grade could not be retrieved',
   });
+
+export const updateLearningStandard = async (id, name, expectations, teks) =>
+  makeRequest({
+    method: PUT,
+    path: `${server}/learning-standards/${id}`,
+    data: {
+      name,
+      teks,
+      expectations,
+    },
+    auth: true,
+    error: 'Failed to update unit',
+  });
+
+export const updateDayDetails = async (
+  id,
+  description,
+  TekS,
+  scienceObj,
+  makingObj,
+  ComputationObj
+) => {
+  const objectives = [scienceObj, makingObj, ComputationObj];
+  makeRequest({
+    method: PUT,
+    path: `${server}/days/${id}`,
+    data: {
+      description,
+      TekS,
+      objectives,
+    },
+    auth: true,
+    error: 'Failed to update unit',
+  });
+};
