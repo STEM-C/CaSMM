@@ -21,8 +21,8 @@
       "type": "text"
     },
     "days": {
-      "collection": "day",
-      "via": "learning_standard"
+      "via": "learning_standard",
+      "collection": "day"
     },
     "unit": {
       "model": "unit",
