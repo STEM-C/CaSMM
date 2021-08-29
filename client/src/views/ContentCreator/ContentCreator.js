@@ -129,7 +129,7 @@ export default function ContentCreator(props) {
       <Tabs>
         <TabPane tab='Home' key='home'>
           <div id='page-header'>
-            <h1>Learning Standards & Units</h1>
+            <h1>Lessons & Units</h1>
           </div>
           <div id='content-creator-table-container'>
             <div id='content-creator-btn-container'>

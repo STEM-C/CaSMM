@@ -5,19 +5,20 @@ import {
   createDay,
   getAllUnits,
   getLearningStandardAll,
+  getLearningStandard,
 } from '../../../Utils/requests';
-
 import './LearningStandardCreator.less';
+import CreateLessonDayEditor from './CreateLessonDayEditor.js'
 
 export default function LearningStandardCreator({ setLearningStandardList }) {
   const [visible, setVisible] = useState(false);
   const [unitList, setUnitList] = useState([]);
-
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
   const [unit, setUnit] = useState('');
   const [numofDays, setNumofDays] = useState('');
   const [teks, setTeks] = useState('');
+  const [learningStandardObj, setLearningStandardObj] = useState('');
 
   useEffect(() => {
     const getUnits = async () => {
@@ -39,8 +40,7 @@ export default function LearningStandardCreator({ setLearningStandardList }) {
 
   const handleCancel = () => {
     setVisible(false);
-  };
-
+  }
   const onClickHandler = async (e) => {
     if (unit === '') {
       message.error('Please select unit');
@@ -59,10 +59,9 @@ export default function LearningStandardCreator({ setLearningStandardList }) {
       }
       message.success('Successfully created lesson');
       const lsRes = await getLearningStandardAll();
-      // console.log(lsRes);
       setLearningStandardList(lsRes.data);
-
       setVisible(false);
+      setLearningStandardObj(res.data);
     }
   };
 
@@ -145,6 +144,7 @@ export default function LearningStandardCreator({ setLearningStandardList }) {
           </Form.Item>
         </Form>
       </Modal>
+      <CreateLessonDayEditor learningStandard={learningStandardObj}/>
     </div>
   );
 }
