@@ -66,7 +66,7 @@ export default function BlocklyCanvasPanel(props) {
     workspaceRef.current = window.Blockly.inject('blockly-canvas', {
       toolbox: document.getElementById('toolbox'),
     });
-  }
+  };
 
   const loadSave = (selectedSave) => {
     try {
@@ -113,7 +113,11 @@ export default function BlocklyCanvasPanel(props) {
     // automatically save workspace every min
     let autosaveInterval = setInterval(async () => {
       if (isStudent && workspaceRef.current && dayRef.current) {
-        const res = await handleSave(dayRef.current.id, workspaceRef, replayRef.current);
+        const res = await handleSave(
+          dayRef.current.id,
+          workspaceRef,
+          replayRef.current
+        );
         if (res.data) {
           setLastAutoSave(res.data[0]);
           setLastSavedTime(getFormattedDate(res.data[0].updated_at));
@@ -122,21 +126,21 @@ export default function BlocklyCanvasPanel(props) {
     }, 60000);
     let replaySaveInterval = setInterval(async () => {
       if (workspaceRef.current.undoStack_.length !== undoLength.current) {
-          undoLength.current = workspaceRef.current.undoStack_.length;
-          let xml = window.Blockly.Xml.workspaceToDom(workspaceRef.current);
-          let xml_text = window.Blockly.Xml.domToText(xml);
-          const replay = {
-              xml: xml_text,
-              timestamp: Date.now()
-          }
-          replayRef.current.push(replay);
-          console.log(replayRef.current);
+        undoLength.current = workspaceRef.current.undoStack_.length;
+        let xml = window.Blockly.Xml.workspaceToDom(workspaceRef.current);
+        let xml_text = window.Blockly.Xml.domToText(xml);
+        const replay = {
+          xml: xml_text,
+          timestamp: Date.now(),
+        };
+        replayRef.current.push(replay);
+        console.log(replayRef.current);
       }
     }, 1000);
     // clean up - saves workspace and removes blockly div from DOM
     return async () => {
       clearInterval(autosaveInterval);
-      clearInterval(replaySaveInterval)
+      clearInterval(replaySaveInterval);
       if (isStudent && dayRef.current && workspaceRef.current)
         await handleSave(dayRef.current.id, workspaceRef);
       if (workspaceRef.current) workspaceRef.current.dispose();
@@ -146,15 +150,15 @@ export default function BlocklyCanvasPanel(props) {
 
   setInterval(async () => {
     if (workspaceRef.current.undoStack_.length !== undoLength.current) {
-        undoLength.current = workspaceRef.current.undoStack_.length;
-        let xml = window.Blockly.Xml.workspaceToDom(workspaceRef.current);
-        let xml_text = window.Blockly.Xml.domToText(xml);
-        const replay = {
-            xml: xml_text,
-            timestamp: Date.now()
-        }
-        replayRef.current.push(replay);
-        console.log(replayRef.current);
+      undoLength.current = workspaceRef.current.undoStack_.length;
+      let xml = window.Blockly.Xml.workspaceToDom(workspaceRef.current);
+      let xml_text = window.Blockly.Xml.domToText(xml);
+      const replay = {
+        xml: xml_text,
+        timestamp: Date.now(),
+      };
+      replayRef.current.push(replay);
+      console.log(replayRef.current);
     }
   }, 1000);
 
@@ -224,7 +228,12 @@ export default function BlocklyCanvasPanel(props) {
   };
 
   const handleCreatorSave = async () => {
-    const res = handleCreatorSaveDay(day.id, workspaceRef, studentToolbox);
+    const res = await handleCreatorSaveDay(
+      day.id,
+      workspaceRef,
+      studentToolbox
+    );
+    console.log(res);
     if (res.err) {
       message.error(res.err);
     } else {

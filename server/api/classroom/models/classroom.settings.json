@@ -32,10 +32,6 @@
       "type": "string",
       "required": true
     },
-    "teachers": {
-      "collection": "teacher",
-      "via": "classrooms"
-    },
     "grade": {
       "via": "classrooms",
       "model": "grade"
