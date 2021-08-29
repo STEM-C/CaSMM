@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Button, List, Card, Modal, Form, message } from 'antd';
 import {
   getDayToolboxAll,
@@ -7,7 +7,7 @@ import {
 } from '../../../Utils/requests';
 
 export default function ContentCreator({ learningStandard, history }) {
-  const [visible, setVisible] = useState(false);
+  const [visible, setVisible] = useState(true);
   const [days, setDay] = useState([]);
 
   const handleCancel = () => {
@@ -19,8 +19,25 @@ export default function ContentCreator({ learningStandard, history }) {
     const myDays = lsResponse.data.days;
     myDays.sort((a, b) => (a.number > b.number ? 1 : -1));
     setDay([...myDays]);
-    setVisible(true);
+    //setVisible(true);
   };
+  
+  useEffect(() => {
+    // console.log(learningStandard);
+    // const lsResponse = getLearningStandard(learningStandard.id);
+    // console.log(lsResponse);
+    // console.log(lsResponse.data);
+    // const myDays = lsResponse.data.days;
+    // myDays.sort((a, b) => (a.number > b.number ? 1 : -1));
+    // setDay([...myDays]);
+
+    (async () => {
+      const lsResponse = await getLearningStandard(learningStandard.id);
+      const myDays = lsResponse.data.days;
+      myDays.sort((a, b) => (a.number > b.number ? 1 : -1));
+      setDay([...myDays]);
+    })()
+  }, []);
 
 
   const handleViewDay = async (day) => {
@@ -36,9 +53,9 @@ export default function ContentCreator({ learningStandard, history }) {
 
   return (
     <div>
-      <button id='link-btn' onClick={showModal}>
+      {/* <button id='link-btn' onClick={showModal}>
         {learningStandard.name}
-      </button>
+      </button> */}
 
       <Modal
         title={learningStandard.name}

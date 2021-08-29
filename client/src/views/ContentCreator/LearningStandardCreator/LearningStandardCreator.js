@@ -12,6 +12,7 @@ import CreateLessonDayEditor from './CreateLessonDayEditor.js'
 
 export default function LearningStandardCreator({ setLearningStandardList }) {
   const [visible, setVisible] = useState(false);
+  const [createLessonDayEditorVisible, setCreateLessonDayEditorVisible] = useState(false);
   const [unitList, setUnitList] = useState([]);
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
@@ -62,6 +63,7 @@ export default function LearningStandardCreator({ setLearningStandardList }) {
       setLearningStandardList(lsRes.data);
       setVisible(false);
       setLearningStandardObj(res.data);
+      setCreateLessonDayEditorVisible(true);
     }
   };
 
@@ -70,7 +72,9 @@ export default function LearningStandardCreator({ setLearningStandardList }) {
       <button onClick={showModal} id='add-learning-standard-btn'>
         + Add a Lesson
       </button>
-      <Modal
+
+      { visible ? (
+        <Modal
         title='Create a Lesson'
         visible={visible}
         onCancel={handleCancel}
@@ -144,7 +148,18 @@ export default function LearningStandardCreator({ setLearningStandardList }) {
           </Form.Item>
         </Form>
       </Modal>
-      <CreateLessonDayEditor learningStandard={learningStandardObj}/>
+      ) : (
+        <div></div>
+      )
+      }
+      
+      { createLessonDayEditorVisible ? (
+        <CreateLessonDayEditor learningStandard={learningStandardObj}/>
+      ) : (
+        <div></div>
+      )
+      }
+    
     </div>
   );
 }
