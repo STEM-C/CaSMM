@@ -70,6 +70,15 @@ export default function ListView(props) {
                       triggerInput('editAnimal', emoji.emoji);
                       setPickerVisible(false);
                     }}
+                    groupVisibility={{
+                      flags: false,
+                      smileys_people: false,
+                      travel_places: false,
+                      objects: false,
+                      symbols: false,
+                    }}
+                    preload
+                    native
                   />
                 )}
               </div>

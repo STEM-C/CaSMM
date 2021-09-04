@@ -66,7 +66,7 @@ export default function BlocklyCanvasPanel(props) {
     workspaceRef.current = window.Blockly.inject('blockly-canvas', {
       toolbox: document.getElementById('toolbox'),
     });
-  }
+  };
 
   const loadSave = (selectedSave) => {
     try {
@@ -113,7 +113,11 @@ export default function BlocklyCanvasPanel(props) {
     // automatically save workspace every min
     let autosaveInterval = setInterval(async () => {
       if (isStudent && workspaceRef.current && dayRef.current) {
-        const res = await handleSave(dayRef.current.id, workspaceRef, replayRef.current);
+        const res = await handleSave(
+          dayRef.current.id,
+          workspaceRef,
+          replayRef.current
+        );
         if (res.data) {
           setLastAutoSave(res.data[0]);
           setLastSavedTime(getFormattedDate(res.data[0].updated_at));
@@ -121,22 +125,25 @@ export default function BlocklyCanvasPanel(props) {
       }
     }, 60000);
     let replaySaveInterval = setInterval(async () => {
-      if (workspaceRef.current.undoStack_.length !== undoLength.current) {
-          undoLength.current = workspaceRef.current.undoStack_.length;
-          let xml = window.Blockly.Xml.workspaceToDom(workspaceRef.current);
-          let xml_text = window.Blockly.Xml.domToText(xml);
-          const replay = {
-              xml: xml_text,
-              timestamp: Date.now()
-          }
-          replayRef.current.push(replay);
-          console.log(replayRef.current);
+      if (
+        workspaceRef.current &&
+        workspaceRef.current.undoStack_.length !== undoLength.current
+      ) {
+        undoLength.current = workspaceRef.current.undoStack_.length;
+        let xml = window.Blockly.Xml.workspaceToDom(workspaceRef.current);
+        let xml_text = window.Blockly.Xml.domToText(xml);
+        const replay = {
+          xml: xml_text,
+          timestamp: Date.now(),
+        };
+        replayRef.current.push(replay);
+        console.log(replayRef.current);
       }
     }, 1000);
     // clean up - saves workspace and removes blockly div from DOM
     return async () => {
       clearInterval(autosaveInterval);
-      clearInterval(replaySaveInterval)
+      clearInterval(replaySaveInterval);
       if (isStudent && dayRef.current && workspaceRef.current)
         await handleSave(dayRef.current.id, workspaceRef);
       if (workspaceRef.current) workspaceRef.current.dispose();
@@ -144,19 +151,19 @@ export default function BlocklyCanvasPanel(props) {
     };
   }, [isStudent]);
 
-  setInterval(async () => {
-    if (workspaceRef.current.undoStack_.length !== undoLength.current) {
-        undoLength.current = workspaceRef.current.undoStack_.length;
-        let xml = window.Blockly.Xml.workspaceToDom(workspaceRef.current);
-        let xml_text = window.Blockly.Xml.domToText(xml);
-        const replay = {
-            xml: xml_text,
-            timestamp: Date.now()
-        }
-        replayRef.current.push(replay);
-        console.log(replayRef.current);
-    }
-  }, 1000);
+  // setInterval(async () => {
+  //   if (workspaceRef.current.undoStack_.length !== undoLength.current) {
+  //     undoLength.current = workspaceRef.current.undoStack_.length;
+  //     let xml = window.Blockly.Xml.workspaceToDom(workspaceRef.current);
+  //     let xml_text = window.Blockly.Xml.domToText(xml);
+  //     const replay = {
+  //       xml: xml_text,
+  //       timestamp: Date.now(),
+  //     };
+  //     replayRef.current.push(replay);
+  //     console.log(replayRef.current);
+  //   }
+  // }, 1000);
 
   useEffect(() => {
     // once the day state is set, set the workspace and save
@@ -224,7 +231,12 @@ export default function BlocklyCanvasPanel(props) {
   };
 
   const handleCreatorSave = async () => {
-    const res = handleCreatorSaveDay(day.id, workspaceRef, studentToolbox);
+    const res = await handleCreatorSaveDay(
+      day.id,
+      workspaceRef,
+      studentToolbox
+    );
+    console.log(res);
     if (res.err) {
       message.error(res.err);
     } else {
@@ -437,16 +449,17 @@ export default function BlocklyCanvasPanel(props) {
           id='bottom-container'
           className='flex flex-column vertical-container overflow-visible'
         >
-          <Row>
-            <Col flex='none' id='section-header'>
-              {lessonName ? lessonName : 'Program your Arduino...'}
-            </Col>
-            <Col flex='auto'>
-              <Spin
-                tip='Compiling Code Please Wait...'
-                className='compilePop'
-                spinning={selectedCompile}
-              >
+          <Spin
+            tip='Compiling Code Please Wait... It may take up to 20 seconds to compile your code.'
+            className='compilePop'
+            size='large'
+            spinning={selectedCompile}
+          >
+            <Row>
+              <Col flex='none' id='section-header'>
+                {lessonName ? lessonName : 'Program your Arduino...'}
+              </Col>
+              <Col flex='auto'>
                 <Row align='middle' justify='end' id='description-container'>
                   <Col flex={homePath && handleGoBack ? '60px' : '30px'}>
                     <Row>
@@ -622,10 +635,10 @@ export default function BlocklyCanvasPanel(props) {
                     </div>
                   </Col>
                 </Row>
-              </Spin>
-            </Col>
-          </Row>
-          <div id='blockly-canvas' />
+              </Col>
+            </Row>
+            <div id='blockly-canvas' />
+          </Spin>
         </div>
         {isContentCreator ? (
           <div id='side-container'>

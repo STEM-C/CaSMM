@@ -2,11 +2,13 @@
   "kind": "collectionType",
   "collectionName": "learning_standards",
   "info": {
-    "name": "learning Standard"
+    "name": "learning Standard",
+    "description": ""
   },
   "options": {
     "increments": true,
-    "timestamps": true
+    "timestamps": true,
+    "draftAndPublish": false
   },
   "attributes": {
     "number": {
@@ -21,8 +23,8 @@
       "type": "text"
     },
     "days": {
-      "collection": "day",
-      "via": "learning_standard"
+      "via": "learning_standard",
+      "collection": "day"
     },
     "unit": {
       "model": "unit",
