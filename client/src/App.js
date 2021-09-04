@@ -22,9 +22,9 @@ const App = () => {
     let history = useHistory();
     const isChrome = !!window.chrome && (!!window.chrome.webstore || !!window.chrome.runtime);
 
-    if(!isChrome){
-        return <Route component={NotChrome}></Route>
-    }
+    // if(!isChrome){
+    //     return <Route component={NotChrome}></Route>
+    // }
     return (
         <div>
             <Switch>
