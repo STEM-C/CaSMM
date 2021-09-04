@@ -7,8 +7,8 @@ import {
 } from '../../../Utils/requests';
 import './CreateLessonDayEditor.less'
 
-export default function ContentCreator({ learningStandard, history }) {
-  const [visible, setVisible] = useState(true);
+export default function ContentCreator({ learningStandard, history, createLessonDayEditorVisible }) {
+  const [visible, setVisible] = useState(false);
   const [dayDetailsVisible, setDayDetailsVisible] = useState(false);
   const [days, setDay] = useState([]);
   const [description, setDescription] = useState('');
@@ -23,21 +23,26 @@ export default function ContentCreator({ learningStandard, history }) {
 
   const handleDayDetailsCancel = () => {
     setDayDetailsVisible(false);
-    setVisible(true);
   };
 
-  
+
   useEffect(() => {
     (async () => {
       const lsResponse = await getLearningStandard(learningStandard.id);
       const myDays = lsResponse.data.days;
       myDays.sort((a, b) => (a.number > b.number ? 1 : -1));
       setDay([...myDays]);
+      setVisible(createLessonDayEditorVisible);
     })()
   }, []);
 
   const showAddDayDetailsModal = () => {
     setDayDetailsVisible(true);
+    setDescription('');
+    setTeks('');
+    setScienceComponent('');
+    setMakerComponent('');
+    setComputerScienceComponent('');
   }
 
   // const onClickHandler = async (e) => {
@@ -45,16 +50,18 @@ export default function ContentCreator({ learningStandard, history }) {
   //   }
   // };
 
+  const onClickHandler = () => {
+    setVisible(false);
+  }
+
   return (
     <div>
 
-      {
-        visible? (
-          <Modal
+        <Modal
           title={learningStandard.name}
           visible={visible}
           onCancel={handleCancel}
-          onOk={handleCancel}
+          onOk={onClickHandler}
           size='large'
         >
           <div className='list-position'>
@@ -86,13 +93,7 @@ export default function ContentCreator({ learningStandard, history }) {
             </div>
           </div>
         </Modal>
-        ) : (
-          <div></div>
-        )
-      }
-
-      {
-        dayDetailsVisible ? (
+        
           <Modal
             title="Add Selected Day Lesson Details"
             visible={dayDetailsVisible}
@@ -125,32 +126,29 @@ export default function ContentCreator({ learningStandard, history }) {
 
                   <h3>Lesson Learning Components</h3>
                   <Form.Item id='form-label' label="Science Component">
-                    <Input
+                    <Input.TextArea
                       onChange={(e) => setScienceComponent(e.target.value)}
                       value={scienceComponent}
                       placeholder="Enter science component">
-                      </Input>
+                      </Input.TextArea>
                   </Form.Item>
                   <Form.Item id='form-label' label="Maker Component">
-                    <Input
+                    <Input.TextArea
                       onChange={(e) => setMakerComponent(e.target.value)}
                       value={makerComponent}
                       placeholder="Enter maker component">
-                      </Input>
+                      </Input.TextArea>
                   </Form.Item>
                   <Form.Item id='form-label' label="Computer Science Component">
-                    <Input
+                    <Input.TextArea
                       onChange={(e) => setComputerScienceComponent(e.target.value)}
                       value={computerScienceComponent}
                       placeholder="Enter computer science component">
-                      </Input>
+                      </Input.TextArea>
                   </Form.Item>
               </Form>
           </Modal>
-        ) : (
-          <div></div>
-        )
-      }
+   
     
     </div>
   );

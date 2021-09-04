@@ -37,11 +37,13 @@ export default function LearningStandardCreator({ setLearningStandardList }) {
     setTeks('');
     setNumofDays('');
     setVisible(true);
+    setCreateLessonDayEditorVisible(false);
   };
 
   const handleCancel = () => {
     setVisible(false);
   }
+  
   const onClickHandler = async (e) => {
     if (unit === '') {
       message.error('Please select unit');
@@ -73,8 +75,7 @@ export default function LearningStandardCreator({ setLearningStandardList }) {
         + Add a Lesson
       </button>
 
-      { visible ? (
-        <Modal
+      <Modal
         title='Create a Lesson'
         visible={visible}
         onCancel={handleCancel}
@@ -148,13 +149,10 @@ export default function LearningStandardCreator({ setLearningStandardList }) {
           </Form.Item>
         </Form>
       </Modal>
-      ) : (
-        <div></div>
-      )
-      }
+
       
       { createLessonDayEditorVisible ? (
-        <CreateLessonDayEditor learningStandard={learningStandardObj}/>
+        <CreateLessonDayEditor createLessonDayEditorVisible learningStandard={learningStandardObj}/>
       ) : (
         <div></div>
       )
