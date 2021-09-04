@@ -135,7 +135,7 @@ export default function ContentCreator(props) {
             <div id='content-creator-btn-container'>
               <UnitCreator gradeList={gradeList} />
               <LearningStandardDayCreator
-                setLearningStandardList={setLearningStandardList}
+                setLearningStandardList={setLearningStandardList} history={props.history}
               />
             </div>
             <Table

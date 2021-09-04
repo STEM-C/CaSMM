@@ -10,7 +10,7 @@ import {
 import './LearningStandardCreator.less';
 import CreateLessonDayEditor from './CreateLessonDayEditor.js'
 
-export default function LearningStandardCreator({ setLearningStandardList }) {
+export default function LearningStandardCreator({ setLearningStandardList, history }) {
   const [visible, setVisible] = useState(false);
   const [createLessonDayEditorVisible, setCreateLessonDayEditorVisible] = useState(false);
   const [unitList, setUnitList] = useState([]);
@@ -152,7 +152,7 @@ export default function LearningStandardCreator({ setLearningStandardList }) {
 
       
       { createLessonDayEditorVisible ? (
-        <CreateLessonDayEditor createLessonDayEditorVisible learningStandard={learningStandardObj}/>
+        <CreateLessonDayEditor createLessonDayEditorVisible history={history} learningStandard={learningStandardObj}/>
       ) : (
         <div></div>
       )

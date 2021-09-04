@@ -8,9 +8,10 @@ import {
 } from '../../../Utils/requests';
 import './CreateLessonDayEditor.less'
 
-export default function ContentCreator({ learningStandard, history, createLessonDayEditorVisible }) {
+export default function CreateLessonDayEditor({ learningStandard, history, createLessonDayEditorVisible }) {
   const [visible, setVisible] = useState(false);
   const [dayDetailsVisible, setDayDetailsVisible] = useState(false);
+  const [dayToolbox, setDayToolbox] = useState('');
   const [days, setDay] = useState([]);
   const [dayId, setDayId] = useState('');
   const [description, setDescription] = useState('');
@@ -39,9 +40,10 @@ export default function ContentCreator({ learningStandard, history, createLesson
     })()
   }, []);
 
-  const showAddDayDetailsModal = (dayId) => {
+  const showAddDayDetailsModal = (dayObj) => {
     setDayDetailsVisible(true);
-    setDayId(dayId);
+    setDayId(dayObj.id);
+    setDayToolbox(dayObj);
 
     setDescription('');
     setTekS('');
@@ -54,6 +56,20 @@ export default function ContentCreator({ learningStandard, history, createLesson
     e.preventDefault();
     const res = await updateDayDetails(dayId, description, TekS, scienceObj, makingObj, ComputationObj);
     console.log(res);
+    setDayDetailsVisible(false);
+    handleViewDay(dayToolbox);
+  };
+
+  const handleViewDay = async (day) => {
+    const allToolBoxRes = await getDayToolboxAll();
+    const selectedToolBoxRes = await getDayToolbox(day.id);
+    day.selectedToolbox = selectedToolBoxRes.data.toolbox;
+    day.toolbox = allToolBoxRes.data.toolbox;
+
+    day.learning_standard_name = learningStandard.name;
+    localStorage.setItem('my-day', JSON.stringify(day));
+    console.log('works');
+    history.push('/day');
   };
 
   return (
@@ -79,7 +95,9 @@ export default function ContentCreator({ learningStandard, history, createLesson
                       title={'Day ' + item.number}
                       hoverable='true'
                       // onClick={() => handleViewDay(item)}
-                      onClick={() => showAddDayDetailsModal(item.id)}
+                      onClick={() => {
+                        showAddDayDetailsModal(item);
+                      }}
                     />
                     <span
                       className='delete-btn'
