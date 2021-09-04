@@ -52,7 +52,7 @@ export default function LearningStandardCreator({ setLearningStandardList }) {
     e.preventDefault();
     const res = await createLearningStandard(description, name, 0, unit, teks);
     if (res.err) {
-      message.error('fail to create new learning standard');
+      message.error('Fail to create new learning standard');
     } else {
       for (let i = 1; i <= numofDays; i++) {
         const dayRes = await createDay(i, res.data);

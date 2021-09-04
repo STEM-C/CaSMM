@@ -203,7 +203,7 @@ export const saveWorkspace = async (day, workspace, replay) =>
     data: {
       day,
       workspace,
-      replay
+      replay,
     },
     auth: true,
     error: 'Failed to save your workspace.',
@@ -269,19 +269,10 @@ export const deleteStudent = async (student) =>
     error: 'Failed to delete student.',
   });
 
-export const updateDayTemplate = async (id, workspace) =>
+export const updateDayTemplate = async (id, workspace, blocksList) =>
   makeRequest({
     method: PUT,
-    path: `${server}/days/${id}`,
-    data: { template: workspace },
-    auth: true,
-    error: 'Failed to update Day',
-  });
-
-export const updateDay = async (id, workspace, blocksList) =>
-  makeRequest({
-    method: PUT,
-    path: `${server}/days/${id}`,
+    path: `${server}/days/template/${id}`,
     data: {
       template: workspace,
       blocks: blocksList,
@@ -379,3 +370,38 @@ export const getGrade = async (grade) =>
     auth: true,
     error: 'Grade could not be retrieved',
   });
+
+export const updateLearningStandard = async (id, name, expectations, teks) =>
+  makeRequest({
+    method: PUT,
+    path: `${server}/learning-standards/${id}`,
+    data: {
+      name,
+      teks,
+      expectations,
+    },
+    auth: true,
+    error: 'Failed to update unit',
+  });
+
+export const updateDayDetails = async (
+  id,
+  description,
+  TekS,
+  scienceObj,
+  makingObj,
+  ComputationObj
+) => {
+  const objectives = [scienceObj, makingObj, ComputationObj];
+  makeRequest({
+    method: PUT,
+    path: `${server}/days/${id}`,
+    data: {
+      description,
+      TekS,
+      objectives,
+    },
+    auth: true,
+    error: 'Failed to update unit',
+  });
+};

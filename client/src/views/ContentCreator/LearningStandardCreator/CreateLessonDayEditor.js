@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { Button, List, Card, Modal, Form, Input } from 'antd';
+import { Button, List, Card, Modal, Form, Input, message } from 'antd';
 import {
   getDayToolboxAll,
   getDayToolbox,
   getLearningStandard,
+  updateDayDetails,
 } from '../../../Utils/requests';
 import './CreateLessonDayEditor.less'
 
@@ -11,11 +12,12 @@ export default function ContentCreator({ learningStandard, history, createLesson
   const [visible, setVisible] = useState(false);
   const [dayDetailsVisible, setDayDetailsVisible] = useState(false);
   const [days, setDay] = useState([]);
+  const [dayId, setDayId] = useState('');
   const [description, setDescription] = useState('');
-  const [teks, setTeks] = useState('');
-  const [scienceComponent, setScienceComponent] = useState('');
-  const [makerComponent, setMakerComponent] = useState('');
-  const [computerScienceComponent, setComputerScienceComponent] = useState('');
+  const [TekS, setTekS] = useState('');
+  const [scienceObj, setScienceObj] = useState('');
+  const [makingObj, setMakingObj] = useState('');
+  const [ComputationObj, setComputationObj] = useState('');
 
   const handleCancel = () => {
     setVisible(false);
@@ -33,26 +35,26 @@ export default function ContentCreator({ learningStandard, history, createLesson
       myDays.sort((a, b) => (a.number > b.number ? 1 : -1));
       setDay([...myDays]);
       setVisible(createLessonDayEditorVisible);
+      console.log(days);
     })()
   }, []);
 
-  const showAddDayDetailsModal = () => {
+  const showAddDayDetailsModal = (dayId) => {
     setDayDetailsVisible(true);
+    setDayId(dayId);
+
     setDescription('');
-    setTeks('');
-    setScienceComponent('');
-    setMakerComponent('');
-    setComputerScienceComponent('');
+    setTekS('');
+    setScienceObj('');
+    setMakingObj('');
+    setComputationObj('');
   }
 
-  // const onClickHandler = async (e) => {
-  //   e.preventDefault();
-  //   }
-  // };
-
-  const onClickHandler = () => {
-    setVisible(false);
-  }
+  const onClickHandler = async (e) => {
+    e.preventDefault();
+    const res = await updateDayDetails(dayId, description, TekS, scienceObj, makingObj, ComputationObj);
+    console.log(res);
+  };
 
   return (
     <div>
@@ -61,7 +63,7 @@ export default function ContentCreator({ learningStandard, history, createLesson
           title={learningStandard.name}
           visible={visible}
           onCancel={handleCancel}
-          onOk={onClickHandler}
+          onOk={handleCancel}
           size='large'
         >
           <div className='list-position'>
@@ -77,7 +79,7 @@ export default function ContentCreator({ learningStandard, history, createLesson
                       title={'Day ' + item.number}
                       hoverable='true'
                       // onClick={() => handleViewDay(item)}
-                      onClick={showAddDayDetailsModal}
+                      onClick={() => showAddDayDetailsModal(item.id)}
                     />
                     <span
                       className='delete-btn'
@@ -97,7 +99,8 @@ export default function ContentCreator({ learningStandard, history, createLesson
           <Modal
             title="Add Selected Day Lesson Details"
             visible={dayDetailsVisible}
-            onCancel={handleDayDetailsCancel}>
+            onCancel={handleDayDetailsCancel}
+            onOk={onClickHandler}>
               <Form
                 id='add-day-details'
                 // labelCol={{
@@ -118,8 +121,8 @@ export default function ContentCreator({ learningStandard, history, createLesson
                   </Form.Item>
                   <Form.Item id='form-label' label="TekS">
                     <Input
-                      onChange={(e) => setTeks(e.target.value)}
-                      value={teks}
+                      onChange={(e) => setTekS(e.target.value)}
+                      value={TekS}
                       placeholder="Enter tekS">
                       </Input>
                   </Form.Item>
@@ -127,29 +130,28 @@ export default function ContentCreator({ learningStandard, history, createLesson
                   <h3>Lesson Learning Components</h3>
                   <Form.Item id='form-label' label="Science Component">
                     <Input.TextArea
-                      onChange={(e) => setScienceComponent(e.target.value)}
-                      value={scienceComponent}
+                      onChange={(e) => setScienceObj(e.target.value)}
+                      value={scienceObj}
                       placeholder="Enter science component">
                       </Input.TextArea>
                   </Form.Item>
                   <Form.Item id='form-label' label="Maker Component">
                     <Input.TextArea
-                      onChange={(e) => setMakerComponent(e.target.value)}
-                      value={makerComponent}
+                      onChange={(e) => setMakingObj(e.target.value)}
+                      value={makingObj}
                       placeholder="Enter maker component">
                       </Input.TextArea>
                   </Form.Item>
                   <Form.Item id='form-label' label="Computer Science Component">
                     <Input.TextArea
-                      onChange={(e) => setComputerScienceComponent(e.target.value)}
-                      value={computerScienceComponent}
+                      onChange={(e) => setComputationObj(e.target.value)}
+                      value={ComputationObj}
                       placeholder="Enter computer science component">
                       </Input.TextArea>
                   </Form.Item>
               </Form>
           </Modal>
    
-    
     </div>
   );
 }
