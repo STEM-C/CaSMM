@@ -93,7 +93,6 @@ export default function ContentCreator({ learningStandard, history, dayEditorVis
   const onClickDayDetailsHandler = async (e) => {
     e.preventDefault();
     const res = await updateDayDetails(selectDay.id, description, TekS, scienceObj, makingObj, ComputationObj);
-    console.log(res);
     setDayDetailsVisible(false);
     handleViewDay(selectDay);
   };
