@@ -1,30 +1,44 @@
 import React, { useState, useEffect } from 'react';
-import { Button, List, Card, Modal, Form, message } from 'antd';
+import { Button, List, Card, Modal, Form, message, Input } from 'antd';
 import {
   createDay,
   deleteDay,
   getDayToolboxAll,
   getDayToolbox,
   getLearningStandard,
+  updateDayDetails
 } from '../../../Utils/requests';
 import './DayEditor.less';
 
 export default function ContentCreator({ learningStandard, history, dayEditorVisible }) {
   const [visible, setVisible] = useState(false);
+  const [dayDetailsVisible, setDayDetailsVisible] = useState(false);
   const [days, setDay] = useState([]);
+  const [selectDay, setSelectDay] = useState('');
+  const [description, setDescription] = useState('');
+  const [TekS, setTekS] = useState('');
+  const [scienceObj, setScienceObj] = useState('');
+  const [makingObj, setMakingObj] = useState('');
+  const [ComputationObj, setComputationObj] = useState('');
  
   const handleCancel = () => {
     setVisible(false);
   };
 
-  // const showModal = async () => {
-  //   const lsResponse = await getLearningStandard(learningStandard.id);
-  //   const myDays = lsResponse.data.days;
-  //   myDays.sort((a, b) => (a.number > b.number ? 1 : -1));
-  //   setDay([...myDays]);
-  //   setVisible(true);
-  //   setHello(test);
-  // };
+  const showDayDetailsModal = (dayObj) => {
+    setDayDetailsVisible(true);
+    setSelectDay(dayObj);
+    setDescription(dayObj.description);
+    setTekS(dayObj.TekS);
+    setScienceObj(dayObj.scienceObj);
+    setMakingObj(dayObj.makingObj);
+    setComputationObj(dayObj.ComputationObj);
+    console.log(dayObj);
+  }
+
+  const handleDayDetailsCancel = () => {
+    setDayDetailsVisible(false);
+  };
 
   useEffect(() => {
     (async () => {
@@ -76,12 +90,16 @@ export default function ContentCreator({ learningStandard, history, dayEditorVis
     history.push('/day');
   };
 
+  const onClickDayDetailsHandler = async (e) => {
+    e.preventDefault();
+    const res = await updateDayDetails(selectDay.id, description, TekS, scienceObj, makingObj, ComputationObj);
+    console.log(res);
+    setDayDetailsVisible(false);
+    handleViewDay(selectDay);
+  };
+
   return (
     <div>
-      {/* <button id='link-btn' onClick={showModal}>
-        {learningStandard.name}
-      </button> */}
-
       <Modal
         title={learningStandard.name}
         visible={visible}
@@ -101,7 +119,9 @@ export default function ContentCreator({ learningStandard, history, dayEditorVis
                     key={item.id}
                     title={'Day ' + item.number}
                     hoverable='true'
-                    onClick={() => handleViewDay(item)}
+                    onClick={() => {
+                      showDayDetailsModal(item);
+                    }}
                   />
                   <span
                     className='delete-btn'
@@ -129,6 +149,56 @@ export default function ContentCreator({ learningStandard, history, dayEditorVis
           </div>
         </div>
       </Modal>
+
+      <Modal
+            title="Selected Day Details Editor"
+            visible={dayDetailsVisible}
+            onCancel={handleDayDetailsCancel}
+            onOk={onClickDayDetailsHandler}>
+              <Form
+                id='add-day-details'
+                layout='horizontal'
+                size='default'
+                >
+                  <Form.Item id='form-label' label="Description">
+                    <Input.TextArea
+                      onChange={(e) => setDescription(e.target.value)}
+                      value={description}
+                      placeholder="Enter description">
+                      </Input.TextArea>
+                  </Form.Item>
+                  <Form.Item id='form-label' label="TekS">
+                    <Input
+                      onChange={(e) => setTekS(e.target.value)}
+                      value={TekS}
+                      placeholder="Enter tekS">
+                      </Input>
+                  </Form.Item>
+
+                  <h3>Lesson Learning Components</h3>
+                  <Form.Item id='form-label' label="Science Component">
+                    <Input.TextArea
+                      onChange={(e) => setScienceObj(e.target.value)}
+                      value={scienceObj}
+                      placeholder="Enter science component">
+                      </Input.TextArea>
+                  </Form.Item>
+                  <Form.Item id='form-label' label="Maker Component">
+                    <Input.TextArea
+                      onChange={(e) => setMakingObj(e.target.value)}
+                      value={makingObj}
+                      placeholder="Enter maker component">
+                      </Input.TextArea>
+                  </Form.Item>
+                  <Form.Item id='form-label' label="Computer Science Component">
+                    <Input.TextArea
+                      onChange={(e) => setComputationObj(e.target.value)}
+                      value={ComputationObj}
+                      placeholder="Enter computer science component">
+                      </Input.TextArea>
+                  </Form.Item>
+              </Form>
+          </Modal>
     </div>
   );
 }
