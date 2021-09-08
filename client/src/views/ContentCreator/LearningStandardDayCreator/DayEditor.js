@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Button, List, Card, Modal, Form, message } from 'antd';
 import {
   createDay,
@@ -9,21 +9,32 @@ import {
 } from '../../../Utils/requests';
 import './DayEditor.less';
 
-export default function ContentCreator({ learningStandard, history }) {
+export default function ContentCreator({ learningStandard, history, dayEditorVisible }) {
   const [visible, setVisible] = useState(false);
   const [days, setDay] = useState([]);
-
+  const [hello, setHello] = useState(false);
+ 
   const handleCancel = () => {
     setVisible(false);
   };
 
-  const showModal = async () => {
-    const lsResponse = await getLearningStandard(learningStandard.id);
-    const myDays = lsResponse.data.days;
-    myDays.sort((a, b) => (a.number > b.number ? 1 : -1));
-    setDay([...myDays]);
-    setVisible(true);
-  };
+  // const showModal = async () => {
+  //   const lsResponse = await getLearningStandard(learningStandard.id);
+  //   const myDays = lsResponse.data.days;
+  //   myDays.sort((a, b) => (a.number > b.number ? 1 : -1));
+  //   setDay([...myDays]);
+  //   setVisible(true);
+  //   setHello(test);
+  // };
+
+  useEffect(() => {
+    (async () => {
+      const lsResponse = await getLearningStandard(learningStandard.id);
+      const myDays = lsResponse.data.days;
+      myDays.sort((a, b) => (a.number > b.number ? 1 : -1));
+      setDay([...myDays]);
+    })()
+  }, []);
 
   const addBasicDay = async () => {
     let newDay = 1;
@@ -67,13 +78,13 @@ export default function ContentCreator({ learningStandard, history }) {
 
   return (
     <div>
-      <button id='link-btn' onClick={showModal}>
+      {/* <button id='link-btn' onClick={showModal}>
         {learningStandard.name}
-      </button>
+      </button> */}
 
       <Modal
         title={learningStandard.name}
-        visible={visible}
+        visible={dayEditorVisible}
         onCancel={handleCancel}
         onOk={handleCancel}
         size='large'

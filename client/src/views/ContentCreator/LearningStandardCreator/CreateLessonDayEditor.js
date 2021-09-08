@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Button, List, Card, Modal, Form, Input, message } from 'antd';
+import { List, Card, Modal, Form, Input } from 'antd';
 import {
   getDayToolboxAll,
   getDayToolbox,
@@ -35,7 +35,6 @@ export default function CreateLessonDayEditor({ learningStandard, history, creat
       myDays.sort((a, b) => (a.number > b.number ? 1 : -1));
       setDay([...myDays]);
       setVisible(createLessonDayEditorVisible);
-      console.log(days);
     })()
   }, []);
 

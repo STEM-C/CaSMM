@@ -13,6 +13,7 @@ import {
   getGrades,
 } from '../../Utils/requests';
 import UnitEditor from './UnitEditor/UnitEditor';
+import LessonEditor from './LessonEditor/LessonEditor';
 
 import './ContentCreator.less';
 
@@ -57,7 +58,8 @@ export default function ContentCreator(props) {
       width: '22.5%',
       align: 'left',
       render: (_, key) => (
-        <DayEditor history={props.history} learningStandard={key} />
+        // <DayEditor history={props.history} learningStandard={key} />
+        <LessonEditor id={key.id} lessonName={key.name} learningStandard={key} history={props.history} linkBtn={true} />
       ),
     },
     {
@@ -104,7 +106,7 @@ export default function ContentCreator(props) {
     return (
       <TabPane tab={grade.name} key={grade.name}>
         <div id='page-header'>
-          <h1>Learning Standards & Units:</h1>
+          <h1>Lessons & Units</h1>
         </div>
         <div id='content-creator-table-container'>
           <div id='content-creator-btn-container'>
