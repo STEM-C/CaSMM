@@ -18,6 +18,7 @@ export default function LessonEditor({ id, lessonName, learningStandard, history
     setName(res.data.name);
     setDescription(res.data.expectations);
     setTeks(res.data.teks);
+    setDayEditorVisible(false);
   };
 
 

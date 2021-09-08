@@ -12,7 +12,6 @@ import './DayEditor.less';
 export default function ContentCreator({ learningStandard, history, dayEditorVisible }) {
   const [visible, setVisible] = useState(false);
   const [days, setDay] = useState([]);
-  const [hello, setHello] = useState(false);
  
   const handleCancel = () => {
     setVisible(false);
@@ -33,6 +32,7 @@ export default function ContentCreator({ learningStandard, history, dayEditorVis
       const myDays = lsResponse.data.days;
       myDays.sort((a, b) => (a.number > b.number ? 1 : -1));
       setDay([...myDays]);
+      setVisible(dayEditorVisible);
     })()
   }, []);
 
@@ -84,7 +84,7 @@ export default function ContentCreator({ learningStandard, history, dayEditorVis
 
       <Modal
         title={learningStandard.name}
-        visible={dayEditorVisible}
+        visible={visible}
         onCancel={handleCancel}
         onOk={handleCancel}
         size='large'
