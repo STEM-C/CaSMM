@@ -51,7 +51,7 @@ export default function ContentCreator(props) {
       ),
     },
     {
-      title: 'Learning Standard',
+      title: 'Lesson',
       dataIndex: 'name',
       key: 'name',
       editable: true,
@@ -63,7 +63,7 @@ export default function ContentCreator(props) {
       ),
     },
     {
-      title: 'Desciption',
+      title: 'Description',
       dataIndex: 'expectations',
       key: 'character',
       editable: true,
