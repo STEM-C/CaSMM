@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Form, Input, Modal, message } from 'antd';
+import { Form, Input, Modal, message, Button } from 'antd';
 import { createUnit } from '../../../Utils/requests';
 import './UnitCreator.less';
 
@@ -45,7 +45,11 @@ export default function UnitCreator({ gradeList }) {
         visible={visible}
         width='35vw'
         onCancel={handleCancel}
-        onOk={onClickHandler}
+        footer={[
+          <Button key='cancel' onClick={handleCancel}>
+            Cancel
+          </Button>,
+        ]}
       >
         <Form
           id='add-units'
@@ -63,6 +67,7 @@ export default function UnitCreator({ gradeList }) {
               id='grade-dropdown'
               name='grade'
               defaultValue={grade}
+              required
               onChange={(e) => setGrade(e.target.value)}
             >
               <option key={0} value={grade} disabled id='disabled-option'>
@@ -110,6 +115,11 @@ export default function UnitCreator({ gradeList }) {
               placeholder='Enter unit Teks'
               required
             />
+          </Form.Item>
+          <Form.Item>
+            <Button type='primary' htmlType='submit'>
+              Submit
+            </Button>
           </Form.Item>
         </Form>
       </Modal>
