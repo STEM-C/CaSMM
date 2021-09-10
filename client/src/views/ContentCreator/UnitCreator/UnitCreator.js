@@ -43,6 +43,7 @@ export default function UnitCreator({ gradeList }) {
       <Modal
         title='Create Unit'
         visible={visible}
+        width='35vw'
         onCancel={handleCancel}
         onOk={onClickHandler}
       >

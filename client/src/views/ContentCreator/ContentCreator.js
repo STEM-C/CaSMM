@@ -21,20 +21,19 @@ const { TabPane } = Tabs;
 export default function ContentCreator({ history }) {
   const [gradeList, setGradeList] = useState([]);
   const [learningStandardList, setLearningStandardList] = useState([]);
+  const [tab, setTab] = useState(
+    history.location.hash.split('#')[1]
+      ? history.location.hash.split('#')[1]
+      : 'home'
+  );
   const [page, setPage] = useState(
     history.location.hash.split('#')[1]
-      ? parseInt(history.location.hash.split('#')[1])
+      ? parseInt(history.location.hash.split('#')[2])
       : 1
   );
   const [viewing, setViewing] = useState(
-    parseInt(history.location.hash.split('#')[2])
+    parseInt(history.location.hash.split('#')[3])
   );
-
-  useEffect(() => {
-    if (page) {
-      setPage(page);
-    }
-  }, [page]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -77,6 +76,7 @@ export default function ContentCreator({ history }) {
           linkBtn={true}
           viewing={viewing}
           setViewing={setViewing}
+          tab={tab}
           page={page}
         />
       ),
@@ -136,6 +136,12 @@ export default function ContentCreator({ history }) {
             columns={columns}
             dataSource={filterLS(grade)}
             rowClassName='editable-row'
+            onChange={(Pagination) => {
+              setViewing(undefined);
+              setPage(Pagination.current);
+              history.push(`#${tab}#${Pagination.current}`);
+            }}
+            pagination={{ current: page ? page : 1 }}
           ></Table>
         </div>
       </TabPane>
@@ -147,7 +153,15 @@ export default function ContentCreator({ history }) {
       <Navbar isContentCreator={true} />
       <div id='main-header'>Welcome Content Creator</div>
 
-      <Tabs>
+      <Tabs
+        onChange={(activeKey) => {
+          setTab(activeKey);
+          setPage(1);
+          setViewing(undefined);
+          history.push(`#${activeKey}`);
+        }}
+        activeKey={tab ? tab : 'home'}
+      >
         <TabPane tab='Home' key='home'>
           <div id='page-header'>
             <h1>Lessons & Units</h1>
@@ -160,6 +174,8 @@ export default function ContentCreator({ history }) {
                 history={history}
                 viewing={viewing}
                 setViewing={setViewing}
+                tab={tab}
+                page={page}
               />
             </div>
             <Table
@@ -167,8 +183,9 @@ export default function ContentCreator({ history }) {
               dataSource={learningStandardList}
               rowClassName='editable-row'
               onChange={(Pagination) => {
+                setViewing(undefined);
                 setPage(Pagination.current);
-                history.push(`#${Pagination.current}`);
+                history.push(`#${tab}#${Pagination.current}`);
               }}
               pagination={{ current: page ? page : 1 }}
             ></Table>

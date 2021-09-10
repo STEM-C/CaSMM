@@ -24,6 +24,7 @@ export default function LearningStandardCreator({
   const [teks, setTeks] = useState('');
   const [link, setLink] = useState('');
   const [learningStandardObj, setLearningStandardObj] = useState('');
+  let found;
 
   useEffect(() => {
     const getUnits = async () => {
@@ -75,7 +76,10 @@ export default function LearningStandardCreator({
       const lsRes = await getLearningStandardAll();
       setLearningStandardList(lsRes.data);
       setLearningStandardObj(res.data);
-      history.push(`#${res.data.id}`);
+      found = lsRes.data.findIndex((ls) => ls.id === res.data.id);
+      console.log(found);
+      found = Math.ceil(found / 10);
+      history.push(`#home#${found}#${res.data.id}`);
       setViewing(res.data.id);
       setVisible(false);
     }
@@ -90,6 +94,7 @@ export default function LearningStandardCreator({
       <Modal
         title='Create a Lesson'
         visible={visible}
+        width='35vw'
         onCancel={handleCancel}
         onOk={onClickHandler}
       >
@@ -176,6 +181,9 @@ export default function LearningStandardCreator({
           history={history}
           learningStandard={learningStandardObj}
           viewing={viewing}
+          setViewing={setViewing}
+          page={found}
+          tab={'home'}
         />
       ) : null}
     </div>

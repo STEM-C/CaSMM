@@ -10,7 +10,14 @@ import {
 } from '../../../Utils/requests';
 import './DayEditor.less';
 
-const DayEditor = ({ learningStandard, history, viewing, page }) => {
+const DayEditor = ({
+  learningStandard,
+  history,
+  viewing,
+  setViewing,
+  page,
+  tab,
+}) => {
   const [visible, setVisible] = useState(false);
   const [dayDetailsVisible, setDayDetailsVisible] = useState(false);
   const [days, setDay] = useState([]);
@@ -41,8 +48,6 @@ const DayEditor = ({ learningStandard, history, viewing, page }) => {
 
   useEffect(() => {
     const getDay = async () => {
-      console.log('viewing: ' + viewing);
-      console.log('ls_id: ' + learningStandard.id);
       if (viewing && viewing === learningStandard.id) {
         const getDayAll = await getLearningStandardDays(viewing);
         const myDays = getDayAll.data;
@@ -119,11 +124,13 @@ const DayEditor = ({ learningStandard, history, viewing, page }) => {
         visible={visible}
         onCancel={() => {
           setVisible(false);
-          history.push(`#${page}`);
+          setViewing(undefined);
+          history.push(`#${tab}#${page}`);
         }}
         onOk={() => {
           setVisible(false);
-          history.push(`#${page}`);
+          setViewing(undefined);
+          history.push(`#${tab}#${page}`);
         }}
         size='large'
       >
@@ -173,6 +180,7 @@ const DayEditor = ({ learningStandard, history, viewing, page }) => {
         visible={dayDetailsVisible}
         onCancel={() => setDayDetailsVisible(false)}
         onOk={onClickDayDetailsHandler}
+        width='35vw'
       >
         <Form id='add-day-details' layout='horizontal' size='default'>
           <Form.Item id='form-label' label='Description'>

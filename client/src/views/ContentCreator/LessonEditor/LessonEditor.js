@@ -11,6 +11,7 @@ export default function LessonEditor({
   history,
   viewing,
   setViewing,
+  tab,
   page,
 }) {
   const [visible, setVisible] = useState(false);
@@ -52,7 +53,7 @@ export default function LessonEditor({
     } else {
       message.success('Update lesson success');
       setDisplayName(name);
-      history.push(`#${page}#${response.data.id}`);
+      history.push(`#${tab}#${page}#${response.data.id}`);
       setViewing(response.data.id);
       setVisible(false);
     }
@@ -66,6 +67,7 @@ export default function LessonEditor({
       <Modal
         title='Lesson Editor'
         visible={visible}
+        width='35vw'
         footer={[
           <Button key='cancel' onClick={handleCancel}>
             Cancel
@@ -108,7 +110,7 @@ export default function LessonEditor({
               placeholder='Enter lesson teks'
             />
           </Form.Item>
-          <Form.Item label='Link to Additional Resource'>
+          <Form.Item label='Link to Additional Resources (Optional)'>
             <Input
               onChange={(e) => {
                 setLink(e.target.value);
@@ -124,7 +126,9 @@ export default function LessonEditor({
           history={history}
           learningStandard={learningStandard}
           viewing={viewing}
+          setViewing={setViewing}
           page={page}
+          tab={tab}
         />
       ) : null}
     </div>
