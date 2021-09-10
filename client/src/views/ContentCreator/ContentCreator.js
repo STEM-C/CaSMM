@@ -4,7 +4,6 @@ import { Tabs, Table, Popconfirm, message } from 'antd';
 import Navbar from '../../components/NavBar/NavBar';
 import { QuestionCircleOutlined } from '@ant-design/icons';
 
-import DayEditor from './LearningStandardDayCreator/DayEditor';
 import UnitCreator from './UnitCreator/UnitCreator';
 import LearningStandardDayCreator from './LearningStandardCreator/LearningStandardCreator';
 import {
@@ -58,8 +57,13 @@ export default function ContentCreator(props) {
       width: '22.5%',
       align: 'left',
       render: (_, key) => (
-        // <DayEditor history={props.history} learningStandard={key} />
-        <LessonEditor id={key.id} lessonName={key.name} learningStandard={key} history={props.history} linkBtn={true} />
+        <LessonEditor
+          id={key.id}
+          lessonName={key.name}
+          learningStandard={key}
+          history={props.history}
+          linkBtn={true}
+        />
       ),
     },
     {
@@ -137,7 +141,8 @@ export default function ContentCreator(props) {
             <div id='content-creator-btn-container'>
               <UnitCreator gradeList={gradeList} />
               <LearningStandardDayCreator
-                setLearningStandardList={setLearningStandardList} history={props.history}
+                setLearningStandardList={setLearningStandardList}
+                history={props.history}
               />
             </div>
             <Table

@@ -1,0 +1,76 @@
+@import '../../../assets/style.less';
+
+#base {
+  background-color: #colors[primary];
+}
+
+#search-button {
+  left: 100px;
+}
+
+#list-position {
+  position: relative;
+
+  #add-button {
+    position: absolute;
+  }
+}
+
+#carousel {
+  width: '160px';
+}
+
+#display-code-modal {
+  #display-code-btn {
+    width: 15vw;
+    min-height: 10vh;
+    font-size: 1em;
+
+    &:hover {
+      width: 18vw;
+    }
+  }
+}
+
+.border-card-info {
+  width: 50px;
+}
+
+.delete-btn {
+  cursor: pointer;
+  font-weight: bolder;
+  font-size: 1.4em;
+  position: absolute;
+  right: 18px;
+  top: 5px;
+}
+
+#card-day {
+  background: #colors[tertiary];
+  border: 2px solid;
+  border-color: #colors[secondary];
+}
+
+#add-day {
+  input[type='text'] {
+    display: block;
+    margin: 5px auto 0px;
+    background: none;
+    border: 2px solid;
+    border-color: #colors[secondary];
+    padding: 10px 10px;
+    width: 90%;
+    outline: none;
+    color: #colors[text-primary];
+    border-radius: 8px;
+    transition: 0.25s;
+  }
+
+  input[type='text']:focus {
+    width: 95%;
+  }
+
+  label {
+    margin: 10px auto 10px;
+  }
+}

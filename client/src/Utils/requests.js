@@ -179,7 +179,7 @@ export const getLearningStandardcount = async () =>
 export const getLearningStandardAll = async () =>
   makeRequest({
     method: GET,
-    path: `${server}/learning-standards`,
+    path: `${server}/learning-standards?_sort=unit.name:ASC,name:ASC`,
     auth: true,
     error: 'Failed to retrieve learning standard.',
   });
@@ -388,20 +388,28 @@ export const updateDayDetails = async (
   id,
   description,
   TekS,
-  scienceObj,
-  makingObj,
-  ComputationObj
-) => {
-  const objectives = [scienceObj, makingObj, ComputationObj];
+  scienceDesc,
+  makingDesc,
+  computationDesc
+) =>
   makeRequest({
     method: PUT,
     path: `${server}/days/${id}`,
     data: {
       description,
       TekS,
-      objectives,
+      scienceDesc,
+      makingDesc,
+      computationDesc,
     },
     auth: true,
     error: 'Failed to update unit',
   });
-};
+
+export const getLearningStandardDays = async (lsId) =>
+  makeRequest({
+    method: GET,
+    path: `${server}/days?learning_standard.id=${lsId}`,
+    auth: true,
+    error: 'Day not be retrived',
+  });

@@ -5,14 +5,17 @@ import {
   createDay,
   getAllUnits,
   getLearningStandardAll,
-  getLearningStandard,
 } from '../../../Utils/requests';
 import './LearningStandardCreator.less';
-import CreateLessonDayEditor from './CreateLessonDayEditor.js'
+import DayEditor from '../DayEditor/DayEditor';
 
-export default function LearningStandardCreator({ setLearningStandardList, history }) {
+export default function LearningStandardCreator({
+  setLearningStandardList,
+  history,
+}) {
   const [visible, setVisible] = useState(false);
-  const [createLessonDayEditorVisible, setCreateLessonDayEditorVisible] = useState(false);
+  const [createLessonDayEditorVisible, setCreateLessonDayEditorVisible] =
+    useState(false);
   const [unitList, setUnitList] = useState([]);
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
@@ -42,8 +45,8 @@ export default function LearningStandardCreator({ setLearningStandardList, histo
 
   const handleCancel = () => {
     setVisible(false);
-  }
-  
+  };
+
   const onClickHandler = async (e) => {
     if (unit === '') {
       message.error('Please select unit');
@@ -150,14 +153,15 @@ export default function LearningStandardCreator({ setLearningStandardList, histo
         </Form>
       </Modal>
 
-      
-      { createLessonDayEditorVisible ? (
-        <CreateLessonDayEditor createLessonDayEditorVisible history={history} learningStandard={learningStandardObj}/>
+      {createLessonDayEditorVisible ? (
+        <DayEditor
+          history={history}
+          learningStandard={learningStandardObj}
+          parentVisible={createLessonDayEditorVisible}
+        />
       ) : (
         <div></div>
-      )
-      }
-    
+      )}
     </div>
   );
 }

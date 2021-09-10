@@ -1,9 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import { Form, Input, Modal, message, Button } from 'antd';
-import DayEditor from '../LearningStandardDayCreator/DayEditor';
-import { getLearningStandard, updateLearningStandard } from '../../../Utils/requests';
+import DayEditor from '../DayEditor/DayEditor';
+import {
+  getLearningStandard,
+  updateLearningStandard,
+} from '../../../Utils/requests';
 
-export default function LessonEditor({ id, lessonName, learningStandard, history }) {
+export default function LessonEditor({
+  id,
+  lessonName,
+  learningStandard,
+  history,
+}) {
   const [visible, setVisible] = useState(false);
   const [name, setName] = useState(lessonName);
   const [description, setDescription] = useState('');
@@ -20,7 +28,6 @@ export default function LessonEditor({ id, lessonName, learningStandard, history
     setTeks(res.data.teks);
     setDayEditorVisible(false);
   };
-
 
   useEffect(() => {
     setDisplayName(lessonName);
@@ -42,12 +49,7 @@ export default function LessonEditor({ id, lessonName, learningStandard, history
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const response = await updateLearningStandard(
-      id,
-      name,
-      description,
-      teks
-    );
+    const response = await updateLearningStandard(id, name, description, teks);
     if (response.err) {
       message.error('Fail to update lesson');
     } else {
@@ -69,12 +71,12 @@ export default function LessonEditor({ id, lessonName, learningStandard, history
         // onCancel={handleCancel}
         // onOk={handleSubmit}
         footer={[
-          <Button key="cancel" onClick={handleCancel}>
-              Cancel
+          <Button key='cancel' onClick={handleCancel}>
+            Cancel
           </Button>,
-          <Button key="next" type="primary" onClick={handleSubmit}>
-              Next
-          </Button>
+          <Button key='next' type='primary' onClick={handleSubmit}>
+            Next
+          </Button>,
         ]}
       >
         <Form
@@ -114,13 +116,15 @@ export default function LessonEditor({ id, lessonName, learningStandard, history
       </Modal>
       {/* <DayEditor history={history} learningStandard={learningStandard} test/> */}
 
-      { dayEditorVisible ? (
-        <DayEditor history={history} learningStandard={learningStandard} dayEditorVisible/>
+      {dayEditorVisible ? (
+        <DayEditor
+          history={history}
+          learningStandard={learningStandard}
+          parentVisible={dayEditorVisible}
+        />
       ) : (
         <div></div>
-      )
-      }
-    
+      )}
     </div>
   );
 }
