@@ -397,6 +397,7 @@ export const updateDayDetails = async (
   id,
   description,
   TekS,
+  link,
   scienceDesc,
   makingDesc,
   computationDesc
@@ -407,6 +408,7 @@ export const updateDayDetails = async (
     data: {
       description,
       TekS,
+      link,
       scienceDesc,
       makingDesc,
       computationDesc,

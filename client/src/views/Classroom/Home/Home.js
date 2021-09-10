@@ -69,8 +69,12 @@ export default function Home(props) {
               <p id='learning-standard-expectations'>{`Expectations: ${activeLearningStandard.expectations}`}</p>
               {activeLearningStandard.link ? (
                 <p>
-                  Link to addtional resources:{' '}
-                  <a href={activeLearningStandard.link} target='_blank'>
+                  Addtional resources to the lesson:{' '}
+                  <a
+                    href={activeLearningStandard.link}
+                    target='_blank'
+                    rel='noreferrer'
+                  >
                     {activeLearningStandard.link}
                   </a>
                 </p>
@@ -86,8 +90,16 @@ export default function Home(props) {
                   >
                     <h3 id='view-day-title'>{`View Day ${day.number}`}</h3>
                     <div id='view-day-description'>
-                      <p>Science Module</p>
-                      <p>More infomation here</p>
+                      <p>TekS: {day.TekS}</p>
+                      <p>Description: {day.description}</p>
+                      {day.link ? (
+                        <p>
+                          Link to Additional Information:{' '}
+                          <a href={day.link} target='_blank' rel='noreferrer'>
+                            {day.link}
+                          </a>
+                        </p>
+                      ) : null}
                     </div>
                   </div>
                 ))}

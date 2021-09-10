@@ -24,6 +24,7 @@ const DayEditor = ({
   const [selectDay, setSelectDay] = useState('');
   const [description, setDescription] = useState('');
   const [TekS, setTekS] = useState('');
+  const [link, setLink] = useState('');
   const [scienceObj, setScienceObj] = useState('');
   const [makingObj, setMakingObj] = useState('');
   const [computationObj, setComputationObj] = useState('');
@@ -33,6 +34,7 @@ const DayEditor = ({
     setSelectDay(dayObj);
     setDescription(dayObj.description);
     setTekS(dayObj.TekS);
+    setLink(dayObj.link);
     const learningComponents = dayObj.objectives;
     setScienceObj(
       learningComponents[0] ? learningComponents[0].description : ''
@@ -105,6 +107,7 @@ const DayEditor = ({
       selectDay.id,
       description,
       TekS,
+      link,
       scienceObj,
       makingObj,
       computationObj
@@ -219,6 +222,16 @@ const DayEditor = ({
               value={computationObj}
               placeholder='Enter computer science component'
             ></Input.TextArea>
+          </Form.Item>
+          <Form.Item
+            id='form-label'
+            label='Link to Additional Resources (Optional)'
+          >
+            <Input
+              onChange={(e) => setLink(e.target.value)}
+              value={link}
+              placeholder='Enter a link'
+            ></Input>
           </Form.Item>
         </Form>
       </Modal>
