@@ -163,6 +163,14 @@ export default function LearningStandardSelect(props) {
         <div id='ls-info'>
           <p id='learning-standard-expectations-title'>Expectations:</p>
           <p id='learning-standard-expectations'>{selected.expectations}</p>
+          {selected.link ? (
+            <p>
+              Link to addtional resources:{' '}
+              <a href={selected.link} target='_blank'>
+                {selected.link}
+              </a>
+            </p>
+          ) : null}
           <div id='btn-container' className='flex space-between'>
             {selected.days
               ? selected.days.map((day) => (

@@ -67,6 +67,14 @@ export default function Home(props) {
                 />
               </div>
               <p id='learning-standard-expectations'>{`Expectations: ${activeLearningStandard.expectations}`}</p>
+              {activeLearningStandard.link ? (
+                <p>
+                  Link to addtional resources:{' '}
+                  <a href={activeLearningStandard.link} target='_blank'>
+                    {activeLearningStandard.link}
+                  </a>
+                </p>
+              ) : null}
               <div id='btn-container' className='flex space-between'>
                 {activeLearningStandard.days.map((day) => (
                   <div
