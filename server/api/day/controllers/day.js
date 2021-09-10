@@ -14,17 +14,15 @@ module.exports = {
         error: 'ValidationError',
       });
 
-    // ensure the request has the right number of params
-    const params = Object.keys(ctx.request.body).length;
-    if (params !== 5)
-      return ctx.badRequest('Invalid number of params!', {
-        id: 'day.update.body.invalid',
-        error: 'ValidationError',
-      });
-
     // validate the request
-    const { description, TekS, scienceDesc, makingDesc, computationDesc } =
-      ctx.request.body;
+    const {
+      description,
+      TekS,
+      link,
+      scienceDesc,
+      makingDesc,
+      computationDesc,
+    } = ctx.request.body;
     if (
       !TekS ||
       !description ||
@@ -66,7 +64,7 @@ module.exports = {
 
       return await strapi.services.day.update(
         { id },
-        { description, TekS, validObjectives }
+        { description, TekS, link, validObjectives }
       );
     }
 
@@ -82,7 +80,10 @@ module.exports = {
     }
 
     // update the day
-    const updatedDay = await strapi.services.day.update({ id }, day);
+    const updatedDay = await strapi.services.day.update(
+      { id },
+      { description, TekS, link }
+    );
     return sanitizeEntity(updatedDay, { model: strapi.models.day });
   },
 
