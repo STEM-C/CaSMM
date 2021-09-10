@@ -18,9 +18,12 @@ import './ContentCreator.less';
 
 const { TabPane } = Tabs;
 
-export default function ContentCreator(props) {
+export default function ContentCreator({ history }) {
   const [gradeList, setGradeList] = useState([]);
   const [learningStandardList, setLearningStandardList] = useState([]);
+  const [viewing, setViewing] = useState(
+    parseInt(history.location.hash.split('#')[1])
+  );
 
   useEffect(() => {
     const fetchData = async () => {
@@ -59,8 +62,10 @@ export default function ContentCreator(props) {
       render: (_, key) => (
         <LessonEditor
           learningStandard={key}
-          history={props.history}
+          history={history}
           linkBtn={true}
+          viewing={viewing}
+          setViewing={setViewing}
         />
       ),
     },
@@ -140,7 +145,9 @@ export default function ContentCreator(props) {
               <UnitCreator gradeList={gradeList} />
               <LearningStandardDayCreator
                 setLearningStandardList={setLearningStandardList}
-                history={props.history}
+                history={history}
+                viewing={viewing}
+                setViewing={setViewing}
               />
             </div>
             <Table

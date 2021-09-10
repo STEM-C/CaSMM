@@ -6,13 +6,17 @@ import {
   updateLearningStandard,
 } from '../../../Utils/requests';
 
-export default function LessonEditor({ learningStandard, history }) {
+export default function LessonEditor({
+  learningStandard,
+  history,
+  viewing,
+  setViewing,
+}) {
   const [visible, setVisible] = useState(false);
   const [name, setName] = useState(learningStandard.name);
   const [description, setDescription] = useState('');
   const [teks, setTeks] = useState('');
   const [link, setLink] = useState('');
-  const [dayEditorVisible, setDayEditorVisible] = useState(false);
 
   const [displayName, setDisplayName] = useState(learningStandard.name);
 
@@ -23,7 +27,6 @@ export default function LessonEditor({ learningStandard, history }) {
     setDescription(res.data.expectations);
     setTeks(res.data.teks);
     setLink(res.data.link);
-    setDayEditorVisible(false);
   };
 
   useEffect(() => {
@@ -48,8 +51,9 @@ export default function LessonEditor({ learningStandard, history }) {
     } else {
       message.success('Update lesson success');
       setDisplayName(name);
+      history.push(`#${response.data.id}`);
+      setViewing(response.data.id);
       setVisible(false);
-      setDayEditorVisible(true);
     }
   };
 
@@ -114,11 +118,11 @@ export default function LessonEditor({ learningStandard, history }) {
           </Form.Item>
         </Form>
       </Modal>
-      {dayEditorVisible ? (
+      {!visible ? (
         <DayEditor
           history={history}
           learningStandard={learningStandard}
-          parentVisible={dayEditorVisible}
+          viewing={viewing}
         />
       ) : null}
     </div>

@@ -12,10 +12,10 @@ import DayEditor from '../DayEditor/DayEditor';
 export default function LearningStandardCreator({
   setLearningStandardList,
   history,
+  viewing,
+  setViewing,
 }) {
   const [visible, setVisible] = useState(false);
-  const [createLessonDayEditorVisible, setCreateLessonDayEditorVisible] =
-    useState(false);
   const [unitList, setUnitList] = useState([]);
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
@@ -42,7 +42,6 @@ export default function LearningStandardCreator({
     setLink('');
     setNumofDays('');
     setVisible(true);
-    setCreateLessonDayEditorVisible(false);
   };
 
   const handleCancel = () => {
@@ -75,9 +74,10 @@ export default function LearningStandardCreator({
       message.success('Successfully created lesson');
       const lsRes = await getLearningStandardAll();
       setLearningStandardList(lsRes.data);
-      setVisible(false);
       setLearningStandardObj(res.data);
-      setCreateLessonDayEditorVisible(true);
+      history.push(`#${res.data.id}`);
+      setViewing(res.data.id);
+      setVisible(false);
     }
   };
 
@@ -171,11 +171,11 @@ export default function LearningStandardCreator({
         </Form>
       </Modal>
 
-      {createLessonDayEditorVisible ? (
+      {!visible ? (
         <DayEditor
           history={history}
           learningStandard={learningStandardObj}
-          parentVisible={createLessonDayEditorVisible}
+          viewing={viewing}
         />
       ) : null}
     </div>

@@ -10,7 +10,7 @@ import {
 } from '../../../Utils/requests';
 import './DayEditor.less';
 
-const DayEditor = ({ learningStandard, history, parentVisible }) => {
+const DayEditor = ({ learningStandard, history, viewing }) => {
   const [visible, setVisible] = useState(false);
   const [dayDetailsVisible, setDayDetailsVisible] = useState(false);
   const [days, setDay] = useState([]);
@@ -41,14 +41,18 @@ const DayEditor = ({ learningStandard, history, parentVisible }) => {
 
   useEffect(() => {
     const getDay = async () => {
-      const getDayAll = await getLearningStandardDays(learningStandard.id);
-      const myDays = getDayAll.data;
-      myDays.sort((a, b) => (a.number > b.number ? 1 : -1));
-      setDay([...myDays]);
-      setVisible(parentVisible);
+      console.log('viewing: ' + viewing);
+      console.log('ls_id: ' + learningStandard.id);
+      if (viewing && viewing === learningStandard.id) {
+        const getDayAll = await getLearningStandardDays(viewing);
+        const myDays = getDayAll.data;
+        myDays.sort((a, b) => (a.number > b.number ? 1 : -1));
+        setDay([...myDays]);
+        setVisible(true);
+      }
     };
     getDay();
-  }, [learningStandard, parentVisible]);
+  }, [viewing, learningStandard.id]);
 
   const addBasicDay = async () => {
     let newDay = 1;
@@ -113,8 +117,14 @@ const DayEditor = ({ learningStandard, history, parentVisible }) => {
       <Modal
         title={learningStandard.name}
         visible={visible}
-        onCancel={() => setVisible(false)}
-        onOk={() => setVisible(false)}
+        onCancel={() => {
+          setVisible(false);
+          history.push('#');
+        }}
+        onOk={() => {
+          setVisible(false);
+          history.push('#');
+        }}
         size='large'
       >
         <div className='list-position'>

@@ -17,9 +17,6 @@ export default function Classroom(props) {
   const tab = hash[1];
   const viewing = parseInt(hash[2]);
 
-  console.log(history.location);
-  console.log(viewing);
-
   return (
     <div className='container nav-padding'>
       <NavBar isMentor={true} />
