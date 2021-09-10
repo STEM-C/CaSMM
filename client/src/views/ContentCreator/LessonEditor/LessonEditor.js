@@ -11,6 +11,7 @@ export default function LessonEditor({
   history,
   viewing,
   setViewing,
+  page,
 }) {
   const [visible, setVisible] = useState(false);
   const [name, setName] = useState(learningStandard.name);
@@ -51,7 +52,7 @@ export default function LessonEditor({
     } else {
       message.success('Update lesson success');
       setDisplayName(name);
-      history.push(`#${response.data.id}`);
+      history.push(`#${page}#${response.data.id}`);
       setViewing(response.data.id);
       setVisible(false);
     }
@@ -123,6 +124,7 @@ export default function LessonEditor({
           history={history}
           learningStandard={learningStandard}
           viewing={viewing}
+          page={page}
         />
       ) : null}
     </div>

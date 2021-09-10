@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 
-import { Tabs, Table, Popconfirm, message } from 'antd';
+import { Tabs, Table, Popconfirm, message, Pagination } from 'antd';
 import Navbar from '../../components/NavBar/NavBar';
 import { QuestionCircleOutlined } from '@ant-design/icons';
 
@@ -21,9 +21,20 @@ const { TabPane } = Tabs;
 export default function ContentCreator({ history }) {
   const [gradeList, setGradeList] = useState([]);
   const [learningStandardList, setLearningStandardList] = useState([]);
-  const [viewing, setViewing] = useState(
-    parseInt(history.location.hash.split('#')[1])
+  const [page, setPage] = useState(
+    history.location.hash.split('#')[1]
+      ? parseInt(history.location.hash.split('#')[1])
+      : 1
   );
+  const [viewing, setViewing] = useState(
+    parseInt(history.location.hash.split('#')[2])
+  );
+
+  useEffect(() => {
+    if (page) {
+      setPage(page);
+    }
+  }, [page]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -66,6 +77,7 @@ export default function ContentCreator({ history }) {
           linkBtn={true}
           viewing={viewing}
           setViewing={setViewing}
+          page={page}
         />
       ),
     },
@@ -154,6 +166,11 @@ export default function ContentCreator({ history }) {
               columns={columns}
               dataSource={learningStandardList}
               rowClassName='editable-row'
+              onChange={(Pagination) => {
+                setPage(Pagination.current);
+                history.push(`#${Pagination.current}`);
+              }}
+              pagination={{ current: page ? page : 1 }}
             ></Table>
           </div>
         </TabPane>

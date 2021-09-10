@@ -10,7 +10,7 @@ import {
 } from '../../../Utils/requests';
 import './DayEditor.less';
 
-const DayEditor = ({ learningStandard, history, viewing }) => {
+const DayEditor = ({ learningStandard, history, viewing, page }) => {
   const [visible, setVisible] = useState(false);
   const [dayDetailsVisible, setDayDetailsVisible] = useState(false);
   const [days, setDay] = useState([]);
@@ -119,11 +119,11 @@ const DayEditor = ({ learningStandard, history, viewing }) => {
         visible={visible}
         onCancel={() => {
           setVisible(false);
-          history.push('#');
+          history.push(`#${page}`);
         }}
         onOk={() => {
           setVisible(false);
-          history.push('#');
+          history.push(`#${page}`);
         }}
         size='large'
       >
