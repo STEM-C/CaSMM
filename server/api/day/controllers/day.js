@@ -16,47 +16,75 @@ module.exports = {
 
     // ensure the request has the right number of params
     const params = Object.keys(ctx.request.body).length;
-    if (params !== 3)
+    if (params !== 5)
       return ctx.badRequest('Invalid number of params!', {
         id: 'day.update.body.invalid',
         error: 'ValidationError',
       });
 
     // validate the request
-    const { description, TekS, objectives } = ctx.request.body;
-    if (!TekS || !description || objectives.length !== 3)
+    const { description, TekS, scienceDesc, makingDesc, computationDesc } =
+      ctx.request.body;
+    if (
+      !TekS ||
+      !description ||
+      !scienceDesc ||
+      !makingDesc ||
+      !computationDesc
+    )
       return ctx.badRequest(
         'A description, Teks must be provided! Must have 3 objectives! ',
         { id: 'day.update.body.invalid', error: 'ValidationError' }
       );
+    const objectives = [scienceDesc, makingDesc, computationDesc];
 
-    // Get objective types
-    const objective_types = await strapi.services['objective-type'].find({});
+    let day = await strapi.services.day.findOne({ id: id });
+    let validObjectives;
+    // If we do not have any objectives, create new ones.
+    if (day.objectives.length !== 0) {
+      console.log('in if');
+      // Get objective types
+      const objective_types = await strapi.services['objective-type'].find({});
 
-    // Create Objectives
-    const scienceObj = await strapi.services.objective.create({
-      description: objectives[0],
-      day: id,
-      objective_type: objective_types[0],
-    });
-    const makingObj = await strapi.services.objective.create({
-      description: objectives[1],
-      day: id,
-      objective_type: objective_types[1],
-    });
-    const computationObj = await strapi.services.objective.create({
-      description: objectives[2],
-      day: id,
-      objective_type: objective_types[2],
-    });
-    // put the three objective into an array
-    const validObjectives = [scienceObj, makingObj, computationObj];
+      // Create Objectives
+      const scienceObj = await strapi.services.objective.create({
+        description: objectives[0],
+        day: id,
+        objective_type: objective_types[0],
+      });
+      const makingObj = await strapi.services.objective.create({
+        description: objectives[1],
+        day: id,
+        objective_type: objective_types[1],
+      });
+      const computationObj = await strapi.services.objective.create({
+        description: objectives[2],
+        day: id,
+        objective_type: objective_types[2],
+      });
+      // put the three objective into an array
+      validObjectives = [scienceObj, makingObj, computationObj];
+
+      return await strapi.services.day.update(
+        { id },
+        { description, TekS, validObjectives }
+      );
+    }
+
+    // If we have the objectives, just modify them.
+    for (let i = 0; i < 3; i++) {
+      let objDescription = day.objectives[i].description;
+      strapi.query('objective').update(
+        { description: objDescription },
+        {
+          description: objectives[i],
+        }
+      );
+    }
 
     // update the day
-    return await strapi.services.day.update(
-      { id },
-      { description, TekS, validObjectives }
-    );
+    const updatedDay = await strapi.services.day.update({ id }, day);
+    return sanitizeEntity(updatedDay, { model: strapi.models.day });
   },
 
   // Update day template and block list
