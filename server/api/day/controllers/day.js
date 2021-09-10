@@ -41,8 +41,7 @@ module.exports = {
     let day = await strapi.services.day.findOne({ id: id });
     let validObjectives;
     // If we do not have any objectives, create new ones.
-    if (day.objectives.length !== 0) {
-      console.log('in if');
+    if (day.objectives.length === 0) {
       // Get objective types
       const objective_types = await strapi.services['objective-type'].find({});
 
