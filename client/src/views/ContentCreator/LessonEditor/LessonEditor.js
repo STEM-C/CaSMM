@@ -6,42 +6,29 @@ import {
   updateLearningStandard,
 } from '../../../Utils/requests';
 
-export default function LessonEditor({
-  id,
-  lessonName,
-  learningStandard,
-  history,
-}) {
+export default function LessonEditor({ learningStandard, history }) {
   const [visible, setVisible] = useState(false);
-  const [name, setName] = useState(lessonName);
+  const [name, setName] = useState(learningStandard.name);
   const [description, setDescription] = useState('');
   const [teks, setTeks] = useState('');
+  const [link, setLink] = useState('');
   const [dayEditorVisible, setDayEditorVisible] = useState(false);
 
-  const [displayName, setDisplayName] = useState(lessonName);
+  const [displayName, setDisplayName] = useState(learningStandard.name);
 
   const showModal = async () => {
     setVisible(true);
-    const res = await getLearningStandard(id);
+    const res = await getLearningStandard(learningStandard.id);
     setName(res.data.name);
     setDescription(res.data.expectations);
     setTeks(res.data.teks);
+    setLink(res.data.link);
     setDayEditorVisible(false);
   };
 
   useEffect(() => {
-    setDisplayName(lessonName);
-  }, [lessonName]);
-
-  useEffect(() => {
-    const fetchLesson = async () => {
-      const res = await getLearningStandard(id);
-      setName(res.data.name);
-      setDescription(res.data.expectations);
-      setTeks(res.data.teks);
-    };
-    fetchLesson();
-  }, [id]);
+    setDisplayName(learningStandard.name);
+  }, [learningStandard.name]);
 
   const handleCancel = () => {
     setVisible(false);
@@ -49,7 +36,13 @@ export default function LessonEditor({
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const response = await updateLearningStandard(id, name, description, teks);
+    const response = await updateLearningStandard(
+      learningStandard.id,
+      name,
+      description,
+      teks,
+      link
+    );
     if (response.err) {
       message.error('Fail to update lesson');
     } else {
@@ -68,8 +61,6 @@ export default function LessonEditor({
       <Modal
         title='Lesson Editor'
         visible={visible}
-        // onCancel={handleCancel}
-        // onOk={handleSubmit}
         footer={[
           <Button key='cancel' onClick={handleCancel}>
             Cancel
@@ -112,19 +103,24 @@ export default function LessonEditor({
               placeholder='Enter lesson teks'
             />
           </Form.Item>
+          <Form.Item label='Link to Additional Resource'>
+            <Input
+              onChange={(e) => {
+                setLink(e.target.value);
+              }}
+              value={link}
+              placeholder='Enter a link'
+            />
+          </Form.Item>
         </Form>
       </Modal>
-      {/* <DayEditor history={history} learningStandard={learningStandard} test/> */}
-
       {dayEditorVisible ? (
         <DayEditor
           history={history}
           learningStandard={learningStandard}
           parentVisible={dayEditorVisible}
         />
-      ) : (
-        <div></div>
-      )}
+      ) : null}
     </div>
   );
 }

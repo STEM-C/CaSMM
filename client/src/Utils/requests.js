@@ -302,17 +302,19 @@ export const createLearningStandard = async (
   name,
   number,
   unit,
-  teks
+  teks,
+  link
 ) =>
   makeRequest({
     method: POST,
     path: `${server}/learning-standards`,
     data: {
       expectations: description,
-      name: name,
-      number: number,
-      unit: unit,
-      teks: teks,
+      name,
+      number,
+      unit,
+      teks,
+      link,
     },
     auth: true,
     error: 'Login failed.',
@@ -371,7 +373,13 @@ export const getGrade = async (grade) =>
     error: 'Grade could not be retrieved',
   });
 
-export const updateLearningStandard = async (id, name, expectations, teks) =>
+export const updateLearningStandard = async (
+  id,
+  name,
+  expectations,
+  teks,
+  link
+) =>
   makeRequest({
     method: PUT,
     path: `${server}/learning-standards/${id}`,
@@ -379,6 +387,7 @@ export const updateLearningStandard = async (id, name, expectations, teks) =>
       name,
       teks,
       expectations,
+      link,
     },
     auth: true,
     error: 'Failed to update unit',

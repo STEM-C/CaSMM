@@ -16,14 +16,6 @@ module.exports = {
         error: 'ValidationError',
       });
 
-    // ensure the request has the right number of params
-    const params = Object.keys(ctx.request.body).length;
-    if (params !== 3)
-      return ctx.badRequest('Invalid number of params!', {
-        id: 'Learning-standard.update.body.invalid',
-        error: 'ValidationError',
-      });
-
     // validate the request
     const { name, expectations, teks } = ctx.request.body;
     if (!expectations || !name || !teks)

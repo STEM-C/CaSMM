@@ -58,8 +58,6 @@ export default function ContentCreator(props) {
       align: 'left',
       render: (_, key) => (
         <LessonEditor
-          id={key.id}
-          lessonName={key.name}
           learningStandard={key}
           history={props.history}
           linkBtn={true}

@@ -22,6 +22,7 @@ export default function LearningStandardCreator({
   const [unit, setUnit] = useState('');
   const [numofDays, setNumofDays] = useState('');
   const [teks, setTeks] = useState('');
+  const [link, setLink] = useState('');
   const [learningStandardObj, setLearningStandardObj] = useState('');
 
   useEffect(() => {
@@ -38,6 +39,7 @@ export default function LearningStandardCreator({
     setDescription('');
     setName('');
     setTeks('');
+    setLink('');
     setNumofDays('');
     setVisible(true);
     setCreateLessonDayEditorVisible(false);
@@ -53,7 +55,14 @@ export default function LearningStandardCreator({
       return;
     }
     e.preventDefault();
-    const res = await createLearningStandard(description, name, 0, unit, teks);
+    const res = await createLearningStandard(
+      description,
+      name,
+      0,
+      unit,
+      teks,
+      link
+    );
     if (res.err) {
       message.error('Fail to create new learning standard');
     } else {
@@ -150,6 +159,15 @@ export default function LearningStandardCreator({
               placeholder='Enter lesson Teks'
             />
           </Form.Item>
+          <Form.Item label='Link to Additional Resource'>
+            <Input
+              onChange={(e) => {
+                setLink(e.target.value);
+              }}
+              value={link}
+              placeholder='Enter a link'
+            />
+          </Form.Item>
         </Form>
       </Modal>
 
@@ -159,9 +177,7 @@ export default function LearningStandardCreator({
           learningStandard={learningStandardObj}
           parentVisible={createLessonDayEditorVisible}
         />
-      ) : (
-        <div></div>
-      )}
+      ) : null}
     </div>
   );
 }
