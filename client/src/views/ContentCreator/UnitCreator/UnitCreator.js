@@ -23,8 +23,8 @@ export default function UnitCreator({ gradeList }) {
     setVisible(false);
   };
 
-  const onClickHandler = async (e) => {
-    e.preventDefault();
+  const handleSubmit = async (e) => {
+    console.log(e);
     const res = await createUnit(number, name, tek, description, grade);
     console.log(res);
     if (res.err) {
@@ -45,11 +45,7 @@ export default function UnitCreator({ gradeList }) {
         visible={visible}
         width='35vw'
         onCancel={handleCancel}
-        footer={[
-          <Button key='cancel' onClick={handleCancel}>
-            Cancel
-          </Button>,
-        ]}
+        footer={null}
       >
         <Form
           id='add-units'
@@ -59,6 +55,7 @@ export default function UnitCreator({ gradeList }) {
           wrapperCol={{
             span: 14,
           }}
+          onFinish={handleSubmit}
           layout='horizontal'
           size='default'
         >
@@ -116,9 +113,27 @@ export default function UnitCreator({ gradeList }) {
               required
             />
           </Form.Item>
-          <Form.Item>
-            <Button type='primary' htmlType='submit'>
+          <Form.Item
+            wrapperCol={{
+              offset: 8,
+              span: 16,
+            }}
+            style={{ marginBottom: '0px' }}
+          >
+            <Button
+              type='primary'
+              htmlType='submit'
+              size='large'
+              className='content-creator-button'
+            >
               Submit
+            </Button>
+            <Button
+              onClick={handleCancel}
+              size='large'
+              className='content-creator-button'
+            >
+              Cancel
             </Button>
           </Form.Item>
         </Form>

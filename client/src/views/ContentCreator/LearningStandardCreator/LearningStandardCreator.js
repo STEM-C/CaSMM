@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Form, Input, Modal, message } from 'antd';
+import { Form, Input, Modal, message, Button } from 'antd';
 import {
   createLearningStandard,
   createDay,
@@ -49,12 +49,12 @@ export default function LearningStandardCreator({
     setVisible(false);
   };
 
-  const onClickHandler = async (e) => {
+  const handleSubmit = async (e) => {
     if (unit === '') {
       message.error('Please select unit');
       return;
     }
-    e.preventDefault();
+    console.log(e);
     const res = await createLearningStandard(
       description,
       name,
@@ -76,9 +76,12 @@ export default function LearningStandardCreator({
       const lsRes = await getLearningStandardAll();
       setLearningStandardList(lsRes.data);
       setLearningStandardObj(res.data);
+
+      // find the position of the newly created ls
       found = lsRes.data.findIndex((ls) => ls.id === res.data.id);
-      console.log(found);
       found = Math.ceil(found / 10);
+      // set the history so that modal will reopen when
+      // user comes back from workspace
       history.push(`#home#${found}#${res.data.id}`);
       setViewing(res.data.id);
       setVisible(false);
@@ -96,7 +99,7 @@ export default function LearningStandardCreator({
         visible={visible}
         width='35vw'
         onCancel={handleCancel}
-        onOk={onClickHandler}
+        footer={null}
       >
         <Form
           id='add-learning-standard'
@@ -106,6 +109,7 @@ export default function LearningStandardCreator({
           wrapperCol={{
             span: 14,
           }}
+          onFinish={handleSubmit}
           layout='horizontal'
           size='default'
         >
@@ -115,6 +119,7 @@ export default function LearningStandardCreator({
               name='unit'
               defaultValue={unit}
               onChange={(e) => setUnit(e.target.value)}
+              required
             >
               <option key={0} value={unit} id='disabled-option' disabled>
                 Unit
@@ -130,6 +135,7 @@ export default function LearningStandardCreator({
             <Input
               onChange={(e) => setName(e.target.value)}
               value={name}
+              required
               placeholder='Enter lesson name'
             />
           </Form.Item>
@@ -138,6 +144,7 @@ export default function LearningStandardCreator({
               onChange={(e) => {
                 setNumofDays(e.target.value);
               }}
+              required
               value={numofDays}
               placeholder='Enter number of days'
               type='number'
@@ -148,6 +155,7 @@ export default function LearningStandardCreator({
           <Form.Item label='Description'>
             <Input.TextArea
               rows={3}
+              required
               onChange={(e) => {
                 setDescription(e.target.value);
               }}
@@ -160,6 +168,7 @@ export default function LearningStandardCreator({
               onChange={(e) => {
                 setTeks(e.target.value);
               }}
+              required
               value={teks}
               placeholder='Enter lesson Teks'
             />
@@ -172,6 +181,29 @@ export default function LearningStandardCreator({
               value={link}
               placeholder='Enter a link'
             />
+          </Form.Item>
+          <Form.Item
+            wrapperCol={{
+              offset: 8,
+              span: 16,
+            }}
+            style={{ marginBottom: '0px' }}
+          >
+            <Button
+              type='primary'
+              htmlType='submit'
+              size='large'
+              className='content-creator-button'
+            >
+              Next
+            </Button>
+            <Button
+              onClick={handleCancel}
+              size='large'
+              className='content-creator-button'
+            >
+              Cancel
+            </Button>
           </Form.Item>
         </Form>
       </Modal>

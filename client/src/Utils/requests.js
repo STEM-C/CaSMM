@@ -422,5 +422,13 @@ export const getLearningStandardDays = async (lsId) =>
     method: GET,
     path: `${server}/days?learning_standard.id=${lsId}`,
     auth: true,
-    error: 'Day not be retrived',
+    error: 'Day cannot be retrived',
+  });
+
+export const getDay = async (id) =>
+  makeRequest({
+    method: GET,
+    path: `${server}/days/${id}`,
+    auth: true,
+    error: 'Day cannot be retrived',
   });

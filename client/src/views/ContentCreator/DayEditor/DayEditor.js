@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Button, List, Card, Modal, Form, message, Input } from 'antd';
 import {
   createDay,
+  getDay,
   deleteDay,
   getDayToolboxAll,
   getDayToolbox,
@@ -30,12 +31,17 @@ const DayEditor = ({
   const [computationObj, setComputationObj] = useState('');
 
   const showDayDetailsModal = async (dayObj) => {
+    const response = await getDay(dayObj.id);
+    if (response.err) {
+      message.error(response.err);
+      return;
+    }
     setDayDetailsVisible(true);
-    setSelectDay(dayObj);
-    setDescription(dayObj.description);
-    setTekS(dayObj.TekS);
-    setLink(dayObj.link);
-    const learningComponents = dayObj.objectives;
+    setSelectDay(response.data);
+    setDescription(response.data.description);
+    setTekS(response.data.TekS);
+    setLink(response.data.link);
+    const learningComponents = response.data.objectives;
     setScienceObj(
       learningComponents[0] ? learningComponents[0].description : ''
     );
@@ -49,7 +55,7 @@ const DayEditor = ({
   };
 
   useEffect(() => {
-    const getDay = async () => {
+    const getSavedDay = async () => {
       if (viewing && viewing === learningStandard.id) {
         const getDayAll = await getLearningStandardDays(viewing);
         const myDays = getDayAll.data;
@@ -58,7 +64,7 @@ const DayEditor = ({
         setVisible(true);
       }
     };
-    getDay();
+    getSavedDay();
   }, [viewing, learningStandard.id]);
 
   const addBasicDay = async () => {
@@ -90,19 +96,7 @@ const DayEditor = ({
     }
   };
 
-  const handleViewDay = async (day) => {
-    const allToolBoxRes = await getDayToolboxAll();
-    const selectedToolBoxRes = await getDayToolbox(day.id);
-    day.selectedToolbox = selectedToolBoxRes.data.toolbox;
-    day.toolbox = allToolBoxRes.data.toolbox;
-
-    day.learning_standard_name = learningStandard.name;
-    localStorage.setItem('my-day', JSON.stringify(day));
-    history.push('/day');
-  };
-
-  const onClickDayDetailsHandler = async (e) => {
-    e.preventDefault();
+  const handleWorkspace = async (e) => {
     const res = await updateDayDetails(
       selectDay.id,
       description,
@@ -115,8 +109,47 @@ const DayEditor = ({
     if (res.err) {
       message.error(res.err);
     } else {
+      message.success('Successfully saved day');
       setDayDetailsVisible(false);
-      handleViewDay(selectDay);
+      handleViewDay(res.data);
+    }
+  };
+
+  const handleViewDay = async (day) => {
+    const allToolBoxRes = await getDayToolboxAll();
+    const selectedToolBoxRes = await getDayToolbox(day.id);
+    day.selectedToolbox = selectedToolBoxRes.data.toolbox;
+    day.toolbox = allToolBoxRes.data.toolbox;
+
+    day.learning_standard_name = learningStandard.name;
+    localStorage.setItem('my-day', JSON.stringify(day));
+    history.push('/day');
+  };
+
+  const handleCancel = () => {
+    setVisible(false);
+    setViewing(undefined);
+    history.push(`#${tab}#${page}`);
+  };
+
+  const handleSave = async (e) => {
+    const res = await updateDayDetails(
+      selectDay.id,
+      description,
+      TekS,
+      link,
+      scienceObj,
+      makingObj,
+      computationObj
+    );
+    if (res.err) {
+      message.error(res.err);
+    } else {
+      message.success('Successfully saved day');
+      const getDayAll = await getLearningStandardDays(viewing);
+      const myDays = getDayAll.data;
+      myDays.sort((a, b) => (a.number > b.number ? 1 : -1));
+      setDay([...myDays]);
     }
   };
 
@@ -125,41 +158,38 @@ const DayEditor = ({
       <Modal
         title={learningStandard.name}
         visible={visible}
-        onCancel={() => {
-          setVisible(false);
-          setViewing(undefined);
-          history.push(`#${tab}#${page}`);
-        }}
-        onOk={() => {
-          setVisible(false);
-          setViewing(undefined);
-          history.push(`#${tab}#${page}`);
-        }}
+        onCancel={handleCancel}
+        footer={null}
         size='large'
       >
         <div className='list-position'>
           {days.length > 0 ? (
-            <List
-              grid={{ gutter: 16, column: 3 }}
-              dataSource={days}
-              renderItem={(item) => (
-                <List.Item>
-                  <Card
-                    id='card-day'
-                    key={item.id}
-                    title={'Day ' + item.number}
-                    hoverable='true'
-                    onClick={() => showDayDetailsModal(item)}
-                  />
-                  <span
-                    className='delete-btn'
-                    onClick={() => removeBasicDay(item)}
-                  >
-                    &times;
-                  </span>
-                </List.Item>
-              )}
-            />
+            <div>
+              <h3>Click Day to edit day detail and workspace</h3>
+              <List
+                grid={{ gutter: 16, column: 3 }}
+                style={{ marginTop: '2vh' }}
+                dataSource={days}
+                renderItem={(item) => (
+                  <List.Item>
+                    <Card
+                      id='card-day'
+                      key={item.id}
+                      title={'Day ' + item.number}
+                      hoverable='true'
+                      style={item.description ? { background: '#a6ffb3' } : {}}
+                      onClick={() => showDayDetailsModal(item)}
+                    />
+                    <span
+                      className='delete-btn'
+                      onClick={() => removeBasicDay(item)}
+                    >
+                      &times;
+                    </span>
+                  </List.Item>
+                )}
+              />
+            </div>
           ) : null}
           <div>
             <Form
@@ -170,9 +200,29 @@ const DayEditor = ({
               layout='horizontal'
               size='default'
             >
-              <Button onClick={addBasicDay} type='primary'>
-                Add Day
-              </Button>
+              <Form.Item
+                wrapperCol={{
+                  offset: 8,
+                  span: 16,
+                }}
+                style={{ marginBottom: '0px' }}
+              >
+                <Button
+                  onClick={addBasicDay}
+                  type='primary'
+                  size='large'
+                  className='content-creator-button'
+                >
+                  Add Day
+                </Button>
+                <Button
+                  onClick={handleCancel}
+                  size='large'
+                  className='content-creator-button'
+                >
+                  Cancel
+                </Button>
+              </Form.Item>
             </Form>
           </div>
         </div>
@@ -182,14 +232,26 @@ const DayEditor = ({
         title='Selected Day Details Editor'
         visible={dayDetailsVisible}
         onCancel={() => setDayDetailsVisible(false)}
-        onOk={onClickDayDetailsHandler}
+        footer={null}
         width='35vw'
       >
-        <Form id='add-day-details' layout='horizontal' size='default'>
+        <Form
+          id='add-units'
+          layout='horizontal'
+          size='default'
+          labelCol={{
+            span: 6,
+          }}
+          wrapperCol={{
+            span: 14,
+          }}
+          onFinish={handleSave}
+        >
           <Form.Item id='form-label' label='Description'>
             <Input.TextArea
               onChange={(e) => setDescription(e.target.value)}
               value={description}
+              required
               placeholder='Enter description'
             ></Input.TextArea>
           </Form.Item>
@@ -197,15 +259,16 @@ const DayEditor = ({
             <Input
               onChange={(e) => setTekS(e.target.value)}
               value={TekS}
+              required
               placeholder='Enter tekS'
             ></Input>
           </Form.Item>
-
           <h3>Lesson Learning Components</h3>
           <Form.Item id='form-label' label='Science Component'>
             <Input.TextArea
               onChange={(e) => setScienceObj(e.target.value)}
               value={scienceObj}
+              required
               placeholder='Enter science component'
             ></Input.TextArea>
           </Form.Item>
@@ -213,6 +276,7 @@ const DayEditor = ({
             <Input.TextArea
               onChange={(e) => setMakingObj(e.target.value)}
               value={makingObj}
+              required
               placeholder='Enter maker component'
             ></Input.TextArea>
           </Form.Item>
@@ -220,9 +284,11 @@ const DayEditor = ({
             <Input.TextArea
               onChange={(e) => setComputationObj(e.target.value)}
               value={computationObj}
+              required
               placeholder='Enter computer science component'
             ></Input.TextArea>
           </Form.Item>
+          <h3>Additional Information</h3>
           <Form.Item
             id='form-label'
             label='Link to Additional Resources (Optional)'
@@ -232,6 +298,44 @@ const DayEditor = ({
               value={link}
               placeholder='Enter a link'
             ></Input>
+          </Form.Item>
+          <Form.Item
+            id='form-label'
+            wrapperCol={{
+              offset: 0,
+              span: 25,
+            }}
+          >
+            <Button
+              type='primary'
+              style={{ width: '100%', height: '5vh' }}
+              onClick={handleWorkspace}
+            >
+              Save and go to Workspace
+            </Button>
+          </Form.Item>
+          <Form.Item
+            wrapperCol={{
+              offset: 8,
+              span: 16,
+            }}
+            style={{ marginBottom: '0px' }}
+          >
+            <Button
+              type='primary'
+              htmlType='submit'
+              size='large'
+              className='content-creator-button'
+            >
+              Save
+            </Button>
+            <Button
+              onClick={() => setDayDetailsVisible(false)}
+              size='large'
+              className='content-creator-button'
+            >
+              Cancel
+            </Button>
           </Form.Item>
         </Form>
       </Modal>

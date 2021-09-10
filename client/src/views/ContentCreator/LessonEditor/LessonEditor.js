@@ -40,7 +40,7 @@ export default function LessonEditor({
   };
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
+    console.log(e);
     const response = await updateLearningStandard(
       learningStandard.id,
       name,
@@ -68,14 +68,8 @@ export default function LessonEditor({
         title='Lesson Editor'
         visible={visible}
         width='35vw'
-        footer={[
-          <Button key='cancel' onClick={handleCancel}>
-            Cancel
-          </Button>,
-          <Button key='next' type='primary' onClick={handleSubmit}>
-            Next
-          </Button>,
-        ]}
+        onCancel={handleCancel}
+        footer={null}
       >
         <Form
           id='add-units'
@@ -85,6 +79,7 @@ export default function LessonEditor({
           wrapperCol={{
             span: 14,
           }}
+          onFinish={handleSubmit}
           layout='horizontal'
           size='default'
         >
@@ -92,6 +87,7 @@ export default function LessonEditor({
             <Input
               onChange={(e) => setName(e.target.value)}
               value={name}
+              required
               placeholder='Enter lesson name'
             />
           </Form.Item>
@@ -100,6 +96,7 @@ export default function LessonEditor({
               onChange={(e) => setDescription(e.target.value)}
               value={description}
               rows={3}
+              required
               placeholder='Enter lesson description'
             />
           </Form.Item>
@@ -107,6 +104,7 @@ export default function LessonEditor({
             <Input
               onChange={(e) => setTeks(e.target.value)}
               value={teks}
+              required
               placeholder='Enter lesson teks'
             />
           </Form.Item>
@@ -118,6 +116,29 @@ export default function LessonEditor({
               value={link}
               placeholder='Enter a link'
             />
+          </Form.Item>
+          <Form.Item
+            wrapperCol={{
+              offset: 8,
+              span: 16,
+            }}
+            style={{ marginBottom: '0px' }}
+          >
+            <Button
+              type='primary'
+              htmlType='submit'
+              size='large'
+              className='content-creator-button'
+            >
+              Next
+            </Button>
+            <Button
+              onClick={handleCancel}
+              size='large'
+              className='content-creator-button'
+            >
+              Cancel
+            </Button>
           </Form.Item>
         </Form>
       </Modal>
