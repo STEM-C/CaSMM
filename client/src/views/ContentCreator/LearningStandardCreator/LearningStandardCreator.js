@@ -189,7 +189,7 @@ export default function LearningStandardCreator({
               placeholder='Enter lesson Teks'
             />
           </Form.Item>
-          <Form.Item label='Link to Additional Resource'>
+          <Form.Item label='Link to Additional Resource (Optional)'>
             <Input
               onChange={(e) => {
                 setLink(e.target.value);
