@@ -19,6 +19,7 @@ export default function LessonEditor({
   const [description, setDescription] = useState('');
   const [teks, setTeks] = useState('');
   const [link, setLink] = useState('');
+  const [linkError, setLinkError] = useState(false);
 
   const [displayName, setDisplayName] = useState(learningStandard.name);
 
@@ -29,6 +30,7 @@ export default function LessonEditor({
     setDescription(res.data.expectations);
     setTeks(res.data.teks);
     setLink(res.data.link);
+    setLinkError(false);
   };
 
   useEffect(() => {
@@ -39,8 +41,15 @@ export default function LessonEditor({
     setVisible(false);
   };
 
-  const handleSubmit = async (e) => {
-    console.log(e);
+  const handleSubmit = async () => {
+    if (link) {
+      const goodLink = checkURL(link);
+      if (!goodLink) {
+        setLinkError(true);
+        message.error('Please Enter a valid URL starting with HTTP/HTTPS', 4);
+        return;
+      }
+    }
     const response = await updateLearningStandard(
       learningStandard.id,
       name,
@@ -57,6 +66,15 @@ export default function LessonEditor({
       setViewing(response.data.id);
       setVisible(false);
     }
+  };
+
+  const checkURL = (n) => {
+    const regex =
+      /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_+.~#?&//=]*)/g;
+    if (n.search(regex) === -1) {
+      return null;
+    }
+    return n;
   };
 
   return (
@@ -112,7 +130,9 @@ export default function LessonEditor({
             <Input
               onChange={(e) => {
                 setLink(e.target.value);
+                setLinkError(false);
               }}
+              style={linkError ? { backgroundColor: '#FFCCCC' } : {}}
               value={link}
               placeholder='Enter a link'
             />

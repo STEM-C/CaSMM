@@ -23,6 +23,7 @@ export default function LearningStandardCreator({
   const [numofDays, setNumofDays] = useState('');
   const [teks, setTeks] = useState('');
   const [link, setLink] = useState('');
+  const [linkError, setLinkError] = useState(false);
   const [learningStandardObj, setLearningStandardObj] = useState('');
   let found;
 
@@ -41,6 +42,7 @@ export default function LearningStandardCreator({
     setName('');
     setTeks('');
     setLink('');
+    setLinkError(false);
     setNumofDays('');
     setVisible(true);
   };
@@ -49,12 +51,16 @@ export default function LearningStandardCreator({
     setVisible(false);
   };
 
-  const handleSubmit = async (e) => {
-    if (unit === '') {
-      message.error('Please select unit');
-      return;
+  const handleSubmit = async () => {
+    if (link) {
+      const goodLink = checkURL(link);
+      if (!goodLink) {
+        setLinkError(true);
+        message.error('Please Enter a valid URL starting with HTTP/HTTPS', 4);
+        return;
+      }
     }
-    console.log(e);
+    setLinkError(false);
     const res = await createLearningStandard(
       description,
       name,
@@ -86,6 +92,16 @@ export default function LearningStandardCreator({
       setViewing(res.data.id);
       setVisible(false);
     }
+  };
+
+  const checkURL = (n) => {
+    console.log(n);
+    const regex =
+      /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_+.~#?&//=]*)/g;
+    if (n.search(regex) === -1) {
+      return null;
+    }
+    return n;
   };
 
   return (
@@ -177,7 +193,9 @@ export default function LearningStandardCreator({
             <Input
               onChange={(e) => {
                 setLink(e.target.value);
+                setLinkError(false);
               }}
+              style={linkError ? { backgroundColor: '#FFCCCC' } : {}}
               value={link}
               placeholder='Enter a link'
             />

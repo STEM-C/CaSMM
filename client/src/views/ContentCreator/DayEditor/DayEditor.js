@@ -29,6 +29,7 @@ const DayEditor = ({
   const [scienceObj, setScienceObj] = useState('');
   const [makingObj, setMakingObj] = useState('');
   const [computationObj, setComputationObj] = useState('');
+  const [linkError, setLinkError] = useState(false);
 
   const showDayDetailsModal = async (dayObj) => {
     const response = await getDay(dayObj.id);
@@ -41,6 +42,7 @@ const DayEditor = ({
     setDescription(response.data.description);
     setTekS(response.data.TekS);
     setLink(response.data.link);
+    setLinkError(false);
     const learningComponents = response.data.objectives;
     setScienceObj(
       learningComponents[0] ? learningComponents[0].description : ''
@@ -97,6 +99,15 @@ const DayEditor = ({
   };
 
   const handleWorkspace = async (e) => {
+    if (link) {
+      const goodLink = checkURL(link);
+      if (!goodLink) {
+        setLinkError(true);
+        message.error('Please Enter a valid URL starting with HTTP/HTTPS', 4);
+        return;
+      }
+    }
+    setLinkError(false);
     const res = await updateDayDetails(
       selectDay.id,
       description,
@@ -133,6 +144,15 @@ const DayEditor = ({
   };
 
   const handleSave = async (e) => {
+    if (link) {
+      const goodLink = checkURL(link);
+      if (!goodLink) {
+        setLinkError(true);
+        message.error('Please Enter a valid URL starting with HTTP/HTTPS', 4);
+        return;
+      }
+    }
+    setLinkError(false);
     const res = await updateDayDetails(
       selectDay.id,
       description,
@@ -151,6 +171,15 @@ const DayEditor = ({
       myDays.sort((a, b) => (a.number > b.number ? 1 : -1));
       setDay([...myDays]);
     }
+  };
+
+  const checkURL = (n) => {
+    const regex =
+      /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_+.~#?&//=]*)/g;
+    if (n.search(regex) === -1) {
+      return null;
+    }
+    return n;
   };
 
   return (
@@ -294,8 +323,12 @@ const DayEditor = ({
             label='Link to Additional Resources (Optional)'
           >
             <Input
-              onChange={(e) => setLink(e.target.value)}
+              onChange={(e) => {
+                setLink(e.target.value);
+                setLinkError(false);
+              }}
               value={link}
+              style={linkError ? { backgroundColor: '#FFCCCC' } : {}}
               placeholder='Enter a link'
             ></Input>
           </Form.Item>
