@@ -421,16 +421,17 @@ export default function BlocklyCanvasPanel(props) {
           id='bottom-container'
           className='flex flex-column vertical-container overflow-visible'
         >
-          <Row>
-            <Col flex='none' id='section-header'>
-              {lessonName ? lessonName : 'Program your Arduino...'}
-            </Col>
-            <Col flex='auto'>
-              <Spin
-                tip='Compiling Code Please Wait...'
-                className='compilePop'
-                spinning={selectedCompile}
-              >
+          <Spin
+            tip='Compiling Code Please Wait... It may take up to 20 seconds to compile your code.'
+            className='compilePop'
+            size='large'
+            spinning={selectedCompile}
+          >
+            <Row>
+              <Col flex='none' id='section-header'>
+                {lessonName ? lessonName : 'Program your Arduino...'}
+              </Col>
+              <Col flex='auto'>
                 <Row align='middle' justify='end' id='description-container'>
                   <Col flex={homePath && handleGoBack ? '60px' : '30px'}>
                     <Row>
@@ -606,10 +607,10 @@ export default function BlocklyCanvasPanel(props) {
                     </div>
                   </Col>
                 </Row>
-              </Spin>
-            </Col>
-          </Row>
-          <div id='blockly-canvas' />
+              </Col>
+            </Row>
+            <div id='blockly-canvas' />
+          </Spin>
         </div>
         {isContentCreator ? (
           <div id='side-container'>
