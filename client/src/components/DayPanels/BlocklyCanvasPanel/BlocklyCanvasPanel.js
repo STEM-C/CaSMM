@@ -21,7 +21,11 @@ import { getSaves } from '../../../Utils/requests';
 import CodeModal from './CodeModal';
 import ConsoleModal from './ConsoleModal';
 import VersionHistoryModal from './VersionHistoryModal';
-import { openConnection, disconnect } from '../consoleHelpers';
+import {
+  connectToPort,
+  handleCloseConnection,
+  handleOpenConnection,
+} from '../consoleHelpers';
 
 export default function BlocklyCanvasPanel(props) {
   const [hoverXml, setHoverXml] = useState(false);
@@ -150,20 +154,6 @@ export default function BlocklyCanvasPanel(props) {
       dayRef.current = null;
     };
   }, [isStudent]);
-
-  // setInterval(async () => {
-  //   if (workspaceRef.current.undoStack_.length !== undoLength.current) {
-  //     undoLength.current = workspaceRef.current.undoStack_.length;
-  //     let xml = window.Blockly.Xml.workspaceToDom(workspaceRef.current);
-  //     let xml_text = window.Blockly.Xml.domToText(xml);
-  //     const replay = {
-  //       xml: xml_text,
-  //       timestamp: Date.now(),
-  //     };
-  //     replayRef.current.push(replay);
-  //     console.log(replayRef.current);
-  //   }
-  // }, 1000);
 
   useEffect(() => {
     // once the day state is set, set the workspace and save
@@ -365,41 +355,25 @@ export default function BlocklyCanvasPanel(props) {
       workspaceRef.current.undo(true);
   };
 
-  const connectToPort = async () => {
-    const filters = [
-      { usbVendorId: 0x2341, usbProductId: 0x0043 },
-      { usbVendorId: 0x2341, usbProductId: 0x0001 },
-    ];
-    let port;
-    try {
-      port = await navigator.serial.requestPort({ filters });
-    } catch (e) {
-      console.log(e);
-      return;
-    }
-    window['port'] = port;
-  };
-
   const handleConsole = async () => {
+    // if serial monitor is not shown
     if (!showConsole) {
-      if (typeof window['port'] === 'undefined') {
-        await connectToPort();
-      }
+      // connect to port
+      await handleOpenConnection(9600, true);
+      // if fail to connect to port, return
       if (typeof window['port'] === 'undefined') {
         message.error('Fail to select serial device');
         return;
       }
-      setShowConsole(true);
       setConnectionOpen(true);
-      document.getElementById('connect-button').innerHTML = 'Disconnect';
-      openConnection(9600, true);
-    } else {
+      setShowConsole(true);
+    }
+    // if serial monitor is shown, close the connection
+    else {
       setShowConsole(false);
       if (connectionOpen) {
-        console.log('Close connection');
-        disconnect();
+        await handleCloseConnection();
         setConnectionOpen(false);
-        document.getElementById('connect-button').innerHTML = 'Connect';
       }
     }
   };
@@ -408,15 +382,13 @@ export default function BlocklyCanvasPanel(props) {
     if (connectionOpen) {
       message.error('Close Serial Monitor before uploading your code');
     } else {
-      if (typeof window['port'] === 'undefined') {
-        await connectToPort();
-      }
+      await connectToPort();
       if (typeof window['port'] === 'undefined') {
         message.error('Fail to select serial device');
         return;
       }
       setCompileError('');
-      compileArduinoCode(
+      await compileArduinoCode(
         workspaceRef.current,
         setSelectedCompile,
         setCompileError,

@@ -1126,13 +1126,13 @@ Blockly.Arduino.text_prompt_ext = function(a) {
         c = a.getFieldValue("TYPE"),
         d = [],
         e = c == Blockly.Types.NUMBER.output;
-    e ? d.push("int " + Blockly.Arduino.DEF_FUNC_NAME + "(String msg) {") : d.push("String " + Blockly.Arduino.DEF_FUNC_NAME + "(String msg) {");
+    e ? d.push("float " + Blockly.Arduino.DEF_FUNC_NAME + "(String msg) {") : d.push("String " + Blockly.Arduino.DEF_FUNC_NAME + "(String msg) {");
     d.push("  " + b + ".println(msg);");
     d.push("  boolean stringComplete = false;");
-    e ? d.push("  int content = 0;") : d.push('  String content = "";');
+    e ? d.push("  float content = 0;") : d.push('  String content = "";');
     d.push("  while (stringComplete == false) {");
     d.push("    if (" + b + ".available()) {");
-    e ? (d.push("      content = " + b + ".parseInt();"), d.push("      stringComplete = true;")) : (d.push("      char readChar = (char)" + b + ".read();"), d.push("      if (readChar == '\\n' || readChar == '\\r') {"), d.push("        stringComplete = true;"), d.push("      } else {"), d.push("        content += readChar;"), d.push("      }"));
+    e ? (d.push("      content = " + b + ".parseFloat();"), d.push("      stringComplete = true;")) : (d.push("      char readChar = (char)" + b + ".read();"), d.push("      if (readChar == '\\n' || readChar == '\\r') {"), d.push("        stringComplete = true;"), d.push("      } else {"), d.push("        content += readChar;"), d.push("      }"));
     d.push("    }");
     d.push("  }");
     d.push("  // Empty incoming serial buffer");

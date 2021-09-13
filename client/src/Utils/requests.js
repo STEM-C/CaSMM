@@ -217,12 +217,12 @@ export const getSaves = async (day) =>
     error: 'Past saves could not be retrieved.',
   });
 
-export const createSubmission = async (day, workspace, sketch, path, isAuth) =>
+export const createSubmission = async (id, workspace, sketch, path, isAuth) =>
   makeRequest({
     method: POST,
     path: `${server}${path}`,
     data: {
-      day: day.id,
+      day: id,
       workspace: workspace,
       board: 'arduino:avr:uno',
       sketch: sketch,
