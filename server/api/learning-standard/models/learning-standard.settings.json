@@ -11,6 +11,10 @@
     "draftAndPublish": false
   },
   "attributes": {
+    "number": {
+      "type": "decimal",
+      "required": true
+    },
     "name": {
       "type": "string",
       "required": true
@@ -29,6 +33,9 @@
     "teks": {
       "type": "string",
       "unique": true
+    },
+    "link": {
+      "type": "string"
     }
   }
 }

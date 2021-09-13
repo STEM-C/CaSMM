@@ -1,23 +1,31 @@
 import React, { useState, useEffect } from 'react';
-import { Form, Input, Modal, message } from 'antd';
+import { Form, Input, Modal, message, Button } from 'antd';
 import {
   createLearningStandard,
   createDay,
   getAllUnits,
   getLearningStandardAll,
 } from '../../../Utils/requests';
-
 import './LearningStandardCreator.less';
+import DayEditor from '../DayEditor/DayEditor';
 
-export default function LearningStandardCreator({ setLearningStandardList }) {
+export default function LearningStandardCreator({
+  setLearningStandardList,
+  history,
+  viewing,
+  setViewing,
+}) {
   const [visible, setVisible] = useState(false);
   const [unitList, setUnitList] = useState([]);
-
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
   const [unit, setUnit] = useState('');
   const [numofDays, setNumofDays] = useState('');
   const [teks, setTeks] = useState('');
+  const [link, setLink] = useState('');
+  const [linkError, setLinkError] = useState(false);
+  const [learningStandardObj, setLearningStandardObj] = useState('');
+  let found;
 
   useEffect(() => {
     const getUnits = async () => {
@@ -33,6 +41,8 @@ export default function LearningStandardCreator({ setLearningStandardList }) {
     setDescription('');
     setName('');
     setTeks('');
+    setLink('');
+    setLinkError(false);
     setNumofDays('');
     setVisible(true);
   };
@@ -41,15 +51,26 @@ export default function LearningStandardCreator({ setLearningStandardList }) {
     setVisible(false);
   };
 
-  const onClickHandler = async (e) => {
-    if (unit === '') {
-      message.error('Please select unit');
-      return;
+  const handleSubmit = async () => {
+    if (link) {
+      const goodLink = checkURL(link);
+      if (!goodLink) {
+        setLinkError(true);
+        message.error('Please Enter a valid URL starting with HTTP/HTTPS', 4);
+        return;
+      }
     }
-    e.preventDefault();
-    const res = await createLearningStandard(description, name, 0, unit, teks);
+    setLinkError(false);
+    const res = await createLearningStandard(
+      description,
+      name,
+      0,
+      unit,
+      teks,
+      link
+    );
     if (res.err) {
-      message.error('fail to create new learning standard');
+      message.error('Fail to create new learning standard');
     } else {
       for (let i = 1; i <= numofDays; i++) {
         const dayRes = await createDay(i, res.data);
@@ -59,11 +80,28 @@ export default function LearningStandardCreator({ setLearningStandardList }) {
       }
       message.success('Successfully created lesson');
       const lsRes = await getLearningStandardAll();
-      // console.log(lsRes);
       setLearningStandardList(lsRes.data);
+      setLearningStandardObj(res.data);
 
+      // find the position of the newly created ls
+      found = lsRes.data.findIndex((ls) => ls.id === res.data.id);
+      found = Math.ceil(found / 10);
+      // set the history so that modal will reopen when
+      // user comes back from workspace
+      history.push(`#home#${found}#${res.data.id}`);
+      setViewing(res.data.id);
       setVisible(false);
     }
+  };
+
+  const checkURL = (n) => {
+    console.log(n);
+    const regex =
+      /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_+.~#?&//=]*)/g;
+    if (n.search(regex) === -1) {
+      return null;
+    }
+    return n;
   };
 
   return (
@@ -71,11 +109,13 @@ export default function LearningStandardCreator({ setLearningStandardList }) {
       <button onClick={showModal} id='add-learning-standard-btn'>
         + Add a Lesson
       </button>
+
       <Modal
         title='Create a Lesson'
         visible={visible}
+        width='35vw'
         onCancel={handleCancel}
-        onOk={onClickHandler}
+        footer={null}
       >
         <Form
           id='add-learning-standard'
@@ -85,6 +125,7 @@ export default function LearningStandardCreator({ setLearningStandardList }) {
           wrapperCol={{
             span: 14,
           }}
+          onFinish={handleSubmit}
           layout='horizontal'
           size='default'
         >
@@ -94,6 +135,7 @@ export default function LearningStandardCreator({ setLearningStandardList }) {
               name='unit'
               defaultValue={unit}
               onChange={(e) => setUnit(e.target.value)}
+              required
             >
               <option key={0} value={unit} id='disabled-option' disabled>
                 Unit
@@ -109,6 +151,7 @@ export default function LearningStandardCreator({ setLearningStandardList }) {
             <Input
               onChange={(e) => setName(e.target.value)}
               value={name}
+              required
               placeholder='Enter lesson name'
             />
           </Form.Item>
@@ -117,6 +160,7 @@ export default function LearningStandardCreator({ setLearningStandardList }) {
               onChange={(e) => {
                 setNumofDays(e.target.value);
               }}
+              required
               value={numofDays}
               placeholder='Enter number of days'
               type='number'
@@ -127,6 +171,7 @@ export default function LearningStandardCreator({ setLearningStandardList }) {
           <Form.Item label='Description'>
             <Input.TextArea
               rows={3}
+              required
               onChange={(e) => {
                 setDescription(e.target.value);
               }}
@@ -139,12 +184,58 @@ export default function LearningStandardCreator({ setLearningStandardList }) {
               onChange={(e) => {
                 setTeks(e.target.value);
               }}
+              required
               value={teks}
               placeholder='Enter lesson Teks'
             />
           </Form.Item>
+          <Form.Item label='Link to Additional Resource (Optional)'>
+            <Input
+              onChange={(e) => {
+                setLink(e.target.value);
+                setLinkError(false);
+              }}
+              style={linkError ? { backgroundColor: '#FFCCCC' } : {}}
+              value={link}
+              placeholder='Enter a link'
+            />
+          </Form.Item>
+          <Form.Item
+            wrapperCol={{
+              offset: 8,
+              span: 16,
+            }}
+            style={{ marginBottom: '0px' }}
+          >
+            <Button
+              type='primary'
+              htmlType='submit'
+              size='large'
+              className='content-creator-button'
+            >
+              Next
+            </Button>
+            <Button
+              onClick={handleCancel}
+              size='large'
+              className='content-creator-button'
+            >
+              Cancel
+            </Button>
+          </Form.Item>
         </Form>
       </Modal>
+
+      {!visible ? (
+        <DayEditor
+          history={history}
+          learningStandard={learningStandardObj}
+          viewing={viewing}
+          setViewing={setViewing}
+          page={found}
+          tab={'home'}
+        />
+      ) : null}
     </div>
   );
 }
