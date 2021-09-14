@@ -15,6 +15,7 @@
       padding-top: 40px;
       padding-bottom: 40px;
       width: 80vw;
+      height: 80vh; //remove after checking
       background: #colors[senary];
       border-radius: 5px;
       border: 2px solid #colors[secondary];
@@ -33,7 +34,7 @@
     flex-direction: row;
     text-align: center;
     width: 24vw;
-    min-height: 34vh;
+    height: auto;
     margin: auto 6vh 6vh auto;
     background: #colors[tertiary];
     color: #colors[text-primary];
@@ -48,11 +49,11 @@
         
         button {
             width: 9vw;
-            min-height: 5vh;
-            font-size: 1em;
+            height: auto;
+            font-size: 1vw;
             font-weight: 500;
             border-radius: 30px;
-            margin: auto;
+            margin: 10% auto auto auto;
             background: #colors[quaternary];
             border: none;
             color: #colors[text-primary];
@@ -74,12 +75,13 @@
         justify-content: center;
         align-items: center;
         width: 72%;
+        padding: 24px 24px;
 
         #card-title {
             text-align: center;
-            font-size: 1.4em;
+            font-size: 1.4vw;
             margin: 10px;
-            // padding: 8px;
+            line-height: 1.6vw;
         }
     }
 
@@ -87,14 +89,17 @@
         display: flex;
         flex-direction: column;
         min-width: 28%;
-
+        
         #number {
-            font-size: 1.4em;
+            font-size: 1.4vw;
             margin: 0;
+            padding-top: 20px;
+
         }
 
         #label {
-            font-size: 1em;
+            font-size: 1vw;
+            padding-bottom: 20px;
         }
 
         #dashboard-display-code-modal {
