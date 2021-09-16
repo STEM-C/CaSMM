@@ -7,6 +7,7 @@ import {
   updateDayDetails,
   getLearningStandardDays,
 } from '../../../Utils/requests';
+import DayComponentTags from './DayComponentTags';
 import './DayEditor.less';
 
 const DayDetailModal = ({
@@ -226,6 +227,7 @@ const DayDetailModal = ({
           </Button>
         </Form.Item>
       </Form>
+      <DayComponentTags />
     </Modal>
   );
 };
