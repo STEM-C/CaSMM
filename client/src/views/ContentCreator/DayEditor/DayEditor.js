@@ -321,6 +321,7 @@ const DayEditor = ({
               type='primary'
               style={{ width: '100%', height: '5vh' }}
               htmlType='submit'
+              size='large'
               onClick={() => setSubmitButton(1)}
             >
               Save and go to Workspace
