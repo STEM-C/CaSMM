@@ -30,6 +30,7 @@ const DayEditor = ({
   const [makingObj, setMakingObj] = useState('');
   const [computationObj, setComputationObj] = useState('');
   const [linkError, setLinkError] = useState(false);
+  const [submitButton, setSubmitButton] = useState(0);
 
   const showDayDetailsModal = async (dayObj) => {
     const response = await getDay(dayObj.id);
@@ -53,7 +54,6 @@ const DayEditor = ({
     setComputationObj(
       learningComponents[2] ? learningComponents[2].description : ''
     );
-    console.log(dayObj);
   };
 
   useEffect(() => {
@@ -80,7 +80,6 @@ const DayEditor = ({
       message.error(response.err);
     }
     setDay([...days, response.data]);
-    console.log(response);
   };
 
   const removeBasicDay = async (currDay) => {
@@ -95,34 +94,6 @@ const DayEditor = ({
         message.error(getDayAll.err);
       }
       setDay([...getDayAll.data]);
-    }
-  };
-
-  const handleWorkspace = async (e) => {
-    if (link) {
-      const goodLink = checkURL(link);
-      if (!goodLink) {
-        setLinkError(true);
-        message.error('Please Enter a valid URL starting with HTTP/HTTPS', 4);
-        return;
-      }
-    }
-    setLinkError(false);
-    const res = await updateDayDetails(
-      selectDay.id,
-      description,
-      TekS,
-      link,
-      scienceObj,
-      makingObj,
-      computationObj
-    );
-    if (res.err) {
-      message.error(res.err);
-    } else {
-      message.success('Successfully saved day');
-      setDayDetailsVisible(false);
-      handleViewDay(res.data);
     }
   };
 
@@ -143,7 +114,7 @@ const DayEditor = ({
     history.push(`#${tab}#${page}`);
   };
 
-  const handleSave = async (e) => {
+  const handleSave = async () => {
     if (link) {
       const goodLink = checkURL(link);
       if (!goodLink) {
@@ -166,10 +137,17 @@ const DayEditor = ({
       message.error(res.err);
     } else {
       message.success('Successfully saved day');
-      const getDayAll = await getLearningStandardDays(viewing);
-      const myDays = getDayAll.data;
-      myDays.sort((a, b) => (a.number > b.number ? 1 : -1));
-      setDay([...myDays]);
+      // just save the form
+      if (submitButton == 0) {
+        const getDayAll = await getLearningStandardDays(viewing);
+        const myDays = getDayAll.data;
+        myDays.sort((a, b) => (a.number > b.number ? 1 : -1));
+        setDay([...myDays]);
+        // save the form and go to workspace
+      } else if (submitButton == 1) {
+        setDayDetailsVisible(false);
+        handleViewDay(res.data);
+      }
     }
   };
 
@@ -342,7 +320,8 @@ const DayEditor = ({
             <Button
               type='primary'
               style={{ width: '100%', height: '5vh' }}
-              onClick={handleWorkspace}
+              htmlType='submit'
+              onClick={() => setSubmitButton(1)}
             >
               Save and go to Workspace
             </Button>
@@ -355,6 +334,7 @@ const DayEditor = ({
             style={{ marginBottom: '0px' }}
           >
             <Button
+              onClick={() => setSubmitButton(0)}
               type='primary'
               htmlType='submit'
               size='large'
