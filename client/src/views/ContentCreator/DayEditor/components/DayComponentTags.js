@@ -1,7 +1,7 @@
 import { Input, Tag } from 'antd';
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 
-const DayComponentTags = ({ tags, setTags, colorOffset }) => {
+const DayComponentTags = ({ components, setComponents, colorOffset }) => {
   const [inputVisible, setInputVisible] = useState(false);
   const [inputValue, setInputValue] = useState('');
 
@@ -20,9 +20,8 @@ const DayComponentTags = ({ tags, setTags, colorOffset }) => {
   ];
 
   const handleClose = (removedTag) => {
-    const newTags = tags.filter((tag) => tag !== removedTag);
-    console.log(newTags);
-    setTags(newTags);
+    const newTags = components.filter((tag) => tag !== removedTag);
+    setComponents(newTags);
   };
 
   const showInput = () => {
@@ -30,17 +29,16 @@ const DayComponentTags = ({ tags, setTags, colorOffset }) => {
   };
 
   const handleInputConfirm = () => {
-    if (inputValue && tags.indexOf(inputValue) === -1) {
-      setTags([...tags, inputValue]);
+    if (inputValue && components.indexOf(inputValue) === -1) {
+      setComponents([...components, inputValue]);
     }
-    console.log([...tags, inputValue]);
     setInputVisible(false);
     setInputValue('');
   };
 
   return (
     <div>
-      {tags.map((tag, index) => (
+      {components.map((tag, index) => (
         <Tag
           closable
           key={index}

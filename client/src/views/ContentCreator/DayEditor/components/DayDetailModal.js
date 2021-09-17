@@ -10,6 +10,10 @@ import {
 import DayComponentTags from './DayComponentTags';
 import '../DayEditor.less';
 
+const SCIENCE = 1;
+const MAKING = 2;
+const COMPUTATION = 3;
+
 const DayDetailModal = ({
   learningStandard,
   selectDay,
@@ -21,16 +25,10 @@ const DayDetailModal = ({
   const [description, setDescription] = useState('');
   const [TekS, setTekS] = useState('');
   const [link, setLink] = useState('');
-  const [scienceObj, setScienceObj] = useState('');
-  const [makingObj, setMakingObj] = useState('');
-  const [computationObj, setComputationObj] = useState('');
 
-  const [scienceTags, setScienceTags] = useState(['Science1', 'Science2']);
-  const [makingTags, setMakingTags] = useState(['Making1', 'Making2']);
-  const [computationTags, setComputationTags] = useState([
-    'Computation1',
-    'Computation2',
-  ]);
+  const [scienceComponents, setScienceComponents] = useState([]);
+  const [makingComponents, setMakingComponents] = useState([]);
+  const [computationComponents, setComputationComponents] = useState([]);
 
   const [linkError, setLinkError] = useState(false);
   const [submitButton, setSubmitButton] = useState(0);
@@ -46,16 +44,28 @@ const DayDetailModal = ({
       setTekS(response.data.TekS);
       setLink(response.data.link);
       setLinkError(false);
-      const learningComponents = response.data.objectives;
-      setScienceObj(
-        learningComponents[0] ? learningComponents[0].description : ''
-      );
-      setMakingObj(
-        learningComponents[1] ? learningComponents[1].description : ''
-      );
-      setComputationObj(
-        learningComponents[2] ? learningComponents[2].description : ''
-      );
+      const science = response.data.learning_components
+        .filter((component) => component.learning_component_type === SCIENCE)
+        .map((element) => {
+          return element.type;
+        });
+      setScienceComponents(science);
+
+      const making = response.data.learning_components
+        .filter((component) => component.learning_component_type === MAKING)
+        .map((element) => {
+          return element.type;
+        });
+      setMakingComponents(making);
+
+      const computation = response.data.learning_components
+        .filter(
+          (component) => component.learning_component_type === COMPUTATION
+        )
+        .map((element) => {
+          return element.type;
+        });
+      setComputationComponents(computation);
     };
     showDayDetailsModal();
   }, [selectDay]);
@@ -95,9 +105,9 @@ const DayDetailModal = ({
       description,
       TekS,
       link,
-      scienceObj,
-      makingObj,
-      computationObj
+      scienceComponents,
+      makingComponents,
+      computationComponents
     );
     if (res.err) {
       message.error(res.err);
@@ -157,22 +167,22 @@ const DayDetailModal = ({
         <h3>Lesson Learning Components</h3>
         <Form.Item id='form-label' label='Science Component'>
           <DayComponentTags
-            tags={scienceTags}
-            setTags={setScienceTags}
+            components={scienceComponents}
+            setComponents={setScienceComponents}
             colorOffset={1}
           />
         </Form.Item>
         <Form.Item id='form-label' label='Maker Component'>
           <DayComponentTags
-            tags={makingTags}
-            setTags={setMakingTags}
+            components={makingComponents}
+            setComponents={setMakingComponents}
             colorOffset={4}
           />
         </Form.Item>
         <Form.Item id='form-label' label='Computer Science Component'>
           <DayComponentTags
-            tags={computationTags}
-            setTags={setComputationTags}
+            components={computationComponents}
+            setComponents={setComputationComponents}
             colorOffset={7}
           />
         </Form.Item>
