@@ -6,9 +6,9 @@ import {
   getDayToolbox,
   updateDayDetails,
   getLearningStandardDays,
-} from '../../../Utils/requests';
+} from '../../../../Utils/requests';
 import DayComponentTags from './DayComponentTags';
-import './DayEditor.less';
+import '../DayEditor.less';
 
 const DayDetailModal = ({
   learningStandard,
@@ -24,6 +24,14 @@ const DayDetailModal = ({
   const [scienceObj, setScienceObj] = useState('');
   const [makingObj, setMakingObj] = useState('');
   const [computationObj, setComputationObj] = useState('');
+
+  const [scienceTags, setScienceTags] = useState(['Science1', 'Science2']);
+  const [makingTags, setMakingTags] = useState(['Making1', 'Making2']);
+  const [computationTags, setComputationTags] = useState([
+    'Computation1',
+    'Computation2',
+  ]);
+
   const [linkError, setLinkError] = useState(false);
   const [submitButton, setSubmitButton] = useState(0);
 
@@ -118,7 +126,7 @@ const DayDetailModal = ({
       width='35vw'
     >
       <Form
-        id='add-units'
+        id='day-detail-editor'
         layout='horizontal'
         size='default'
         labelCol={{
@@ -141,34 +149,32 @@ const DayDetailModal = ({
           <Input
             onChange={(e) => setTekS(e.target.value)}
             value={TekS}
+            className='input'
             required
             placeholder='Enter tekS'
           ></Input>
         </Form.Item>
         <h3>Lesson Learning Components</h3>
         <Form.Item id='form-label' label='Science Component'>
-          <Input.TextArea
-            onChange={(e) => setScienceObj(e.target.value)}
-            value={scienceObj}
-            required
-            placeholder='Enter science component'
-          ></Input.TextArea>
+          <DayComponentTags
+            tags={scienceTags}
+            setTags={setScienceTags}
+            colorOffset={1}
+          />
         </Form.Item>
         <Form.Item id='form-label' label='Maker Component'>
-          <Input.TextArea
-            onChange={(e) => setMakingObj(e.target.value)}
-            value={makingObj}
-            required
-            placeholder='Enter maker component'
-          ></Input.TextArea>
+          <DayComponentTags
+            tags={makingTags}
+            setTags={setMakingTags}
+            colorOffset={4}
+          />
         </Form.Item>
         <Form.Item id='form-label' label='Computer Science Component'>
-          <Input.TextArea
-            onChange={(e) => setComputationObj(e.target.value)}
-            value={computationObj}
-            required
-            placeholder='Enter computer science component'
-          ></Input.TextArea>
+          <DayComponentTags
+            tags={computationTags}
+            setTags={setComputationTags}
+            colorOffset={7}
+          />
         </Form.Item>
         <h3>Additional Information</h3>
         <Form.Item
@@ -180,6 +186,7 @@ const DayDetailModal = ({
               setLink(e.target.value);
               setLinkError(false);
             }}
+            className='input'
             value={link}
             style={linkError ? { backgroundColor: '#FFCCCC' } : {}}
             placeholder='Enter a link'
@@ -227,7 +234,6 @@ const DayDetailModal = ({
           </Button>
         </Form.Item>
       </Form>
-      <DayComponentTags />
     </Modal>
   );
 };

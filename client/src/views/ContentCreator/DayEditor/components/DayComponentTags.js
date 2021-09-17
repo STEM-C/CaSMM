@@ -1,8 +1,7 @@
 import { Input, Tag } from 'antd';
 import React, { useState, useEffect } from 'react';
 
-const DayComponentTags = () => {
-  const [tags, setTags] = useState(['tag1', 'tag2', 'tag3']);
+const DayComponentTags = ({ tags, setTags, colorOffset }) => {
   const [inputVisible, setInputVisible] = useState(false);
   const [inputValue, setInputValue] = useState('');
 
@@ -45,7 +44,7 @@ const DayComponentTags = () => {
         <Tag
           closable
           key={index}
-          color={color[index % 11]}
+          color={color[(index + colorOffset) % 11]}
           onClose={(e) => {
             e.preventDefault();
             handleClose(tag);
@@ -57,6 +56,7 @@ const DayComponentTags = () => {
       {inputVisible && (
         <Input
           type='text'
+          id='tag-input'
           value={inputValue}
           autoFocus
           onChange={(e) => setInputValue(e.target.value)}

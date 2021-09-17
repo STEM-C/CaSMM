@@ -5,7 +5,7 @@ import {
   deleteDay,
   getLearningStandardDays,
 } from '../../../Utils/requests';
-import DayDetailModal from './DayDetailModal';
+import DayDetailModal from './components/DayDetailModal';
 import './DayEditor.less';
 
 const DayEditor = ({
