@@ -39,6 +39,10 @@
     "link": {
       "type": "string",
       "required": false
+    },
+    "learning_components": {
+      "via": "days",
+      "collection": "learning-components"
     }
   }
 }
