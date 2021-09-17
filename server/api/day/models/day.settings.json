@@ -23,10 +23,6 @@
       "type": "text",
       "required": true
     },
-    "objectives": {
-      "collection": "objective",
-      "via": "day"
-    },
     "blocks": {
       "collection": "block"
     },
