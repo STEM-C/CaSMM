@@ -179,7 +179,7 @@ const DayDetailModal = ({
             colorOffset={4}
           />
         </Form.Item>
-        <Form.Item id='form-label' label='Computer Science Component'>
+        <Form.Item id='form-label' label='Computation Component'>
           <DayComponentTags
             components={computationComponents}
             setComponents={setComputationComponents}

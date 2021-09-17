@@ -29,8 +29,12 @@ const DayComponentTags = ({ components, setComponents, colorOffset }) => {
   };
 
   const handleInputConfirm = () => {
-    if (inputValue && components.indexOf(inputValue) === -1) {
-      setComponents([...components, inputValue]);
+    if (inputValue) {
+      const upperCase =
+        inputValue.charAt(0).toUpperCase() + inputValue.slice(1);
+      if (components.indexOf(upperCase) === -1) {
+        setComponents([...components, upperCase]);
+      }
     }
     setInputVisible(false);
     setInputValue('');
@@ -57,6 +61,7 @@ const DayComponentTags = ({ components, setComponents, colorOffset }) => {
           id='tag-input'
           value={inputValue}
           autoFocus
+          autoComplete='off'
           onChange={(e) => setInputValue(e.target.value)}
           onPressEnter={handleInputConfirm}
           onBlur={handleInputConfirm}
