@@ -79,7 +79,7 @@ export default function Home(props) {
                   </a>
                 </p>
               ) : null}
-              <div id='btn-container' className='flex space-between'>
+              <div id='card-btn-container' className='flex space-between'>
                 {activeLearningStandard.days.map((day) => (
                   <div
                     id='view-day-card'
@@ -90,7 +90,7 @@ export default function Home(props) {
                   >
                     <h3 id='view-day-title'>{`View Day ${day.number}`}</h3>
                     <div id='view-day-description'>
-                      <p>TekS: {day.TekS}</p>
+                      <p>TEKS: {day.TekS}</p>
                       <p>Description: {day.description}</p>
                       {day.link ? (
                         <p>
@@ -107,9 +107,9 @@ export default function Home(props) {
             </div>
           ) : (
             <div>
-              <p>There is currently no active learning standard set.</p>
+              <p>There is currently no active lesson set.</p>
               <p>
-                Click the button below to browse available learning standards
+                Click the button below to browse available lessons.
               </p>
               <LearningStandardModal
                 history={history}

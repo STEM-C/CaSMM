@@ -4,6 +4,7 @@
   margin: 6vh auto 5vh auto;
   padding: 5vh 5vw;
   width: 80vw;
+  height: auto;
   background: rgb(233, 233, 233);
   border-radius: 5px;
   border: 2px solid #colors[secondary];
@@ -17,33 +18,6 @@
   #learning-standard-expectations {
     font-size: 1.2em;
     line-height: 1.2em;
-  }
-
-  #view-day-card {
-    width: 14vw;
-    min-height: 24vh;
-    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.377);
-    border-radius: 10px;
-
-    #view-day-title {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      font-size: 1em;
-      padding: 8px;
-      min-height: 8vh;
-      background-color: #colors[quaternary];
-      border-top-left-radius: 10px;
-      border-top-right-radius: 10px;
-    }
-
-    #view-day-description {
-      display: flex;
-      flex-direction: column;
-      margin: 20px;
-      font-size: 1em;
-      line-height: 1em;
-    }
   }
 
   // button {
@@ -63,24 +37,43 @@
   //   }
   // }
 
-  #btn-container {
+  #card-btn-container {
     width: 80%;
     margin: auto;
     padding-top: 14px;
+    display: inline-grid;
+    grid-template-columns: auto auto;
+    justify-content: center;
 
-    // button {
-    //   width: 10vw;
-    //   min-height: 12vh;
-    //   font-size: 1em;
-    //   font-weight: 500;
-    //   background: #colors[tertiary];
-    //   color: #000;
-    //   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.377);
+    #view-day-card {
+      width: 30vw;
+      min-height: 40vh;
+      box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.377);
+      border-radius: 10px;
+      margin: 20px;
+  
+      #view-day-title {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 1em;
+        padding: 15px;
+        height: auto;
+        background-color: #colors[quaternary];
+        border-top-left-radius: 10px;
+        border-top-right-radius: 10px;
 
-    //   &:hover {
-    //     width: 10vw;
-    //   }
-    // }
+      }
+  
+      #view-day-description {
+        display: flex;
+        flex-direction: column;
+        margin: 20px;
+        font-size: 1em;
+        line-height: 1em;
+      }
+  
+    }
   }
 
   #btn-container p {
@@ -114,7 +107,7 @@
 
   #display-code-btn {
     width: 20vw;
-    min-height: 6vh;
+    min-height: 3.5vw;
     font-size: 1em;
     font-weight: 500;
     border-radius: 30px;
