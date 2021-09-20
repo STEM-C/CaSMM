@@ -85,7 +85,7 @@ const DayEditor = ({
         <div className='list-position'>
           {days.length > 0 ? (
             <div>
-              <h3>Click Day to edit day detail and workspace</h3>
+              <p id='day-editor-subtitle'>Click on a <strong>Day</strong> to edit details and workspace</p>
               <List
                 grid={{ gutter: 16, column: 3 }}
                 style={{ marginTop: '2vh' }}

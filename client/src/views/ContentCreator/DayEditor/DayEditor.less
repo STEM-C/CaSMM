@@ -45,10 +45,13 @@
   top: 5px;
 }
 
+#day-editor-subtitle {
+  font-size: 1.1em;
+}
+
 #card-day {
   background: #colors[tertiary];
-  border: 2px solid;
-  border-color: #colors[secondary];
+  border: none;
 
   .ant-card-head {
     border-bottom: 0px !important;
@@ -83,7 +86,7 @@
   .input,
   textarea {
     display: block;
-    margin: 5px 5px 0px;
+    margin: 0px 5px 0px;
     background: none;
     border: 1px solid;
     border-color: #colors[secondary];
@@ -98,10 +101,34 @@
   label {
     margin: 10px auto 12px;
     white-space: pre-wrap;
+    font-weight: 450;
   }
 
   #tag-input {
     width: 85px;
     line-height: 20px;
+  }
+}
+
+//DayDetailModel
+
+#subtitle {
+  font-size: 1.2em;
+}
+
+#save-go-to-workspace-btn {
+  width: 18vw;
+  height: auto;
+  background: #colors[quaternary];
+  border: none;
+  border-radius: 30px;
+  color: #colors[text-primary];
+  font-size: 1em;
+  font-weight: 600;
+  padding: 6px;
+
+  &:hover {
+    width: 19vw;
+    background: #colors[quinary];
   }
 }

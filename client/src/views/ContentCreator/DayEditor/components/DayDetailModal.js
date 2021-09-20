@@ -44,6 +44,7 @@ const DayDetailModal = ({
       setTekS(response.data.TekS);
       setLink(response.data.link);
       setLinkError(false);
+      console.log(response.data);
       const science = response.data.learning_components
         .filter((component) => component.learning_component_type === SCIENCE)
         .map((element) => {
@@ -133,14 +134,14 @@ const DayDetailModal = ({
       visible={true}
       onCancel={() => setDayDetailsVisible(false)}
       footer={null}
-      width='35vw'
+      width='45vw'
     >
       <Form
         id='day-detail-editor'
         layout='horizontal'
         size='default'
         labelCol={{
-          span: 6,
+          // span: 6,
         }}
         wrapperCol={{
           span: 14,
@@ -164,7 +165,7 @@ const DayDetailModal = ({
             placeholder='Enter tekS'
           ></Input>
         </Form.Item>
-        <h3>Lesson Learning Components</h3>
+        <h3 id='subtitle'>Lesson Learning Components</h3>
         <Form.Item id='form-label' label='Science Component'>
           <DayComponentTags
             components={scienceComponents}
@@ -186,7 +187,7 @@ const DayDetailModal = ({
             colorOffset={7}
           />
         </Form.Item>
-        <h3>Additional Information</h3>
+        <h3 id='subtitle'>Additional Information</h3>
         <Form.Item
           id='form-label'
           label='Link to Additional Resources (Optional)'
@@ -209,15 +210,10 @@ const DayDetailModal = ({
             span: 25,
           }}
         >
-          <Button
-            type='primary'
-            style={{ width: '100%', height: '5vh' }}
-            htmlType='submit'
-            size='large'
-            onClick={() => setSubmitButton(1)}
-          >
-            Save and go to Workspace
-          </Button>
+          <button id="save-go-to-workspace-btn" 
+            onClick={() => setSubmitButton(1)}>
+              Save and go to Workspace
+          </button>
         </Form.Item>
         <Form.Item
           wrapperCol={{
