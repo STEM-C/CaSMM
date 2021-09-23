@@ -33,6 +33,7 @@ export default function Home(props) {
       }
     };
     fetchData();
+    console.log(activeLearningStandard);
   }, [classroomId]);
 
   const handleViewDay = (day, name) => {
@@ -89,12 +90,12 @@ export default function Home(props) {
                     }
                   >
                     <h3 id='view-day-title'>{`View Day ${day.number}`}</h3>
-                    <div id='view-day-description'>
-                      <p>TEKS: {day.TekS}</p>
-                      <p>Description: {day.description}</p>
+                    <div id='view-day-info'>
+                      <p><strong>TEKS: </strong>{day.TekS}</p>
+                      <p><strong>Description: </strong>{day.description}</p>
                       {day.link ? (
                         <p>
-                          Link to Additional Information:{' '}
+                          <strong>Link to Additional Information:{' '}</strong>
                           <a href={day.link} target='_blank' rel='noreferrer'>
                             {day.link}
                           </a>

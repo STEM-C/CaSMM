@@ -20,23 +20,6 @@
     line-height: 1.2em;
   }
 
-  // button {
-  //   border-radius: 4px;
-  //   margin: auto;
-  //   padding-left: 0;
-  //   padding-right: 0;
-  //   background: darken(#colors[tertiary], 30%);
-  //   border: none;
-  //   border-color: #colors[secondary];
-  //   color: #colors[text-secondary];
-  //   transition: 0.25s;
-  //   cursor: pointer;
-
-  //   &:focus {
-  //     outline: none;
-  //   }
-  // }
-
   #card-btn-container {
     width: 80%;
     margin: auto;
@@ -47,7 +30,7 @@
 
     #view-day-card {
       width: 30vw;
-      min-height: 40vh;
+      min-height: 30vh;
       box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.377);
       border-radius: 10px;
       margin: 20px;
@@ -56,7 +39,7 @@
         display: flex;
         justify-content: center;
         align-items: center;
-        font-size: 1em;
+        font-size: 1.1em;
         padding: 15px;
         height: auto;
         background-color: #colors[quaternary];
@@ -65,12 +48,19 @@
 
       }
   
-      #view-day-description {
+      #view-day-info {
         display: flex;
         flex-direction: column;
+        text-align: left;
         margin: 20px;
-        font-size: 1em;
+        font-size: 1.1em;
         line-height: 1em;
+        word-wrap: break-word;
+
+        strong {
+          font-weight: 500;
+          font-size: 1.2;
+        }
       }
   
     }
@@ -81,9 +71,11 @@
   }
 
   #learning-standard-modal {
+    margin-left: 10px;
+
     #change-lesson-btn {
-      width: 5vw;
-      height: 3vh;
+      width: auto;
+      height: 2.5vh;
       font-size: 0.8em;
       font-weight: 600;
       border: none;
@@ -92,12 +84,15 @@
       border-radius: 30px;
       transition: 0.25s;
       cursor: pointer;
-      margin-left: 10px;
 
       &:hover {
         background: #colors[quinary];
       }
-    }
+      #test {
+        display: flex;
+        justify-content: right;
+      }
+     }
   }
 }
 
@@ -127,7 +122,7 @@
 
 #code-display-text {
   font-size: 15em;
-  text-align: center;
+  // text-align: center;
 }
 
 #home-back-btn {
