@@ -41,7 +41,7 @@ const DayComponentTags = ({ components, setComponents, colorOffset }) => {
   };
 
   return (
-    <div>
+    <div style={{ marginTop: '1.5vh' }}>
       {components.map((tag, index) => (
         <Tag
           closable

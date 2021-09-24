@@ -140,17 +140,9 @@ const DayDetailModal = ({
         id='day-detail-editor'
         layout='horizontal'
         size='default'
-<<<<<<< HEAD
         labelCol={{
           span: 6,
         }}
-=======
-        labelCol={
-          {
-            // span: 6,
-          }
-        }
->>>>>>> 5d352711caccb46e81bc2f40462e315e6187b2a8
         wrapperCol={{
           span: 14,
         }}
@@ -214,8 +206,8 @@ const DayDetailModal = ({
         <Form.Item
           id='form-label'
           wrapperCol={{
-            offset: 0,
-            span: 25,
+            offset: 7,
+            span: 30,
           }}
         >
           <button
