@@ -1,11 +1,16 @@
 import { Modal, Button, message } from 'antd';
 import React, { useEffect, useState } from 'react';
 import LearningStandardSelect from './LearningStandardSelect';
-import { getLearningStandard, setSelection } from '../../../../Utils/requests';
+import {
+  getLearningStandard,
+  setSelection,
+  getLearningStandardDays,
+} from '../../../../Utils/requests';
 
 export default function LearningStandardModal(props) {
   const [visible, setVisible] = useState(false);
   const [activePanel, setActivePanel] = useState('panel-1');
+  const [selectedDays, setSelectedDays] = useState([]);
   const [selected, setSelected] = useState({});
   const { history, setActiveLearningStandard, gradeId, classroomId, viewing } =
     props;
@@ -14,10 +19,15 @@ export default function LearningStandardModal(props) {
     const fetchData = async () => {
       console.log(viewing);
       if (viewing) {
-        setVisible(true);
         const res = await getLearningStandard(viewing);
         if (res.data) {
           setSelected(res.data);
+          const daysRes = await getLearningStandardDays(res.data.id);
+          if (daysRes) setSelectedDays(daysRes.data);
+          else {
+            message.error(daysRes.err);
+          }
+          setVisible(true);
           setActivePanel('panel-2');
         } else {
           message.error(res.err);
@@ -88,6 +98,8 @@ export default function LearningStandardModal(props) {
           selected={selected}
           setSelected={setSelected}
           gradeId={gradeId}
+          days={selectedDays}
+          setDays={setSelectedDays}
         />
       </Modal>
     </div>
