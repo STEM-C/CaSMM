@@ -141,7 +141,7 @@ const DayDetailModal = ({
         layout='horizontal'
         size='default'
         labelCol={{
-          // span: 6,
+          span: 6,
         }}
         wrapperCol={{
           span: 14,
