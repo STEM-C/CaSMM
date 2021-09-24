@@ -230,7 +230,11 @@ export default function LearningStandardSelect(props) {
                           )
                           .map((element, index) => {
                             return (
-                              <Tag key={index} color={color[(index + 1) % 11]}>
+                              <Tag
+                                className='tag'
+                                key={index}
+                                color={color[(index + 1) % 11]}
+                              >
                                 {element.type}
                               </Tag>
                             );
@@ -247,7 +251,11 @@ export default function LearningStandardSelect(props) {
                           )
                           .map((element, index) => {
                             return (
-                              <Tag key={index} color={color[(index + 4) % 11]}>
+                              <Tag
+                                className='tag'
+                                key={index}
+                                color={color[(index + 4) % 11]}
+                              >
                                 {element.type}
                               </Tag>
                             );
@@ -264,7 +272,11 @@ export default function LearningStandardSelect(props) {
                           )
                           .map((element, index) => {
                             return (
-                              <Tag key={index} color={color[(index + 7) % 11]}>
+                              <Tag
+                                className='tag'
+                                key={index}
+                                color={color[(index + 7) % 11]}
+                              >
                                 {element.type}
                               </Tag>
                             );
