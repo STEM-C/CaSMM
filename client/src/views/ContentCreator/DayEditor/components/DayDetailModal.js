@@ -140,9 +140,11 @@ const DayDetailModal = ({
         id='day-detail-editor'
         layout='horizontal'
         size='default'
-        labelCol={{
-          // span: 6,
-        }}
+        labelCol={
+          {
+            // span: 6,
+          }
+        }
         wrapperCol={{
           span: 14,
         }}
@@ -210,9 +212,11 @@ const DayDetailModal = ({
             span: 25,
           }}
         >
-          <button id="save-go-to-workspace-btn" 
-            onClick={() => setSubmitButton(1)}>
-              Save and go to Workspace
+          <button
+            id='save-go-to-workspace-btn'
+            onClick={() => setSubmitButton(1)}
+          >
+            Save and go to Workspace
           </button>
         </Form.Item>
         <Form.Item
