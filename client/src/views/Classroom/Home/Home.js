@@ -95,6 +95,7 @@ export default function Home(props) {
                   classroomId={classroomId}
                   gradeId={gradeId}
                   viewing={viewing}
+                  setDays={setDays}
                 />
               </div>
               <p id='learning-standard-expectations'>{`Expectations: ${activeLearningStandard.expectations}`}</p>
@@ -196,6 +197,7 @@ export default function Home(props) {
                 classroomId={classroomId}
                 gradeId={gradeId}
                 viewing={viewing}
+                setDays={setDays}
               />
             </div>
           )}
