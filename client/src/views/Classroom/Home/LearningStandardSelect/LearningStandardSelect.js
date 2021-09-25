@@ -1,7 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { AutoComplete, Button, Divider, message } from 'antd';
+import { AutoComplete, Button, Divider, message, Tag } from 'antd';
 import './LearningStandardSelect.less';
-import { getLearningStandard, getUnits } from '../../../../Utils/requests';
+import {
+  getLearningStandard,
+  getUnits,
+  getLearningStandardDays,
+} from '../../../../Utils/requests';
 import CheckUnits from './CheckUnits';
 
 export default function LearningStandardSelect(props) {
@@ -17,6 +21,8 @@ export default function LearningStandardSelect(props) {
     activePanel,
     setActivePanel,
     gradeId,
+    days,
+    setDays,
   } = props;
 
   useEffect(() => {
@@ -48,6 +54,11 @@ export default function LearningStandardSelect(props) {
       setSelected(res.data);
     } else {
       message.error(res.err);
+    }
+    const daysRes = await getLearningStandardDays(res.data.id);
+    if (daysRes) setDays(daysRes.data);
+    else {
+      message.error(daysRes.err);
     }
   };
 
@@ -106,6 +117,24 @@ export default function LearningStandardSelect(props) {
     history.push('#home');
     setActivePanel('panel-1');
   };
+
+  const color = [
+    'magenta',
+    'purple',
+    'green',
+    'cyan',
+    'red',
+    'geekblue',
+    'volcano',
+    'blue',
+    'orange',
+    'gold',
+    'lime',
+  ];
+
+  const SCIENCE = 1;
+  const MAKING = 2;
+  const COMPUTATION = 3;
 
   return (
     <div className='overflow-hidden'>
@@ -172,21 +201,90 @@ export default function LearningStandardSelect(props) {
             </p>
           ) : null}
           <div id='btn-container' className='flex space-between'>
-            {selected.days
-              ? selected.days.map((day) => (
+            {days
+              ? days.map((day) => (
                   // <button key={day.id} onClick={() => handleViewDay(day)}>{`View Day ${day.number}`}</button>
-                  <div
-                    id='view-day-button'
-                    key={day.id}
-                    onClick={() => handleViewDay(day)}
-                  >
-                    <h3 id='view-day-title'>{`View Day ${day.number}`}</h3>
+                  <div id='view-day-button' key={day.id}>
+                    <h3
+                      onClick={() => handleViewDay(day)}
+                      id='view-day-title'
+                    >{`View Day ${day.number}`}</h3>
                     <div id='view-day-description'>
-                      <p>TekS: {day.TekS}</p>
-                      <p>Description: {day.description}</p>
+                      <p
+                        className='view-day-component-label'
+                        style={{ marginTop: '0px' }}
+                      >
+                        <strong>TEKS:</strong> {day.TekS}
+                      </p>
+                      <p className='view-day-component-label'>
+                        <strong>Description:</strong> {day.description}
+                      </p>
+                      <p className='view-day-component-label'>
+                        <strong>Science Components: </strong>
+                      </p>
+                      <div>
+                        {day.learning_components
+                          .filter(
+                            (component) =>
+                              component.learning_component_type === SCIENCE
+                          )
+                          .map((element, index) => {
+                            return (
+                              <Tag
+                                className='tag'
+                                key={index}
+                                color={color[(index + 1) % 11]}
+                              >
+                                {element.type}
+                              </Tag>
+                            );
+                          })}
+                      </div>
+                      <p className='view-day-component-label'>
+                        <strong>Making Components: </strong>
+                      </p>
+                      <div>
+                        {day.learning_components
+                          .filter(
+                            (component) =>
+                              component.learning_component_type === MAKING
+                          )
+                          .map((element, index) => {
+                            return (
+                              <Tag
+                                className='tag'
+                                key={index}
+                                color={color[(index + 4) % 11]}
+                              >
+                                {element.type}
+                              </Tag>
+                            );
+                          })}
+                      </div>
+                      <p className='view-day-component-label'>
+                        <strong>Computation Components: </strong>
+                      </p>
+                      <div>
+                        {day.learning_components
+                          .filter(
+                            (component) =>
+                              component.learning_component_type === COMPUTATION
+                          )
+                          .map((element, index) => {
+                            return (
+                              <Tag
+                                className='tag'
+                                key={index}
+                                color={color[(index + 7) % 11]}
+                              >
+                                {element.type}
+                              </Tag>
+                            );
+                          })}
+                      </div>
                       {day.link ? (
-                        <p>
-                          Link to Additional Information:{' '}
+                        <p className='view-day-component-label'>
+                          <strong>Link to Additional Information: </strong>
                           <a href={day.link} target='_blank' rel='noreferrer'>
                             {day.link}
                           </a>

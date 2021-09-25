@@ -20,17 +20,17 @@
   width: '160px';
 }
 
-#display-code-modal {
-  #display-code-btn {
-    width: 15vw;
-    min-height: 10vh;
-    font-size: 1em;
+// #display-code-modal {
+//   #display-code-btn {
+//     width: 15vw;
+//     min-height: 10vh;
+//     font-size: 1em;
 
-    &:hover {
-      width: 18vw;
-    }
-  }
-}
+//     &:hover {
+//       width: 18vw;
+//     }
+//   }
+// }
 
 .border-card-info {
   width: 50px;
@@ -45,10 +45,13 @@
   top: 5px;
 }
 
+#day-editor-subtitle {
+  font-size: 1.1em;
+}
+
 #card-day {
   background: #colors[tertiary];
-  border: 2px solid;
-  border-color: #colors[secondary];
+  border: none;
 
   .ant-card-head {
     border-bottom: 0px !important;
@@ -76,5 +79,57 @@
 
   label {
     margin: 10px auto 10px;
+  }
+}
+
+#day-detail-editor {
+  .input,
+  textarea {
+    display: block;
+    margin: 0px 5px 0px;
+    background: none;
+    border: 1px solid;
+    border-color: #colors[secondary];
+    padding: 10px 10px;
+    width: 95%;
+    outline: none;
+    color: #colors[text-primary];
+    border-radius: 4px;
+    transition: 0.25s;
+  }
+
+  label {
+    margin: 10px auto 12px;
+    white-space: pre-wrap;
+    font-weight: 450;
+  }
+
+  #tag-input {
+    width: 85px;
+    line-height: 20px;
+  }
+}
+
+//DayDetailModel
+
+#subtitle {
+  font-size: 1.2em;
+}
+
+#save-go-to-workspace-btn {
+  width: 18vw;
+  height: auto;
+  background: #colors[quaternary];
+  border: none;
+  border-radius: 30px;
+  color: #colors[text-primary];
+  font-size: 1em;
+  font-weight: 600;
+  padding: 6px;
+
+  &:hover {
+    width: 19vw;
+    cursor: pointer;
+    background: #colors[quinary];
   }
 }

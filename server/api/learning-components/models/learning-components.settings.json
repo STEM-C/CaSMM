@@ -1,0 +1,26 @@
+{
+  "kind": "collectionType",
+  "collectionName": "learning_components",
+  "info": {
+    "name": "Learning Components"
+  },
+  "options": {
+    "increments": true,
+    "timestamps": true,
+    "draftAndPublish": true
+  },
+  "attributes": {
+    "type": {
+      "type": "string"
+    },
+    "days": {
+      "collection": "day",
+      "via": "learning_components",
+      "dominant": true
+    },
+    "learning_component_type": {
+      "via": "learning_components",
+      "model": "learning-component-types"
+    }
+  }
+}

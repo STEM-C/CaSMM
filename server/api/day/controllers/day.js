@@ -2,6 +2,10 @@
 
 const { sanitizeEntity } = require('strapi-utils/lib');
 
+const SCIENCE = 1;
+const MAKING = 2;
+const COMPUTATION = 3;
+
 module.exports = {
   // update day description and objective
   async update(ctx) {
@@ -19,70 +23,82 @@ module.exports = {
       description,
       TekS,
       link,
-      scienceDesc,
-      makingDesc,
-      computationDesc,
+      scienceComponents,
+      makingComponents,
+      computationComponents,
     } = ctx.request.body;
-    if (
-      !TekS ||
-      !description ||
-      !scienceDesc ||
-      !makingDesc ||
-      !computationDesc
-    )
-      return ctx.badRequest(
-        'A description, Teks must be provided! Must have 3 objectives! ',
-        { id: 'day.update.body.invalid', error: 'ValidationError' }
-      );
-    const objectives = [scienceDesc, makingDesc, computationDesc];
-
-    let day = await strapi.services.day.findOne({ id: id });
-    let validObjectives;
-    // If we do not have any objectives, create new ones.
-    if (day.objectives.length === 0) {
-      // Get objective types
-      const objective_types = await strapi.services['objective-type'].find({});
-
-      // Create Objectives
-      const scienceObj = await strapi.services.objective.create({
-        description: objectives[0],
-        day: id,
-        objective_type: objective_types[0],
+    if (!TekS || !description)
+      return ctx.badRequest('A description, Teks must be provided!', {
+        id: 'day.update.body.invalid',
+        error: 'ValidationError',
       });
-      const makingObj = await strapi.services.objective.create({
-        description: objectives[1],
-        day: id,
-        objective_type: objective_types[1],
-      });
-      const computationObj = await strapi.services.objective.create({
-        description: objectives[2],
-        day: id,
-        objective_type: objective_types[2],
-      });
-      // put the three objective into an array
-      validObjectives = [scienceObj, makingObj, computationObj];
 
-      return await strapi.services.day.update(
-        { id },
-        { description, TekS, link, validObjectives }
+    // array to store new component
+    let dayComponents = [];
+
+    // add the science components
+    scienceComponents.forEach(async (component) => {
+      // find the existing components first
+      let foundComponent = await strapi.services['learning-components'].findOne(
+        { type: component, learning_component_type: SCIENCE }
       );
-    }
+      if (foundComponent) {
+        dayComponents.push(foundComponent);
+      }
+      // if component not found, create new ones
+      else {
+        const newComponent = await strapi.services[
+          'learning-components'
+        ].create({
+          type: component,
+          days: id,
+          learning_component_type: SCIENCE,
+        });
+        dayComponents.push(newComponent);
+      }
+    });
 
-    // If we have the objectives, just modify them.
-    for (let i = 0; i < 3; i++) {
-      let objDescription = day.objectives[i].description;
-      strapi.query('objective').update(
-        { description: objDescription },
-        {
-          description: objectives[i],
-        }
+    // add the making components
+    makingComponents.forEach(async (component) => {
+      let foundComponent = await strapi.services['learning-components'].findOne(
+        { type: component, learning_component_type: MAKING }
       );
-    }
+      if (foundComponent) {
+        dayComponents.push(foundComponent);
+      } else {
+        const newComponent = await strapi.services[
+          'learning-components'
+        ].create({
+          type: component,
+          days: id,
+          learning_component_type: MAKING,
+        });
+        dayComponents.push(newComponent);
+      }
+    });
 
-    // update the day
+    // add the computation components
+    computationComponents.forEach(async (component) => {
+      let foundComponent = await strapi.services['learning-components'].findOne(
+        { type: component, learning_component_type: COMPUTATION }
+      );
+      if (foundComponent) {
+        dayComponents.push(foundComponent);
+      } else {
+        const newComponent = await strapi.services[
+          'learning-components'
+        ].create({
+          type: component,
+          days: id,
+          learning_component_type: COMPUTATION,
+        });
+        dayComponents.push(newComponent);
+      }
+    });
+
     const updatedDay = await strapi.services.day.update(
       { id },
-      { description, TekS, link }
+      { description, TekS, link, learning_components: dayComponents }
     );
     return sanitizeEntity(updatedDay, { model: strapi.models.day });
   },

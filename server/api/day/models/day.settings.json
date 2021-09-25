@@ -23,10 +23,6 @@
       "type": "text",
       "required": true
     },
-    "objectives": {
-      "collection": "objective",
-      "via": "day"
-    },
     "blocks": {
       "collection": "block"
     },
@@ -39,6 +35,10 @@
     "link": {
       "type": "string",
       "required": false
+    },
+    "learning_components": {
+      "via": "days",
+      "collection": "learning-components"
     }
   }
 }

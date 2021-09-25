@@ -398,9 +398,9 @@ export const updateDayDetails = async (
   description,
   TekS,
   link,
-  scienceDesc,
-  makingDesc,
-  computationDesc
+  scienceComponents,
+  makingComponents,
+  computationComponents
 ) =>
   makeRequest({
     method: PUT,
@@ -409,9 +409,9 @@ export const updateDayDetails = async (
       description,
       TekS,
       link,
-      scienceDesc,
-      makingDesc,
-      computationDesc,
+      scienceComponents,
+      makingComponents,
+      computationComponents,
     },
     auth: true,
     error: 'Failed to update unit',

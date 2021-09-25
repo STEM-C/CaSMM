@@ -2,48 +2,48 @@
   "routes": [
     {
       "method": "GET",
-      "path": "/objectives",
-      "handler": "objective.find",
+      "path": "/learning-components",
+      "handler": "learning-components.find",
       "config": {
         "policies": []
       }
     },
     {
       "method": "GET",
-      "path": "/objectives/count",
-      "handler": "objective.count",
+      "path": "/learning-components/count",
+      "handler": "learning-components.count",
       "config": {
         "policies": []
       }
     },
     {
       "method": "GET",
-      "path": "/objectives/:id",
-      "handler": "objective.findOne",
+      "path": "/learning-components/:id",
+      "handler": "learning-components.findOne",
       "config": {
         "policies": []
       }
     },
     {
       "method": "POST",
-      "path": "/objectives",
-      "handler": "objective.create",
+      "path": "/learning-components",
+      "handler": "learning-components.create",
       "config": {
         "policies": []
       }
     },
     {
       "method": "PUT",
-      "path": "/objectives/:id",
-      "handler": "objective.update",
+      "path": "/learning-components/:id",
+      "handler": "learning-components.update",
       "config": {
         "policies": []
       }
     },
     {
       "method": "DELETE",
-      "path": "/objectives/:id",
-      "handler": "objective.delete",
+      "path": "/learning-components/:id",
+      "handler": "learning-components.delete",
       "config": {
         "policies": []
       }
