@@ -179,7 +179,7 @@ export const getLearningStandardcount = async () =>
 export const getLearningStandardAll = async () =>
   makeRequest({
     method: GET,
-    path: `${server}/learning-standards`,
+    path: `${server}/learning-standards?_sort=unit.name:ASC,name:ASC`,
     auth: true,
     error: 'Failed to retrieve learning standard.',
   });
@@ -217,12 +217,12 @@ export const getSaves = async (day) =>
     error: 'Past saves could not be retrieved.',
   });
 
-export const createSubmission = async (day, workspace, sketch, path, isAuth) =>
+export const createSubmission = async (id, workspace, sketch, path, isAuth) =>
   makeRequest({
     method: POST,
     path: `${server}${path}`,
     data: {
-      day: day.id,
+      day: id,
       workspace: workspace,
       board: 'arduino:avr:uno',
       sketch: sketch,
@@ -302,17 +302,19 @@ export const createLearningStandard = async (
   name,
   number,
   unit,
-  teks
+  teks,
+  link
 ) =>
   makeRequest({
     method: POST,
     path: `${server}/learning-standards`,
     data: {
       expectations: description,
-      name: name,
-      number: number,
-      unit: unit,
-      teks: teks,
+      name,
+      number,
+      unit,
+      teks,
+      link,
     },
     auth: true,
     error: 'Login failed.',
@@ -371,7 +373,13 @@ export const getGrade = async (grade) =>
     error: 'Grade could not be retrieved',
   });
 
-export const updateLearningStandard = async (id, name, expectations, teks) =>
+export const updateLearningStandard = async (
+  id,
+  name,
+  expectations,
+  teks,
+  link
+) =>
   makeRequest({
     method: PUT,
     path: `${server}/learning-standards/${id}`,
@@ -379,6 +387,7 @@ export const updateLearningStandard = async (id, name, expectations, teks) =>
       name,
       teks,
       expectations,
+      link,
     },
     auth: true,
     error: 'Failed to update unit',
@@ -388,20 +397,38 @@ export const updateDayDetails = async (
   id,
   description,
   TekS,
-  scienceObj,
-  makingObj,
-  ComputationObj
-) => {
-  const objectives = [scienceObj, makingObj, ComputationObj];
+  link,
+  scienceDesc,
+  makingDesc,
+  computationDesc
+) =>
   makeRequest({
     method: PUT,
     path: `${server}/days/${id}`,
     data: {
       description,
       TekS,
-      objectives,
+      link,
+      scienceDesc,
+      makingDesc,
+      computationDesc,
     },
     auth: true,
     error: 'Failed to update unit',
   });
-};
+
+export const getLearningStandardDays = async (lsId) =>
+  makeRequest({
+    method: GET,
+    path: `${server}/days?learning_standard.id=${lsId}`,
+    auth: true,
+    error: 'Day cannot be retrived',
+  });
+
+export const getDay = async (id) =>
+  makeRequest({
+    method: GET,
+    path: `${server}/days/${id}`,
+    auth: true,
+    error: 'Day cannot be retrived',
+  });

@@ -35,6 +35,10 @@
     },
     "TekS": {
       "type": "string"
+    },
+    "link": {
+      "type": "string",
+      "required": false
     }
   }
 }

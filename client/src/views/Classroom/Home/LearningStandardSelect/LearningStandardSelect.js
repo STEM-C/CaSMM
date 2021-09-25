@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { AutoComplete, Divider, message } from 'antd';
+import { AutoComplete, Button, Divider, message } from 'antd';
 import './LearningStandardSelect.less';
 import { getLearningStandard, getUnits } from '../../../../Utils/requests';
 import CheckUnits from './CheckUnits';
@@ -163,6 +163,14 @@ export default function LearningStandardSelect(props) {
         <div id='ls-info'>
           <p id='learning-standard-expectations-title'>Expectations:</p>
           <p id='learning-standard-expectations'>{selected.expectations}</p>
+          {selected.link ? (
+            <p>
+              Link to addtional resources:{' '}
+              <a href={selected.link} target='_blank' rel='noreferrer'>
+                {selected.link}
+              </a>
+            </p>
+          ) : null}
           <div id='btn-container' className='flex space-between'>
             {selected.days
               ? selected.days.map((day) => (
@@ -174,8 +182,16 @@ export default function LearningStandardSelect(props) {
                   >
                     <h3 id='view-day-title'>{`View Day ${day.number}`}</h3>
                     <div id='view-day-description'>
-                      <p>Science Module</p>
-                      <p>More infomation here</p>
+                      <p>TekS: {day.TekS}</p>
+                      <p>Description: {day.description}</p>
+                      {day.link ? (
+                        <p>
+                          Link to Additional Information:{' '}
+                          <a href={day.link} target='_blank' rel='noreferrer'>
+                            {day.link}
+                          </a>
+                        </p>
+                      ) : null}
                     </div>
                   </div>
                 ))

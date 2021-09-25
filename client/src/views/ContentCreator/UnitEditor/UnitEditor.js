@@ -74,6 +74,7 @@ export default function UnitCreator({ id, unitName }) {
       <Modal
         title='Unit Editor'
         visible={visible}
+        width='35vw'
         onCancel={handleCancel}
         onOk={handleSubmit}
       >

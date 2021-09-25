@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from 'react';
 
-import { Tabs, Table, Popconfirm, message } from 'antd';
+import { Tabs, Table, Popconfirm, message, Pagination } from 'antd';
 import Navbar from '../../components/NavBar/NavBar';
 import { QuestionCircleOutlined } from '@ant-design/icons';
 
-import DayEditor from './LearningStandardDayCreator/DayEditor';
 import UnitCreator from './UnitCreator/UnitCreator';
 import LearningStandardDayCreator from './LearningStandardCreator/LearningStandardCreator';
 import {
@@ -13,14 +12,28 @@ import {
   getGrades,
 } from '../../Utils/requests';
 import UnitEditor from './UnitEditor/UnitEditor';
+import LessonEditor from './LessonEditor/LessonEditor';
 
 import './ContentCreator.less';
 
 const { TabPane } = Tabs;
 
-export default function ContentCreator(props) {
+export default function ContentCreator({ history }) {
   const [gradeList, setGradeList] = useState([]);
   const [learningStandardList, setLearningStandardList] = useState([]);
+  const [tab, setTab] = useState(
+    history.location.hash.split('#')[1]
+      ? history.location.hash.split('#')[1]
+      : 'home'
+  );
+  const [page, setPage] = useState(
+    history.location.hash.split('#')[1]
+      ? parseInt(history.location.hash.split('#')[2])
+      : 1
+  );
+  const [viewing, setViewing] = useState(
+    parseInt(history.location.hash.split('#')[3])
+  );
 
   useEffect(() => {
     const fetchData = async () => {
@@ -50,18 +63,26 @@ export default function ContentCreator(props) {
       ),
     },
     {
-      title: 'Learning Standard',
+      title: 'Lesson',
       dataIndex: 'name',
       key: 'name',
       editable: true,
       width: '22.5%',
       align: 'left',
       render: (_, key) => (
-        <DayEditor history={props.history} learningStandard={key} />
+        <LessonEditor
+          learningStandard={key}
+          history={history}
+          linkBtn={true}
+          viewing={viewing}
+          setViewing={setViewing}
+          tab={tab}
+          page={page}
+        />
       ),
     },
     {
-      title: 'Desciption',
+      title: 'Description',
       dataIndex: 'expectations',
       key: 'character',
       editable: true,
@@ -104,7 +125,7 @@ export default function ContentCreator(props) {
     return (
       <TabPane tab={grade.name} key={grade.name}>
         <div id='page-header'>
-          <h1>Learning Standards & Units:</h1>
+          <h1>Lessons & Units</h1>
         </div>
         <div id='content-creator-table-container'>
           <div id='content-creator-btn-container'>
@@ -115,6 +136,12 @@ export default function ContentCreator(props) {
             columns={columns}
             dataSource={filterLS(grade)}
             rowClassName='editable-row'
+            onChange={(Pagination) => {
+              setViewing(undefined);
+              setPage(Pagination.current);
+              history.push(`#${tab}#${Pagination.current}`);
+            }}
+            pagination={{ current: page ? page : 1 }}
           ></Table>
         </div>
       </TabPane>
@@ -126,22 +153,41 @@ export default function ContentCreator(props) {
       <Navbar isContentCreator={true} />
       <div id='main-header'>Welcome Content Creator</div>
 
-      <Tabs>
+      <Tabs
+        onChange={(activeKey) => {
+          setTab(activeKey);
+          setPage(1);
+          setViewing(undefined);
+          history.push(`#${activeKey}`);
+        }}
+        activeKey={tab ? tab : 'home'}
+      >
         <TabPane tab='Home' key='home'>
           <div id='page-header'>
-            <h1>Learning Standards & Units</h1>
+            <h1>Lessons & Units</h1>
           </div>
           <div id='content-creator-table-container'>
             <div id='content-creator-btn-container'>
               <UnitCreator gradeList={gradeList} />
               <LearningStandardDayCreator
                 setLearningStandardList={setLearningStandardList}
+                history={history}
+                viewing={viewing}
+                setViewing={setViewing}
+                tab={tab}
+                page={page}
               />
             </div>
             <Table
               columns={columns}
               dataSource={learningStandardList}
               rowClassName='editable-row'
+              onChange={(Pagination) => {
+                setViewing(undefined);
+                setPage(Pagination.current);
+                history.push(`#${tab}#${Pagination.current}`);
+              }}
+              pagination={{ current: page ? page : 1 }}
             ></Table>
           </div>
         </TabPane>

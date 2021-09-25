@@ -67,6 +67,18 @@ export default function Home(props) {
                 />
               </div>
               <p id='learning-standard-expectations'>{`Expectations: ${activeLearningStandard.expectations}`}</p>
+              {activeLearningStandard.link ? (
+                <p>
+                  Addtional resources to the lesson:{' '}
+                  <a
+                    href={activeLearningStandard.link}
+                    target='_blank'
+                    rel='noreferrer'
+                  >
+                    {activeLearningStandard.link}
+                  </a>
+                </p>
+              ) : null}
               <div id='btn-container' className='flex space-between'>
                 {activeLearningStandard.days.map((day) => (
                   <div
@@ -78,8 +90,16 @@ export default function Home(props) {
                   >
                     <h3 id='view-day-title'>{`View Day ${day.number}`}</h3>
                     <div id='view-day-description'>
-                      <p>Science Module</p>
-                      <p>More infomation here</p>
+                      <p>TekS: {day.TekS}</p>
+                      <p>Description: {day.description}</p>
+                      {day.link ? (
+                        <p>
+                          Link to Additional Information:{' '}
+                          <a href={day.link} target='_blank' rel='noreferrer'>
+                            {day.link}
+                          </a>
+                        </p>
+                      ) : null}
                     </div>
                   </div>
                 ))}
