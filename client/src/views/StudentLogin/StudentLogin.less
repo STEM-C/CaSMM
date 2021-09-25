@@ -108,12 +108,13 @@
   border: none;
   padding: 0 !important;
   color: #colors[text-secondary];
-  text-decoration: underline;
+  text-decoration: none;
   transition: 0.25s;
 
   &:hover {
     color: #colors[secondary];
-    text-decoration: underline;
+    cursor: pointer;
+    text-decoration: none;
   }
 
   margin: 0 15px;
@@ -122,23 +123,24 @@
 }
 
 #login-button {
-  background: darken(#colors[tertiary], 30%);
+  background: #colors[quaternary];
   width: 20%;
   display: block;
   margin: 20px auto 0px;
-  border: 2px solid;
-  border-color: #colors[secondary];
+  border: none;
   padding: 14px 40px;
   outline: none;
-  color: #colors[text-secondary];
+  color: #colors[text-primary];
   font-size: 1.5em;
   font-weight: 550;
   border-radius: 30px;
   cursor: pointer;
   transition: 0.25s;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.377);
 
   &:hover {
-    color: lighten(#colors[secondary], 20%);
+    width: 21%;
+    background: #colors[quinary];
   }
 }
 

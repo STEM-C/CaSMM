@@ -24,31 +24,29 @@
   position: relative;
   top: -20px;
   left: -30px;
-  line-height: 80px;
+  line-height: 45px;
   text-align: center;
 }
 
 #list-item-wrapper {
-  background-color: darken(#colors[tertiary], 5%);
-  border: solid 5px;
-  border-color: #colors[secondary];
-  border-radius: 80px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #colors[quaternary];
+  border: none;
+  border-radius: 10px;
   margin: 0 auto 1.2em auto;
   width: 80%;
   height: 40px;
   font-size: 2.5vh;
-  font-weight: 450;
+  font-weight: 500;
   color: #colors[text-primary];
   line-height: 30px;
   transition: 0.25s;
   &:hover {
     cursor: pointer;
-    color: #colors[text-secondary];
-    background-color: #colors[secondary];
-    border-color: darken(#colors[secondary], 10%);
-    opacity: .9;
-    font-weight: 500;
-    width: 85%;
+    background-color: #colors[quinary];
+    width: 82%;
   }
 }
 
