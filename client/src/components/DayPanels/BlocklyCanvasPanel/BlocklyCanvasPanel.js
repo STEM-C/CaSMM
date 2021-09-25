@@ -149,7 +149,7 @@ export default function BlocklyCanvasPanel(props) {
       clearInterval(autosaveInterval);
       clearInterval(replaySaveInterval);
       if (isStudent && dayRef.current && workspaceRef.current)
-        await handleSave(dayRef.current.id, workspaceRef);
+        await handleSave(dayRef.current.id, workspaceRef,replayRef.current);
       if (workspaceRef.current) workspaceRef.current.dispose();
       dayRef.current = null;
     };
