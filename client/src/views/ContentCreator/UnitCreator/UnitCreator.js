@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Form, Input, Modal, message } from 'antd';
+import { Form, Input, Modal, message, Button } from 'antd';
 import { createUnit } from '../../../Utils/requests';
 import './UnitCreator.less';
 
@@ -23,8 +23,8 @@ export default function UnitCreator({ gradeList }) {
     setVisible(false);
   };
 
-  const onClickHandler = async (e) => {
-    e.preventDefault();
+  const handleSubmit = async (e) => {
+    console.log(e);
     const res = await createUnit(number, name, tek, description, grade);
     console.log(res);
     if (res.err) {
@@ -43,8 +43,9 @@ export default function UnitCreator({ gradeList }) {
       <Modal
         title='Create Unit'
         visible={visible}
+        width='35vw'
         onCancel={handleCancel}
-        onOk={onClickHandler}
+        footer={null}
       >
         <Form
           id='add-units'
@@ -54,6 +55,7 @@ export default function UnitCreator({ gradeList }) {
           wrapperCol={{
             span: 14,
           }}
+          onFinish={handleSubmit}
           layout='horizontal'
           size='default'
         >
@@ -62,6 +64,7 @@ export default function UnitCreator({ gradeList }) {
               id='grade-dropdown'
               name='grade'
               defaultValue={grade}
+              required
               onChange={(e) => setGrade(e.target.value)}
             >
               <option key={0} value={grade} disabled id='disabled-option'>
@@ -109,6 +112,29 @@ export default function UnitCreator({ gradeList }) {
               placeholder='Enter unit Teks'
               required
             />
+          </Form.Item>
+          <Form.Item
+            wrapperCol={{
+              offset: 8,
+              span: 16,
+            }}
+            style={{ marginBottom: '0px' }}
+          >
+            <Button
+              type='primary'
+              htmlType='submit'
+              size='large'
+              className='content-creator-button'
+            >
+              Submit
+            </Button>
+            <Button
+              onClick={handleCancel}
+              size='large'
+              className='content-creator-button'
+            >
+              Cancel
+            </Button>
           </Form.Item>
         </Form>
       </Modal>

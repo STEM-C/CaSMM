@@ -21,7 +21,11 @@ import { getSaves } from '../../../Utils/requests';
 import CodeModal from './CodeModal';
 import ConsoleModal from './ConsoleModal';
 import VersionHistoryModal from './VersionHistoryModal';
-import { openConnection, disconnect } from '../consoleHelpers';
+import {
+  connectToPort,
+  handleCloseConnection,
+  handleOpenConnection,
+} from '../consoleHelpers';
 
 export default function BlocklyCanvasPanel(props) {
   const [hoverXml, setHoverXml] = useState(false);
@@ -58,12 +62,15 @@ export default function BlocklyCanvasPanel(props) {
 
   const workspaceRef = useRef(null);
   const dayRef = useRef(null);
+  const replayRef = useRef([]);
+  const undoLength = useRef(0);
   const { SubMenu } = Menu;
 
-  const setWorkspace = () =>
-    (workspaceRef.current = window.Blockly.inject('blockly-canvas', {
+  const setWorkspace = () => {
+    workspaceRef.current = window.Blockly.inject('blockly-canvas', {
       toolbox: document.getElementById('toolbox'),
-    }));
+    });
+  };
 
   const loadSave = (selectedSave) => {
     try {
@@ -108,20 +115,41 @@ export default function BlocklyCanvasPanel(props) {
 
   useEffect(() => {
     // automatically save workspace every min
-    setInterval(async () => {
+    let autosaveInterval = setInterval(async () => {
       if (isStudent && workspaceRef.current && dayRef.current) {
-        const res = await handleSave(dayRef.current.id, workspaceRef);
+        const res = await handleSave(
+          dayRef.current.id,
+          workspaceRef,
+          replayRef.current
+        );
         if (res.data) {
           setLastAutoSave(res.data[0]);
           setLastSavedTime(getFormattedDate(res.data[0].updated_at));
         }
       }
     }, 60000);
-
+    let replaySaveInterval = setInterval(async () => {
+      if (
+        workspaceRef.current &&
+        workspaceRef.current.undoStack_.length !== undoLength.current
+      ) {
+        undoLength.current = workspaceRef.current.undoStack_.length;
+        let xml = window.Blockly.Xml.workspaceToDom(workspaceRef.current);
+        let xml_text = window.Blockly.Xml.domToText(xml);
+        const replay = {
+          xml: xml_text,
+          timestamp: Date.now(),
+        };
+        replayRef.current.push(replay);
+        console.log(replayRef.current);
+      }
+    }, 1000);
     // clean up - saves workspace and removes blockly div from DOM
     return async () => {
+      clearInterval(autosaveInterval);
+      clearInterval(replaySaveInterval);
       if (isStudent && dayRef.current && workspaceRef.current)
-        await handleSave(dayRef.current.id, workspaceRef);
+        await handleSave(dayRef.current.id, workspaceRef,replayRef.current);
       if (workspaceRef.current) workspaceRef.current.dispose();
       dayRef.current = null;
     };
@@ -165,6 +193,7 @@ export default function BlocklyCanvasPanel(props) {
         if (onLoadSave) {
           let xml = window.Blockly.Xml.textToDom(onLoadSave.workspace);
           window.Blockly.Xml.domToWorkspace(xml, workspaceRef.current);
+          replayRef.current = onLoadSave.replay;
           setLastSavedTime(getFormattedDate(onLoadSave.updated_at));
         } else if (day.template) {
           let xml = window.Blockly.Xml.textToDom(day.template);
@@ -179,7 +208,7 @@ export default function BlocklyCanvasPanel(props) {
 
   const handleManualSave = async () => {
     // save workspace then update load save options
-    const res = await handleSave(day.id, workspaceRef);
+    const res = await handleSave(day.id, workspaceRef, replayRef.current);
     if (res.err) {
       message.error(res.err);
     } else {
@@ -192,7 +221,12 @@ export default function BlocklyCanvasPanel(props) {
   };
 
   const handleCreatorSave = async () => {
-    const res = handleCreatorSaveDay(day.id, workspaceRef, studentToolbox);
+    const res = await handleCreatorSaveDay(
+      day.id,
+      workspaceRef,
+      studentToolbox
+    );
+    console.log(res);
     if (res.err) {
       message.error(res.err);
     } else {
@@ -321,41 +355,25 @@ export default function BlocklyCanvasPanel(props) {
       workspaceRef.current.undo(true);
   };
 
-  const connectToPort = async () => {
-    const filters = [
-      { usbVendorId: 0x2341, usbProductId: 0x0043 },
-      { usbVendorId: 0x2341, usbProductId: 0x0001 },
-    ];
-    let port;
-    try {
-      port = await navigator.serial.requestPort({ filters });
-    } catch (e) {
-      console.log(e);
-      return;
-    }
-    window['port'] = port;
-  };
-
   const handleConsole = async () => {
+    // if serial monitor is not shown
     if (!showConsole) {
-      if (typeof window['port'] === 'undefined') {
-        await connectToPort();
-      }
+      // connect to port
+      await handleOpenConnection(9600, true);
+      // if fail to connect to port, return
       if (typeof window['port'] === 'undefined') {
         message.error('Fail to select serial device');
         return;
       }
-      setShowConsole(true);
       setConnectionOpen(true);
-      document.getElementById('connect-button').innerHTML = 'Disconnect';
-      openConnection(9600, true);
-    } else {
+      setShowConsole(true);
+    }
+    // if serial monitor is shown, close the connection
+    else {
       setShowConsole(false);
       if (connectionOpen) {
-        console.log('Close connection');
-        disconnect();
+        await handleCloseConnection();
         setConnectionOpen(false);
-        document.getElementById('connect-button').innerHTML = 'Connect';
       }
     }
   };
@@ -364,15 +382,13 @@ export default function BlocklyCanvasPanel(props) {
     if (connectionOpen) {
       message.error('Close Serial Monitor before uploading your code');
     } else {
-      if (typeof window['port'] === 'undefined') {
-        await connectToPort();
-      }
+      await connectToPort();
       if (typeof window['port'] === 'undefined') {
         message.error('Fail to select serial device');
         return;
       }
       setCompileError('');
-      compileArduinoCode(
+      await compileArduinoCode(
         workspaceRef.current,
         setSelectedCompile,
         setCompileError,
@@ -405,16 +421,17 @@ export default function BlocklyCanvasPanel(props) {
           id='bottom-container'
           className='flex flex-column vertical-container overflow-visible'
         >
-          <Row>
-            <Col flex='none' id='section-header'>
-              {lessonName ? lessonName : 'Program your Arduino...'}
-            </Col>
-            <Col flex='auto'>
-              <Spin
-                tip='Compiling Code Please Wait...'
-                className='compilePop'
-                spinning={selectedCompile}
-              >
+          <Spin
+            tip='Compiling Code Please Wait... It may take up to 20 seconds to compile your code.'
+            className='compilePop'
+            size='large'
+            spinning={selectedCompile}
+          >
+            <Row>
+              <Col flex='none' id='section-header'>
+                {lessonName ? lessonName : 'Program your Arduino...'}
+              </Col>
+              <Col flex='auto'>
                 <Row align='middle' justify='end' id='description-container'>
                   <Col flex={homePath && handleGoBack ? '60px' : '30px'}>
                     <Row>
@@ -590,10 +607,10 @@ export default function BlocklyCanvasPanel(props) {
                     </div>
                   </Col>
                 </Row>
-              </Spin>
-            </Col>
-          </Row>
-          <div id='blockly-canvas' />
+              </Col>
+            </Row>
+            <div id='blockly-canvas' />
+          </Spin>
         </div>
         {isContentCreator ? (
           <div id='side-container'>

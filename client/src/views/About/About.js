@@ -33,7 +33,7 @@ export default function About(props) {
                     How it Works
                 </h1>
                 <p>
-                    CASMM makes use of Google's <a href='https://developers.google.com/blockly'>Blockly</a> JavaScript
+                    CASMM makes use of Google's <a href='https://developers.google.com/blockly' style={{ color: '#3d5c82', fontWeight: '600' }}>Blockly</a> JavaScript
                     library to build a block based visual programming editor within our user interface. Programs created
                     through the visual programming editor can be compiled into Arduino executable code and uploaded
                     directly onto a students Arduino. These programs, once uploaded to the student's Arduino, provide

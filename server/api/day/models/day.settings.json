@@ -2,11 +2,13 @@
   "kind": "collectionType",
   "collectionName": "days",
   "info": {
-    "name": "Day"
+    "name": "Day",
+    "description": ""
   },
   "options": {
     "increments": true,
-    "timestamps": true
+    "timestamps": true,
+    "draftAndPublish": false
   },
   "attributes": {
     "learning_standard": {
@@ -21,12 +23,22 @@
       "type": "text",
       "required": true
     },
-    "objectives": {
-      "collection": "objective",
-      "via": "day"
-    },
     "blocks": {
       "collection": "block"
+    },
+    "description": {
+      "type": "text"
+    },
+    "TekS": {
+      "type": "string"
+    },
+    "link": {
+      "type": "string",
+      "required": false
+    },
+    "learning_components": {
+      "via": "days",
+      "collection": "learning-components"
     }
   }
 }

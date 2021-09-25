@@ -13,11 +13,13 @@
 }
 
 #add-learning-standard-btn {
-  top: -5vh;
-  width: 12vw;
-  max-height: 5vh;
-  padding: 5px;
-  font-size: 2vh;
+  position: relative;
+  top: -2vh;
+  width: auto;
+  min-width: 8vw;
+  max-height: 9vh;
+  padding: 5px 10px;
+  font-size: 1em;
   font-weight: 500;
   border-radius: 30px;
   margin: auto;
@@ -29,7 +31,7 @@
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.377);
 
   &:hover {
-    width: 13vw;
+    width: 10vw;
     background: #colors[quinary];
   }
 }
@@ -55,7 +57,8 @@
   }
 
   label {
-    margin: 10px auto 10px;
+    margin: 10px auto 12px;
+    white-space: pre-wrap;
   }
 }
 
@@ -75,4 +78,9 @@
 
 #unit:focus {
   width: 100%;
+}
+
+#link-Input {
+  white-space: pre-wrap;
+  margin-bottom: 20px;
 }

@@ -2,7 +2,7 @@ import {
   createSubmission,
   getSubmission,
   saveWorkspace,
-  updateDay,
+  updateDayTemplate,
 } from '../../Utils/requests';
 import { message } from 'antd';
 
@@ -63,11 +63,11 @@ export const compileArduinoCode = async (
   let workspaceText = window.Blockly.Xml.domToText(workspaceDom);
   let path;
   isStudent ? (path = '/submissions') : (path = '/sandbox/submission');
-  day.id = isStudent ? day.id : undefined;
+  let id = isStudent ? day.id : undefined;
 
   // create an initial submission
   const initialSubmission = await createSubmission(
-    day,
+    id,
     workspaceText,
     sketch,
     path,
@@ -183,17 +183,15 @@ const flashArduino = async (response, setSelectedCompile, setCompileError) => {
 };
 
 // save current workspace
-export const handleSave = async (dayId, workspaceRef) => {
+export const handleSave = async (dayId, workspaceRef, replay) => {
   let xml = window.Blockly.Xml.workspaceToDom(workspaceRef.current);
   let xml_text = window.Blockly.Xml.domToText(xml);
-  return await saveWorkspace(dayId, xml_text);
+  return await saveWorkspace(dayId, xml_text, replay);
 };
 
 export const handleCreatorSaveDay = async (dayId, workspaceRef, blocksList) => {
   let xml = window.Blockly.Xml.workspaceToDom(workspaceRef.current);
   let xml_text = window.Blockly.Xml.domToText(xml);
 
-  console.log('The current blocksList is: ', blocksList);
-
-  return await updateDay(dayId, xml_text, blocksList);
+  return await updateDayTemplate(dayId, xml_text, blocksList);
 };

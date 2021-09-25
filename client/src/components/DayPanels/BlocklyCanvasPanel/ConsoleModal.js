@@ -1,6 +1,10 @@
 import { Button, Checkbox, Select, Input, message, Row, Col } from 'antd';
 import React, { useState, useEffect } from 'react';
-import { openConnection, disconnect, writeToPort } from '../consoleHelpers';
+import {
+  writeToPort,
+  handleOpenConnection,
+  handleCloseConnection,
+} from '../consoleHelpers';
 import Message from '../../Message';
 
 message.config({
@@ -8,74 +12,64 @@ message.config({
   maxCount: 1,
 });
 
-export default function ConsoleModal(props) {
+export default function ConsoleModal({
+  connectionOpen,
+  setConnectionOpen,
+  show,
+}) {
   const [baudRate, setBaudRate] = useState(9600);
   const [input, setInput] = useState('');
   const [newLine, setnewLine] = useState(true);
   const [deviceDisconnect, setDeviceDisconnect] = useState(false);
 
-  const { connectionOpen, setConnectionOpen } = props;
-
   useEffect(() => {
     navigator.serial.addEventListener('disconnect', (e) => {
       console.log('device disconnected');
       window.port = undefined;
-      console.log('cleaned');
       setConnectionOpen(false);
       document.getElementById('connect-button').innerHTML = 'Connect';
       setDeviceDisconnect(true);
       message.error('Device Disconnected');
     });
     navigator.serial.addEventListener('connect', (e) => {
-      console.log('device connected');
       setDeviceDisconnect(false);
       message.success('Device Connected');
     });
   }, [deviceDisconnect, setConnectionOpen]);
 
+  const handleKeyPress = async (e) => {
+    if (e.key === 'Enter') {
+      await sendInput();
+    }
+  };
+
   const handleConnect = async () => {
     if (!connectionOpen) {
-      if (typeof window['port'] === 'undefined') {
-        const filters = [
-          { usbVendorId: 0x2341, usbProductId: 0x0043 },
-          { usbVendorId: 0x2341, usbProductId: 0x0001 },
-        ];
-        let port;
-        try {
-          port = await navigator.serial.requestPort({ filters });
-        } catch (e) {
-          console.log(e);
-          return;
-        }
-        window['port'] = port;
-      }
+      await handleOpenConnection(baudRate, newLine);
       setConnectionOpen(true);
       setDeviceDisconnect(false);
-      document.getElementById('connect-button').innerHTML = 'Disconnect';
-      openConnection(baudRate, newLine);
     } else {
-      console.log('Close connection');
-      disconnect();
+      await handleCloseConnection();
       setConnectionOpen(false);
-      document.getElementById('connect-button').innerHTML = 'Connect';
     }
+    setInput('');
   };
 
   const handleChange = ({ value }) => {
     setBaudRate(value);
   };
 
-  const sendInput = () => {
+  const sendInput = async () => {
     if (!connectionOpen) {
       window.alert('Connection not opened.');
       return;
     }
-    console.log(input);
-    writeToPort(input);
+    await writeToPort(input);
+    setInput('');
   };
 
   return (
-    <div id='console-container' className={props.show ? 'open' : ''}>
+    <div id='console-container' className={show ? 'open' : ''}>
       <div style={{ margin: '5px 0' }}>
         <strong style={{ fontSize: '10' }}>Baud Rate: </strong>
         <Select
@@ -103,7 +97,7 @@ export default function ConsoleModal(props) {
           onClick={() => handleConnect()}
           style={{ marginLeft: '10px' }}
         >
-          Connect
+          {connectionOpen ? 'Disconnect' : 'Connect'}
         </Button>
         <Checkbox
           checked={newLine}
@@ -126,6 +120,8 @@ export default function ConsoleModal(props) {
             value={input}
             placeholder='Enter your input: '
             id='console-message'
+            autoComplete='off'
+            onKeyPress={handleKeyPress}
             onChange={(e) => {
               setInput(e.target.value);
             }}
