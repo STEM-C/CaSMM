@@ -12,7 +12,7 @@ export default function LearningStandardModal(props) {
   const [activePanel, setActivePanel] = useState('panel-1');
   const [selectedDays, setSelectedDays] = useState([]);
   const [selected, setSelected] = useState({});
-  const { history, setActiveLearningStandard, gradeId, classroomId, viewing } =
+  const { history, setActiveLearningStandard, gradeId, classroomId, viewing, setDays } =
     props;
 
   useEffect(() => {
@@ -54,6 +54,7 @@ export default function LearningStandardModal(props) {
       message.error(res.err);
     } else {
       setActiveLearningStandard(selected);
+      setDays(selectedDays);
       message.success('Successfully updated active learning standard.');
       setVisible(false);
     }
