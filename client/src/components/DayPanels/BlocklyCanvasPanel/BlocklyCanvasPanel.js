@@ -382,7 +382,9 @@ export default function BlocklyCanvasPanel(props) {
     if (connectionOpen) {
       message.error('Close Serial Monitor before uploading your code');
     } else {
-      await connectToPort();
+      if(typeof  window['port'] === 'undefined'){
+        await connectToPort();
+      }
       if (typeof window['port'] === 'undefined') {
         message.error('Fail to select serial device');
         return;
