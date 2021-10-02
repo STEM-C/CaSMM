@@ -17,13 +17,13 @@
  beforeAll(async () => {
  
      // login as an admin
-     const { data: admin } = await publicRequest.post('/admin/auth/local', {
-         identifier: 'test',
+     const { data: admin } = await publicRequest.post('/admin/login', {
+        email: 'test@mail.com',
          password: '123456'
      })
  
      // create an admin request instance
-     adminRequest = getAuthorizedRequestModule(admin.jwt)
+     adminRequest = getAuthorizedRequestModule(admin.data.token)
  
      //console.log("token: ", admin.jwt)
  })
@@ -90,29 +90,53 @@ test('Mentor dashboard contains correct learning standards', async () =>{
 test('Mentor can view correct day - with the correct blocks populated in day panel per learning standard', async () => {
     const response = await adminRequest.get('/days/1');
     expect(response).toMatchObject({
-            "data": { 
+            "data": {
                 "id": 1,
                 "learning_standard": {
                     "id": 1,
                     "unit": 1,
                     "number": 1.3,
+                    "name": "Mixtures and Solutions",
+                    "expectations": "Demonstrate that some mixtures maintain physical properties of their ingredients such as iron fillings and sand and sand and water.\nIdentify changes that can occur in the physical properties of the ingredients or solutions such as dissolving salt in water or adding lemon juice to water.",
+                    "created_at": "2020-07-24T16:53:26.737Z",
+                    "updated_at": "2020-07-24T16:53:26.749Z",
+                    "teks": null,
+                    "link": null
                 },
                 "number": "1",
                 "template": "<xml xmlns=\"http://www.w3.org/1999/xhtml\"><block type=\"controls_if\" id=\"QJ(1[6#4Ys@+p~@Ryl|Z\" x=\"117\" y=\"178\"><value name=\"IF0\"><block type=\"logic_compare\" id=\"x5M=__I|GXzRT:u6nz]_\"><field name=\"OP\">EQ</field><value name=\"A\"><block type=\"math_number\" id=\"?L[7sHbFFX{X-d({Qgi!\"><field name=\"NUM\">0</field></block></value><value name=\"B\"><block type=\"math_number\" id=\"qfOmU9isz_01I8~u#sSW\"><field name=\"NUM\">0</field></block></value></block></value><statement name=\"DO0\"><block type=\"math_change\" id=\";y@:{=LW6[@|j,1*.6C]\"><field name=\"VAR\">item</field><value name=\"DELTA\"><block type=\"math_number\" id=\"m0.eI+XUsK/KXsTo3}#B\"><field name=\"NUM\">0</field></block></value></block></statement></block></xml>",
+                "created_at": "2020-07-24T16:44:20.743Z",
+                "updated_at": "2020-07-24T17:15:10.506Z",
+                "description": null,
+                "TekS": null,
+                "link": null,
                 "blocks": [
                     {
                         "id": 1,
                         "name": "controls_if",
+                        "description": null,
+                        "blocks_category": 2,
+                        "created_at": "2020-05-13T09:20:13.000Z",
+                        "updated_at": "2020-06-01T02:02:08.033Z"
                     },
                     {
                         "id": 3,
                         "name": "controls_for",
+                        "description": null,
+                        "blocks_category": 2,
+                        "created_at": "2020-05-13T09:20:29.000Z",
+                        "updated_at": "2020-06-01T02:01:57.774Z"
                     },
                     {
                         "id": 5,
                         "name": "logic_operation",
+                        "description": null,
+                        "blocks_category": 1,
+                        "created_at": "2020-05-13T09:20:44.000Z",
+                        "updated_at": "2020-06-01T02:03:32.985Z"
                     }
-                ]
+                ],
+                "learning_components": []
             }
 
     })
