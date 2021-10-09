@@ -13,6 +13,7 @@
   "devDependencies": {},
   "dependencies": {
     "bull": "^3.29.0",
+    "dotenv": "^10.0.0",
     "knex": "0.21.18",
     "pg": "^8.7.1",
     "strapi": "3.6.7",
@@ -22,6 +23,7 @@
     "strapi-plugin-content-type-builder": "3.6.7",
     "strapi-plugin-email": "3.6.7",
     "strapi-plugin-users-permissions": "3.6.7",
+    "strapi-provider-email-nodemailer": "^3.6.8",
     "strapi-utils": "3.6.7"
   },
   "author": {
