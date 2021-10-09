@@ -1,4 +1,4 @@
-@import "../../assets/style.less";
+@import '../../assets/style.less';
 
 .container {
   background-color: #colors[primary];
@@ -14,7 +14,7 @@
   display: inline-block;
 }
 
-#box{
+#box {
   width: 300px;
   padding: 40px 20px;
   background-color: #colors[tertiary];
@@ -39,7 +39,9 @@
   text-align: center;
 }
 
-#box input[type = "text"], input[type = "email"], input[type = "password"]{
+#box input[type='text'],
+#box input[type='email'],
+#box input[type='password'] {
   display: block;
   background: none;
   margin: 20px auto 0px;
@@ -53,11 +55,13 @@
   transition: 0.25s;
 }
 
-#box input[type = "text"]:focus, input[type = "email"]:focus, input[type = "password"]:focus{
+#box input[type='text']:focus,
+#box input[type='email']:focus,
+#box input[type='password']:focus {
   width: 220px;
 }
 
-#box input[type = "button"]{
+#box input[type='button'] {
   background: darken(#colors[tertiary], 30%);
   width: 80%;
   display: block;

@@ -1,6 +1,7 @@
 import { server } from './hosts';
 import axios from 'axios';
 import { getToken } from './AuthRequests';
+import { PresetStatusColorTypes } from 'antd/lib/_util/colors';
 
 const GET = 'GET';
 const PUT = 'PUT';
@@ -431,4 +432,14 @@ export const getDay = async (id) =>
     path: `${server}/days/${id}`,
     auth: true,
     error: 'Day cannot be retrived',
+  });
+
+export const forgetPassword = async (email) =>
+  makeRequest({
+    method: POST,
+    path: `${server}/auth/forgot-password`,
+    data: {
+      email,
+    },
+    error: 'cannot retrive data from the provided email',
   });
