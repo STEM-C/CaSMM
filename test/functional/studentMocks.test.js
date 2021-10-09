@@ -13,12 +13,13 @@ var studentRequest
 
  //localhost:1337/api/classrooms/join/0450
  beforeAll(async () => {
-       const { data: admin } = await publicRequest.post('/admin/auth/local', {
-            identifier: 'test',
+       const { data: admin } = await publicRequest.post('/admin/login', {
+            email: 'test@mail.com',
              password: '123456'
       })
-    adminRequest = getAuthorizedRequestModule(admin.jwt)
-    //console.log("admin token: ", admin.jwt)
+      // console.log("admin token: ", admin.data)
+      adminRequest = getAuthorizedRequestModule(admin.data.token)
+    
  })
 
 
@@ -27,19 +28,19 @@ var studentRequest
      expect(response).toMatchObject({
        "data": [
                  {
-                    "character": "🦍",
                     "id": 1,
                     "name": "Nick I.",
+                    "character": "🦍"
                   },
                 {
-                    "character": "🐼",
                     "id": 2,
                     "name": "Adam T.",
+                    "character": "🐼"
                   },
                 {
-                    "character": "🤡",
                     "id": 3,
                     "name": "Dakota R.",
+                    "character": "🤡"
                   },
                ],
     })
