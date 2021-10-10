@@ -13,14 +13,14 @@ const ForgetPassword = () => {
     setLoading(true);
     const res = await forgetPassword(email);
     console.log(res);
-    if (res.error) {
-      message.error(res.error);
+    if (res.err) {
+      message.error(res.err);
     } else {
       message.success('Successfully send email');
-      setLoading(false);
       setTimeout(120);
       setShowSuccessMsg(true);
     }
+    setLoading(false);
   };
   useEffect(() => {
     let myInterval = setInterval(() => {
@@ -42,12 +42,13 @@ const ForgetPassword = () => {
             type='email'
             placeholder='Enter your email'
             required
+            autoComplete='email'
           />
         </Form.Item>
         {showSuccessMsg && (
           <Alert
             type='success'
-            message='Successfully send the reset password link. Please check your email inbox as well as the spam folder for the next steps. '
+            message='You will receive a link with a one-time token to reset your password. Please check your email as well as the spam folder. '
           ></Alert>
         )}
         <Form.Item>

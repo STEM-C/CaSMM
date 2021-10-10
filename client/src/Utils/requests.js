@@ -1,7 +1,6 @@
 import { server } from './hosts';
 import axios from 'axios';
 import { getToken } from './AuthRequests';
-import { PresetStatusColorTypes } from 'antd/lib/_util/colors';
 
 const GET = 'GET';
 const PUT = 'PUT';
@@ -453,5 +452,6 @@ export const resetPassword = async (code, password, passwordConfirmation) =>
       password,
       passwordConfirmation,
     },
-    error: 'Cannot update new password',
+    error:
+      'Cannot update new password. Please try again or get a new link from the forgot password page.',
   });

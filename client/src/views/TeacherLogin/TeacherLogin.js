@@ -1,4 +1,4 @@
-import { Button, message } from 'antd';
+import { message } from 'antd';
 import NavBar from '../../components/NavBar/NavBar';
 import React, { useState } from 'react';
 import { postUser, setUserSession } from '../../Utils/AuthRequests';
