@@ -443,3 +443,15 @@ export const forgetPassword = async (email) =>
     },
     error: 'cannot retrive data from the provided email',
   });
+
+export const resetPassword = async (code, password, passwordConfirmation) =>
+  makeRequest({
+    method: POST,
+    path: `${server}/auth/reset-password`,
+    data: {
+      code,
+      password,
+      passwordConfirmation,
+    },
+    error: 'Cannot update new password',
+  });

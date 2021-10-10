@@ -189,7 +189,6 @@ module.exports = {
 
   async resetPassword(ctx) {
     const params = _.assign({}, ctx.request.body, ctx.params);
-
     if (
       params.password &&
       params.passwordConfirmation &&
@@ -199,7 +198,6 @@ module.exports = {
       const user = await strapi
         .query('user', 'users-permissions')
         .findOne({ resetPasswordToken: `${params.code}` });
-
       if (!user) {
         return ctx.badRequest(
           null,

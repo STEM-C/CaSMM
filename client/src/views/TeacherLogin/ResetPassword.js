@@ -1,18 +1,29 @@
 import { Form, Input, Button, message } from 'antd';
 import React, { useState } from 'react';
+import { useLocation, useHistory } from 'react-router-dom';
+import { resetPassword } from '../../Utils/requests';
 
 const ResetPassword = () => {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+  const history = useHistory();
+  const search = useLocation().search;
+  const code = new URLSearchParams(search).get('code');
 
   const handleSubmit = async (e) => {
-    // const res = await forgetPassword(email);
-    // console.log(res);
-    // if (res.error) {
-    //   message.error(res.error);
-    // } else {
-    //   message.success('Successfully send email');
-    // }
+    if (password != confirmPassword) {
+      message.error('Passwords do not match! Please try again.');
+      setPassword('');
+      setConfirmPassword('');
+    } else {
+      const res = await resetPassword(code, password, confirmPassword);
+      if (res.error) {
+        message.error(res.error);
+      } else {
+        message.success(`User's password has been reset!`);
+        history.push('/teacherlogin');
+      }
+    }
   };
 
   return (
@@ -32,6 +43,7 @@ const ResetPassword = () => {
           <Input
             onChange={(e) => setConfirmPassword(e.target.value)}
             value={confirmPassword}
+            type='password'
             placeholder='Confirm your new password'
             required
           />

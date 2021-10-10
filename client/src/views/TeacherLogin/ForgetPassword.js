@@ -6,15 +6,18 @@ const ForgetPassword = () => {
   const [email, setEmail] = useState('');
   const [timeout, setTimeout] = useState(0);
   const [showSuccessMsg, setShowSuccessMsg] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const handleSubmit = async (e) => {
     setShowSuccessMsg(false);
+    setLoading(true);
     const res = await forgetPassword(email);
     console.log(res);
     if (res.error) {
       message.error(res.error);
     } else {
       message.success('Successfully send email');
+      setLoading(false);
       setTimeout(120);
       setShowSuccessMsg(true);
     }
@@ -25,7 +28,6 @@ const ForgetPassword = () => {
         setTimeout(timeout - 1);
       }
     }, 1000);
-    console.log(timeout);
     return () => clearInterval(myInterval);
   });
 
@@ -53,7 +55,7 @@ const ForgetPassword = () => {
             type='primary'
             htmlType='submit'
             size='large'
-            disabled={timeout > 0}
+            disabled={timeout > 0 || loading}
           >
             {timeout <= 0 ? 'Submit' : '(' + timeout + ')'}
           </Button>
