@@ -64,9 +64,12 @@ export default function TeacherLogin(props) {
             placeholder='Password'
             autoComplete='current-password'
           />
-          <h3 onClick={() => props.history.push('/forgot-password')}>
-            Forgot Password
-          </h3>
+          <p
+            id='forgot-password'
+            onClick={() => props.history.push('/forgot-password')}
+          >
+            Forgot Password?
+          </p>
           <input
             type='button'
             value={loading ? 'Loading...' : 'Login'}
