@@ -26,6 +26,7 @@ import {
   handleCloseConnection,
   handleOpenConnection,
 } from '../consoleHelpers';
+import ArduinoLogo from './ArduinoLogo';
 
 export default function BlocklyCanvasPanel(props) {
   const [hoverXml, setHoverXml] = useState(false);
@@ -149,7 +150,7 @@ export default function BlocklyCanvasPanel(props) {
       clearInterval(autosaveInterval);
       clearInterval(replaySaveInterval);
       if (isStudent && dayRef.current && workspaceRef.current)
-        await handleSave(dayRef.current.id, workspaceRef,replayRef.current);
+        await handleSave(dayRef.current.id, workspaceRef, replayRef.current);
       if (workspaceRef.current) workspaceRef.current.dispose();
       dayRef.current = null;
     };
@@ -382,7 +383,7 @@ export default function BlocklyCanvasPanel(props) {
     if (connectionOpen) {
       message.error('Close Serial Monitor before uploading your code');
     } else {
-      if(typeof  window['port'] === 'undefined'){
+      if (typeof window['port'] === 'undefined') {
         await connectToPort();
       }
       if (typeof window['port'] === 'undefined') {
@@ -582,11 +583,10 @@ export default function BlocklyCanvasPanel(props) {
                         setHover={setHoverArduino}
                         hover={hoverArduino}
                       />
-                      <i
-                        onClick={handleCompile}
-                        className='fas fa-upload hvr-info'
-                        onMouseEnter={() => setHoverCompile(true)}
-                        onMouseLeave={() => setHoverCompile(false)}
+
+                      <ArduinoLogo
+                        setHoverCompile={setHoverCompile}
+                        handleCompile={handleCompile}
                       />
                       {hoverCompile && (
                         <div className='popup ModalCompile'>
