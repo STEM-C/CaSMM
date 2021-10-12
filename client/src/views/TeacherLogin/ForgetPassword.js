@@ -1,6 +1,7 @@
 import { Form, Input, Button, message, Alert } from 'antd';
 import React, { useState, useEffect } from 'react';
 import { forgetPassword } from '../../Utils/requests';
+import NavBar from '../../components/NavBar/NavBar';
 
 const ForgetPassword = () => {
   const [email, setEmail] = useState('');
@@ -32,36 +33,39 @@ const ForgetPassword = () => {
   });
 
   return (
-    <div>
-      <h1>Fotgot Password</h1>
-      <Form onFinish={handleSubmit}>
-        <Form.Item id='form-label' label='Email'>
-          <Input
-            onChange={(e) => setEmail(e.target.value)}
-            value={email}
-            type='email'
-            placeholder='Enter your email'
-            required
-            autoComplete='email'
-          />
-        </Form.Item>
-        {showSuccessMsg && (
-          <Alert
-            type='success'
-            message='You will receive a link with a one-time token to reset your password. Please check your email as well as the spam folder. '
-          ></Alert>
-        )}
-        <Form.Item>
-          <Button
-            type='primary'
-            htmlType='submit'
-            size='large'
-            disabled={timeout > 0 || loading}
-          >
-            {timeout <= 0 ? 'Submit' : '(' + timeout + ')'}
-          </Button>
-        </Form.Item>
-      </Form>
+    <div className='container nav-padding'>
+      <NavBar/>
+      <div id='forgot-pass-wrapper'>
+        <div id='forgot-pass-title'>Forgot Password</div>
+        <Form id='forgot-pass-form' onFinish={handleSubmit}>
+          <Form.Item id='form-label'>
+            <Input
+              onChange={(e) => setEmail(e.target.value)}
+              value={email}
+              type='email'
+              placeholder='Enter your email'
+              required
+              autoComplete='email'
+            />
+          </Form.Item>
+          {showSuccessMsg && (
+            <Alert
+              type='success'
+              message='You will receive a link with a one-time token to reset your password. Please check your email as well as the spam folder. '
+            ></Alert>
+          )}
+          <Form.Item>
+            <Button
+              type='primary'
+              htmlType='submit'
+              size='large'
+              disabled={timeout > 0 || loading}
+            >
+              {timeout <= 0 ? 'Submit' : '(' + timeout + ')'}
+            </Button>
+          </Form.Item>
+         </Form>
+      </div>
     </div>
   );
 };

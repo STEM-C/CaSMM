@@ -2,6 +2,7 @@ import { Form, Input, Button, message } from 'antd';
 import React, { useState } from 'react';
 import { useLocation, useHistory } from 'react-router-dom';
 import { resetPassword } from '../../Utils/requests';
+import NavBar from '../../components/NavBar/NavBar';
 
 const ResetPassword = () => {
   const [password, setPassword] = useState('');
@@ -30,9 +31,11 @@ const ResetPassword = () => {
   };
 
   return (
-    <div>
-      <h1>Reset Password</h1>
-      <Form onFinish={handleSubmit}>
+    <div className='container nav-padding'>
+       <NavBar/>
+      <div id='reset-pass-title'>Reset Password</div>
+      <div id='reset-pass-wrapper'>
+      <Form id='reset-pass-form' onFinish={handleSubmit}>
         <Form.Item id='form-label' label='New Password'>
           <Input
             onChange={(e) => setPassword(e.target.value)}
@@ -66,6 +69,7 @@ const ResetPassword = () => {
           </Button>
         </Form.Item>
       </Form>
+      </div>
     </div>
   );
 };
