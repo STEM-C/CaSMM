@@ -92,3 +92,32 @@ export const disconnect = async () => {
   }
   await port.close();
 };
+
+export const connectToPort = async () => {
+  const filters = [
+    { usbVendorId: 0x2341, usbProductId: 0x0043 },
+    { usbVendorId: 0x2341, usbProductId: 0x0001 },
+  ];
+  try {
+    port = await navigator.serial.requestPort({ filters });
+  } catch (e) {
+    console.error(e);
+    return;
+  }
+  window['port'] = port;
+};
+
+export const handleOpenConnection = async (baudRate, newLine) => {
+  if (typeof window['port'] === 'undefined') {
+    await connectToPort();
+    if (typeof window['port'] === 'undefined') {
+      return;
+    }
+  }
+  await openConnection(baudRate, newLine);
+};
+
+export const handleCloseConnection = async () => {
+  console.log('Close connection');
+  disconnect();
+};

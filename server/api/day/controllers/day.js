@@ -1,46 +1,149 @@
-'use strict'
+'use strict';
 
-const {sanitizeEntity} = require("strapi-utils/lib")
+const { sanitizeEntity } = require('strapi-utils/lib');
+
+const SCIENCE = 1;
+const MAKING = 2;
+const COMPUTATION = 3;
 
 module.exports = {
-    async fullUpdate(ctx) {
-        // find the day
-        const {id} = ctx.params
-        let day = await strapi.services.day.findOne({id:id})
-        if (!day) return ctx.notFound(
-            'The student id provided does not correspond to a valid student!',
-            {id: 'day.id.invalid', error: 'ValidationError'}
-        )
+  // update day description and objective
+  async update(ctx) {
+    const { id } = ctx.params;
 
-        // update template and blocks
-        day.template = ctx.request.body.template;
-        let unfriendlyBlocks = ctx.request.body.blocks;
-        let friendlyBlocks = [];
-        for(let i = 0; i < unfriendlyBlocks.length; i++) {
-            let currentBlock = await strapi.services.block.findOne({name:unfriendlyBlocks[i]});
-            friendlyBlocks.push(currentBlock);
-        }
-        day.blocks = friendlyBlocks;
+    // ensure request was not sent as formdata
+    if (ctx.is('multipart'))
+      return ctx.badRequest('Multipart requests are not accepted!', {
+        id: 'day.update.format.invalid',
+        error: 'ValidationError',
+      });
 
-        const updatedDay = await strapi.services.day.update({id: id}, day)
-        return sanitizeEntity(updatedDay, {model: strapi.models.day})
-    },
+    // validate the request
+    const {
+      description,
+      TekS,
+      link,
+      scienceComponents,
+      makingComponents,
+      computationComponents,
+    } = ctx.request.body;
+    if (!TekS || !description)
+      return ctx.badRequest('A description, Teks must be provided!', {
+        id: 'day.update.body.invalid',
+        error: 'ValidationError',
+      });
 
-    async toolbox(ctx) {
+    // array to store new component
+    let dayComponents = [];
 
-        const { id } = ctx.params
+    // add the science components
+    scienceComponents.forEach(async (component) => {
+      // find the existing components first
+      let foundComponent = await strapi.services['learning-components'].findOne(
+        { type: component, learning_component_type: SCIENCE }
+      );
+      if (foundComponent) {
+        dayComponents.push(foundComponent);
+      }
+      // if component not found, create new ones
+      else {
+        const newComponent = await strapi.services[
+          'learning-components'
+        ].create({
+          type: component,
+          days: id,
+          learning_component_type: SCIENCE,
+        });
+        dayComponents.push(newComponent);
+      }
+    });
 
-        // get the blocks 
-        const blocks = await strapi.services.block.findByDay(id)
+    // add the making components
+    makingComponents.forEach(async (component) => {
+      let foundComponent = await strapi.services['learning-components'].findOne(
+        { type: component, learning_component_type: MAKING }
+      );
+      if (foundComponent) {
+        dayComponents.push(foundComponent);
+      } else {
+        const newComponent = await strapi.services[
+          'learning-components'
+        ].create({
+          type: component,
+          days: id,
+          learning_component_type: MAKING,
+        });
+        dayComponents.push(newComponent);
+      }
+    });
 
-        // return 404 if blocks is undefined
-        // (only the case of a day not existing)
-        if (!blocks) return undefined
+    // add the computation components
+    computationComponents.forEach(async (component) => {
+      let foundComponent = await strapi.services['learning-components'].findOne(
+        { type: component, learning_component_type: COMPUTATION }
+      );
+      if (foundComponent) {
+        dayComponents.push(foundComponent);
+      } else {
+        const newComponent = await strapi.services[
+          'learning-components'
+        ].create({
+          type: component,
+          days: id,
+          learning_component_type: COMPUTATION,
+        });
+        dayComponents.push(newComponent);
+      }
+    });
 
-        // return the day id and the toolbox
-        return {
-            id,
-            toolbox: strapi.services.block.blocksToToolbox(blocks)
-        }
-    },
-}
+    const updatedDay = await strapi.services.day.update(
+      { id },
+      { description, TekS, link, learning_components: dayComponents }
+    );
+    return sanitizeEntity(updatedDay, { model: strapi.models.day });
+  },
+
+  // Update day template and block list
+  async templateUpdate(ctx) {
+    // find the day
+    const { id } = ctx.params;
+    let day = await strapi.services.day.findOne({ id: id });
+    if (!day)
+      return ctx.notFound(
+        'The student id provided does not correspond to a valid student!',
+        { id: 'day.id.invalid', error: 'ValidationError' }
+      );
+
+    // update template and blocks
+    day.template = ctx.request.body.template;
+    let unfriendlyBlocks = ctx.request.body.blocks;
+    let friendlyBlocks = [];
+    for (let i = 0; i < unfriendlyBlocks.length; i++) {
+      let currentBlock = await strapi.services.block.findOne({
+        name: unfriendlyBlocks[i],
+      });
+      friendlyBlocks.push(currentBlock);
+    }
+    day.blocks = friendlyBlocks;
+
+    const updatedDay = await strapi.services.day.update({ id: id }, day);
+    return sanitizeEntity(updatedDay, { model: strapi.models.day });
+  },
+
+  async toolbox(ctx) {
+    const { id } = ctx.params;
+
+    // get the blocks
+    const blocks = await strapi.services.block.findByDay(id);
+
+    // return 404 if blocks is undefined
+    // (only the case of a day not existing)
+    if (!blocks) return undefined;
+
+    // return the day id and the toolbox
+    return {
+      id,
+      toolbox: strapi.services.block.blocksToToolbox(blocks),
+    };
+  },
+};

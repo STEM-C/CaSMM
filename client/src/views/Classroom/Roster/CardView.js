@@ -1,5 +1,4 @@
 import React from 'react';
-import {Card} from "antd";
 import StudentModal from "./StudentModal";
 
 export default function CardView(props) {

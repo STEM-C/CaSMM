@@ -2,7 +2,7 @@ import {
   createSubmission,
   getSubmission,
   saveWorkspace,
-  updateDay,
+  updateDayTemplate,
 } from '../../Utils/requests';
 import { message } from 'antd';
 
@@ -43,10 +43,17 @@ export const getArduino = (workspaceRef, shouldAlert = true) => {
   return code;
 };
 
+let intervalId;
+const compileFail = (setSelectedCompile, setCompileError, msg) => {
+  setSelectedCompile(false);
+  message.error('Compile Fail', 3);
+  setCompileError(msg);
+};
 // Sends compiled arduino code to server and returns hex to flash board with
 export const compileArduinoCode = async (
   workspaceRef,
   setSelectedCompile,
+  setCompileError,
   day,
   isStudent
 ) => {
@@ -56,56 +63,97 @@ export const compileArduinoCode = async (
   let workspaceText = window.Blockly.Xml.domToText(workspaceDom);
   let path;
   isStudent ? (path = '/submissions') : (path = '/sandbox/submission');
-  isStudent ? (day = day) : (day.id = undefined);
+  let id = isStudent ? day.id : undefined;
 
-  try {
-    // create an initial submission
-    const initialSubmission = await createSubmission(
-      day,
-      workspaceText,
-      sketch,
-      path,
-      isStudent
-    );
+  // create an initial submission
+  const initialSubmission = await createSubmission(
+    id,
+    workspaceText,
+    sketch,
+    path,
+    isStudent
+  );
 
-    // get the submission result when it's ready and flash the board
-    await getAndFlashSubmission(
-      initialSubmission.data.id,
-      path,
-      isStudent,
-      setSelectedCompile
+  // if we fail to create submission
+  if (!initialSubmission.data) {
+    compileFail(
+      setSelectedCompile,
+      setCompileError,
+      'Oops. Something went wrong, please check your internet connection.'
     );
-  } catch (e) {
-    console.log(e.message);
+    return;
   }
+  // Get the submission Id and send a request to get the submission every
+  // 0.25 second until the submission status equal to COMPLETE.
+  intervalId = setInterval(
+    () =>
+      getAndFlashSubmission(
+        initialSubmission.data.id,
+        path,
+        isStudent,
+        setSelectedCompile,
+        setCompileError
+      ),
+    250
+  );
+
+  // Set a timeout of 20 second. If the submission status fail to update to
+  // COMPLETE, show error.
+  setTimeout(() => {
+    if (intervalId) {
+      clearInterval(intervalId);
+      intervalId = undefined;
+      compileFail(
+        setSelectedCompile,
+        setCompileError,
+        'Oops. Something went wrong, please try again.'
+      );
+    }
+  }, 20000);
 };
 
 const getAndFlashSubmission = async (
   id,
   path,
   isStudent,
-  setSelectedCompile
+  setSelectedCompile,
+  setCompileError
 ) => {
   // get the submission
   const response = await getSubmission(id, path, isStudent);
-
-  // if the submission is not complete, try again later
-  if (response.data.status !== 'COMPLETED') {
-    setTimeout(
-      () => getAndFlashSubmission(id, path, isStudent, setSelectedCompile),
-      250
+  // If we fail to retrive submission
+  if (!response.data) {
+    if (intervalId) {
+      clearInterval(intervalId);
+      intervalId = undefined;
+    }
+    compileFail(
+      setSelectedCompile,
+      setCompileError,
+      'Oops. Something went wrong, please check your internet connection.'
     );
     return;
   }
-  setSelectedCompile(false);
+
+  // if the submission is not complete, try again later
+  if (response.data.status !== 'COMPLETED') {
+    return;
+  }
+
+  // If the submission is ready
+  if (intervalId) {
+    clearInterval(intervalId);
+    intervalId = undefined;
+  }
   // flash the board with the output
-  await flashArduino(response);
+  await flashArduino(response, setSelectedCompile, setCompileError);
 };
 
-const flashArduino = async (response) => {
+const flashArduino = async (response, setSelectedCompile, setCompileError) => {
   if (response.data) {
-    // converting base 64 to hex
+    // if we get a success status from the submission, send it to arduino
     if (response.data.success) {
+      // converting base 64 to hex
       let Hex = atob(response.data.hex).toString();
 
       const avrgirl = new AvrboyArduino({
@@ -118,10 +166,16 @@ const flashArduino = async (response) => {
           console.log(err);
         } else {
           console.log('done correctly.');
+          message.success('Compile Success', 3);
+          setSelectedCompile(false);
         }
       });
-    } else if (response.data.stderr) {
-      message.error(response.data.stderr, 10);
+    }
+    // else if there is error on the Arduino code, show error
+    else if (response.data.stderr) {
+      message.error('Compile Fail', 3);
+      setSelectedCompile(false);
+      setCompileError(response.data.stderr);
     }
   } else {
     message.error(response.err);
@@ -129,17 +183,15 @@ const flashArduino = async (response) => {
 };
 
 // save current workspace
-export const handleSave = async (dayId, workspaceRef) => {
+export const handleSave = async (dayId, workspaceRef, replay) => {
   let xml = window.Blockly.Xml.workspaceToDom(workspaceRef.current);
   let xml_text = window.Blockly.Xml.domToText(xml);
-  return await saveWorkspace(dayId, xml_text);
+  return await saveWorkspace(dayId, xml_text, replay);
 };
 
 export const handleCreatorSaveDay = async (dayId, workspaceRef, blocksList) => {
   let xml = window.Blockly.Xml.workspaceToDom(workspaceRef.current);
   let xml_text = window.Blockly.Xml.domToText(xml);
 
-  console.log('The current blocksList is: ', blocksList);
-
-  return await updateDay(dayId, xml_text, blocksList);
+  return await updateDayTemplate(dayId, xml_text, blocksList);
 };

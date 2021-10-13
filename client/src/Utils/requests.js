@@ -179,7 +179,7 @@ export const getLearningStandardcount = async () =>
 export const getLearningStandardAll = async () =>
   makeRequest({
     method: GET,
-    path: `${server}/learning-standards`,
+    path: `${server}/learning-standards?_sort=unit.name:ASC,name:ASC`,
     auth: true,
     error: 'Failed to retrieve learning standard.',
   });
@@ -196,13 +196,14 @@ export const setSelection = async (classroom, learningStandard) =>
     error: 'Failed to set active learning standard.',
   });
 
-export const saveWorkspace = async (day, workspace) =>
+export const saveWorkspace = async (day, workspace, replay) =>
   makeRequest({
     method: POST,
     path: `${server}/saves`,
     data: {
-      day: day,
-      workspace: workspace,
+      day,
+      workspace,
+      replay,
     },
     auth: true,
     error: 'Failed to save your workspace.',
@@ -216,12 +217,12 @@ export const getSaves = async (day) =>
     error: 'Past saves could not be retrieved.',
   });
 
-export const createSubmission = async (day, workspace, sketch, path, isAuth) =>
+export const createSubmission = async (id, workspace, sketch, path, isAuth) =>
   makeRequest({
     method: POST,
     path: `${server}${path}`,
     data: {
-      day: day.id,
+      day: id,
       workspace: workspace,
       board: 'arduino:avr:uno',
       sketch: sketch,
@@ -268,19 +269,10 @@ export const deleteStudent = async (student) =>
     error: 'Failed to delete student.',
   });
 
-export const updateDayTemplate = async (id, workspace) =>
+export const updateDayTemplate = async (id, workspace, blocksList) =>
   makeRequest({
     method: PUT,
-    path: `${server}/days/${id}`,
-    data: { template: workspace },
-    auth: true,
-    error: 'Failed to update Day',
-  });
-
-export const updateDay = async (id, workspace, blocksList) =>
-  makeRequest({
-    method: PUT,
-    path: `${server}/days/${id}`,
+    path: `${server}/days/template/${id}`,
     data: {
       template: workspace,
       blocks: blocksList,
@@ -310,17 +302,19 @@ export const createLearningStandard = async (
   name,
   number,
   unit,
-  teks
+  teks,
+  link
 ) =>
   makeRequest({
     method: POST,
     path: `${server}/learning-standards`,
     data: {
       expectations: description,
-      name: name,
-      number: number,
-      unit: unit,
-      teks: teks,
+      name,
+      number,
+      unit,
+      teks,
+      link,
     },
     auth: true,
     error: 'Login failed.',
@@ -377,4 +371,87 @@ export const getGrade = async (grade) =>
     path: `${server}/grades/${grade}`,
     auth: true,
     error: 'Grade could not be retrieved',
+  });
+
+export const updateLearningStandard = async (
+  id,
+  name,
+  expectations,
+  teks,
+  link
+) =>
+  makeRequest({
+    method: PUT,
+    path: `${server}/learning-standards/${id}`,
+    data: {
+      name,
+      teks,
+      expectations,
+      link,
+    },
+    auth: true,
+    error: 'Failed to update unit',
+  });
+
+export const updateDayDetails = async (
+  id,
+  description,
+  TekS,
+  link,
+  scienceComponents,
+  makingComponents,
+  computationComponents
+) =>
+  makeRequest({
+    method: PUT,
+    path: `${server}/days/${id}`,
+    data: {
+      description,
+      TekS,
+      link,
+      scienceComponents,
+      makingComponents,
+      computationComponents,
+    },
+    auth: true,
+    error: 'Failed to update unit',
+  });
+
+export const getLearningStandardDays = async (lsId) =>
+  makeRequest({
+    method: GET,
+    path: `${server}/days?learning_standard.id=${lsId}`,
+    auth: true,
+    error: 'Day cannot be retrived',
+  });
+
+export const getDay = async (id) =>
+  makeRequest({
+    method: GET,
+    path: `${server}/days/${id}`,
+    auth: true,
+    error: 'Day cannot be retrived',
+  });
+
+export const forgetPassword = async (email) =>
+  makeRequest({
+    method: POST,
+    path: `${server}/auth/forgot-password`,
+    data: {
+      email,
+    },
+    error: 'cannot retrive data from the provided email',
+  });
+
+export const resetPassword = async (code, password, passwordConfirmation) =>
+  makeRequest({
+    method: POST,
+    path: `${server}/auth/reset-password`,
+    data: {
+      code,
+      password,
+      passwordConfirmation,
+    },
+    error:
+      'Cannot update new password. Please try again or get a new link from the forgot password page.',
   });
