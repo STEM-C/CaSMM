@@ -15,13 +15,13 @@
  
  beforeAll(async () => {
      // login as an admin
-     const { data: admin } = await publicRequest.post('/admin/auth/local', {
-         identifier: 'test',
+     const { data: admin } = await publicRequest.post('/admin/login', {
+         email: 'test@mail.com',
          password: '123456'
      })
  
      // create an admin request instance
-     adminRequest = getAuthorizedRequestModule(admin.jwt)
+     adminRequest = getAuthorizedRequestModule(admin.data.token)
  })
  
  //Tests

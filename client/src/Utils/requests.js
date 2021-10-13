@@ -432,3 +432,26 @@ export const getDay = async (id) =>
     auth: true,
     error: 'Day cannot be retrived',
   });
+
+export const forgetPassword = async (email) =>
+  makeRequest({
+    method: POST,
+    path: `${server}/auth/forgot-password`,
+    data: {
+      email,
+    },
+    error: 'cannot retrive data from the provided email',
+  });
+
+export const resetPassword = async (code, password, passwordConfirmation) =>
+  makeRequest({
+    method: POST,
+    path: `${server}/auth/reset-password`,
+    data: {
+      code,
+      password,
+      passwordConfirmation,
+    },
+    error:
+      'Cannot update new password. Please try again or get a new link from the forgot password page.',
+  });
