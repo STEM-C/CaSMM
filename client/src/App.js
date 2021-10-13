@@ -17,6 +17,8 @@ import TeacherLogin from './views/TeacherLogin/TeacherLogin';
 import ContentCreator from './views/ContentCreator/ContentCreator';
 import UnitCreator from './views/ContentCreator/UnitCreator/UnitCreator';
 import UploadBlocks from './views/UploadBlocks/UploadBlocks';
+import ForgetPassword from './views/TeacherLogin/ForgetPassword';
+import ResetPassword from './views/TeacherLogin/ResetPassword';
 
 const App = () => {
   let history = useHistory();
@@ -36,6 +38,12 @@ const App = () => {
         </Route>
         <Route exact path='/teacherlogin'>
           <TeacherLogin history={history} />
+        </Route>
+        <Route exact path='/forgot-password'>
+          <ForgetPassword />
+        </Route>
+        <Route exact path='/reset-password'>
+          <ResetPassword />
         </Route>
         <Route exact path='/login'>
           <StudentLogin history={history} />
