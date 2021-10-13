@@ -33,43 +33,43 @@ const ResetPassword = () => {
   return (
     <div className='container nav-padding'>
        <NavBar/>
-      <div id='reset-pass-title'>Reset Password</div>
       <div id='reset-pass-wrapper'>
-      <Form id='reset-pass-form' onFinish={handleSubmit}>
-        <Form.Item id='form-label' label='New Password'>
-          <Input
-            onChange={(e) => setPassword(e.target.value)}
-            value={password}
-            type='password'
-            placeholder='Enter your new password'
-            minLength={6}
-            maxLength={15}
-            required
-          />
-        </Form.Item>
-        <Form.Item id='form-label' label='Confirm Password'>
-          <Input
-            onChange={(e) => setConfirmPassword(e.target.value)}
-            value={confirmPassword}
-            type='password'
-            placeholder='Confirm your new password'
-            minLength={6}
-            maxLength={15}
-            required
-          />
-        </Form.Item>
-        <Form.Item>
-          <Button
-            type='primary'
-            htmlType='submit'
-            size='large'
-            disabled={loading}
-          >
-            Submit
-          </Button>
-        </Form.Item>
-      </Form>
-      </div>
+        <div id='reset-pass-title'>Reset Password</div>
+        <Form id='reset-pass-form' onFinish={handleSubmit}>
+          <Form.Item id='form-label' label='New Password'>
+            <Input
+              onChange={(e) => setPassword(e.target.value)}
+              value={password}
+              type='password'
+              placeholder='Enter your new password'
+              minLength={6}
+              maxLength={15}
+              required
+            />
+          </Form.Item>
+          <Form.Item id='form-label' label='Confirm Password'>
+            <Input
+              onChange={(e) => setConfirmPassword(e.target.value)}
+              value={confirmPassword}
+              type='password'
+              placeholder='Confirm your new password'
+              minLength={6}
+              maxLength={15}
+              required
+            />
+          </Form.Item>
+          <Form.Item>
+            <Button
+              type='primary'
+              htmlType='submit'
+              size='large'
+              disabled={loading}
+            >
+              Submit
+            </Button>
+          </Form.Item>
+        </Form>
+        </div>
     </div>
   );
 };
