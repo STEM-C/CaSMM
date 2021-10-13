@@ -77,7 +77,7 @@ export default function About(props) {
                     <br/>
                     Michael Pascuzzi
                     <br/>
-                    Mack Hummel
+                    David Magda
                 </p>
             </div>
         </div>
