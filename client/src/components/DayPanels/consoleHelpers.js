@@ -20,7 +20,14 @@ class LineBreakTransformer {
   }
 }
 
-export const openConnection = async (baudRate_, newLine) => {
+export const openConnection = async (
+  baudRate_,
+  type,
+  plotData,
+  setPlotData,
+  plotId,
+  forceUpdate
+) => {
   //requesting port on the pop up window.
   port = window['port'];
 
@@ -36,10 +43,16 @@ export const openConnection = async (baudRate_, newLine) => {
   await port.open(options);
   console.log(`port opened at baud rate: ${baudRate_} `);
   document.getElementById('console-content').innerHTML = '';
-  readUntilClose(newLine);
+  readUntilClose(type, plotData, setPlotData, plotId, forceUpdate);
 };
 
-const readUntilClose = async (newLine) => {
+const readUntilClose = async (
+  type,
+  plotData,
+  setPlotData,
+  plotId,
+  forceUpdate
+) => {
   const textDecoder = new window.TextDecoderStream();
   readableStreamClosed = port.readable.pipeTo(textDecoder.writable);
   // reader = textDecoder.readable.getReader();
@@ -57,15 +70,26 @@ const readUntilClose = async (newLine) => {
       break;
     }
     console.log(value);
-    if (!newLine) {
+    if (type === 'notNewLine') {
       string += value;
       document.getElementById('console-content').innerHTML = string;
-    } else {
+    } else if (type === 'newLine') {
       let newP = document.createElement('p');
       newP.innerHTML = value;
       newP.style.margin = 0;
       document.getElementById('console-content').appendChild(newP);
       newP.scrollIntoView();
+    } else {
+      if (!isNaN(value)) {
+        if (plotData.length > 100) {
+          plotData.shift();
+        }
+        plotData.push({ id: plotId, input: parseInt(value) });
+        plotId += 1;
+        setPlotData(plotData);
+        console.log(plotData);
+        forceUpdate();
+      }
     }
   }
 };
@@ -107,14 +131,28 @@ export const connectToPort = async () => {
   window['port'] = port;
 };
 
-export const handleOpenConnection = async (baudRate, newLine) => {
+export const handleOpenConnection = async (
+  baudRate,
+  type,
+  plotData,
+  setPlotData,
+  plotId,
+  forceUpdate
+) => {
   if (typeof window['port'] === 'undefined') {
     await connectToPort();
     if (typeof window['port'] === 'undefined') {
       return;
     }
   }
-  await openConnection(baudRate, newLine);
+  await openConnection(
+    baudRate,
+    type,
+    plotData,
+    setPlotData,
+    plotId,
+    forceUpdate
+  );
 };
 
 export const handleCloseConnection = async () => {

@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState, useReducer } from 'react';
 import { Link } from 'react-router-dom';
 import '../DayPanels.less';
 import {
@@ -20,6 +20,7 @@ import {
 import { getSaves } from '../../../Utils/requests';
 import CodeModal from './CodeModal';
 import ConsoleModal from './ConsoleModal';
+import PlotterModal from './PlotterModal';
 import VersionHistoryModal from './VersionHistoryModal';
 import {
   connectToPort,
@@ -27,6 +28,8 @@ import {
   handleOpenConnection,
 } from '../consoleHelpers';
 import ArduinoLogo from './ArduinoLogo';
+
+let plotId = 1;
 
 export default function BlocklyCanvasPanel(props) {
   const [hoverXml, setHoverXml] = useState(false);
@@ -37,6 +40,8 @@ export default function BlocklyCanvasPanel(props) {
   const [hoverCompile, setHoverCompile] = useState(false);
   const [hoverConsole, setHoverConsole] = useState(false);
   const [showConsole, setShowConsole] = useState(false);
+  const [showPlotter, setShowPlotter] = useState(false);
+  const [plotData, setPlotData] = useState([]);
   const [connectionOpen, setConnectionOpen] = useState(false);
   const [selectedCompile, setSelectedCompile] = useState(false);
   const [compileError, setCompileError] = useState('');
@@ -61,6 +66,7 @@ export default function BlocklyCanvasPanel(props) {
     lessonName,
   } = props;
 
+  const [ignored, forceUpdate] = useReducer((x) => x + 1, 0);
   const workspaceRef = useRef(null);
   const dayRef = useRef(null);
   const replayRef = useRef([]);
@@ -360,7 +366,7 @@ export default function BlocklyCanvasPanel(props) {
     // if serial monitor is not shown
     if (!showConsole) {
       // connect to port
-      await handleOpenConnection(9600, true);
+      await handleOpenConnection(9600, 'newLine');
       // if fail to connect to port, return
       if (typeof window['port'] === 'undefined') {
         message.error('Fail to select serial device');
@@ -372,6 +378,33 @@ export default function BlocklyCanvasPanel(props) {
     // if serial monitor is shown, close the connection
     else {
       setShowConsole(false);
+      if (connectionOpen) {
+        await handleCloseConnection();
+        setConnectionOpen(false);
+      }
+    }
+  };
+
+  const handlePlotter = async () => {
+    if (!showPlotter) {
+      await handleOpenConnection(
+        9600,
+        'plot',
+        plotData,
+        setPlotData,
+        plotId,
+        forceUpdate
+      );
+      if (typeof window['port'] === 'undefined') {
+        message.error('Fail to select serial device');
+        return;
+      }
+      setConnectionOpen(true);
+      setShowPlotter(true);
+    } else {
+      setShowPlotter(false);
+      setPlotData([]);
+      plotId = 1;
       if (connectionOpen) {
         await handleCloseConnection();
         setConnectionOpen(false);
@@ -606,6 +639,8 @@ export default function BlocklyCanvasPanel(props) {
                           Show Serial Monitor
                         </div>
                       )}
+
+                      <button onClick={() => handlePlotter()}>plotter</button>
                     </div>
                   </Col>
                 </Row>
@@ -708,6 +743,14 @@ export default function BlocklyCanvasPanel(props) {
           connectionOpen={connectionOpen}
           setConnectionOpen={setConnectionOpen}
         ></ConsoleModal>
+        <PlotterModal
+          show={showPlotter}
+          connectionOpen={connectionOpen}
+          setConnectionOpen={setConnectionOpen}
+          plotData={plotData}
+          setPlotData={setPlotData}
+          plotId={plotId}
+        />
       </div>
 
       {/* This xml is for the blocks' menu we will provide. Here are examples on how to include categories and subcategories */}
