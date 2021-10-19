@@ -53,6 +53,11 @@ const App = () => {
           path='/dashboard'
           render={() => <Dashboard history={history} />}
         />
+        {/* <PrivateRoute
+          exact
+          path='/researcherdashboard'
+          render={() => <Dashboard history={history} />}
+        /> */}
         <PrivateRoute
           exact
           path='/student'
