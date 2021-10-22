@@ -363,6 +363,10 @@ export default function BlocklyCanvasPanel(props) {
   };
 
   const handleConsole = async () => {
+    if (showPlotter) {
+      message.warning('Close serial plotter before openning serial monitor');
+      return;
+    }
     // if serial monitor is not shown
     if (!showConsole) {
       // connect to port
@@ -377,15 +381,20 @@ export default function BlocklyCanvasPanel(props) {
     }
     // if serial monitor is shown, close the connection
     else {
-      setShowConsole(false);
       if (connectionOpen) {
         await handleCloseConnection();
         setConnectionOpen(false);
       }
+      setShowConsole(false);
     }
   };
 
   const handlePlotter = async () => {
+    if (showConsole) {
+      message.warning('Close serial monitor before openning serial plotter');
+      return;
+    }
+
     if (!showPlotter) {
       await handleOpenConnection(
         9600,
@@ -402,19 +411,20 @@ export default function BlocklyCanvasPanel(props) {
       setConnectionOpen(true);
       setShowPlotter(true);
     } else {
-      setShowPlotter(false);
-      setPlotData([]);
       plotId = 1;
       if (connectionOpen) {
         await handleCloseConnection();
         setConnectionOpen(false);
       }
+      setShowPlotter(false);
     }
   };
 
   const handleCompile = async () => {
-    if (connectionOpen) {
-      message.error('Close Serial Monitor before uploading your code');
+    if (showConsole || showPlotter) {
+      message.warning(
+        'Close Serial Monitor and Serial Plotter before uploading your code'
+      );
     } else {
       if (typeof window['port'] === 'undefined') {
         await connectToPort();

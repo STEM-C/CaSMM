@@ -59,13 +59,12 @@ export default function PlotterModal({
       setDeviceDisconnect(false);
     } else {
       await handleCloseConnection();
-      setPlotData([]);
       plotId = 1;
       setConnectionOpen(false);
     }
   };
 
-  const handleChange = ({ value }) => {
+  const handleChange = (value) => {
     setBaudRate(value);
   };
 
@@ -74,24 +73,24 @@ export default function PlotterModal({
       <div style={{ margin: '5px 0' }}>
         <strong style={{ fontSize: '10' }}>Baud Rate: </strong>
         <Select
-          defaultValue='9600'
+          defaultValue={9600}
           onChange={handleChange}
           className={{ width: '15rem' }}
           disabled={connectionOpen}
         >
-          <Select.Option value='300'>300</Select.Option>
-          <Select.Option value='600'>600</Select.Option>
-          <Select.Option value='1200'>1200</Select.Option>
-          <Select.Option value='2400'>2400</Select.Option>
-          <Select.Option value='4800'>4800</Select.Option>
-          <Select.Option value='9600'>9600</Select.Option>
-          <Select.Option value='14400'>14400</Select.Option>
-          <Select.Option value='19200'>19200</Select.Option>
-          <Select.Option value='28800'>28800</Select.Option>
-          <Select.Option value='31250'>31250</Select.Option>
-          <Select.Option value='38400'>38400</Select.Option>
-          <Select.Option value='57600'>57600</Select.Option>
-          <Select.Option value='115200'>115200</Select.Option>
+          <Select.Option value={300}>300</Select.Option>
+          <Select.Option value={600}>600</Select.Option>
+          <Select.Option value={1200}>1200</Select.Option>
+          <Select.Option value={2400}>2400</Select.Option>
+          <Select.Option value={4800}>4800</Select.Option>
+          <Select.Option value={9600}>9600</Select.Option>
+          <Select.Option value={14400}>14400</Select.Option>
+          <Select.Option value={19200}>19200</Select.Option>
+          <Select.Option value={28800}>28800</Select.Option>
+          <Select.Option value={31250}>31250</Select.Option>
+          <Select.Option value={38400}>38400</Select.Option>
+          <Select.Option value={57600}>57600</Select.Option>
+          <Select.Option value={115200}>115200</Select.Option>
         </Select>
         <Button
           id='connect-button'
@@ -102,7 +101,7 @@ export default function PlotterModal({
         </Button>
       </div>
       <div id='content-container' style={{ backgroundColor: '#EEEEEE' }}>
-        <ResponsiveContainer width='90%' height='90%'>
+        <ResponsiveContainer width='90%' height='100%'>
           <LineChart width='100%' height='100%' data={plotData} key={plotData}>
             <Line
               type='step'
@@ -118,7 +117,7 @@ export default function PlotterModal({
               interval='preserveStartEnd'
               domain={[
                 'dataMax-100',
-                (dataMax) => (dataMax < 100 ? 100 : dataMax),
+                (dataMax) => (dataMax < 200 ? 200 : dataMax),
               ]}
             />
             <YAxis domain={['dataMin-10', 'dataMax+10']} />
@@ -138,12 +137,12 @@ export default function PlotterModal({
         <Col span={6}>
           {connectionOpen ? (
             <Message
-              message='Serial Monitor Connection Opened'
+              message='Serial Plotter Connection Opened'
               type='success'
             ></Message>
           ) : (
             <Message
-              message='Serial Monitor Connection Not Opened'
+              message='Serial Plotter Connection Not Opened'
               type='info'
             ></Message>
           )}

@@ -30,7 +30,6 @@ export const openConnection = async (
 ) => {
   //requesting port on the pop up window.
   port = window['port'];
-
   var options = {
     baudRate: baudRate_,
     parity: 'none',
@@ -62,6 +61,8 @@ const readUntilClose = async (
 
   console.log('reader opened');
   let string = '';
+
+  plotData = [];
   while (true) {
     const { value, done } = await reader.read();
     if (done) {
@@ -81,13 +82,12 @@ const readUntilClose = async (
       newP.scrollIntoView();
     } else {
       if (!isNaN(value)) {
-        if (plotData.length > 100) {
+        if (plotData.length > 200) {
           plotData.shift();
         }
         plotData.push({ id: plotId, input: parseInt(value) });
         plotId += 1;
         setPlotData(plotData);
-        console.log(plotData);
         forceUpdate();
       }
     }
