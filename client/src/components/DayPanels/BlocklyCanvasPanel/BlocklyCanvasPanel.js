@@ -27,7 +27,8 @@ import {
   handleCloseConnection,
   handleOpenConnection,
 } from '../consoleHelpers';
-import ArduinoLogo from './ArduinoLogo';
+import ArduinoLogo from './Icons/ArduinoLogo';
+import PlotterLogo from './Icons/PlotterLogo';
 
 let plotId = 1;
 
@@ -39,6 +40,7 @@ export default function BlocklyCanvasPanel(props) {
   const [hoverArduino, setHoverArduino] = useState(false);
   const [hoverCompile, setHoverCompile] = useState(false);
   const [hoverConsole, setHoverConsole] = useState(false);
+  const [hoverPlotter, setHoverPlotter] = useState(false);
   const [showConsole, setShowConsole] = useState(false);
   const [showPlotter, setShowPlotter] = useState(false);
   const [plotData, setPlotData] = useState([]);
@@ -649,8 +651,15 @@ export default function BlocklyCanvasPanel(props) {
                           Show Serial Monitor
                         </div>
                       )}
-
-                      <button onClick={() => handlePlotter()}>plotter</button>
+                      <PlotterLogo
+                        setHoverPlotter={setHoverPlotter}
+                        handlePlotter={handlePlotter}
+                      />
+                      {hoverPlotter && (
+                        <div className='popup ModalCompile'>
+                          Show Serial Plotter
+                        </div>
+                      )}
                     </div>
                   </Col>
                 </Row>
