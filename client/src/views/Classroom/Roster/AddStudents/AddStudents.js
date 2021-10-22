@@ -69,7 +69,7 @@ export default function AddStudents(props) {
   const handleCsvAdd = async () => {
     const students = await uploadedRoster.map((student) => {
       return {
-        name: student.name,
+        name: student.name.trim(),
         character: student.animal,
       };
     });
@@ -111,14 +111,14 @@ export default function AddStudents(props) {
     let badInput = false;
     let students = roster.filter((student) => {
       if (student.data.name) {
-        if (nameIsFormatted(student.data.name)) return true;
+        if (nameIsFormatted(student.data.name.trim())) return true;
         badInput = true;
       }
       return false;
     });
     students = await students.map((student) => {
       return {
-        name: reformatName(student.data.name),
+        name: reformatName(student.data.name.trim()),
         animal: student.data.animal,
       };
     });
@@ -209,6 +209,17 @@ export default function AddStudents(props) {
           Name/Student column should be in the format: "Last, First", "Last,
           First Middle", "First L." or "First Middle L."
         </p>
+        <p>
+          Sample Student Name CSV File:{' '}
+          <a
+            href='https://drive.google.com/file/d/1MeGaw3oMP_uEEvaIqp_Sa6zDN3dfy2lS/view?usp=sharing'
+            target='_blank'
+            rel='noreferrer'
+          >
+            https://drive.google.com/file/d/1MeGaw3oMP_uEEvaIqp_Sa6zDN3dfy2lS/view?usp=sharing
+          </a>
+        </p>
+
         <CSVReader
           ref={buttonRef}
           onDrop={handleOnDrop}
