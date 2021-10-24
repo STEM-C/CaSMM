@@ -120,7 +120,7 @@ export default function PlotterModal({
                 (dataMax) => (dataMax < 200 ? 200 : dataMax),
               ]}
             />
-            <YAxis domain={['dataMin-10', 'dataMax+10']} />
+            <YAxis domain={['dataMin-6', 'dataMax+5']} />
             <Tooltip />
           </LineChart>
         </ResponsiveContainer>
