@@ -475,7 +475,7 @@ export default function BlocklyCanvasPanel(props) {
             size='large'
             spinning={selectedCompile}
           >
-            <Row>
+            <Row id='icon-control-panel'>
               <Col flex='none' id='section-header'>
                 {lessonName ? lessonName : 'Program your Arduino...'}
               </Col>

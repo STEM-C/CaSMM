@@ -47,9 +47,9 @@ export default function CodeModal(props) {
 
       {hover &&
         (title === 'XML' ? (
-          <div className='popup ModalCompile2'>Shows XML</div>
+          <div className='popup ModalCompile2'>Show XML</div>
         ) : (
-          <div className='popup ModalCompile3'>Shows Arduino Code</div>
+          <div className='popup ModalCompile3'>Show Arduino Code</div>
         ))}
       <Modal
         title={title}
