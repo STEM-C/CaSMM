@@ -111,81 +111,93 @@ export default function Home(props) {
                   </a>
                 </p>
               ) : null}
-              <div id='card-btn-container' className='flex space-between'>
-                {days.map((day) => (
-                  <div id='view-day-card' key={day.id}>
-                    <h3
-                      onClick={() =>
-                        handleViewDay(day, activeLearningStandard.name)
-                      }
-                      id='view-day-title'
-                    >{`View Day ${day.number}`}</h3>
-                    <div id='view-day-info'>
-                      <p>
-                        <strong>TEKS: </strong>
-                        {day.TekS}
-                      </p>
-                      <p>
-                        <strong>Description: </strong>
-                        {day.description}
-                      </p>
-                      <p>
-                        <strong>Science Components: </strong>
-                        {day.learning_components
-                          .filter(
-                            (component) =>
-                              component.learning_component_type === SCIENCE
-                          )
-                          .map((element, index) => {
-                            return (
-                              <Tag key={index} color={color[(index + 1) % 11]}>
-                                {element.type}
-                              </Tag>
-                            );
-                          })}
-                      </p>
-                      <p>
-                        <strong>Making Components: </strong>
-                        {day.learning_components
-                          .filter(
-                            (component) =>
-                              component.learning_component_type === MAKING
-                          )
-                          .map((element, index) => {
-                            return (
-                              <Tag key={index} color={color[(index + 4) % 11]}>
-                                {element.type}
-                              </Tag>
-                            );
-                          })}
-                      </p>
-                      <p>
-                        <strong>Computation Components: </strong>
-                        {day.learning_components
-                          .filter(
-                            (component) =>
-                              component.learning_component_type === COMPUTATION
-                          )
-                          .map((element, index) => {
-                            return (
-                              <Tag key={index} color={color[(index + 7) % 11]}>
-                                {element.type}
-                              </Tag>
-                            );
-                          })}
-                      </p>
-                      {day.link ? (
+              {days ? (
+                <div id='card-btn-container' className='flex space-between'>
+                  {days.map((day) => (
+                    <div id='view-day-card' key={day.id}>
+                      <h3
+                        onClick={() =>
+                          handleViewDay(day, activeLearningStandard.name)
+                        }
+                        id='view-day-title'
+                      >{`View Day ${day.number}`}</h3>
+                      <div id='view-day-info'>
                         <p>
-                          <strong>Link to Additional Information: </strong>
-                          <a href={day.link} target='_blank' rel='noreferrer'>
-                            {day.link}
-                          </a>
+                          <strong>TEKS: </strong>
+                          {day.TekS}
                         </p>
-                      ) : null}
+                        <p>
+                          <strong>Description: </strong>
+                          {day.description}
+                        </p>
+                        <p>
+                          <strong>Science Components: </strong>
+                          {day.learning_components
+                            .filter(
+                              (component) =>
+                                component.learning_component_type === SCIENCE
+                            )
+                            .map((element, index) => {
+                              return (
+                                <Tag
+                                  key={index}
+                                  color={color[(index + 1) % 11]}
+                                >
+                                  {element.type}
+                                </Tag>
+                              );
+                            })}
+                        </p>
+                        <p>
+                          <strong>Making Components: </strong>
+                          {day.learning_components
+                            .filter(
+                              (component) =>
+                                component.learning_component_type === MAKING
+                            )
+                            .map((element, index) => {
+                              return (
+                                <Tag
+                                  key={index}
+                                  color={color[(index + 4) % 11]}
+                                >
+                                  {element.type}
+                                </Tag>
+                              );
+                            })}
+                        </p>
+                        <p>
+                          <strong>Computation Components: </strong>
+                          {day.learning_components
+                            .filter(
+                              (component) =>
+                                component.learning_component_type ===
+                                COMPUTATION
+                            )
+                            .map((element, index) => {
+                              return (
+                                <Tag
+                                  key={index}
+                                  color={color[(index + 7) % 11]}
+                                >
+                                  {element.type}
+                                </Tag>
+                              );
+                            })}
+                        </p>
+                        {day.link ? (
+                          <p>
+                            <strong>Link to Additional Information: </strong>
+                            <a href={day.link} target='_blank' rel='noreferrer'>
+                              {day.link}
+                            </a>
+                          </p>
+                        ) : null}
+                      </div>
                     </div>
-                  </div>
-                ))}
-              </div>
+                  ))}
+                </div>
+              ) : null}
             </div>
           ) : (
             <div>
