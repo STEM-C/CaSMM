@@ -190,7 +190,7 @@ export default function LearningStandardSelect(props) {
           <i className='fa fa-arrow-left' aria-hidden='true' />
         </button>
         <div id='ls-info'>
-          <p id='learning-standard-expectations-title'>Expectations:</p>
+          <p id='learning-standard-expectations-title'>Description:</p>
           <p id='learning-standard-expectations'>{selected.expectations}</p>
           {selected.link ? (
             <p>
