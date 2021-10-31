@@ -111,8 +111,8 @@ export default function Home(props) {
                   </a>
                 </p>
               ) : null}
-              { days ? (
-                  <div id='card-btn-container' className='flex space-between'>
+              {days ? (
+                <div id='card-btn-container' className='flex space-between'>
                   {days.map((day) => (
                     <div id='view-day-card' key={day.id}>
                       <h3
@@ -139,7 +139,10 @@ export default function Home(props) {
                             )
                             .map((element, index) => {
                               return (
-                                <Tag key={index} color={color[(index + 1) % 11]}>
+                                <Tag
+                                  key={index}
+                                  color={color[(index + 1) % 11]}
+                                >
                                   {element.type}
                                 </Tag>
                               );
@@ -154,7 +157,10 @@ export default function Home(props) {
                             )
                             .map((element, index) => {
                               return (
-                                <Tag key={index} color={color[(index + 4) % 11]}>
+                                <Tag
+                                  key={index}
+                                  color={color[(index + 4) % 11]}
+                                >
                                   {element.type}
                                 </Tag>
                               );
@@ -165,11 +171,15 @@ export default function Home(props) {
                           {day.learning_components
                             .filter(
                               (component) =>
-                                component.learning_component_type === COMPUTATION
+                                component.learning_component_type ===
+                                COMPUTATION
                             )
                             .map((element, index) => {
                               return (
-                                <Tag key={index} color={color[(index + 7) % 11]}>
+                                <Tag
+                                  key={index}
+                                  color={color[(index + 7) % 11]}
+                                >
                                   {element.type}
                                 </Tag>
                               );
@@ -187,8 +197,7 @@ export default function Home(props) {
                     </div>
                   ))}
                 </div>
-                ) : null
-              } 
+              ) : null}
             </div>
           ) : (
             <div>
