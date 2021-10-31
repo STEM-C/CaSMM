@@ -455,3 +455,23 @@ export const resetPassword = async (code, password, passwordConfirmation) =>
     error:
       'Cannot update new password. Please try again or get a new link from the forgot password page.',
   });
+
+export const getBlockImage = async (url) => {
+  const config ={header: {
+    Authorization: `Bearer ${getToken()}`,
+  },
+  responseType: 'arraybuffer',
+  };
+
+  let res = [];
+  try{
+    const path = `${server}${url}`;
+    const response = await axios.get(path, config);
+    res.data = "data:" + response.headers["content-type"] + ";base64," + Buffer.from(response.data).toString('base64');
+  }
+  catch(e){
+    console.log(e);
+    res.err = 'Unable to get block image';
+  }
+  return res;
+}
