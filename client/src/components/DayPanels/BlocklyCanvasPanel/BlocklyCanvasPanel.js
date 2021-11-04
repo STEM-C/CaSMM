@@ -451,7 +451,7 @@ export default function BlocklyCanvasPanel(props) {
         />
     }
     else
-      return null;
+      return blockName;
   }
 
 
