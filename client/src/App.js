@@ -20,6 +20,8 @@ import UploadBlocks from './views/UploadBlocks/UploadBlocks';
 import ForgetPassword from './views/TeacherLogin/ForgetPassword';
 import ResetPassword from './views/TeacherLogin/ResetPassword';
 import Report from './views/Researcher/Report';
+import DailyReport from './views/Researcher/DailyReport';
+import GroupReport from './views/Researcher/GroupReport';
 
 const App = () => {
   let history = useHistory();
@@ -51,6 +53,12 @@ const App = () => {
         </Route>
         <Route exact path='/report'>
           <Report />
+        </Route>
+        <Route exact path='/daily-report'>
+          <DailyReport />
+        </Route>
+        <Route exact path='/group-report'>
+          <GroupReport />
         </Route>
         <PrivateRoute
           exact
