@@ -10,7 +10,6 @@
     "strapi": "strapi",
     "build-client": "rm -rf ./public/client/* && cd ../client && env PUBLIC_URL=/client yarn build && mv ./build/* ../server/public/client/"
   },
-  "devDependencies": {},
   "dependencies": {
     "bull": "^3.29.0",
     "dotenv": "^10.0.0",
@@ -19,6 +18,7 @@
     "strapi": "3.6.7",
     "strapi-admin": "3.6.7",
     "strapi-connector-bookshelf": "3.6.7",
+    "strapi-media-library": "^1.0.3",
     "strapi-plugin-content-manager": "3.6.7",
     "strapi-plugin-content-type-builder": "3.6.7",
     "strapi-plugin-email": "3.6.7",
