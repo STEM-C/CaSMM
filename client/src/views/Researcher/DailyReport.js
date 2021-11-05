@@ -1,4 +1,6 @@
 import NavBar from '../../components/NavBar/NavBar';
+import Dropdown from '../../components/DropdownMenu/Dropdown';
+import { DownOutlined } from '@ant-design/icons';
 import React, { useState } from 'react';
 import './DailyReport.less';
 
@@ -10,8 +12,12 @@ export default function DailyReport(props) {
       <h1>Daily Report</h1>
       <main id='content-wrapper'>
         <div className='cards'>
+        
           <section id="container-section">
             <section>
+              <Dropdown>
+                
+              </Dropdown>
                 <h2>Mentor Name: John Doe</h2>
                 <h2>Content Creator Name: John Doe</h2>
                 <h2>Student Name: Jane Doe</h2>
@@ -43,5 +49,6 @@ export default function DailyReport(props) {
         </section>
       </main>
     </div>
+    
   );
 }
