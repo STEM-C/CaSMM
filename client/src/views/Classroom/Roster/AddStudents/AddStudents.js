@@ -70,7 +70,7 @@ export default function AddStudents(props) {
     const students = await uploadedRoster.map((student) => {
       return {
         name: student.name.trim(),
-        character: student.animal,
+        character: student.animal.trim(),
       };
     });
     const res = await addStudents(students, classroomId);
@@ -119,7 +119,7 @@ export default function AddStudents(props) {
     students = await students.map((student) => {
       return {
         name: reformatName(student.data.name.trim()),
-        animal: student.data.animal,
+        animal: student.data.animal.trim(),
       };
     });
 
@@ -219,18 +219,16 @@ export default function AddStudents(props) {
             https://drive.google.com/file/d/1MeGaw3oMP_uEEvaIqp_Sa6zDN3dfy2lS/view?usp=sharing
           </a>
         </p>
-
         <CSVReader
           ref={buttonRef}
           onDrop={handleOnDrop}
           onError={handleOnError}
           onRemoveFile={handleOnRemoveFile}
           progressBarColor={'#5BABDE'}
-          noDrag
           config={{
             header: true,
             transformHeader: function (h) {
-              let header = h.toLowerCase();
+              let header = h.toLowerCase().trim();
               if (header === 'student' || header === ['student name'])
                 header = 'name';
               return header;

@@ -26,11 +26,15 @@ module.exports.blocksToToolbox = (blocks) => {
     blocks.forEach(block => {
 
         // validate the block fields
-        const { blocks_category, name, description } = block
+        const { blocks_category, name, description, block_image } = block
         if (!blocks_category) return 
 
+        let imageUrl = null;
+        if(block_image != null)
+            imageUrl = block_image.url;
+
         // only take the required fields from the block
-        let sanitizedBlock = { name, description }
+        let sanitizedBlock = { name, description, imageUrl }
 
         // append the block to an existing category
         // else create a new category
