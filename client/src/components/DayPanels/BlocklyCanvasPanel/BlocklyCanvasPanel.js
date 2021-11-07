@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState, useReducer } from 'react';
 import { Link } from 'react-router-dom';
 import '../DayPanels.less';
 import {
@@ -15,18 +15,22 @@ import {
   Col,
   Input,
   Switch,
-  Alert,
+  Alert
 } from 'antd';
-import { getSaves } from '../../../Utils/requests';
+import { getSaves, getBlockImage } from '../../../Utils/requests';
 import CodeModal from './CodeModal';
 import ConsoleModal from './ConsoleModal';
+import PlotterModal from './PlotterModal';
 import VersionHistoryModal from './VersionHistoryModal';
 import {
   connectToPort,
   handleCloseConnection,
   handleOpenConnection,
 } from '../consoleHelpers';
-import ArduinoLogo from './ArduinoLogo';
+import ArduinoLogo from './Icons/ArduinoLogo';
+import PlotterLogo from './Icons/PlotterLogo';
+
+let plotId = 1;
 
 export default function BlocklyCanvasPanel(props) {
   const [hoverXml, setHoverXml] = useState(false);
@@ -36,7 +40,10 @@ export default function BlocklyCanvasPanel(props) {
   const [hoverArduino, setHoverArduino] = useState(false);
   const [hoverCompile, setHoverCompile] = useState(false);
   const [hoverConsole, setHoverConsole] = useState(false);
+  const [hoverPlotter, setHoverPlotter] = useState(false);
   const [showConsole, setShowConsole] = useState(false);
+  const [showPlotter, setShowPlotter] = useState(false);
+  const [plotData, setPlotData] = useState([]);
   const [connectionOpen, setConnectionOpen] = useState(false);
   const [selectedCompile, setSelectedCompile] = useState(false);
   const [compileError, setCompileError] = useState('');
@@ -47,10 +54,8 @@ export default function BlocklyCanvasPanel(props) {
   const [searchFilter, setSearchFilter] = useState('');
   const [selectAll, setSelectAll] = useState(false);
   const [openedToolBoxCategories, setOpenedToolBoxCategories] = useState([]);
-  const [selectedToolBoxCategories, setSelectedToolBoxCategories] = useState(
-    []
-  );
-
+  const [selectedToolBoxCategories, setSelectedToolBoxCategories] = useState([]);
+  const [blockImages, setBlockImages] = useState([]);
   const {
     day,
     homePath,
@@ -61,6 +66,7 @@ export default function BlocklyCanvasPanel(props) {
     lessonName,
   } = props;
 
+  const [ignored, forceUpdate] = useReducer((x) => x + 1, 0);
   const workspaceRef = useRef(null);
   const dayRef = useRef(null);
   const replayRef = useRef([]);
@@ -166,6 +172,21 @@ export default function BlocklyCanvasPanel(props) {
         if (!isStudent && !isMentor && !isContentCreator) return;
 
         if (isContentCreator) {
+
+          //get block images
+          let tempBlockImages = [];
+          for(const [category, blocks] of day.toolbox){
+            for(const block of blocks){
+              if(block.imageUrl){
+                let img = await getImagebyUrl(block.imageUrl);
+                tempBlockImages = [...tempBlockImages, 
+                  {name: block.name, image: img}];
+              }
+            }
+          }
+          setBlockImages(tempBlockImages);
+
+          //set selected blocks in toolbox
           let tempCategories = [],
             tempToolBox = [];
           day &&
@@ -174,7 +195,7 @@ export default function BlocklyCanvasPanel(props) {
               tempCategories.push(category);
               tempToolBox = [
                 ...tempToolBox,
-                ...blocks.map((block) => block.name),
+                ...blocks.map((block) => block.name)
               ];
             });
 
@@ -357,10 +378,14 @@ export default function BlocklyCanvasPanel(props) {
   };
 
   const handleConsole = async () => {
+    if (showPlotter) {
+      message.warning('Close serial plotter before openning serial monitor');
+      return;
+    }
     // if serial monitor is not shown
     if (!showConsole) {
       // connect to port
-      await handleOpenConnection(9600, true);
+      await handleOpenConnection(9600, 'newLine');
       // if fail to connect to port, return
       if (typeof window['port'] === 'undefined') {
         message.error('Fail to select serial device');
@@ -371,17 +396,50 @@ export default function BlocklyCanvasPanel(props) {
     }
     // if serial monitor is shown, close the connection
     else {
-      setShowConsole(false);
       if (connectionOpen) {
         await handleCloseConnection();
         setConnectionOpen(false);
       }
+      setShowConsole(false);
+    }
+  };
+
+  const handlePlotter = async () => {
+    if (showConsole) {
+      message.warning('Close serial monitor before openning serial plotter');
+      return;
+    }
+
+    if (!showPlotter) {
+      await handleOpenConnection(
+        9600,
+        'plot',
+        plotData,
+        setPlotData,
+        plotId,
+        forceUpdate
+      );
+      if (typeof window['port'] === 'undefined') {
+        message.error('Fail to select serial device');
+        return;
+      }
+      setConnectionOpen(true);
+      setShowPlotter(true);
+    } else {
+      plotId = 1;
+      if (connectionOpen) {
+        await handleCloseConnection();
+        setConnectionOpen(false);
+      }
+      setShowPlotter(false);
     }
   };
 
   const handleCompile = async () => {
-    if (connectionOpen) {
-      message.error('Close Serial Monitor before uploading your code');
+    if (showConsole || showPlotter) {
+      message.warning(
+        'Close Serial Monitor and Serial Plotter before uploading your code'
+      );
     } else {
       if (typeof window['port'] === 'undefined') {
         await connectToPort();
@@ -417,6 +475,31 @@ export default function BlocklyCanvasPanel(props) {
     return `${month}/${day}/${year}, ${hrs}:${min}:${sec} ${ampm}`;
   };
 
+  const getImagebyUrl = async (url) => {
+    const res = await getBlockImage(url);
+    if(res.data){
+      return res.data;
+    }
+    else{
+      console.log(res.err);
+    }
+  }
+
+  const renderImage = (blockName)=>{
+    let img = blockImages.find(b=>b.name === blockName);
+    
+    if(img){
+      return <img 
+        height="95%"
+        width="95%"
+        src={img.image}
+        />
+    }
+    else
+      return blockName;
+  }
+
+
   return (
     <div id='horizontal-container' className='flex flex-column'>
       <div className='flex flex-row'>
@@ -430,7 +513,7 @@ export default function BlocklyCanvasPanel(props) {
             size='large'
             spinning={selectedCompile}
           >
-            <Row>
+            <Row id='icon-control-panel'>
               <Col flex='none' id='section-header'>
                 {lessonName ? lessonName : 'Program your Arduino...'}
               </Col>
@@ -606,6 +689,15 @@ export default function BlocklyCanvasPanel(props) {
                           Show Serial Monitor
                         </div>
                       )}
+                      <PlotterLogo
+                        setHoverPlotter={setHoverPlotter}
+                        handlePlotter={handlePlotter}
+                      />
+                      {hoverPlotter && (
+                        <div className='popup ModalCompile'>
+                          Show Serial Plotter
+                        </div>
+                      )}
                     </div>
                   </Col>
                 </Row>
@@ -675,7 +767,7 @@ export default function BlocklyCanvasPanel(props) {
                           //filter out blocks not in search term
                           applySearchFilter(blocks).map((block) => {
                             return (
-                              <Menu.Item key={block.name}>
+                              <Menu.Item className="ImageMenu" key={block.name}>
                                 <Checkbox
                                   checked={
                                     studentToolbox.indexOf(block.name) > -1
@@ -690,7 +782,7 @@ export default function BlocklyCanvasPanel(props) {
                                     )
                                   }
                                 >
-                                  {block.name}
+                                  {renderImage(block.name)}
                                 </Checkbox>
                               </Menu.Item>
                             );
@@ -708,6 +800,14 @@ export default function BlocklyCanvasPanel(props) {
           connectionOpen={connectionOpen}
           setConnectionOpen={setConnectionOpen}
         ></ConsoleModal>
+        <PlotterModal
+          show={showPlotter}
+          connectionOpen={connectionOpen}
+          setConnectionOpen={setConnectionOpen}
+          plotData={plotData}
+          setPlotData={setPlotData}
+          plotId={plotId}
+        />
       </div>
 
       {/* This xml is for the blocks' menu we will provide. Here are examples on how to include categories and subcategories */}
