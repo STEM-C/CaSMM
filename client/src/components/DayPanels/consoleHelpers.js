@@ -89,6 +89,7 @@ const readUntilClose = async (
         plotId += 1;
         setPlotData(plotData);
         forceUpdate();
+        await new Promise((resolve) => setTimeout(resolve, 50));
       }
     }
   }
