@@ -19,6 +19,7 @@ import UnitCreator from './views/ContentCreator/UnitCreator/UnitCreator';
 import UploadBlocks from './views/UploadBlocks/UploadBlocks';
 import ForgetPassword from './views/TeacherLogin/ForgetPassword';
 import ResetPassword from './views/TeacherLogin/ResetPassword';
+import BugReport from './views/BugReport/BugReport'
 
 const App = () => {
   let history = useHistory();
@@ -81,6 +82,9 @@ const App = () => {
         </Route>
         <Route exact path='/addblocks'>
           <UploadBlocks history={history} />
+        </Route>
+        <Route exact path='/bugreport'>
+          <BugReport history={history} />
         </Route>
 
         <Route component={NotFound} />

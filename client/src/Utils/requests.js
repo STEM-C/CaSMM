@@ -457,21 +457,45 @@ export const resetPassword = async (code, password, passwordConfirmation) =>
   });
 
 export const getBlockImage = async (url) => {
-  const config ={header: {
-    Authorization: `Bearer ${getToken()}`,
-  },
-  responseType: 'arraybuffer',
+  const config = {
+    header: {
+      Authorization: `Bearer ${getToken()}`,
+    },
+    responseType: 'arraybuffer',
   };
 
   let res = [];
-  try{
+  try {
     const path = `${server}${url}`;
     const response = await axios.get(path, config);
-    res.data = "data:" + response.headers["content-type"] + ";base64," + Buffer.from(response.data).toString('base64');
-  }
-  catch(e){
+    res.data =
+      'data:' +
+      response.headers['content-type'] +
+      ';base64,' +
+      Buffer.from(response.data).toString('base64');
+  } catch (e) {
     console.log(e);
     res.err = 'Unable to get block image';
   }
   return res;
-}
+};
+
+export const submitBugReport = async (
+  description,
+  steps,
+  name,
+  email,
+  systemInfo
+) =>
+  makeRequest({
+    method: POST,
+    path: `${server}/bug-report`,
+    data: {
+      description,
+      steps,
+      name,
+      email,
+      systemInfo,
+    },
+    error: 'Unable to submit bug-report',
+  });
