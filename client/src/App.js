@@ -51,9 +51,11 @@ const App = () => {
         <Route exact path='/login'>
           <StudentLogin history={history} />
         </Route>
-        <Route exact path='/report'>
-          <Report />
-        </Route>
+        <PrivateRoute
+          exact
+          path='/report'
+          render={() => <Report history={history} />}
+        />
         <Route exact path='/daily-report'>
           <DailyReport />
         </Route>

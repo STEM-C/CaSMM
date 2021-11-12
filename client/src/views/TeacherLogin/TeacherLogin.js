@@ -33,9 +33,7 @@ export default function TeacherLogin(props) {
         if (response.data.user.role.name === 'Content Creator') {
           props.history.push('/ccdashboard');
         } else if (response.data.user.role.name === 'Researcher') {
-          // TODO:
-          // Build a view of what a researcher sees right after they login
-          // props.history.push('/ccdashboard');
+          props.history.push('/report');
         } else {
           props.history.push('/dashboard');
         }

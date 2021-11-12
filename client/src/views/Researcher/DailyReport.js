@@ -1,11 +1,21 @@
 import NavBar from '../../components/NavBar/NavBar';
 import Dropdown from '../../components/DropdownMenu/Dropdown';
 import { DownOutlined } from '@ant-design/icons';
-import React, { useState } from 'react';
+import React, {useEffect} from 'react';
 import './DailyReport.less';
+import {getStudent} from "../../Utils/requests";
 
 export default function DailyReport(props) {
 
+  // TODO:
+  // useEffect to do call from requests.js in utils to backend to get a single student by id
+  // join to classroom to get the mentor name, and grade
+  // join to session to get partners
+  // session can be related to a submission
+  useEffect(function() {
+    getStudent(2)
+      .then(data => console.log(data))
+  }, [])
   return (
     <div className='container nav-padding'>
       <NavBar />
@@ -15,9 +25,9 @@ export default function DailyReport(props) {
         
           <section id="container-section">
             <section>
-              <Dropdown>
+              {/* <Dropdown>
                 
-              </Dropdown>
+              </Dropdown> */}
                 <h2>Mentor Name: John Doe</h2>
                 <h2>Content Creator Name: John Doe</h2>
                 <h2>Student Name: Jane Doe</h2>
