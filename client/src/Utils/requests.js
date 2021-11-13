@@ -457,15 +457,13 @@ export const resetPassword = async (code, password, passwordConfirmation) =>
   });
 
 export const getBlockImage = async (url) => {
-  const config ={header: {
-    Authorization: `Bearer ${getToken()}`,
-  },
+  const config ={
   responseType: 'arraybuffer',
   };
 
   let res = [];
   try{
-    const path = `${server}${url}`;
+    const path = url;
     const response = await axios.get(path, config);
     res.data = "data:" + response.headers["content-type"] + ";base64," + Buffer.from(response.data).toString('base64');
   }

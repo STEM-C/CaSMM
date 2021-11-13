@@ -169,8 +169,8 @@ export default function BlocklyCanvasPanel(props) {
           let tempBlockImages = [];
           for(const [category, blocks] of day.toolbox){
             for(const block of blocks){
-              if(block.imageUrl){
-                let img = await getImagebyUrl(block.imageUrl);
+              if(block.image_url){
+                let img = await getImagebyUrl(block.image_url);
                 tempBlockImages = [...tempBlockImages, 
                   {name: block.name, image: img}];
               }
