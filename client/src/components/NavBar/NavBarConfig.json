@@ -7,12 +7,18 @@
     "Dashboard": "/dashboard",
     "SignOut": "/",
     "AccountInfo": "/account",
-    "ContentCreatorDashboard":"/ccdashboard"
+    "ContentCreatorDashboard": "/ccdashboard",
+    "BugReport": "/bugreport"
   },
   "users": {
     "defaultUser": ["Home", "TeacherLogin", "Sandbox", "About"],
-    "isMentor": ["Dashboard", "AccountInfo", "SignOut"],
+    "isMentor": ["Dashboard", "AccountInfo", "SignOut", "BugReport"],
     "isStudent": ["SignOut"],
-    "isContentCreator":["ContentCreatorDashboard","AccountInfo", "About", "SignOut"]
+    "isContentCreator": [
+      "ContentCreatorDashboard",
+      "AccountInfo",
+      "SignOut",
+      "BugReport"
+    ]
   }
 }
