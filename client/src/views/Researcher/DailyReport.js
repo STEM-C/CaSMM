@@ -1,6 +1,5 @@
 import NavBar from '../../components/NavBar/NavBar';
-import Dropdown from '../../components/DropdownMenu/Dropdown';
-import { DownOutlined } from '@ant-design/icons';
+import ReportDropdown from '../../components/DropdownMenu/ReportDropdown';
 import React, {useEffect} from 'react';
 import './DailyReport.less';
 import {getStudent} from "../../Utils/requests";
@@ -39,12 +38,10 @@ export default function DailyReport(props) {
         <div className="cards">
           <section id="container-section">
             <section>
-              {/* <Dropdown>
-                  
-                </Dropdown> */}
-              <h2>Mentor Name: John Doe</h2>
-              <h2>Content Creator Name: John Doe</h2>
-              <h2>Student Name: Jane Doe</h2>
+              <ReportDropdown/>
+                <h2>Mentor Name: John Doe</h2>
+                <h2>Content Creator Name: John Doe</h2>
+                <h2>Student Name: Jane Doe</h2>
             </section>
             <section>
               <h2>Grade: 1st grade</h2>
