@@ -55,7 +55,6 @@ export default function BlocklyCanvasPanel(props) {
   const [selectAll, setSelectAll] = useState(false);
   const [openedToolBoxCategories, setOpenedToolBoxCategories] = useState([]);
   const [selectedToolBoxCategories, setSelectedToolBoxCategories] = useState([]);
-  const [blockImages, setBlockImages] = useState([]);
   const {
     day,
     homePath,
@@ -172,19 +171,6 @@ export default function BlocklyCanvasPanel(props) {
         if (!isStudent && !isMentor && !isContentCreator) return;
 
         if (isContentCreator) {
-
-          //get block images
-          let tempBlockImages = [];
-          for(const [category, blocks] of day.toolbox){
-            for(const block of blocks){
-              if(block.image_url){
-                let img = await getImagebyUrl(block.image_url);
-                tempBlockImages = [...tempBlockImages, 
-                  {name: block.name, image: img}];
-              }
-            }
-          }
-          setBlockImages(tempBlockImages);
 
           //set selected blocks in toolbox
           let tempCategories = [],
@@ -475,28 +461,18 @@ export default function BlocklyCanvasPanel(props) {
     return `${month}/${day}/${year}, ${hrs}:${min}:${sec} ${ampm}`;
   };
 
-  const getImagebyUrl = async (url) => {
-    const res = await getBlockImage(url);
-    if(res.data){
-      return res.data;
-    }
-    else{
-      console.log(res.err);
-    }
-  }
 
-  const renderImage = (blockName)=>{
-    let img = blockImages.find(b=>b.name === blockName);
+  const renderImage = (block)=>{
     
-    if(img){
+    if(block.image_url){
       return <img 
         height="95%"
         width="95%"
-        src={img.image}
+        src={block.image_url}
         />
     }
     else
-      return blockName;
+      return block.name;
   }
 
 
@@ -782,7 +758,7 @@ export default function BlocklyCanvasPanel(props) {
                                     )
                                   }
                                 >
-                                  {renderImage(block.name)}
+                                  {renderImage(block)}
                                 </Checkbox>
                               </Menu.Item>
                             );
