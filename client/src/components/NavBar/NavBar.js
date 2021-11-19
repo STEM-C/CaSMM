@@ -104,7 +104,10 @@ export default function NavBar(props) {
 
   return (
     <span id='navBar'>
-      <Link id='link' to={isMentor ? '/dashboard' : '/'}>
+      <Link
+        id='link'
+        to={isMentor ? '/dashboard' : isContentCreator ? '/ccdashboard' : '/'}
+      >
         <img src={Logo} id='casmm-logo' alt='logo' />
       </Link>
       <div id='dropdown-menu'>
