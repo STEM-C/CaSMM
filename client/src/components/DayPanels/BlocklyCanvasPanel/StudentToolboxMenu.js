@@ -154,7 +154,7 @@ export default function StudentToolboxMenu(props) {
   const renderImage = (block)=>{
 
     if(block.image_url){
-\      return <img 
+      return <img 
         height="95%"
         width="95%"
         src={process.env.PUBLIC_URL + block.image_url}
