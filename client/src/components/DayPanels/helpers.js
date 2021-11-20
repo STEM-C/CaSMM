@@ -22,6 +22,7 @@ export const getXml = (workspaceRef, shouldAlert = true) => {
   const { Blockly } = window;
 
   let xml = Blockly.Xml.workspaceToDom(workspaceRef);
+
   let xml_text = Blockly.Xml.domToText(xml);
   if (shouldAlert) alert(xml_text);
   return xml_text;

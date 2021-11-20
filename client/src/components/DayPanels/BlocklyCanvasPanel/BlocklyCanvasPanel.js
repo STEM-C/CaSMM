@@ -15,7 +15,7 @@ import {
   Col,
   Input,
   Switch,
-  Alert
+  Alert,
 } from 'antd';
 import { getSaves, getBlockImage } from '../../../Utils/requests';
 import CodeModal from './CodeModal';
@@ -54,7 +54,9 @@ export default function BlocklyCanvasPanel(props) {
   const [searchFilter, setSearchFilter] = useState('');
   const [selectAll, setSelectAll] = useState(false);
   const [openedToolBoxCategories, setOpenedToolBoxCategories] = useState([]);
-  const [selectedToolBoxCategories, setSelectedToolBoxCategories] = useState([]);
+  const [selectedToolBoxCategories, setSelectedToolBoxCategories] = useState(
+    []
+  );
   const [blockImages, setBlockImages] = useState([]);
   const {
     day,
@@ -172,15 +174,16 @@ export default function BlocklyCanvasPanel(props) {
         if (!isStudent && !isMentor && !isContentCreator) return;
 
         if (isContentCreator) {
-
           //get block images
           let tempBlockImages = [];
-          for(const [category, blocks] of day.toolbox){
-            for(const block of blocks){
-              if(block.imageUrl){
+          for (const [category, blocks] of day.toolbox) {
+            for (const block of blocks) {
+              if (block.imageUrl) {
                 let img = await getImagebyUrl(block.imageUrl);
-                tempBlockImages = [...tempBlockImages, 
-                  {name: block.name, image: img}];
+                tempBlockImages = [
+                  ...tempBlockImages,
+                  { name: block.name, image: img },
+                ];
               }
             }
           }
@@ -195,7 +198,7 @@ export default function BlocklyCanvasPanel(props) {
               tempCategories.push(category);
               tempToolBox = [
                 ...tempToolBox,
-                ...blocks.map((block) => block.name)
+                ...blocks.map((block) => block.name),
               ];
             });
 
@@ -477,28 +480,20 @@ export default function BlocklyCanvasPanel(props) {
 
   const getImagebyUrl = async (url) => {
     const res = await getBlockImage(url);
-    if(res.data){
+    if (res.data) {
       return res.data;
-    }
-    else{
+    } else {
       console.log(res.err);
     }
-  }
+  };
 
-  const renderImage = (blockName)=>{
-    let img = blockImages.find(b=>b.name === blockName);
-    
-    if(img){
-      return <img 
-        height="95%"
-        width="95%"
-        src={img.image}
-        />
-    }
-    else
-      return blockName;
-  }
+  const renderImage = (blockName) => {
+    let img = blockImages.find((b) => b.name === blockName);
 
+    if (img) {
+      return <img height='95%' width='95%' src={img.image} />;
+    } else return blockName;
+  };
 
   return (
     <div id='horizontal-container' className='flex flex-column'>
@@ -767,7 +762,7 @@ export default function BlocklyCanvasPanel(props) {
                           //filter out blocks not in search term
                           applySearchFilter(blocks).map((block) => {
                             return (
-                              <Menu.Item className="ImageMenu" key={block.name}>
+                              <Menu.Item className='ImageMenu' key={block.name}>
                                 <Checkbox
                                   checked={
                                     studentToolbox.indexOf(block.name) > -1
