@@ -37,7 +37,7 @@ export default function StudentToolboxMenu(props) {
         setStudentToolbox(tempToolBox);
     }
     setUp();
-  }, []);
+  }, [day]);
 
   const handleSearchFilterChange = (value) => {
     let validCategories = [];
@@ -154,8 +154,7 @@ export default function StudentToolboxMenu(props) {
   const renderImage = (block)=>{
 
     if(block.image_url){
-      console.log(process.env.PUBLIC_URL);
-      return <img 
+\      return <img 
         height="95%"
         width="95%"
         src={process.env.PUBLIC_URL + block.image_url}
