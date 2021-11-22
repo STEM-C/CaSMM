@@ -9,19 +9,16 @@ import {
 import {
   message,
   Spin,
-  Menu,
-  Checkbox,
   Row,
   Col,
-  Input,
-  Switch,
   Alert
 } from 'antd';
-import { getSaves, getBlockImage } from '../../../Utils/requests';
+import { getSaves } from '../../../Utils/requests';
 import CodeModal from './CodeModal';
 import ConsoleModal from './ConsoleModal';
 import PlotterModal from './PlotterModal';
 import VersionHistoryModal from './VersionHistoryModal';
+import StudentToolboxMenu from './StudentToolboxMenu';
 import {
   connectToPort,
   handleCloseConnection,
@@ -51,11 +48,6 @@ export default function BlocklyCanvasPanel(props) {
   const [studentToolbox, setStudentToolbox] = useState([]);
   const [lastSavedTime, setLastSavedTime] = useState(null);
   const [lastAutoSave, setLastAutoSave] = useState(null);
-  const [searchFilter, setSearchFilter] = useState('');
-  const [selectAll, setSelectAll] = useState(false);
-  const [openedToolBoxCategories, setOpenedToolBoxCategories] = useState([]);
-  const [selectedToolBoxCategories, setSelectedToolBoxCategories] = useState([]);
-  const [blockImages, setBlockImages] = useState([]);
   const {
     day,
     homePath,
@@ -71,7 +63,6 @@ export default function BlocklyCanvasPanel(props) {
   const dayRef = useRef(null);
   const replayRef = useRef([]);
   const undoLength = useRef(0);
-  const { SubMenu } = Menu;
 
   const setWorkspace = () => {
     workspaceRef.current = window.Blockly.inject('blockly-canvas', {
@@ -171,38 +162,6 @@ export default function BlocklyCanvasPanel(props) {
 
         if (!isStudent && !isMentor && !isContentCreator) return;
 
-        if (isContentCreator) {
-
-          //get block images
-          let tempBlockImages = [];
-          for(const [category, blocks] of day.toolbox){
-            for(const block of blocks){
-              if(block.imageUrl){
-                let img = await getImagebyUrl(block.imageUrl);
-                tempBlockImages = [...tempBlockImages, 
-                  {name: block.name, image: img}];
-              }
-            }
-          }
-          setBlockImages(tempBlockImages);
-
-          //set selected blocks in toolbox
-          let tempCategories = [],
-            tempToolBox = [];
-          day &&
-            day.selectedToolbox &&
-            day.selectedToolbox.forEach(([category, blocks]) => {
-              tempCategories.push(category);
-              tempToolBox = [
-                ...tempToolBox,
-                ...blocks.map((block) => block.name)
-              ];
-            });
-
-          setOpenedToolBoxCategories(tempCategories);
-          setStudentToolbox(tempToolBox);
-        }
-
         let onLoadSave = null;
         const res = await getSaves(day.id);
         if (res.data) {
@@ -253,117 +212,6 @@ export default function BlocklyCanvasPanel(props) {
       message.error(res.err);
     } else {
       message.success('Day saved successfully');
-    }
-  };
-
-  const handleSearchFilterChange = (value) => {
-    let validCategories = [];
-
-    if (value === '') {
-      validCategories =
-        day &&
-        day.toolbox &&
-        day.toolbox.reduce((accume, [category, blocks]) => {
-          if (blocks.some((block) => studentToolbox.includes(block.name))) {
-            return [...accume, category];
-          } else {
-            return accume;
-          }
-        }, []);
-    } else {
-      validCategories =
-        day &&
-        day.toolbox &&
-        day.toolbox.reduce((accume, [category, blocks]) => {
-          if (blocks.some((block) => block.name.includes(value))) {
-            return [...accume, category];
-          } else {
-            return accume;
-          }
-        }, []);
-    }
-
-    setOpenedToolBoxCategories(validCategories);
-    setSearchFilter(value);
-  };
-  /**
-   * filters out blocks not in searchFilter
-   * @param {object} blocks {name, description}
-   */
-  const applySearchFilter = (blocks) => {
-    return blocks.filter((block) => block.name.includes(searchFilter));
-  };
-
-  /**
-   * select or deselect entire toolbox
-   * @param {object} event
-   */
-  const handleSelectEntireToolBox = (event) => {
-    if (event.target.checked) {
-      let tempToolBox = [];
-      let tempCategories = [];
-      day &&
-        day.toolbox &&
-        day.toolbox.forEach(([category, blocks]) => {
-          tempCategories.push(category);
-          tempToolBox = [...tempToolBox, ...blocks.map((block) => block.name)];
-        });
-
-      setSelectedToolBoxCategories(tempCategories);
-      setStudentToolbox(tempToolBox);
-      setSelectAll(true);
-    } else {
-      setStudentToolbox([]);
-      setSelectedToolBoxCategories([]);
-      setSelectAll(false);
-    }
-  };
-
-  /**
-   * select or deselect toolbox category
-   * @param {boolean} checked if the switch has just be checked or not
-   * @param {string} category the category being selected
-   * @param {[object]} blocks the avaliable blocks inside the category
-   * @param {object} event
-   */
-  const handleSelectToolBoxCategory = (checked, category, blocks, event) => {
-    event.stopPropagation(); //prevent the submenu from being clicked on
-
-    let blockNames = blocks.map((block) => block.name);
-
-    if (checked) {
-      setSelectedToolBoxCategories([...selectedToolBoxCategories, category]);
-      setStudentToolbox([
-        ...studentToolbox,
-        ...blockNames.filter((item) => !studentToolbox.includes(item)),
-      ]);
-    } else {
-      setSelectedToolBoxCategories(
-        selectedToolBoxCategories.filter((item) => item !== category)
-      );
-      setStudentToolbox(
-        studentToolbox.filter((item) => !blockNames.includes(item))
-      );
-      setSelectAll(false);
-    }
-  };
-
-  /**
-   * handle selecting a single block
-   * @param {boolean} checked
-   * @param {string} blockName
-   * @param {string} category the category block belongs to
-   */
-  const handleSelectToolBoxBlock = (checked, blockName, category) => {
-    //reverse, checked = just unchecked, !check = just checked
-    if (checked) {
-      setStudentToolbox(studentToolbox.filter((item) => item !== blockName));
-      setSelectAll(false);
-      setSelectedToolBoxCategories(
-        selectedToolBoxCategories.filter((x) => x !== category)
-      );
-    } else {
-      setStudentToolbox([...studentToolbox, blockName]);
     }
   };
 
@@ -474,31 +322,6 @@ export default function BlocklyCanvasPanel(props) {
     sec = sec < 10 ? '0' + sec : sec;
     return `${month}/${day}/${year}, ${hrs}:${min}:${sec} ${ampm}`;
   };
-
-  const getImagebyUrl = async (url) => {
-    const res = await getBlockImage(url);
-    if(res.data){
-      return res.data;
-    }
-    else{
-      console.log(res.err);
-    }
-  }
-
-  const renderImage = (blockName)=>{
-    let img = blockImages.find(b=>b.name === blockName);
-    
-    if(img){
-      return <img 
-        height="95%"
-        width="95%"
-        src={img.image}
-        />
-    }
-    else
-      return blockName;
-  }
-
 
   return (
     <div id='horizontal-container' className='flex flex-column'>
@@ -706,95 +529,13 @@ export default function BlocklyCanvasPanel(props) {
             <div id='blockly-canvas' />
           </Spin>
         </div>
-        {isContentCreator ? (
-          <div id='side-container'>
-            <div>
-              Current Student Toolbox Selection
-              <Input
-                placeholder='Search Block'
-                prefix={<i className='fa fa-search' />}
-                onChange={(e) => handleSearchFilterChange(e.target.value)}
-              />
-              <Checkbox
-                checked={selectAll}
-                onClick={handleSelectEntireToolBox}
-                disabled={searchFilter}
-              >
-                Select All
-              </Checkbox>
-              <Menu
-                id='menu'
-                mode='inline'
-                openKeys={openedToolBoxCategories}
-                onOpenChange={(keys) => setOpenedToolBoxCategories(keys)}
-              >
-                {
-                  // Maps out block categories
-                  day &&
-                    day.toolbox &&
-                    day.toolbox.map(([category, blocks]) => (
-                      <SubMenu
-                        key={category}
-                        title={
-                          <span>
-                            <span>{category}</span>
-                            {openedToolBoxCategories.some(
-                              (c) => c === category
-                            ) ? ( //check if the submenu is open
-                              <span id='category-switch'>
-                                <Switch
-                                  disabled={searchFilter}
-                                  checked={selectedToolBoxCategories.includes(
-                                    category
-                                  )}
-                                  checkedChildren='category selected'
-                                  unCheckedChildren='select category'
-                                  onChange={(checked, event) =>
-                                    handleSelectToolBoxCategory(
-                                      checked,
-                                      category,
-                                      blocks,
-                                      event
-                                    )
-                                  }
-                                />
-                              </span>
-                            ) : null}
-                          </span>
-                        }
-                      >
-                        {
-                          //filter out blocks not in search term
-                          applySearchFilter(blocks).map((block) => {
-                            return (
-                              <Menu.Item className="ImageMenu" key={block.name}>
-                                <Checkbox
-                                  checked={
-                                    studentToolbox.indexOf(block.name) > -1
-                                      ? true
-                                      : false
-                                  }
-                                  onClick={(e) =>
-                                    handleSelectToolBoxBlock(
-                                      !e.target.checked,
-                                      block.name,
-                                      category
-                                    )
-                                  }
-                                >
-                                  {renderImage(block.name)}
-                                </Checkbox>
-                              </Menu.Item>
-                            );
-                          })
-                        }
-                      </SubMenu>
-                    ))
-                }
-              </Menu>
-            </div>
-          </div>
-        ) : null}
+        {isContentCreator ? 
+          <StudentToolboxMenu 
+            day={day}
+            studentToolbox={studentToolbox}
+            setStudentToolbox={setStudentToolbox}/>
+          : null
+        }
         <ConsoleModal
           show={showConsole}
           connectionOpen={connectionOpen}
