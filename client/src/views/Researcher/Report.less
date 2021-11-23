@@ -1,37 +1,47 @@
-@import '../../assets/style.less';
-
-#route-button{
-    border : 2px solid #5BABDE;
-    border-radius: 2px;
-}
+@import "../../assets/style.less";
 
 #main-header {
-    color: #colors[text-secondary];
-    font-size: 3em;
-    font-weight: bolder;
-    margin-left: 10%;
-    margin-bottom: 3%;
-    text-align: left;
-    padding-top: 20px;
+  color: #colors[text-secondary];
+  font-size: 3em;
+  font-weight: bolder;
+  margin-left: 10%;
+  margin-bottom: 3%;
+  text-align: left;
+  padding-top: 20px;
 }
 
 #route-button {
-    height: 250px;
-    padding: 10px 20px;
-    border-radius: 5px;
-    font-size: 40px;
-    font-weight: 800;
-    font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
-    margin: 150px 80px;
-    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.377);
+  height: 250px;
+  padding: 10px 20px;
+  border-radius: 5px;
+  border: 2px solid #5babde;
+  font-size: 40px;
+  font-weight: 800;
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
+    monospace;
+  margin: 120px 80px;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.377);
 }
 
-.table-div{
-    display : "flex"
+.parent{
+    width: 70%;
+    margin: 50px 0 0 -175px;
 }
 
-.table-div > div {
-    border: 1px solid black;
-    flex-grow: 1;
+.child {
+  width: 20%;
+  border: 2px solid #5babde;
+  background-color: #colors[tertiary];
+  color: #colors[primary];
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.377);
+  border-radius: 2px;
+  font-size: 20px;
+  font-weight: 800;
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
+    monospace;
+  padding: 1rem;
 }
-  
+
+.inline-block-child {
+  display: inline-block;
+}

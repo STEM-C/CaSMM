@@ -1,12 +1,11 @@
-import NavBar from '../../components/NavBar/NavBar';
-import RouteButton from '../../components/RouteButton/RouteButton'
-import React, { useState } from 'react';
+import NavBar from "../../components/NavBar/NavBar";
+import RouteButton from "../../components/RouteButton/RouteButton";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import {getUser} from "../../Utils/AuthRequests";
-import './Report.less';
+import { getUser } from "../../Utils/AuthRequests";
+import "./Report.less";
 
 export default function Report(props) {
-
   const user = getUser();
 
   return (
@@ -16,18 +15,10 @@ export default function Report(props) {
       {/*Reports is not centered*/}
       {/* <h1>Reports</h1> */}
 
-      {/* <div class="table-div">
-        <div>
-          <ul>
-            <li>Item 1</li>
-          </ul>
-        </div>
-        <div>
-          <ul>
-            <li>Item 3</li>
-          </ul>
-        </div>
-      </div> */}
+      <div class='parent'>
+        <div class='child inline-block-child'>Home</div>
+        <div class='child inline-block-child'>Reports</div>
+      </div>
 
       <div>
         <Link to={"/daily-report"}>
