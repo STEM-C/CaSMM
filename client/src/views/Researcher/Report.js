@@ -12,8 +12,6 @@ export default function Report(props) {
     <div className="container nav-padding">
       <NavBar />
       <div id="main-header">Welcome Researcher, {user.username}!</div>
-      {/*Reports is not centered*/}
-      {/* <h1>Reports</h1> */}
 
       <div class='parent'>
         <div class='child inline-block-child'>Home</div>
@@ -41,8 +39,6 @@ export default function Report(props) {
         </Link>
       </div>
 
-      {/* <RouteButton id="route-button" link="/daily-report" size={"sm"} variant="primary">Day Level Report</RouteButton>
-      <RouteButton id="route-button" link="/group-report" size={"sm"} variant="primary">Group Level Report</RouteButton> */}
     </div>
   );
 }
