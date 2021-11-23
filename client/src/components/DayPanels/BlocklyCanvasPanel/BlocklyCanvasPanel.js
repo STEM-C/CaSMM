@@ -119,6 +119,7 @@ export default function BlocklyCanvasPanel(props) {
       categories: {}
     };
     let xmlDoc = parser.parseFromString(xml, "text/xml");
+    console.log(xmlDoc);
     const xmlBlocks = xmlDoc.querySelectorAll('block');
     for (const block of xmlBlocks) {
       const blockType = block.getAttribute('type');
@@ -209,7 +210,7 @@ export default function BlocklyCanvasPanel(props) {
           xmlData: finalData || xmlData
         };
         replayRef.current.push(replay);
-        // console.log(replayRef.current);
+        console.log(replayRef.current);
       }
     }, 1000);
     // clean up - saves workspace and removes blockly div from DOM
