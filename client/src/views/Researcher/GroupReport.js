@@ -15,11 +15,11 @@ export default function GroupReport(props) {
         {/* Do we need a menu button to go back to report landing page?*/}
         <Link to={"/report"}>
           <button
-            id={"menu-button"}
+            id={"group-level-return"}
             className={`btn-${"primary"} btn-${"sm"}`}
             type="button"
           >
-            Menu
+            Return to Reports
           </button>
         </Link>
       </div>
