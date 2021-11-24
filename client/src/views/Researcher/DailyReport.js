@@ -21,77 +21,70 @@ export default function DailyReport(props) {
   const [days, setDays] = useState([])
   const [units, setUnits] = useState([])
 
-  useEffect(function() {
+  useEffect(async function() {
     getAllStudents()
       .then(data => {
-        console.log("Students Data: ", data)
+        console.log("Students: ", data)
         let fetchedStudents = []
-        for(var student in data) {
+        data.data.forEach(student =>  {
           fetchedStudents.push(student.name + "_" + student.id)
-        }
+        })
         setStudents(fetchedStudents)
-        console.log("Students: ", students)
-        
       })
 
     getDays()
       .then(data => {
-        console.log("Days data: ", data)
+        console.log("Days :", data)
         let fetchedDays = []
-        for(var day in data) {
+        data.data.forEach(day => {
           fetchedDays.push(day.id)
-        }
+        })
         setDays(fetchedDays)
-        console.log("Days: ", days)
       }
     )
     
     getAllClassrooms()
       .then(data => {
-        console.log("Classrooms data: ", data)
+        console.log("Classrooms: ", data)
         let classRoomNumbers = []
-        for(var room in data) {
+        data.data.forEach(room => {
           classRoomNumbers.push(room.name)
-        }
+        })
         setClassrooms(classRoomNumbers)
-        console.log("Classrooms: ", classRooms)
       })
     
     getTeachers()
       .then(data => {
-        console.log("Teachers data: ", data)
+        console.log("Teachers: ", data.data)
         let mentors = []
-        for(var teacher in data) {
+        data.data.forEach(teacher => {
           mentors.push(teacher.first_name + " " + teacher.last_name)
-        }
+        })
         setTeachers(mentors)
-        console.log("Teachers: ", teachers)
       })
 
     getAllUnits()
       .then(data => {
-        console.log("Units data: ", data)
+        console.log("Units: ", data)
         let fetchedUnits = []
-        for(var unit in data) {
+        data.data.forEach(unit => {
           fetchedUnits.push(unit.name)
-        }
+        })
         setUnits(fetchedUnits)
-        console.log("Units: ", units)
       }
     )
 
     getGrades()
       .then(data => {
-        console.log("Grades data: ", data)
+        console.log("Grades: ", data)
         let fetchedGrades = []
-        for(var grade in data) {
+        data.data.forEach(grade => {
           fetchedGrades.push(grade.name)
-        }
+        })
         setGrades(fetchedGrades)
-        console.log("Units: ", grades)
       }
     )
-  }, [students, days, classRooms, teachers, units, grades])
+  }, [])
 
   return (
     <div className="container nav-padding">
@@ -115,12 +108,12 @@ export default function DailyReport(props) {
         <div className="cards">
           <section id="container-section">
             <section>
-              {/*<ReportDropdown menuName="Teacher Name" menuItems={teachers}/>
+              <ReportDropdown menuName="Teacher Name" menuItems={teachers}/>
               <ReportDropdown menuName="Classroom Number" menuItems={classRooms}/>
-              <ReportDropdown menuName="Select Student" menuItems={students}/>*/}
+              <ReportDropdown menuName="Select Student" menuItems={students}/>
             </section>
             <section>
-              {/*<ReportDropdown menuName="Grade" menuItems={students}/>*/}
+              <ReportDropdown menuName="Grade" menuItems={students}/>
               <h2>Unit Name: -- </h2>
               <h2>Date of Unit: -- </h2>
               <h2>Partner's Name: John Smith</h2>

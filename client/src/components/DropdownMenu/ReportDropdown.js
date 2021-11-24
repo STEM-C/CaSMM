@@ -4,13 +4,14 @@ import { Menu, Dropdown } from 'antd';
 import { DownOutlined, UserOutlined } from '@ant-design/icons';
 
 
-export default function ReportDropdown({menuName, manuItems}) {
+export default function ReportDropdown({menuName, menuItems}) {
 
-    const menus = Object.entries(manuItems).map((key) => {
+    const menus = Object.entries(menuItems).map((key) => {
+        console.log("key :", key)
         return (
-            <Menu.item key={key[0]} icon={<UserOutlined/>}>
-                {key[1].name}
-            </Menu.item>
+            <Menu.Item key={key[0]}>
+                {`${key[1]}`}
+            </Menu.Item>
         )
     })
     const menu = () => {
