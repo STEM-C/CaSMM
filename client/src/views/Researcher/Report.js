@@ -13,12 +13,11 @@ export default function Report(props) {
       <NavBar />
       <div id="main-header">Welcome Researcher, {user.username}!</div>
 
-      <div class='parent'>
-        <div class='child inline-block-child'>Home</div>
-        <div class='child inline-block-child'>Reports</div>
-      </div>
-
       <div>
+        <div class='parent'>
+          <div class='child inline-block-child'>Home</div>
+          <div class='child inline-block-child'>Reports</div>
+        </div>
         <Link to={"/daily-report"}>
           <button
             id={"route-button"}

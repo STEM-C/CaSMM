@@ -92,14 +92,14 @@ export default function DailyReport(props) {
       <div className="menu-bar">
         <div id="daily-report-header">Day Level Report</div>
         
-        {/* Do we need a menu button to go back to report landing page?*/}
+        {/* Menu to return to landing page at /reports */}
         <Link to={"/report"}>
           <button
-            id={"menu-button"}
+            id={"day-level-return"}
             className={`btn-${"primary"} btn-${"sm"}`}
             type="button"
           >
-            Menu
+            Return to Reports
           </button>
         </Link>
       </div>
