@@ -114,9 +114,9 @@ export default function DailyReport(props) {
             </section>
             <section>
               <ReportDropdown menuName="Grade" menuItems={students}/>
-              <h2>Unit Name: -- </h2>
-              <h2>Date of Unit: -- </h2>
-              <h2>Partner's Name: John Smith</h2>
+              <ReportDropdown menuName="Unit Name" menuItems={units}/>
+              <ReportDropdown menuName="Day" menuItems={days}/>
+              {/*How do I get the partners? <h2>Partner's Name: John Smith</h2>*/}
             </section>
           </section>
         </div>

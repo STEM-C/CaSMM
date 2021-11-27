@@ -1,32 +1,29 @@
 import React from 'react';
 import './ReportDropdown.less';
-import { Menu, Dropdown } from 'antd';
-import { DownOutlined, UserOutlined } from '@ant-design/icons';
+import { Select } from 'antd';
+const { Option } = Select;
 
+
+function handleChange(value) {
+    console.log(`selected ${value}`);
+}
 
 export default function ReportDropdown({menuName, menuItems}) {
 
     const menus = Object.entries(menuItems).map((key) => {
         console.log("key :", key)
         return (
-            <Menu.Item key={key[0]}>
+            <Option className="report-menu-item" value={`${key[1]}`}>
                 {`${key[1]}`}
-            </Menu.Item>
+            </Option>
         )
     })
-    const menu = () => {
-        return (
-            <Menu>
-                {menus}
-            </Menu>
-        );
-    }
 
     return (
-            <Dropdown overlay={menu}>
-                <button className="ant-dropdown-link" onClick={e => e.preventDefault()}>
-                    {`${menuName}`} <DownOutlined/>
-                </button>
-            </Dropdown>
+        <div>
+            <Select defaultValue={menuName} onChange={handleChange}>
+                {menus}
+            </Select>
+        </div>
     )
 }
