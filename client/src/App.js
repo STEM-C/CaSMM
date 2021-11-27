@@ -19,6 +19,7 @@ import UnitCreator from './views/ContentCreator/UnitCreator/UnitCreator';
 import UploadBlocks from './views/UploadBlocks/UploadBlocks';
 import ForgetPassword from './views/TeacherLogin/ForgetPassword';
 import ResetPassword from './views/TeacherLogin/ResetPassword';
+import Replay from './views/Replay/Replay';
 
 const App = () => {
   let history = useHistory();
@@ -47,6 +48,9 @@ const App = () => {
         </Route>
         <Route exact path='/login'>
           <StudentLogin history={history} />
+        </Route>
+        <Route exact path='/replay'>
+          <Replay />
         </Route>
         <PrivateRoute
           exact
