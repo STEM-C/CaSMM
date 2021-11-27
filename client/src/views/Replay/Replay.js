@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
+import './Replay.less'
 import { Link } from 'react-router-dom'
 import NavBar from '../../components/NavBar/NavBar';
 
@@ -90,6 +91,9 @@ const Replay = () => {
           <div id='bottom-container' className="flex flex-column vertical-container overflow-visible">
             <h1 id="section-header">Code Replay</h1>
             <div id="blockly-canvas"/>
+            <div id="timeline">
+              { replay.map((item, index) => <div className={step === index ? 'bold' : null} key={item.timestamp}>*</div>)}
+            </div>
           </div>
         </div>
         <div className='flex flex-row'>
