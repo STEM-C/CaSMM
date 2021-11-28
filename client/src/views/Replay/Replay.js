@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import './Replay.less'
 import { Link } from 'react-router-dom'
 import NavBar from '../../components/NavBar/NavBar';
+import Marker from './Marker';
 
 const Replay = () => {
   const workspaceRef = useRef(null);
@@ -14,40 +15,534 @@ const Replay = () => {
   }
   const replay = [
     {
-      "xml": "<xml xmlns=\"http://www.w3.org/1999/xhtml\"><block type=\"controls_whileUntil\" id=\"j^FJ6%E)J2vb*o35fJ(R\" x=\"12\" y=\"3\"><field name=\"MODE\">WHILE</field></block><block type=\"controls_if\" id=\"+tDwx%uD*;|/%MoHiBuD\" x=\"72\" y=\"141\"><value name=\"IF0\"><block type=\"variables_get\" id=\"iQ,uNAfjOn;[Fhd|~lzS\"><field name=\"VAR\">item</field></block></value></block></xml>",
-      "timestamp": 1618859201398
+      "xml": "<xml xmlns=\"http://www.w3.org/1999/xhtml\"><block type=\"serial_setup\" id=\"==lnHTRR]JGkBK?G3AOP\" x=\"64\" y=\"15\"><field name=\"SERIAL_ID\">Serial</field><field name=\"SPEED\">9600</field></block><block type=\"insert_comment\" id=\"Yn*{ZymirKA)ae4R-C|q\" x=\"79\" y=\"132\"><mutation items=\"2\"></mutation><value name=\"ADD0\"><block type=\"text\" id=\"nK#9fq^CVa7I:/I];zX}\"><field name=\"TEXT\">What is Space?</field></block></value><value name=\"ADD1\"><block type=\"text\" id=\"gvGrrT/;`h66)oPZKH0(\"><field name=\"TEXT\">Enter your throughs below.</field></block></value><next><block type=\"variables_set\" id=\"O^st-FW@P,/J!,[woEF8\"><field name=\"VAR\">item</field><value name=\"VALUE\"><block type=\"text\" id=\"KWtg/,-sRF{Y(}-fkOy/\"><field name=\"TEXT\"></field></block></value></block></next></block><block type=\"logic_negate\" id=\"9ZPwPIW#.ufs|)tkH]j8\" x=\"341\" y=\"162\"></block><block type=\"variables_set\" id=\"x^3q5KAF|SM|nVOcyO!@\" x=\"78\" y=\"273\"><field name=\"VAR\">item</field><value name=\"VALUE\"><block type=\"text_join\" id=\"_/F=KUmsq[._y!8?Z2y#\"><mutation items=\"2\"></mutation><value name=\"ADD0\"><block type=\"text\" id=\"2qowzW*6d5zEA|7HR9Se\"><field name=\"TEXT\">My throughs on what is space is: </field></block></value><value name=\"ADD1\"><block type=\"variables_get\" id=\"Cul[O**vp@y44)5+LaF6\"><field name=\"VAR\">item</field></block></value></block></value><next><block type=\"serial_print\" id=\"fZavHX^s_]jLT*E}x4.4\"><field name=\"SERIAL_ID\">Serial</field><field name=\"NEW_LINE\">TRUE</field><value name=\"CONTENT\"><block type=\"variables_get\" id=\"pv+J1zT/e6QB1bWi}_KD\"><field name=\"VAR\">item</field></block></value></block></next></block></xml>",
+      "xmlData": {
+        "blocks": {
+          "text": {
+            "count": 4,
+            "deleted": 0
+          },
+          "text_join": {
+            "count": 1,
+            "deleted": 0
+          },
+          "logic_negate": {
+            "count": 1,
+            "deleted": 0
+          },
+          "serial_print": {
+            "count": 1,
+            "deleted": 0
+          },
+          "serial_setup": {
+            "count": 1,
+            "deleted": 0
+          },
+          "variables_get": {
+            "count": 2,
+            "deleted": 0
+          },
+          "variables_set": {
+            "count": 2,
+            "deleted": 0
+          },
+          "insert_comment": {
+            "count": 1,
+            "deleted": 0
+          }
+        },
+        "categories": {}
+      },
+      "timestamp": 1638063003655
     },
     {
-      "xml": "<xml xmlns=\"http://www.w3.org/1999/xhtml\"><block type=\"controls_whileUntil\" id=\"j^FJ6%E)J2vb*o35fJ(R\" x=\"93\" y=\"53\"><field name=\"MODE\">WHILE</field></block><block type=\"controls_if\" id=\"+tDwx%uD*;|/%MoHiBuD\" x=\"72\" y=\"141\"><value name=\"IF0\"><block type=\"variables_get\" id=\"iQ,uNAfjOn;[Fhd|~lzS\"><field name=\"VAR\">item</field></block></value></block></xml>",
-      "timestamp": 1618859202401
+      "xml": "<xml xmlns=\"http://www.w3.org/1999/xhtml\"><block type=\"serial_setup\" id=\"==lnHTRR]JGkBK?G3AOP\" x=\"64\" y=\"15\"><field name=\"SERIAL_ID\">Serial</field><field name=\"SPEED\">9600</field></block><block type=\"logic_negate\" id=\"9ZPwPIW#.ufs|)tkH]j8\" x=\"210\" y=\"80\"></block><block type=\"insert_comment\" id=\"Yn*{ZymirKA)ae4R-C|q\" x=\"79\" y=\"132\"><mutation items=\"2\"></mutation><value name=\"ADD0\"><block type=\"text\" id=\"nK#9fq^CVa7I:/I];zX}\"><field name=\"TEXT\">What is Space?</field></block></value><value name=\"ADD1\"><block type=\"text\" id=\"gvGrrT/;`h66)oPZKH0(\"><field name=\"TEXT\">Enter your throughs below.</field></block></value><next><block type=\"variables_set\" id=\"O^st-FW@P,/J!,[woEF8\"><field name=\"VAR\">item</field><value name=\"VALUE\"><block type=\"text\" id=\"KWtg/,-sRF{Y(}-fkOy/\"><field name=\"TEXT\"></field></block></value></block></next></block><block type=\"variables_set\" id=\"x^3q5KAF|SM|nVOcyO!@\" x=\"78\" y=\"273\"><field name=\"VAR\">item</field><value name=\"VALUE\"><block type=\"text_join\" id=\"_/F=KUmsq[._y!8?Z2y#\"><mutation items=\"2\"></mutation><value name=\"ADD0\"><block type=\"text\" id=\"2qowzW*6d5zEA|7HR9Se\"><field name=\"TEXT\">My throughs on what is space is: </field></block></value><value name=\"ADD1\"><block type=\"variables_get\" id=\"Cul[O**vp@y44)5+LaF6\"><field name=\"VAR\">item</field></block></value></block></value><next><block type=\"serial_print\" id=\"fZavHX^s_]jLT*E}x4.4\"><field name=\"SERIAL_ID\">Serial</field><field name=\"NEW_LINE\">TRUE</field><value name=\"CONTENT\"><block type=\"variables_get\" id=\"pv+J1zT/e6QB1bWi}_KD\"><field name=\"VAR\">item</field></block></value></block></next></block></xml>",
+      "xmlData": {
+        "blocks": {
+          "text": {
+            "count": 4,
+            "deleted": 0
+          },
+          "text_join": {
+            "count": 1,
+            "deleted": 0
+          },
+          "logic_negate": {
+            "count": 1,
+            "deleted": 0
+          },
+          "serial_print": {
+            "count": 1,
+            "deleted": 0
+          },
+          "serial_setup": {
+            "count": 1,
+            "deleted": 0
+          },
+          "variables_get": {
+            "count": 2,
+            "deleted": 0
+          },
+          "variables_set": {
+            "count": 2,
+            "deleted": 0
+          },
+          "insert_comment": {
+            "count": 1,
+            "deleted": 0
+          }
+        },
+        "categories": {}
+      },
+      "timestamp": 1638063004656
     },
     {
-      "xml": "<xml xmlns=\"http://www.w3.org/1999/xhtml\"><block type=\"controls_whileUntil\" id=\"j^FJ6%E)J2vb*o35fJ(R\" x=\"93\" y=\"53\"><field name=\"MODE\">WHILE</field></block><block type=\"controls_if\" id=\"+tDwx%uD*;|/%MoHiBuD\" x=\"72\" y=\"141\"><value name=\"IF0\"><block type=\"variables_get\" id=\"iQ,uNAfjOn;[Fhd|~lzS\"><field name=\"VAR\">item</field></block></value></block><block type=\"logic_operation\" id=\"kcE(=RH;B2%jPFhNjyDK\" x=\"85\" y=\"289\"><field name=\"OP\">AND</field></block></xml>",
-      "timestamp": 1618859203397
+      "xml": "<xml xmlns=\"http://www.w3.org/1999/xhtml\"><block type=\"serial_setup\" id=\"==lnHTRR]JGkBK?G3AOP\" x=\"64\" y=\"15\"><field name=\"SERIAL_ID\">Serial</field><field name=\"SPEED\">9600</field></block><block type=\"logic_negate\" id=\"2rd9d[778H)d}co;DRC1\" x=\"234\" y=\"69\"></block><block type=\"logic_negate\" id=\"9ZPwPIW#.ufs|)tkH]j8\" x=\"210\" y=\"80\"></block><block type=\"insert_comment\" id=\"Yn*{ZymirKA)ae4R-C|q\" x=\"79\" y=\"132\"><mutation items=\"2\"></mutation><value name=\"ADD0\"><block type=\"text\" id=\"nK#9fq^CVa7I:/I];zX}\"><field name=\"TEXT\">What is Space?</field></block></value><value name=\"ADD1\"><block type=\"text\" id=\"gvGrrT/;`h66)oPZKH0(\"><field name=\"TEXT\">Enter your throughs below.</field></block></value><next><block type=\"variables_set\" id=\"O^st-FW@P,/J!,[woEF8\"><field name=\"VAR\">item</field><value name=\"VALUE\"><block type=\"text\" id=\"KWtg/,-sRF{Y(}-fkOy/\"><field name=\"TEXT\"></field></block></value></block></next></block><block type=\"variables_set\" id=\"x^3q5KAF|SM|nVOcyO!@\" x=\"78\" y=\"273\"><field name=\"VAR\">item</field><value name=\"VALUE\"><block type=\"text_join\" id=\"_/F=KUmsq[._y!8?Z2y#\"><mutation items=\"2\"></mutation><value name=\"ADD0\"><block type=\"text\" id=\"2qowzW*6d5zEA|7HR9Se\"><field name=\"TEXT\">My throughs on what is space is: </field></block></value><value name=\"ADD1\"><block type=\"variables_get\" id=\"Cul[O**vp@y44)5+LaF6\"><field name=\"VAR\">item</field></block></value></block></value><next><block type=\"serial_print\" id=\"fZavHX^s_]jLT*E}x4.4\"><field name=\"SERIAL_ID\">Serial</field><field name=\"NEW_LINE\">TRUE</field><value name=\"CONTENT\"><block type=\"variables_get\" id=\"pv+J1zT/e6QB1bWi}_KD\"><field name=\"VAR\">item</field></block></value></block></next></block></xml>",
+      "xmlData": {
+        "blocks": {
+          "text": {
+            "count": 4,
+            "deleted": 0
+          },
+          "text_join": {
+            "count": 1,
+            "deleted": 0
+          },
+          "logic_negate": {
+            "count": 2,
+            "deleted": 0
+          },
+          "serial_print": {
+            "count": 1,
+            "deleted": 0
+          },
+          "serial_setup": {
+            "count": 1,
+            "deleted": 0
+          },
+          "variables_get": {
+            "count": 2,
+            "deleted": 0
+          },
+          "variables_set": {
+            "count": 2,
+            "deleted": 0
+          },
+          "insert_comment": {
+            "count": 1,
+            "deleted": 0
+          }
+        }
+      },
+      "timestamp": 1638063006656
     },
     {
-      "xml": "<xml xmlns=\"http://www.w3.org/1999/xhtml\"><block type=\"controls_whileUntil\" id=\"j^FJ6%E)J2vb*o35fJ(R\" x=\"93\" y=\"53\"><field name=\"MODE\">WHILE</field></block><block type=\"controls_if\" id=\"+tDwx%uD*;|/%MoHiBuD\" x=\"72\" y=\"141\"><value name=\"IF0\"><block type=\"variables_get\" id=\"iQ,uNAfjOn;[Fhd|~lzS\"><field name=\"VAR\">item</field></block></value></block><block type=\"logic_operation\" id=\"kcE(=RH;B2%jPFhNjyDK\" x=\"146\" y=\"267\"><field name=\"OP\">AND</field></block></xml>",
-      "timestamp": 1618859204397
+      "xml": "<xml xmlns=\"http://www.w3.org/1999/xhtml\"><block type=\"serial_setup\" id=\"==lnHTRR]JGkBK?G3AOP\" x=\"64\" y=\"15\"><field name=\"SERIAL_ID\">Serial</field><field name=\"SPEED\">9600</field></block><block type=\"logic_negate\" id=\"9ZPwPIW#.ufs|)tkH]j8\" x=\"210\" y=\"80\"><value name=\"BOOL\"><block type=\"logic_negate\" id=\"2rd9d[778H)d}co;DRC1\"></block></value></block><block type=\"insert_comment\" id=\"Yn*{ZymirKA)ae4R-C|q\" x=\"79\" y=\"132\"><mutation items=\"2\"></mutation><value name=\"ADD0\"><block type=\"text\" id=\"nK#9fq^CVa7I:/I];zX}\"><field name=\"TEXT\">What is Space?</field></block></value><value name=\"ADD1\"><block type=\"text\" id=\"gvGrrT/;`h66)oPZKH0(\"><field name=\"TEXT\">Enter your throughs below.</field></block></value><next><block type=\"variables_set\" id=\"O^st-FW@P,/J!,[woEF8\"><field name=\"VAR\">item</field><value name=\"VALUE\"><block type=\"text\" id=\"KWtg/,-sRF{Y(}-fkOy/\"><field name=\"TEXT\"></field></block></value></block></next></block><block type=\"variables_set\" id=\"x^3q5KAF|SM|nVOcyO!@\" x=\"78\" y=\"273\"><field name=\"VAR\">item</field><value name=\"VALUE\"><block type=\"text_join\" id=\"_/F=KUmsq[._y!8?Z2y#\"><mutation items=\"2\"></mutation><value name=\"ADD0\"><block type=\"text\" id=\"2qowzW*6d5zEA|7HR9Se\"><field name=\"TEXT\">My throughs on what is space is: </field></block></value><value name=\"ADD1\"><block type=\"variables_get\" id=\"Cul[O**vp@y44)5+LaF6\"><field name=\"VAR\">item</field></block></value></block></value><next><block type=\"serial_print\" id=\"fZavHX^s_]jLT*E}x4.4\"><field name=\"SERIAL_ID\">Serial</field><field name=\"NEW_LINE\">TRUE</field><value name=\"CONTENT\"><block type=\"variables_get\" id=\"pv+J1zT/e6QB1bWi}_KD\"><field name=\"VAR\">item</field></block></value></block></next></block></xml>",
+      "xmlData": {
+        "blocks": {
+          "text": {
+            "count": 4,
+            "deleted": 0
+          },
+          "text_join": {
+            "count": 1,
+            "deleted": 0
+          },
+          "logic_negate": {
+            "count": 2,
+            "deleted": 0
+          },
+          "serial_print": {
+            "count": 1,
+            "deleted": 0
+          },
+          "serial_setup": {
+            "count": 1,
+            "deleted": 0
+          },
+          "variables_get": {
+            "count": 2,
+            "deleted": 0
+          },
+          "variables_set": {
+            "count": 2,
+            "deleted": 0
+          },
+          "insert_comment": {
+            "count": 1,
+            "deleted": 0
+          }
+        }
+      },
+      "timestamp": 1638063007655
     },
     {
-      "xml": "<xml xmlns=\"http://www.w3.org/1999/xhtml\"><block type=\"controls_whileUntil\" id=\"j^FJ6%E)J2vb*o35fJ(R\" x=\"93\" y=\"53\"><field name=\"MODE\">WHILE</field></block><block type=\"controls_if\" id=\"+tDwx%uD*;|/%MoHiBuD\" x=\"72\" y=\"141\"><value name=\"IF0\"><block type=\"variables_get\" id=\"iQ,uNAfjOn;[Fhd|~lzS\"><field name=\"VAR\">item</field></block></value></block><block type=\"math_single\" id=\"hVMn@TndjNGID0Wv5wyf\" x=\"162\" y=\"213\"><field name=\"OP\">ROOT</field></block><block type=\"logic_operation\" id=\"kcE(=RH;B2%jPFhNjyDK\" x=\"146\" y=\"267\"><field name=\"OP\">AND</field></block></xml>",
-      "timestamp": 1618859206397
+      "xml": "<xml xmlns=\"http://www.w3.org/1999/xhtml\"><block type=\"serial_setup\" id=\"==lnHTRR]JGkBK?G3AOP\" x=\"64\" y=\"15\"><field name=\"SERIAL_ID\">Serial</field><field name=\"SPEED\">9600</field></block><block type=\"logic_negate\" id=\"9ZPwPIW#.ufs|)tkH]j8\" x=\"210\" y=\"80\"><value name=\"BOOL\"><block type=\"logic_negate\" id=\"2rd9d[778H)d}co;DRC1\"><value name=\"BOOL\"><block type=\"logic_negate\" id=\"@O|.:~vZQcnB/^]T2?9n\"></block></value></block></value></block><block type=\"insert_comment\" id=\"Yn*{ZymirKA)ae4R-C|q\" x=\"79\" y=\"132\"><mutation items=\"2\"></mutation><value name=\"ADD0\"><block type=\"text\" id=\"nK#9fq^CVa7I:/I];zX}\"><field name=\"TEXT\">What is Space?</field></block></value><value name=\"ADD1\"><block type=\"text\" id=\"gvGrrT/;`h66)oPZKH0(\"><field name=\"TEXT\">Enter your throughs below.</field></block></value><next><block type=\"variables_set\" id=\"O^st-FW@P,/J!,[woEF8\"><field name=\"VAR\">item</field><value name=\"VALUE\"><block type=\"text\" id=\"KWtg/,-sRF{Y(}-fkOy/\"><field name=\"TEXT\"></field></block></value></block></next></block><block type=\"variables_set\" id=\"x^3q5KAF|SM|nVOcyO!@\" x=\"78\" y=\"273\"><field name=\"VAR\">item</field><value name=\"VALUE\"><block type=\"text_join\" id=\"_/F=KUmsq[._y!8?Z2y#\"><mutation items=\"2\"></mutation><value name=\"ADD0\"><block type=\"text\" id=\"2qowzW*6d5zEA|7HR9Se\"><field name=\"TEXT\">My throughs on what is space is: </field></block></value><value name=\"ADD1\"><block type=\"variables_get\" id=\"Cul[O**vp@y44)5+LaF6\"><field name=\"VAR\">item</field></block></value></block></value><next><block type=\"serial_print\" id=\"fZavHX^s_]jLT*E}x4.4\"><field name=\"SERIAL_ID\">Serial</field><field name=\"NEW_LINE\">TRUE</field><value name=\"CONTENT\"><block type=\"variables_get\" id=\"pv+J1zT/e6QB1bWi}_KD\"><field name=\"VAR\">item</field></block></value></block></next></block></xml>",
+      "xmlData": {
+        "blocks": {
+          "text": {
+            "count": 4,
+            "deleted": 0
+          },
+          "text_join": {
+            "count": 1,
+            "deleted": 0
+          },
+          "logic_negate": {
+            "count": 3,
+            "deleted": 0
+          },
+          "serial_print": {
+            "count": 1,
+            "deleted": 0
+          },
+          "serial_setup": {
+            "count": 1,
+            "deleted": 0
+          },
+          "variables_get": {
+            "count": 2,
+            "deleted": 0
+          },
+          "variables_set": {
+            "count": 2,
+            "deleted": 0
+          },
+          "insert_comment": {
+            "count": 1,
+            "deleted": 0
+          }
+        }
+      },
+      "timestamp": 1638063009656
     },
     {
-      "xml": "<xml xmlns=\"http://www.w3.org/1999/xhtml\"><block type=\"controls_whileUntil\" id=\"j^FJ6%E)J2vb*o35fJ(R\" x=\"93\" y=\"53\"><field name=\"MODE\">WHILE</field></block><block type=\"controls_if\" id=\"+tDwx%uD*;|/%MoHiBuD\" x=\"72\" y=\"141\"><value name=\"IF0\"><block type=\"variables_get\" id=\"iQ,uNAfjOn;[Fhd|~lzS\"><field name=\"VAR\">item</field></block></value></block><block type=\"math_single\" id=\"hVMn@TndjNGID0Wv5wyf\" x=\"35\" y=\"267\"><field name=\"OP\">ROOT</field><value name=\"NUM\"><block type=\"logic_operation\" id=\"kcE(=RH;B2%jPFhNjyDK\"><field name=\"OP\">AND</field></block></value></block></xml>",
-      "timestamp": 1618859209397
+      "xml": "<xml xmlns=\"http://www.w3.org/1999/xhtml\"><block type=\"serial_setup\" id=\"==lnHTRR]JGkBK?G3AOP\" x=\"64\" y=\"15\"><field name=\"SERIAL_ID\">Serial</field><field name=\"SPEED\">9600</field></block><block type=\"logic_negate\" id=\"9ZPwPIW#.ufs|)tkH]j8\" x=\"210\" y=\"80\"><value name=\"BOOL\"><block type=\"logic_negate\" id=\"2rd9d[778H)d}co;DRC1\"><value name=\"BOOL\"><block type=\"logic_negate\" id=\"@O|.:~vZQcnB/^]T2?9n\"></block></value></block></value></block><block type=\"insert_comment\" id=\"Yn*{ZymirKA)ae4R-C|q\" x=\"79\" y=\"132\"><mutation items=\"2\"></mutation><value name=\"ADD0\"><block type=\"text\" id=\"nK#9fq^CVa7I:/I];zX}\"><field name=\"TEXT\">What is Space?</field></block></value><value name=\"ADD1\"><block type=\"text\" id=\"gvGrrT/;`h66)oPZKH0(\"><field name=\"TEXT\">Enter your throughs below.</field></block></value><next><block type=\"variables_set\" id=\"O^st-FW@P,/J!,[woEF8\"><field name=\"VAR\">item</field><value name=\"VALUE\"><block type=\"text\" id=\"KWtg/,-sRF{Y(}-fkOy/\"><field name=\"TEXT\"></field></block></value></block></next></block><block type=\"logic_boolean\" id=\"s4nNDLU.^pN4BVHvoa5W\" x=\"219\" y=\"231\"><field name=\"BOOL\">TRUE</field></block><block type=\"variables_set\" id=\"x^3q5KAF|SM|nVOcyO!@\" x=\"78\" y=\"273\"><field name=\"VAR\">item</field><value name=\"VALUE\"><block type=\"text_join\" id=\"_/F=KUmsq[._y!8?Z2y#\"><mutation items=\"2\"></mutation><value name=\"ADD0\"><block type=\"text\" id=\"2qowzW*6d5zEA|7HR9Se\"><field name=\"TEXT\">My throughs on what is space is: </field></block></value><value name=\"ADD1\"><block type=\"variables_get\" id=\"Cul[O**vp@y44)5+LaF6\"><field name=\"VAR\">item</field></block></value></block></value><next><block type=\"serial_print\" id=\"fZavHX^s_]jLT*E}x4.4\"><field name=\"SERIAL_ID\">Serial</field><field name=\"NEW_LINE\">TRUE</field><value name=\"CONTENT\"><block type=\"variables_get\" id=\"pv+J1zT/e6QB1bWi}_KD\"><field name=\"VAR\">item</field></block></value></block></next></block></xml>",
+      "xmlData": {
+        "blocks": {
+          "serial_print": {
+            "count": 1,
+            "deleted": 0
+          },
+          "logic_negate": {
+            "count": 3,
+            "deleted": 0
+          },
+          "logic_boolean": {
+            "count": 1,
+            "deleted": 0
+          },
+          "text": {
+            "count": 4,
+            "deleted": 0
+          },
+          "variables_get": {
+            "count": 2,
+            "deleted": 0
+          },
+          "serial_setup": {
+            "count": 1,
+            "deleted": 0
+          },
+          "insert_comment": {
+            "count": 1,
+            "deleted": 0
+          },
+          "variables_set": {
+            "count": 2,
+            "deleted": 0
+          },
+          "text_join": {
+            "count": 1,
+            "deleted": 0
+          }
+        }
+      },
+      "timestamp": 1638063011655
     },
     {
-      "xml": "<xml xmlns=\"http://www.w3.org/1999/xhtml\"><block type=\"controls_whileUntil\" id=\"j^FJ6%E)J2vb*o35fJ(R\" x=\"93\" y=\"53\"><field name=\"MODE\">WHILE</field></block><block type=\"controls_if\" id=\"+tDwx%uD*;|/%MoHiBuD\" x=\"72\" y=\"141\"><value name=\"IF0\"><block type=\"variables_get\" id=\"iQ,uNAfjOn;[Fhd|~lzS\"><field name=\"VAR\">item</field></block></value></block><block type=\"controls_whileUntil\" id=\",Etk-r,BQ][E9nQd^?VO\" x=\"368\" y=\"155\"><field name=\"MODE\">WHILE</field></block><block type=\"math_single\" id=\"hVMn@TndjNGID0Wv5wyf\" x=\"35\" y=\"267\"><field name=\"OP\">ROOT</field><value name=\"NUM\"><block type=\"logic_operation\" id=\"kcE(=RH;B2%jPFhNjyDK\"><field name=\"OP\">AND</field></block></value></block></xml>",
-      "timestamp": 1618859211400
+      "xml": "<xml xmlns=\"http://www.w3.org/1999/xhtml\"><block type=\"serial_setup\" id=\"==lnHTRR]JGkBK?G3AOP\" x=\"64\" y=\"15\"><field name=\"SERIAL_ID\">Serial</field><field name=\"SPEED\">9600</field></block><block type=\"logic_negate\" id=\"9ZPwPIW#.ufs|)tkH]j8\" x=\"210\" y=\"80\"><value name=\"BOOL\"><block type=\"logic_negate\" id=\"2rd9d[778H)d}co;DRC1\"><value name=\"BOOL\"><block type=\"logic_negate\" id=\"@O|.:~vZQcnB/^]T2?9n\"></block></value></block></value></block><block type=\"insert_comment\" id=\"Yn*{ZymirKA)ae4R-C|q\" x=\"79\" y=\"132\"><mutation items=\"2\"></mutation><value name=\"ADD0\"><block type=\"text\" id=\"nK#9fq^CVa7I:/I];zX}\"><field name=\"TEXT\">What is Space?</field></block></value><value name=\"ADD1\"><block type=\"text\" id=\"gvGrrT/;`h66)oPZKH0(\"><field name=\"TEXT\">Enter your throughs below.</field></block></value><next><block type=\"variables_set\" id=\"O^st-FW@P,/J!,[woEF8\"><field name=\"VAR\">item</field><value name=\"VALUE\"><block type=\"text\" id=\"KWtg/,-sRF{Y(}-fkOy/\"><field name=\"TEXT\"></field></block></value></block></next></block><block type=\"logic_boolean\" id=\"s4nNDLU.^pN4BVHvoa5W\" x=\"207\" y=\"224\"><field name=\"BOOL\">TRUE</field></block><block type=\"variables_set\" id=\"x^3q5KAF|SM|nVOcyO!@\" x=\"78\" y=\"273\"><field name=\"VAR\">item</field><value name=\"VALUE\"><block type=\"text_join\" id=\"_/F=KUmsq[._y!8?Z2y#\"><mutation items=\"2\"></mutation><value name=\"ADD0\"><block type=\"text\" id=\"2qowzW*6d5zEA|7HR9Se\"><field name=\"TEXT\">My throughs on what is space is: </field></block></value><value name=\"ADD1\"><block type=\"variables_get\" id=\"Cul[O**vp@y44)5+LaF6\"><field name=\"VAR\">item</field></block></value></block></value><next><block type=\"serial_print\" id=\"fZavHX^s_]jLT*E}x4.4\"><field name=\"SERIAL_ID\">Serial</field><field name=\"NEW_LINE\">TRUE</field><value name=\"CONTENT\"><block type=\"variables_get\" id=\"pv+J1zT/e6QB1bWi}_KD\"><field name=\"VAR\">item</field></block></value></block></next></block></xml>",
+      "xmlData": {
+        "blocks": {
+          "serial_print": {
+            "count": 1,
+            "deleted": 0
+          },
+          "logic_negate": {
+            "count": 3,
+            "deleted": 0
+          },
+          "logic_boolean": {
+            "count": 1,
+            "deleted": 0
+          },
+          "text": {
+            "count": 4,
+            "deleted": 0
+          },
+          "variables_get": {
+            "count": 2,
+            "deleted": 0
+          },
+          "serial_setup": {
+            "count": 1,
+            "deleted": 0
+          },
+          "insert_comment": {
+            "count": 1,
+            "deleted": 0
+          },
+          "variables_set": {
+            "count": 2,
+            "deleted": 0
+          },
+          "text_join": {
+            "count": 1,
+            "deleted": 0
+          }
+        }
+      },
+      "timestamp": 1638063012656
     },
     {
-      "xml": "<xml xmlns=\"http://www.w3.org/1999/xhtml\"><block type=\"controls_whileUntil\" id=\"j^FJ6%E)J2vb*o35fJ(R\" x=\"93\" y=\"53\"><field name=\"MODE\">WHILE</field></block><block type=\"controls_if\" id=\"+tDwx%uD*;|/%MoHiBuD\" x=\"72\" y=\"141\"><value name=\"IF0\"><block type=\"variables_get\" id=\"iQ,uNAfjOn;[Fhd|~lzS\"><field name=\"VAR\">item</field></block></value></block><block type=\"math_single\" id=\"hVMn@TndjNGID0Wv5wyf\" x=\"35\" y=\"267\"><field name=\"OP\">ROOT</field><value name=\"NUM\"><block type=\"logic_operation\" id=\"kcE(=RH;B2%jPFhNjyDK\"><field name=\"OP\">AND</field></block></value></block><block type=\"controls_whileUntil\" id=\",Etk-r,BQ][E9nQd^?VO\" x=\"476\" y=\"355\"><field name=\"MODE\">WHILE</field></block></xml>",
-      "timestamp": 1618859214404
+      "xml": "<xml xmlns=\"http://www.w3.org/1999/xhtml\"><block type=\"serial_setup\" id=\"==lnHTRR]JGkBK?G3AOP\" x=\"64\" y=\"15\"><field name=\"SERIAL_ID\">Serial</field><field name=\"SPEED\">9600</field></block><block type=\"logic_negate\" id=\"9ZPwPIW#.ufs|)tkH]j8\" x=\"210\" y=\"80\"><value name=\"BOOL\"><block type=\"logic_negate\" id=\"2rd9d[778H)d}co;DRC1\"><value name=\"BOOL\"><block type=\"logic_negate\" id=\"@O|.:~vZQcnB/^]T2?9n\"></block></value></block></value></block><block type=\"insert_comment\" id=\"Yn*{ZymirKA)ae4R-C|q\" x=\"79\" y=\"132\"><mutation items=\"2\"></mutation><value name=\"ADD0\"><block type=\"text\" id=\"nK#9fq^CVa7I:/I];zX}\"><field name=\"TEXT\">What is Space?</field></block></value><value name=\"ADD1\"><block type=\"text\" id=\"gvGrrT/;`h66)oPZKH0(\"><field name=\"TEXT\">Enter your throughs below.</field></block></value><next><block type=\"variables_set\" id=\"O^st-FW@P,/J!,[woEF8\"><field name=\"VAR\">item</field><value name=\"VALUE\"><block type=\"text\" id=\"KWtg/,-sRF{Y(}-fkOy/\"><field name=\"TEXT\"></field></block></value></block></next></block><block type=\"logic_boolean\" id=\"s4nNDLU.^pN4BVHvoa5W\" x=\"207\" y=\"224\"><field name=\"BOOL\">TRUE</field></block><block type=\"variables_set\" id=\"x^3q5KAF|SM|nVOcyO!@\" x=\"78\" y=\"273\"><field name=\"VAR\">item</field><value name=\"VALUE\"><block type=\"text_join\" id=\"_/F=KUmsq[._y!8?Z2y#\"><mutation items=\"2\"></mutation><value name=\"ADD0\"><block type=\"text\" id=\"2qowzW*6d5zEA|7HR9Se\"><field name=\"TEXT\">My throughs on what is space is: </field></block></value><value name=\"ADD1\"><block type=\"variables_get\" id=\"Cul[O**vp@y44)5+LaF6\"><field name=\"VAR\">item</field></block></value></block></value><next><block type=\"serial_print\" id=\"fZavHX^s_]jLT*E}x4.4\"><field name=\"SERIAL_ID\">Serial</field><field name=\"NEW_LINE\">TRUE</field><value name=\"CONTENT\"><block type=\"variables_get\" id=\"pv+J1zT/e6QB1bWi}_KD\"><field name=\"VAR\">item</field></block></value></block></next></block><block type=\"logic_ternary\" id=\"cS|eUvq#uzG2zi9)kgM(\" x=\"156\" y=\"435\"></block></xml>",
+      "xmlData": {
+        "blocks": {
+          "serial_print": {
+            "count": 1,
+            "deleted": 0
+          },
+          "logic_negate": {
+            "count": 3,
+            "deleted": 0
+          },
+          "logic_boolean": {
+            "count": 1,
+            "deleted": 0
+          },
+          "text": {
+            "count": 4,
+            "deleted": 0
+          },
+          "variables_get": {
+            "count": 2,
+            "deleted": 0
+          },
+          "serial_setup": {
+            "count": 1,
+            "deleted": 0
+          },
+          "insert_comment": {
+            "count": 1,
+            "deleted": 0
+          },
+          "variables_set": {
+            "count": 2,
+            "deleted": 0
+          },
+          "logic_ternary": {
+            "count": 1,
+            "deleted": 0
+          },
+          "text_join": {
+            "count": 1,
+            "deleted": 0
+          }
+        }
+      },
+      "timestamp": 1638063014656
     },
     {
-      "xml": "<xml xmlns=\"http://www.w3.org/1999/xhtml\"><block type=\"controls_whileUntil\" id=\"j^FJ6%E)J2vb*o35fJ(R\" x=\"93\" y=\"53\"><field name=\"MODE\">WHILE</field></block><block type=\"controls_if\" id=\"+tDwx%uD*;|/%MoHiBuD\" x=\"72\" y=\"141\"><value name=\"IF0\"><block type=\"variables_get\" id=\"iQ,uNAfjOn;[Fhd|~lzS\"><field name=\"VAR\">item</field></block></value></block><block type=\"math_single\" id=\"hVMn@TndjNGID0Wv5wyf\" x=\"35\" y=\"267\"><field name=\"OP\">ROOT</field><value name=\"NUM\"><block type=\"logic_operation\" id=\"kcE(=RH;B2%jPFhNjyDK\"><field name=\"OP\">AND</field></block></value></block></xml>",
-      "timestamp": 1618859216400
+      "xml": "<xml xmlns=\"http://www.w3.org/1999/xhtml\"><block type=\"serial_setup\" id=\"==lnHTRR]JGkBK?G3AOP\" x=\"64\" y=\"15\"><field name=\"SERIAL_ID\">Serial</field><field name=\"SPEED\">9600</field></block><block type=\"logic_negate\" id=\"9ZPwPIW#.ufs|)tkH]j8\" x=\"210\" y=\"80\"></block><block type=\"insert_comment\" id=\"Yn*{ZymirKA)ae4R-C|q\" x=\"79\" y=\"132\"><mutation items=\"2\"></mutation><value name=\"ADD0\"><block type=\"text\" id=\"nK#9fq^CVa7I:/I];zX}\"><field name=\"TEXT\">What is Space?</field></block></value><value name=\"ADD1\"><block type=\"text\" id=\"gvGrrT/;`h66)oPZKH0(\"><field name=\"TEXT\">Enter your throughs below.</field></block></value><next><block type=\"variables_set\" id=\"O^st-FW@P,/J!,[woEF8\"><field name=\"VAR\">item</field><value name=\"VALUE\"><block type=\"text\" id=\"KWtg/,-sRF{Y(}-fkOy/\"><field name=\"TEXT\"></field></block></value></block></next></block><block type=\"logic_boolean\" id=\"s4nNDLU.^pN4BVHvoa5W\" x=\"207\" y=\"224\"><field name=\"BOOL\">TRUE</field></block><block type=\"variables_set\" id=\"x^3q5KAF|SM|nVOcyO!@\" x=\"78\" y=\"273\"><field name=\"VAR\">item</field><value name=\"VALUE\"><block type=\"text_join\" id=\"_/F=KUmsq[._y!8?Z2y#\"><mutation items=\"2\"></mutation><value name=\"ADD0\"><block type=\"text\" id=\"2qowzW*6d5zEA|7HR9Se\"><field name=\"TEXT\">My throughs on what is space is: </field></block></value><value name=\"ADD1\"><block type=\"variables_get\" id=\"Cul[O**vp@y44)5+LaF6\"><field name=\"VAR\">item</field></block></value></block></value><next><block type=\"serial_print\" id=\"fZavHX^s_]jLT*E}x4.4\"><field name=\"SERIAL_ID\">Serial</field><field name=\"NEW_LINE\">TRUE</field><value name=\"CONTENT\"><block type=\"variables_get\" id=\"pv+J1zT/e6QB1bWi}_KD\"><field name=\"VAR\">item</field></block></value></block></next></block><block type=\"logic_ternary\" id=\"cS|eUvq#uzG2zi9)kgM(\" x=\"156\" y=\"435\"></block><block type=\"logic_negate\" id=\"2rd9d[778H)d}co;DRC1\" x=\"280\" y=\"440\"><value name=\"BOOL\"><block type=\"logic_negate\" id=\"@O|.:~vZQcnB/^]T2?9n\"></block></value></block></xml>",
+      "xmlData": {
+        "blocks": {
+          "serial_print": {
+            "count": 1,
+            "deleted": 0
+          },
+          "logic_negate": {
+            "count": 3,
+            "deleted": 0
+          },
+          "logic_boolean": {
+            "count": 1,
+            "deleted": 0
+          },
+          "text": {
+            "count": 4,
+            "deleted": 0
+          },
+          "variables_get": {
+            "count": 2,
+            "deleted": 0
+          },
+          "serial_setup": {
+            "count": 1,
+            "deleted": 0
+          },
+          "insert_comment": {
+            "count": 1,
+            "deleted": 0
+          },
+          "variables_set": {
+            "count": 2,
+            "deleted": 0
+          },
+          "logic_ternary": {
+            "count": 1,
+            "deleted": 0
+          },
+          "text_join": {
+            "count": 1,
+            "deleted": 0
+          }
+        }
+      },
+      "timestamp": 1638063017656
+    },
+    {
+      "xml": "<xml xmlns=\"http://www.w3.org/1999/xhtml\"><block type=\"serial_setup\" id=\"==lnHTRR]JGkBK?G3AOP\" x=\"64\" y=\"15\"><field name=\"SERIAL_ID\">Serial</field><field name=\"SPEED\">9600</field></block><block type=\"logic_negate\" id=\"9ZPwPIW#.ufs|)tkH]j8\" x=\"210\" y=\"80\"></block><block type=\"insert_comment\" id=\"Yn*{ZymirKA)ae4R-C|q\" x=\"79\" y=\"132\"><mutation items=\"2\"></mutation><value name=\"ADD0\"><block type=\"text\" id=\"nK#9fq^CVa7I:/I];zX}\"><field name=\"TEXT\">What is Space?</field></block></value><value name=\"ADD1\"><block type=\"text\" id=\"gvGrrT/;`h66)oPZKH0(\"><field name=\"TEXT\">Enter your throughs below.</field></block></value><next><block type=\"variables_set\" id=\"O^st-FW@P,/J!,[woEF8\"><field name=\"VAR\">item</field><value name=\"VALUE\"><block type=\"text\" id=\"KWtg/,-sRF{Y(}-fkOy/\"><field name=\"TEXT\"></field></block></value></block></next></block><block type=\"logic_boolean\" id=\"s4nNDLU.^pN4BVHvoa5W\" x=\"207\" y=\"224\"><field name=\"BOOL\">TRUE</field></block><block type=\"variables_set\" id=\"x^3q5KAF|SM|nVOcyO!@\" x=\"78\" y=\"273\"><field name=\"VAR\">item</field><value name=\"VALUE\"><block type=\"text_join\" id=\"_/F=KUmsq[._y!8?Z2y#\"><mutation items=\"2\"></mutation><value name=\"ADD0\"><block type=\"text\" id=\"2qowzW*6d5zEA|7HR9Se\"><field name=\"TEXT\">My throughs on what is space is: </field></block></value><value name=\"ADD1\"><block type=\"variables_get\" id=\"Cul[O**vp@y44)5+LaF6\"><field name=\"VAR\">item</field></block></value></block></value><next><block type=\"serial_print\" id=\"fZavHX^s_]jLT*E}x4.4\"><field name=\"SERIAL_ID\">Serial</field><field name=\"NEW_LINE\">TRUE</field><value name=\"CONTENT\"><block type=\"variables_get\" id=\"pv+J1zT/e6QB1bWi}_KD\"><field name=\"VAR\">item</field></block></value></block></next></block><block type=\"logic_ternary\" id=\"cS|eUvq#uzG2zi9)kgM(\" x=\"156\" y=\"435\"><value name=\"IF\"><block type=\"logic_negate\" id=\"2rd9d[778H)d}co;DRC1\"><value name=\"BOOL\"><block type=\"logic_negate\" id=\"@O|.:~vZQcnB/^]T2?9n\"></block></value></block></value></block></xml>",
+      "xmlData": {
+        "blocks": {
+          "serial_print": {
+            "count": 1,
+            "deleted": 0
+          },
+          "logic_negate": {
+            "count": 3,
+            "deleted": 0
+          },
+          "logic_boolean": {
+            "count": 1,
+            "deleted": 0
+          },
+          "text": {
+            "count": 4,
+            "deleted": 0
+          },
+          "variables_get": {
+            "count": 2,
+            "deleted": 0
+          },
+          "serial_setup": {
+            "count": 1,
+            "deleted": 0
+          },
+          "insert_comment": {
+            "count": 1,
+            "deleted": 0
+          },
+          "variables_set": {
+            "count": 2,
+            "deleted": 0
+          },
+          "logic_ternary": {
+            "count": 1,
+            "deleted": 0
+          },
+          "text_join": {
+            "count": 1,
+            "deleted": 0
+          }
+        }
+      },
+      "timestamp": 1638063018657
+    },
+    {
+      "xml": "<xml xmlns=\"http://www.w3.org/1999/xhtml\"><block type=\"serial_setup\" id=\"==lnHTRR]JGkBK?G3AOP\" x=\"64\" y=\"15\"><field name=\"SERIAL_ID\">Serial</field><field name=\"SPEED\">9600</field></block><block type=\"insert_comment\" id=\"Yn*{ZymirKA)ae4R-C|q\" x=\"79\" y=\"132\"><mutation items=\"2\"></mutation><value name=\"ADD0\"><block type=\"text\" id=\"nK#9fq^CVa7I:/I];zX}\"><field name=\"TEXT\">What is Space?</field></block></value><value name=\"ADD1\"><block type=\"text\" id=\"gvGrrT/;`h66)oPZKH0(\"><field name=\"TEXT\">Enter your throughs below.</field></block></value><next><block type=\"variables_set\" id=\"O^st-FW@P,/J!,[woEF8\"><field name=\"VAR\">item</field><value name=\"VALUE\"><block type=\"text\" id=\"KWtg/,-sRF{Y(}-fkOy/\"><field name=\"TEXT\"></field></block></value></block></next></block><block type=\"logic_boolean\" id=\"s4nNDLU.^pN4BVHvoa5W\" x=\"207\" y=\"224\"><field name=\"BOOL\">TRUE</field></block><block type=\"variables_set\" id=\"x^3q5KAF|SM|nVOcyO!@\" x=\"78\" y=\"273\"><field name=\"VAR\">item</field><value name=\"VALUE\"><block type=\"text_join\" id=\"_/F=KUmsq[._y!8?Z2y#\"><mutation items=\"2\"></mutation><value name=\"ADD0\"><block type=\"text\" id=\"2qowzW*6d5zEA|7HR9Se\"><field name=\"TEXT\">My throughs on what is space is: </field></block></value><value name=\"ADD1\"><block type=\"variables_get\" id=\"Cul[O**vp@y44)5+LaF6\"><field name=\"VAR\">item</field></block></value></block></value><next><block type=\"serial_print\" id=\"fZavHX^s_]jLT*E}x4.4\"><field name=\"SERIAL_ID\">Serial</field><field name=\"NEW_LINE\">TRUE</field><value name=\"CONTENT\"><block type=\"variables_get\" id=\"pv+J1zT/e6QB1bWi}_KD\"><field name=\"VAR\">item</field></block></value></block></next></block><block type=\"logic_ternary\" id=\"cS|eUvq#uzG2zi9)kgM(\" x=\"156\" y=\"435\"><value name=\"IF\"><block type=\"logic_negate\" id=\"2rd9d[778H)d}co;DRC1\"><value name=\"BOOL\"><block type=\"logic_negate\" id=\"@O|.:~vZQcnB/^]T2?9n\"><value name=\"BOOL\"><block type=\"logic_negate\" id=\"9ZPwPIW#.ufs|)tkH]j8\"></block></value></block></value></block></value></block></xml>",
+      "xmlData": {
+        "blocks": {
+          "serial_print": {
+            "count": 1,
+            "deleted": 0
+          },
+          "logic_negate": {
+            "count": 3,
+            "deleted": 0
+          },
+          "logic_boolean": {
+            "count": 1,
+            "deleted": 0
+          },
+          "text": {
+            "count": 4,
+            "deleted": 0
+          },
+          "variables_get": {
+            "count": 2,
+            "deleted": 0
+          },
+          "serial_setup": {
+            "count": 1,
+            "deleted": 0
+          },
+          "insert_comment": {
+            "count": 1,
+            "deleted": 0
+          },
+          "variables_set": {
+            "count": 2,
+            "deleted": 0
+          },
+          "logic_ternary": {
+            "count": 1,
+            "deleted": 0
+          },
+          "text_join": {
+            "count": 1,
+            "deleted": 0
+          }
+        }
+      },
+      "timestamp": 1638063020659
+    },
+    {
+      "xml": "<xml xmlns=\"http://www.w3.org/1999/xhtml\"><block type=\"serial_setup\" id=\"==lnHTRR]JGkBK?G3AOP\" x=\"64\" y=\"15\"><field name=\"SERIAL_ID\">Serial</field><field name=\"SPEED\">9600</field></block><block type=\"insert_comment\" id=\"Yn*{ZymirKA)ae4R-C|q\" x=\"79\" y=\"132\"><mutation items=\"2\"></mutation><value name=\"ADD0\"><block type=\"text\" id=\"nK#9fq^CVa7I:/I];zX}\"><field name=\"TEXT\">What is Space?</field></block></value><value name=\"ADD1\"><block type=\"text\" id=\"gvGrrT/;`h66)oPZKH0(\"><field name=\"TEXT\">Enter your throughs below.</field></block></value><next><block type=\"variables_set\" id=\"O^st-FW@P,/J!,[woEF8\"><field name=\"VAR\">item</field><value name=\"VALUE\"><block type=\"text\" id=\"KWtg/,-sRF{Y(}-fkOy/\"><field name=\"TEXT\"></field></block></value></block></next></block><block type=\"logic_boolean\" id=\"s4nNDLU.^pN4BVHvoa5W\" x=\"207\" y=\"224\"><field name=\"BOOL\">TRUE</field></block><block type=\"variables_set\" id=\"x^3q5KAF|SM|nVOcyO!@\" x=\"78\" y=\"273\"><field name=\"VAR\">item</field><value name=\"VALUE\"><block type=\"text_join\" id=\"_/F=KUmsq[._y!8?Z2y#\"><mutation items=\"2\"></mutation><value name=\"ADD0\"><block type=\"text\" id=\"2qowzW*6d5zEA|7HR9Se\"><field name=\"TEXT\">My throughs on what is space is: </field></block></value><value name=\"ADD1\"><block type=\"variables_get\" id=\"Cul[O**vp@y44)5+LaF6\"><field name=\"VAR\">item</field></block></value></block></value><next><block type=\"serial_print\" id=\"fZavHX^s_]jLT*E}x4.4\"><field name=\"SERIAL_ID\">Serial</field><field name=\"NEW_LINE\">TRUE</field><value name=\"CONTENT\"><block type=\"variables_get\" id=\"pv+J1zT/e6QB1bWi}_KD\"><field name=\"VAR\">item</field></block></value></block></next></block></xml>",
+      "xmlData": {
+        "blocks": {
+          "serial_print": {
+            "count": 1,
+            "deleted": 0
+          },
+          "logic_negate": {
+            "count": 0,
+            "deleted": 1
+          },
+          "logic_boolean": {
+            "count": 1,
+            "deleted": 0
+          },
+          "text": {
+            "count": 4,
+            "deleted": 0
+          },
+          "variables_get": {
+            "count": 2,
+            "deleted": 0
+          },
+          "serial_setup": {
+            "count": 1,
+            "deleted": 0
+          },
+          "insert_comment": {
+            "count": 1,
+            "deleted": 0
+          },
+          "variables_set": {
+            "count": 2,
+            "deleted": 0
+          },
+          "logic_ternary": {
+            "count": 0,
+            "deleted": 1
+          },
+          "text_join": {
+            "count": 1,
+            "deleted": 0
+          }
+        }
+      },
+      "timestamp": 1638063023658
     }
   ];
   useEffect(() => {
@@ -92,7 +587,7 @@ const Replay = () => {
             <h1 id="section-header">Code Replay</h1>
             <div id="blockly-canvas"/>
             <div id="timeline">
-              { replay.map((item, index) => <div className={step === index ? 'bold' : null} key={item.timestamp}>*</div>)}
+              { replay.map((item, index) => <div className={step === index ? 'bold' : null} key={item.timestamp}><Marker /></div>)}
             </div>
           </div>
         </div>
