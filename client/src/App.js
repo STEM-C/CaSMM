@@ -22,6 +22,7 @@ import ResetPassword from './views/TeacherLogin/ResetPassword';
 import Report from './views/Researcher/Report';
 import DailyReport from './views/Researcher/DailyReport';
 import GroupReport from './views/Researcher/GroupReport';
+import Replay from './views/Replay/Replay';
 
 const App = () => {
   let history = useHistory();
@@ -50,6 +51,9 @@ const App = () => {
         </Route>
         <Route exact path='/login'>
           <StudentLogin history={history} />
+        </Route>
+        <Route exact path='/replay'>
+          <Replay />
         </Route>
         <PrivateRoute
           exact
