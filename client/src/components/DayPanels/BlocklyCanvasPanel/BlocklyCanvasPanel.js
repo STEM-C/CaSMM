@@ -50,7 +50,10 @@ export default function BlocklyCanvasPanel(props) {
   const [selectedToolBoxCategories, setSelectedToolBoxCategories] = useState(
     []
   );
+
+  const [clicks, setClicks] = useState(0)
   const parser = new DOMParser();
+ 
   const {
     day,
     homePath,
@@ -173,6 +176,19 @@ export default function BlocklyCanvasPanel(props) {
       blocks
     }
   }
+  const handleClick = () => {
+    setClicks(clicks + 1)
+    console.log("Clicks: ", clicks)
+  }
+
+    return currentObj
+  }
+  const compareXML = ({blocks: currentBlocks}, {blocks: previousBlocks}) => {
+    const blocks = diffObjects(currentBlocks, previousBlocks);
+    return {
+      blocks
+    }
+  }
   useEffect(() => {
     // automatically save workspace every min
     let autosaveInterval = setInterval(async () => {
@@ -207,7 +223,8 @@ export default function BlocklyCanvasPanel(props) {
         const replay = {
           xml: xml_text,
           timestamp: Date.now(),
-          xmlData: finalData || xmlData
+          xmlData: finalData || xmlData,
+          clicks: clicks
         };
         replayRef.current.push(replay);
         console.log(replayRef.current);
@@ -679,7 +696,7 @@ export default function BlocklyCanvasPanel(props) {
                 </Row>
               </Col>
             </Row>
-            <div id='blockly-canvas' />
+            <div id='blockly-canvas' onClick={handleClick} />
           </Spin>
         </div>
         {isContentCreator ? (

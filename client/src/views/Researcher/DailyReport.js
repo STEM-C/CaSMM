@@ -90,7 +90,7 @@ export default function DailyReport(props) {
     <div className="container nav-padding">
       <NavBar />
       <div className="menu-bar">
-        <div id="daily-report-header">Day Level Report</div>
+        <div id="daily-report-header">Day Level - Student Report</div>
         
         {/* Menu to return to landing page at /reports */}
         <Link to={"/report"}>
@@ -106,16 +106,23 @@ export default function DailyReport(props) {
 
       <main id="content-wrapper">
         <div className="cards">
-          <section id="container-section">
+          <section id="container-section-day">
             <section>
-              <ReportDropdown menuName="Teacher Name" menuItems={teachers}/>
-              <ReportDropdown menuName="Classroom Number" menuItems={classRooms}/>
-              <ReportDropdown menuName="Select Student" menuItems={students}/>
+              <ReportDropdown label="Teacher Name: " menuName="Teacher Name" menuItems={teachers}/>
+              <br />
+              <ReportDropdown label="Classroom Number: " menuName="Classroom Number" menuItems={classRooms}/>
+              <br />
+              <ReportDropdown label="Select Student: " menuName="Select Student" menuItems={students}/>
             </section>
             <section>
-              <ReportDropdown menuName="Grade" menuItems={students}/>
-              <ReportDropdown menuName="Unit Name" menuItems={units}/>
-              <ReportDropdown menuName="Day" menuItems={days}/>
+              <ReportDropdown label="Unit Name: " menuName="Unit Name" menuItems={units}/>
+              <br />
+              <ReportDropdown label="Day: " menuName="Day" menuItems={days}/>
+              <br />
+              
+              {/* TODO: Shouldn't this be the STUDENT PARTNER NAME? */}
+              <ReportDropdown label="Student's Partner Name HERE??: " menuName="Grade" menuItems={grades}/>
+              <button type="button" class="btn btn-outline-primary"><a href="">Generate Report</a></button>
               {/*How do I get the partners? <h2>Partner's Name: John Smith</h2>*/}
             </section>
           </section>
