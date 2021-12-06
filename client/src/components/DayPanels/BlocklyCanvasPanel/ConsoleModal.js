@@ -45,7 +45,12 @@ export default function ConsoleModal({
 
   const handleConnect = async () => {
     if (!connectionOpen) {
-      await handleOpenConnection(baudRate, newLine);
+      if (newLine) {
+        console.log(baudRate);
+        await handleOpenConnection(baudRate, 'newLine');
+      } else {
+        await handleOpenConnection(baudRate, 'notNewLine');
+      }
       setConnectionOpen(true);
       setDeviceDisconnect(false);
     } else {
@@ -55,7 +60,7 @@ export default function ConsoleModal({
     setInput('');
   };
 
-  const handleChange = ({ value }) => {
+  const handleChange = (value) => {
     setBaudRate(value);
   };
 
@@ -73,24 +78,24 @@ export default function ConsoleModal({
       <div style={{ margin: '5px 0' }}>
         <strong style={{ fontSize: '10' }}>Baud Rate: </strong>
         <Select
-          defaultValue='9600'
+          defaultValue={9600}
           onChange={handleChange}
           className={{ width: '15rem' }}
           disabled={connectionOpen}
         >
-          <Select.Option value='300'>300</Select.Option>
-          <Select.Option value='600'>600</Select.Option>
-          <Select.Option value='1200'>1200</Select.Option>
-          <Select.Option value='2400'>2400</Select.Option>
-          <Select.Option value='4800'>4800</Select.Option>
-          <Select.Option value='9600'>9600</Select.Option>
-          <Select.Option value='14400'>14400</Select.Option>
-          <Select.Option value='19200'>19200</Select.Option>
-          <Select.Option value='28800'>28800</Select.Option>
-          <Select.Option value='31250'>31250</Select.Option>
-          <Select.Option value='38400'>38400</Select.Option>
-          <Select.Option value='57600'>57600</Select.Option>
-          <Select.Option value='115200'>115200</Select.Option>
+          <Select.Option value={300}>300</Select.Option>
+          <Select.Option value={600}>600</Select.Option>
+          <Select.Option value={1200}>1200</Select.Option>
+          <Select.Option value={2400}>2400</Select.Option>
+          <Select.Option value={4800}>4800</Select.Option>
+          <Select.Option value={9600}>9600</Select.Option>
+          <Select.Option value={14400}>14400</Select.Option>
+          <Select.Option value={19200}>19200</Select.Option>
+          <Select.Option value={28800}>28800</Select.Option>
+          <Select.Option value={31250}>31250</Select.Option>
+          <Select.Option value={38400}>38400</Select.Option>
+          <Select.Option value={57600}>57600</Select.Option>
+          <Select.Option value={115200}>115200</Select.Option>
         </Select>
         <Button
           id='connect-button'

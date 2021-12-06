@@ -519,3 +519,22 @@ export const resetPassword = async (code, password, passwordConfirmation) =>
       auth: true,
       error: 'Sessions could not be retrieved.',
     });
+export const submitBugReport = async (
+  description,
+  steps,
+  name,
+  email,
+  systemInfo
+) =>
+  makeRequest({
+    method: POST,
+    path: `${server}/bug-report`,
+    data: {
+      description,
+      steps,
+      name,
+      email,
+      systemInfo,
+    },
+    error: 'Unable to submit bug-report',
+  });
