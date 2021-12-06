@@ -14,8 +14,6 @@ import Day from './views/Day/Day';
 import Classroom from './views/Mentor/Classroom/Classroom';
 import TeacherLogin from './views/TeacherLogin/TeacherLogin';
 import ContentCreator from './views/ContentCreator/ContentCreator';
-import UnitCreator from './views/ContentCreator/UnitCreator/UnitCreator';
-import UploadBlocks from './views/UploadBlocks/UploadBlocks';
 import ForgetPassword from './views/TeacherLogin/ForgetPassword';
 import ResetPassword from './views/TeacherLogin/ResetPassword';
 import BugReport from './views/BugReport/BugReport';
@@ -72,16 +70,9 @@ const App = () => {
         <Route exact path='/ccdashboard'>
           <ContentCreator history={history} />
         </Route>
-        <Route exact path='/unitcreator'>
-          <UnitCreator history={history} />
-        </Route>
-        <Route exact path='/addblocks'>
-          <UploadBlocks history={history} />
-        </Route>
         <Route exact path='/bugreport'>
           <BugReport history={history} />
         </Route>
-
         <Route component={NotFound} />
       </Switch>
     </div>
