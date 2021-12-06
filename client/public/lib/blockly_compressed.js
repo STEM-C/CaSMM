@@ -21759,12 +21759,15 @@ Blockly.BlockSvg.prototype.showHelp_ = function () {
   a && window.open(a);
 };
 Blockly.BlockSvg.prototype.showContextMenu_ = function (a) {
-  let isContentCreator = false;
-  if(
-    JSON.parse(sessionStorage.getItem('user')) &&
-    JSON.parse(sessionStorage.getItem('user')).role && 
-    JSON.parse(sessionStorage.getItem('user')).role.type === 'content_creator'){
-    isContentCreator = true;
+  let showDeletable = false;
+  if (
+    (sessionStorage.getItem('user') &&
+      JSON.parse(sessionStorage.getItem('user')).role &&
+      JSON.parse(sessionStorage.getItem('user')).role.type ===
+        'content_creator') ||
+    !sessionStorage.getItem('user')
+  ) {
+    showDeletable = true;
   }
   if (!this.workspace.options.readOnly && this.contextMenu) {
     var b = this,
@@ -21865,7 +21868,7 @@ Blockly.BlockSvg.prototype.showContextMenu_ = function (a) {
     c.push(d);
     d = {
       text: this.movable_ ? 'Set to Not Movable' : 'Set to Movtable',
-      enabled: isContentCreator,
+      enabled: showDeletable,
       callback: function () {
         b.setMovable(!b.movable_);
       },
@@ -21873,7 +21876,7 @@ Blockly.BlockSvg.prototype.showContextMenu_ = function (a) {
     c.push(d);
     d = {
       text: this.editable_ ? 'Set to Not Editable' : 'Set to Editable',
-      enabled: isContentCreator,
+      enabled: showDeletable,
       callback: function () {
         b.setEditable(!b.editable_);
         b.setDeletable(!b.deletable_);
@@ -24057,7 +24060,6 @@ Blockly.Instances.appendToName_ = function (a, b) {
 };
 Blockly.utils = {};
 Blockly.addClass_ = function (a, b) {
-
   var c = a.getAttribute('class') || '';
   -1 == (' ' + c + ' ').indexOf(' ' + b + ' ') &&
     (c && (c += ' '), a.setAttribute('class', c + b));
