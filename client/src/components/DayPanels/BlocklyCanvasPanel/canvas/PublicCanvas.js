@@ -16,7 +16,7 @@ import PlotterLogo from '../Icons/PlotterLogo';
 
 let plotId = 1;
 
-export default function PublicCanvas({ day }) {
+export default function PublicCanvas({ day, isSandbox }) {
   const [hoverXml, setHoverXml] = useState(false);
   const [hoverUndo, setHoverUndo] = useState(false);
   const [hoverRedo, setHoverRedo] = useState(false);

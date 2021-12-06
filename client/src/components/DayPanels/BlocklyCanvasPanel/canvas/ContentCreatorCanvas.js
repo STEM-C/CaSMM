@@ -4,6 +4,7 @@ import { compileArduinoCode, handleCreatorSaveDay } from '../../Utils/helpers';
 import { message, Spin, Row, Col, Alert } from 'antd';
 import { getSaves } from '../../../../Utils/requests';
 import CodeModal from '../modals/CodeModal';
+import SaveAsModal from '../modals/SaveAsModal';
 import ConsoleModal from '../modals/ConsoleModal';
 import PlotterModal from '../modals/PlotterModal';
 import StudentToolboxMenu from '../modals/StudentToolboxMenu';
@@ -18,9 +19,10 @@ import { useHistory } from 'react-router';
 
 let plotId = 1;
 
-export default function BlocklyCanvasPanel({ day }) {
+export default function ContentCreatorCanvas({ day, isSandbox }) {
   const [hoverXml, setHoverXml] = useState(false);
   const [hoverSave, setHoverSave] = useState(false);
+  const [hoverSaveAs, setHoverSaveAs] = useState(false);
   const [hoverUndo, setHoverUndo] = useState(false);
   const [hoverRedo, setHoverRedo] = useState(false);
   const [hoverArduino, setHoverArduino] = useState(false);
@@ -63,23 +65,24 @@ export default function BlocklyCanvasPanel({ day }) {
       if (!workspaceRef.current && day && Object.keys(day).length !== 0) {
         setWorkspace();
 
-        let onLoadSave = null;
-        const res = await getSaves(day.id);
-        if (res.data) {
-          if (res.data.current) onLoadSave = res.data.current;
-        } else {
-          console.log(res.err);
-        }
+        if (!isSandbox) {
+          let onLoadSave = null;
+          const res = await getSaves(day.id);
+          if (res.data) {
+            if (res.data.current) onLoadSave = res.data.current;
+          } else {
+            console.log(res.err);
+          }
 
-        if (onLoadSave) {
-          let xml = window.Blockly.Xml.textToDom(onLoadSave.workspace);
-          window.Blockly.Xml.domToWorkspace(xml, workspaceRef.current);
-          replayRef.current = onLoadSave.replay;
-        } else if (day.template) {
-          let xml = window.Blockly.Xml.textToDom(day.template);
-          window.Blockly.Xml.domToWorkspace(xml, workspaceRef.current);
+          if (onLoadSave) {
+            let xml = window.Blockly.Xml.textToDom(onLoadSave.workspace);
+            window.Blockly.Xml.domToWorkspace(xml, workspaceRef.current);
+            replayRef.current = onLoadSave.replay;
+          } else if (day.template) {
+            let xml = window.Blockly.Xml.textToDom(day.template);
+            window.Blockly.Xml.domToWorkspace(xml, workspaceRef.current);
+          }
         }
-
         workspaceRef.current.clearUndo();
       }
     };
@@ -99,6 +102,8 @@ export default function BlocklyCanvasPanel({ day }) {
       message.success('Day saved successfully');
     }
   };
+
+  const handleSaveAs = async () => {};
 
   const handleUndo = () => {
     if (workspaceRef.current.undoStack_.length > 0)
@@ -207,7 +212,9 @@ export default function BlocklyCanvasPanel({ day }) {
           >
             <Row id='icon-control-panel'>
               <Col flex='none' id='section-header'>
-                {day.learning_standard_name}
+                {day.learning_standard_name
+                  ? day.learning_standard_name
+                  : 'Program your Arduino...'}
               </Col>
               <Col flex='auto'>
                 <Row align='middle' justify='end' id='description-container'>
@@ -243,6 +250,10 @@ export default function BlocklyCanvasPanel({ day }) {
                             <div className='popup ModalCompile4'>Save</div>
                           )}
                         </button>
+                        <SaveAsModal
+                          hover={hoverSaveAs}
+                          setHover={setHoverSaveAs}
+                        />
                       </Col>
                       <Col className='flex flex-row'>
                         <button

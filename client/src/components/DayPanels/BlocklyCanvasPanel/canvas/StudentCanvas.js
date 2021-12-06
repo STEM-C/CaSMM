@@ -18,7 +18,7 @@ import { useHistory } from 'react-router';
 
 let plotId = 1;
 
-export default function BlocklyCanvasPanel({ day }) {
+export default function StudentCanvas({ day }) {
   const [hoverSave, setHoverSave] = useState(false);
   const [hoverUndo, setHoverUndo] = useState(false);
   const [hoverRedo, setHoverRedo] = useState(false);
@@ -33,7 +33,6 @@ export default function BlocklyCanvasPanel({ day }) {
   const [selectedCompile, setSelectedCompile] = useState(false);
   const [compileError, setCompileError] = useState('');
   const [saves, setSaves] = useState({});
-  const [studentToolbox, setStudentToolbox] = useState([]);
   const [lastSavedTime, setLastSavedTime] = useState(null);
   const [lastAutoSave, setLastAutoSave] = useState(null);
 

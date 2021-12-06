@@ -4,13 +4,11 @@ import PrivateRoute from './Utils/PrivateRoute';
 
 import Home from './views/Home/Home';
 import About from './views/About/About';
-import Workspace from './views/Workspace/Workspace';
 import Dashboard from './views/Mentor/Dashboard/Dashboard';
 import Student from './views/Student/Student';
 import NotFound from './views/NotFound';
 import StudentLogin from './views/StudentLogin/StudentLogin';
-import Sandbox from './views/Sandbox/Sandbox';
-import Day from './views/Day/Day';
+import BlocklyPage from './views/BlocklyPage/BlocklyPage';
 import Classroom from './views/Mentor/Classroom/Classroom';
 import TeacherLogin from './views/TeacherLogin/TeacherLogin';
 import ContentCreator from './views/ContentCreator/ContentCreator';
@@ -51,16 +49,16 @@ const App = () => {
           path='/student'
           render={() => <Student history={history} />}
         />
-        <Route path='/workspace'>
-          <Workspace history={history} />
-        </Route>
+        <PrivateRoute exact path='/workspace'>
+          <BlocklyPage history={history} isSandbox={false} />
+        </PrivateRoute>
         <Route path='/sandbox'>
-          <Sandbox history={history} />
+          <BlocklyPage history={history} isSandbox={true} />
         </Route>
         <PrivateRoute
           exact
           path='/day'
-          render={() => <Day history={history} />}
+          render={() => <BlocklyPage history={history} isSandbox={false} />}
         />
         <PrivateRoute
           path='/classroom/:id'

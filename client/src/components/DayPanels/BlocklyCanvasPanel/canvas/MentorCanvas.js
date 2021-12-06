@@ -17,7 +17,7 @@ import PlotterLogo from '../Icons/PlotterLogo';
 
 let plotId = 1;
 
-export default function BlocklyCanvasPanel({ day }) {
+export default function MentorCanvas({ day }) {
   const [hoverXml, setHoverXml] = useState(false);
   const [hoverUndo, setHoverUndo] = useState(false);
   const [hoverRedo, setHoverRedo] = useState(false);
