@@ -495,3 +495,23 @@ export const resetPassword = async (code, password, passwordConfirmation) =>
     error:
       'Cannot update new password. Please try again or get a new link from the forgot password page.',
   });
+
+export const submitBugReport = async (
+  description,
+  steps,
+  name,
+  email,
+  systemInfo
+) =>
+  makeRequest({
+    method: POST,
+    path: `${server}/bug-report`,
+    data: {
+      description,
+      steps,
+      name,
+      email,
+      systemInfo,
+    },
+    error: 'Unable to submit bug-report',
+  });

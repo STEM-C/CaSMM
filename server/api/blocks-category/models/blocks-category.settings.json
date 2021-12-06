@@ -14,8 +14,8 @@
       "type": "string"
     },
     "blocks": {
-      "collection": "block",
-      "via": "blocks_category"
+      "via": "blocks_category",
+      "collection": "block"
     }
   }
 }
