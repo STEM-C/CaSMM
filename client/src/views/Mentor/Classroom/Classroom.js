@@ -19,7 +19,7 @@ export default function Classroom(props) {
 
   return (
     <div className='container nav-padding'>
-      <NavBar isMentor={true} />
+      <NavBar />
       <Tabs
         defaultActiveKey={tab ? tab : 'home'}
         onChange={(key) => history.push(`#${key}`)}

@@ -145,7 +145,7 @@ export default function StudentLogin(props) {
 
   return (
     <div className='container nav-padding'>
-      <NavBar isStudent={true} />
+      <NavBar />
       <img src={Logo} alt='logo' id='login-logo' />
       <div id='form-container'>
         {setForms().map((form) => form)}

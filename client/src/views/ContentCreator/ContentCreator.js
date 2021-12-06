@@ -150,7 +150,7 @@ export default function ContentCreator({ history }) {
 
   return (
     <div className='container nav-padding'>
-      <Navbar isContentCreator={true} />
+      <Navbar />
       <div id='main-header'>Welcome Content Creator</div>
 
       <Tabs

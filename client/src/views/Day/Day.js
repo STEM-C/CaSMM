@@ -45,7 +45,7 @@ export default function Day(props) {
 
   return (
     <div className='container nav-padding'>
-      <NavBar isMentor={true} />
+      <NavBar />
       <div className='flex flex-row'>
         <BlocklyCanvasPanel
           day={day}

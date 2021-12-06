@@ -8,7 +8,7 @@ import { DownOutlined } from '@ant-design/icons';
 import { removeUserSession } from '../../Utils/AuthRequests';
 import { useGlobalState } from '../../Utils/userState';
 
-export default function NavBar(props) {
+export default function NavBar() {
   const [value] = useGlobalState('currUser');
   let currentRoute = window.location.pathname;
   let history = useHistory();
@@ -89,7 +89,16 @@ export default function NavBar(props) {
 
   return (
     <span id='navBar'>
-      <Link id='link' to={value.role ? '/dashboard' : '/'}>
+      <Link
+        id='link'
+        to={
+          value.role
+            ? value.role === 'Mentor'
+              ? '/dashboard'
+              : '/ccdashboard'
+            : '/'
+        }
+      >
         <img src={Logo} id='casmm-logo' alt='logo' />
       </Link>
       <div id='dropdown-menu'>
