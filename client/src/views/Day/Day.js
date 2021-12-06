@@ -10,7 +10,7 @@ export default function Day(props) {
   const [value] = useGlobalState('currUser');
   const { history } = props;
 
-  const userRole = value().role;
+  const userRole = value.role;
   let isContentCreator = false;
   let isMentor = false;
 

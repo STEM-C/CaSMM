@@ -5,25 +5,19 @@ import {
   compileArduinoCode,
   handleCreatorSaveDay,
   handleSave,
-} from '../helpers';
-import {
-  message,
-  Spin,
-  Row,
-  Col,
-  Alert
-} from 'antd';
+} from '../Utils/helpers';
+import { message, Spin, Row, Col, Alert } from 'antd';
 import { getSaves } from '../../../Utils/requests';
-import CodeModal from './CodeModal';
-import ConsoleModal from './ConsoleModal';
-import PlotterModal from './PlotterModal';
-import VersionHistoryModal from './VersionHistoryModal';
-import StudentToolboxMenu from './StudentToolboxMenu';
+import CodeModal from './modals/CodeModal';
+import ConsoleModal from './modals/ConsoleModal';
+import PlotterModal from './modals/PlotterModal';
+import VersionHistoryModal from './modals/VersionHistoryModal';
+import StudentToolboxMenu from './modals/StudentToolboxMenu';
 import {
   connectToPort,
   handleCloseConnection,
   handleOpenConnection,
-} from '../consoleHelpers';
+} from '../Utils/consoleHelpers';
 import ArduinoLogo from './Icons/ArduinoLogo';
 import PlotterLogo from './Icons/PlotterLogo';
 
@@ -529,13 +523,13 @@ export default function BlocklyCanvasPanel(props) {
             <div id='blockly-canvas' />
           </Spin>
         </div>
-        {isContentCreator ? 
-          <StudentToolboxMenu 
+        {isContentCreator ? (
+          <StudentToolboxMenu
             day={day}
             studentToolbox={studentToolbox}
-            setStudentToolbox={setStudentToolbox}/>
-          : null
-        }
+            setStudentToolbox={setStudentToolbox}
+          />
+        ) : null}
         <ConsoleModal
           show={showConsole}
           connectionOpen={connectionOpen}

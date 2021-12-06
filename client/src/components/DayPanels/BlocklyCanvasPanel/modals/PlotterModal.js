@@ -1,26 +1,37 @@
-import { Button, Checkbox, Select, Input, message, Row, Col } from 'antd';
-import React, { useState, useEffect } from 'react';
+import { Button, Select, message, Row, Col } from 'antd';
+import React, { useState, useEffect, useReducer } from 'react';
 import {
-  writeToPort,
+  LineChart,
+  Line,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  ResponsiveContainer,
+} from 'recharts';
+import {
   handleOpenConnection,
   handleCloseConnection,
-} from '../consoleHelpers';
-import Message from '../../Message';
+} from '../../Utils/consoleHelpers';
+import Message from '../../../Message';
 
 message.config({
   duration: 2,
   maxCount: 1,
 });
 
-export default function ConsoleModal({
+export default function PlotterModal({
   connectionOpen,
   setConnectionOpen,
   show,
+  plotData,
+  setPlotData,
+  plotId,
 }) {
   const [baudRate, setBaudRate] = useState(9600);
-  const [input, setInput] = useState('');
-  const [newLine, setnewLine] = useState(true);
   const [deviceDisconnect, setDeviceDisconnect] = useState(false);
+
+  const [ignored, forceUpdate] = useReducer((x) => x + 1, 0);
 
   useEffect(() => {
     navigator.serial.addEventListener('disconnect', (e) => {
@@ -37,40 +48,27 @@ export default function ConsoleModal({
     });
   }, [deviceDisconnect, setConnectionOpen]);
 
-  const handleKeyPress = async (e) => {
-    if (e.key === 'Enter') {
-      await sendInput();
-    }
-  };
-
   const handleConnect = async () => {
     if (!connectionOpen) {
-      if (newLine) {
-        console.log(baudRate);
-        await handleOpenConnection(baudRate, 'newLine');
-      } else {
-        await handleOpenConnection(baudRate, 'notNewLine');
-      }
+      await handleOpenConnection(
+        baudRate,
+        'plot',
+        plotData,
+        setPlotData,
+        plotId,
+        forceUpdate
+      );
       setConnectionOpen(true);
       setDeviceDisconnect(false);
     } else {
       await handleCloseConnection();
+      plotId = 1;
       setConnectionOpen(false);
     }
-    setInput('');
   };
 
   const handleChange = (value) => {
     setBaudRate(value);
-  };
-
-  const sendInput = async () => {
-    if (!connectionOpen) {
-      window.alert('Connection not opened.');
-      return;
-    }
-    await writeToPort(input);
-    setInput('');
   };
 
   return (
@@ -104,42 +102,34 @@ export default function ConsoleModal({
         >
           {connectionOpen ? 'Disconnect' : 'Connect'}
         </Button>
-        <Checkbox
-          checked={newLine}
-          disabled={connectionOpen}
-          onClick={() => {
-            setnewLine(!newLine);
-          }}
-          style={{ marginLeft: '50px' }}
-        >
-          New Line
-        </Checkbox>
       </div>
-      <div id='content-container'>
-        <p id='console-content'>Waiting for input...</p>
+      <div id='content-container' style={{ backgroundColor: '#EEEEEE' }}>
+        <ResponsiveContainer width='90%' height='100%'>
+          <LineChart width='100%' height='100%' data={plotData} key={plotData}>
+            <Line
+              type='step'
+              dataKey='input'
+              stroke='#8884d8'
+              dot={false}
+              isAnimationActive={false}
+            />
+            <CartesianGrid stroke='#ccc' />
+            <XAxis
+              dataKey='id'
+              type='number'
+              interval='preserveStartEnd'
+              domain={[
+                'dataMax-100',
+                (dataMax) => (dataMax < 200 ? 200 : dataMax),
+              ]}
+            />
+            <YAxis domain={['dataMin-6', 'dataMax+5']} />
+            <Tooltip />
+          </LineChart>
+        </ResponsiveContainer>
       </div>
       <Row>
-        <Col span={10}>
-          <Input
-            type='text'
-            value={input}
-            placeholder='Enter your input: '
-            id='console-message'
-            autoComplete='off'
-            onKeyPress={handleKeyPress}
-            onChange={(e) => {
-              setInput(e.target.value);
-            }}
-          ></Input>
-        </Col>
-        <Col span={2}>
-          <Button
-            onClick={() => sendInput()}
-            style={{ float: 'left', marginTop: '0.5vh' }}
-          >
-            Send
-          </Button>
-        </Col>
+        <Col span={12} />
         <Col span={6}>
           {deviceDisconnect ? (
             <Message message='Device disconnected'></Message>
@@ -150,12 +140,12 @@ export default function ConsoleModal({
         <Col span={6}>
           {connectionOpen ? (
             <Message
-              message='Serial Monitor Connection Opened'
+              message='Serial Plotter Connection Opened'
               type='success'
             ></Message>
           ) : (
             <Message
-              message='Serial Monitor Connection Not Opened'
+              message='Serial Plotter Connection Not Opened'
               type='info'
             ></Message>
           )}
