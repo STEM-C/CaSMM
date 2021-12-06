@@ -21,6 +21,7 @@ import ForgetPassword from './views/TeacherLogin/ForgetPassword';
 import ResetPassword from './views/TeacherLogin/ResetPassword';
 import Report from './views/Researcher/Report';
 import DailyReport from './views/Researcher/DailyReport';
+import DailyReportView from './views/Researcher/DailyReportView';
 import GroupReport from './views/Researcher/GroupReport';
 import Replay from './views/Replay/Replay';
 
@@ -52,7 +53,7 @@ const App = () => {
         <Route exact path='/login'>
           <StudentLogin history={history} />
         </Route>
-        <Route exact path='/replay'>
+        <Route exact path='/replay/:saveID'>
           <Replay />
         </Route>
         <PrivateRoute
@@ -60,8 +61,11 @@ const App = () => {
           path='/report'
           render={() => <Report history={history} />}
         />
-        <Route exact path='/daily-report'>
+        <Route exact path='/daylevel'>
           <DailyReport />
+        </Route>
+        <Route exact path='/daylevel/:id'>
+          <DailyReportView />
         </Route>
         <Route exact path='/group-report'>
           <GroupReport />

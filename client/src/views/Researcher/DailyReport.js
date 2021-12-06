@@ -1,18 +1,21 @@
+import React, {useEffect, useState} from 'react';
+import { Link } from 'react-router-dom';
+import { Table } from 'antd';
+import './DailyReport.less';
+
 import NavBar from '../../components/NavBar/NavBar';
 import ReportDropdown from '../../components/DropdownMenu/ReportDropdown';
-import React, {useEffect, useState} from 'react';
-import './DailyReport.less';
 import {
   getAllStudents,
   getDays,
   getAllClassrooms,
   getTeachers,
   getAllUnits,
-  getGrades
+  getGrades,
+  getAllSessions
 } from "../../Utils/requests";
-import { Link } from 'react-router-dom';
 
-export default function DailyReport(props) {
+export default function DailyReport() {
 
   const [teachers, setTeachers] = useState([])
   const [classRooms, setClassrooms] = useState([])
@@ -20,72 +23,103 @@ export default function DailyReport(props) {
   const [grades, setGrades] = useState([])
   const [days, setDays] = useState([])
   const [units, setUnits] = useState([])
+  const [sessions, setSessions] = useState([])
 
-  useEffect(async function() {
-    getAllStudents()
-      .then(data => {
-        console.log("Students: ", data)
-        let fetchedStudents = []
-        data.data.forEach(student =>  {
-          fetchedStudents.push(student.name + "_" + student.id)
-        })
-        setStudents(fetchedStudents)
+  useEffect(function() {
+
+    async function getAllData() {
+      const studentsP = getAllStudents();
+      const gradesP = getGrades()
+      const unitsP = getAllUnits()
+      const teachersP = getTeachers()
+      const classroomsP = getAllClassrooms()
+      const daysP = getDays()
+      const sessionsP = getAllSessions();
+      const [students, grades, units, teachers, classrooms, days, sessions] = await Promise.all([studentsP, gradesP, unitsP, teachersP, classroomsP, daysP, sessionsP]);
+
+      const fetchedStudents = students.data.map(student => student.name + "_" + student.id)
+      setStudents(fetchedStudents);
+
+      const fetchedGrades = grades.data.map(grade => grade.name);
+      setGrades(fetchedGrades)
+
+      const fetchedUnits = units.data.map(unit => unit.name);
+      setUnits(fetchedUnits)
+
+      const mentors = teachers.data.map(teacher => teacher.first_name + " " + teacher.last_name);
+      setTeachers(mentors)
+
+      const classRoomNumbers = classrooms.data.map(room => room.name);
+      setClassrooms(classRoomNumbers)
+
+      const fetchedDays = days.data.map(day => day.id)
+      setDays(fetchedDays)
+
+      const formattedSessions = sessions.data.map(session => {
+        return {...session, student: session.students[0].name, hasPartners: session.students.length > 1 ? 'Yes' : 'No'}
       })
-
-    getDays()
-      .then(data => {
-        console.log("Days :", data)
-        let fetchedDays = []
-        data.data.forEach(day => {
-          fetchedDays.push(day.id)
-        })
-        setDays(fetchedDays)
-      }
-    )
-    
-    getAllClassrooms()
-      .then(data => {
-        console.log("Classrooms: ", data)
-        let classRoomNumbers = []
-        data.data.forEach(room => {
-          classRoomNumbers.push(room.name)
-        })
-        setClassrooms(classRoomNumbers)
-      })
-    
-    getTeachers()
-      .then(data => {
-        console.log("Teachers: ", data.data)
-        let mentors = []
-        data.data.forEach(teacher => {
-          mentors.push(teacher.first_name + " " + teacher.last_name)
-        })
-        setTeachers(mentors)
-      })
-
-    getAllUnits()
-      .then(data => {
-        console.log("Units: ", data)
-        let fetchedUnits = []
-        data.data.forEach(unit => {
-          fetchedUnits.push(unit.name)
-        })
-        setUnits(fetchedUnits)
-      }
-    )
-
-    getGrades()
-      .then(data => {
-        console.log("Grades: ", data)
-        let fetchedGrades = []
-        data.data.forEach(grade => {
-          fetchedGrades.push(grade.name)
-        })
-        setGrades(fetchedGrades)
-      }
-    )
+      setSessions(formattedSessions);
+    }
+    getAllData();
   }, [])
-
+  const columns = [
+    {
+      title: 'ID',
+      dataIndex: 'id',
+      key: 'id',
+      width: '5%',
+      align: 'left',
+      sorter: {
+        compare: (a, b) => (a.name < b.name ? -1 : 1),
+      },
+    },
+    {
+      title: 'Student',
+      dataIndex: 'student',
+      key: 'student',
+      width: '10%',
+      align: 'left',
+    },
+    {
+      title: 'Session Started',
+      dataIndex: 'created_at',
+      key: 'created_at',
+      width: '10%',
+      align: 'left',
+      sorter: {
+        compare: (a, b) => (a.last_logged_in < b.last_logged_in ? -1 : 1),
+      }
+      // render: (_, record) => getFormattedDate(record.last_logged_in),
+    },
+    {
+      title: 'Partners',
+      dataIndex: 'hasPartners',
+      key: 'hasPartners',
+      width: '3%',
+      align: 'right'
+    },
+    {
+      title: 'View Report',
+      dataIndex: 'enrolled',
+      key: 'enrolled',
+      width: '10%',
+      align: 'right',
+      render: (_, session) => <Link to={`/daylevel/${session.id}`}>View Report</Link>
+      // filters: [
+      //   {
+      //     text: 'Enrolled',
+      //     value: true,
+      //   },
+      //   {
+      //     text: 'Unenrolled',
+      //     value: false,
+      //   },
+      // ],
+      // filterMultiple: false,
+      // onFilter: (value, record) => record.enrolled.enrolled === value,
+    },
+  ];
+  console.log(sessions);
   return (
     <div className="container nav-padding">
       <NavBar />
@@ -120,30 +154,15 @@ export default function DailyReport(props) {
               <ReportDropdown label="Day: " menuName="Day" menuItems={days}/>
               <br />
               
-              {/* TODO: Shouldn't this be the STUDENT PARTNER NAME? */}
               <ReportDropdown label="Student's Partner Name HERE??: " menuName="Grade" menuItems={grades}/>
-              <button type="button" class="btn btn-outline-primary"><a href="">Generate Report</a></button>
-              {/*How do I get the partners? <h2>Partner's Name: John Smith</h2>*/}
+              <button type="button" className="btn btn-outline-primary"><a href="">Generate Report</a></button>
             </section>
           </section>
         </div>
-        <section id="container-section">
-          <section>
-            <h1>Time Spent Programming</h1>
-            <h1>Mouse Clicks</h1>
-            <h1>Time it Tested Code</h1>
-            <h1>Deleted Blocks</h1>
-            <h1>Blocks Selected but Never used</h1>
-          </section>
-          <section>
-            {/**TODO: pass data instead of hard coded values */}
-            <h2>45 Mins</h2>
-            <h2>140 Clicks</h2>
-            <h2>tested 4 Times</h2>
-            <h2>1 Forever Loop</h2>
-            <h2>Forever Loop (1)</h2>
-          </section>
-        </section>
+        <Table
+          columns={columns}
+          dataSource={sessions}
+        />
       </main>
     </div>
   );

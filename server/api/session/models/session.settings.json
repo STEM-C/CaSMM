@@ -2,11 +2,13 @@
   "kind": "collectionType",
   "collectionName": "sessions",
   "info": {
-    "name": "Session"
+    "name": "Session",
+    "description": ""
   },
   "options": {
     "increments": true,
-    "timestamps": true
+    "timestamps": true,
+    "draftAndPublish": false
   },
   "attributes": {
     "classroom": {
@@ -20,6 +22,9 @@
     "submissions": {
       "via": "session",
       "collection": "submission"
+    },
+    "saves": {
+      "collection": "save"
     }
   }
 }

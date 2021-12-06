@@ -257,6 +257,14 @@ export const getSaves = async (day) =>
     error: 'Past saves could not be retrieved.',
   });
 
+  export const getSave = async id =>
+  makeRequest({
+    method: GET,
+    path: `${server}/saves/${id}`,
+    auth: true,
+    error: 'Save could not be retrieved.',
+  });
+
 export const createSubmission = async (id, workspace, sketch, path, isAuth) =>
   makeRequest({
     method: POST,
@@ -495,3 +503,19 @@ export const resetPassword = async (code, password, passwordConfirmation) =>
     error:
       'Cannot update new password. Please try again or get a new link from the forgot password page.',
   });
+
+  export const getAllSessions = async () => 
+    makeRequest({
+      method: GET,
+      path: `${server}/sessions`,
+      auth: true,
+      error: 'Sessions could not be retrieved.',
+    });
+  
+  export const getSession = async id => 
+    makeRequest({
+      method: GET,
+      path: `${server}/sessions/${id}`,
+      auth: true,
+      error: 'Sessions could not be retrieved.',
+    });

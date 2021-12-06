@@ -18,7 +18,7 @@ export default function Report(props) {
           <div class='child inline-block-child'>Home</div>
           <div class='child inline-block-child'>Reports</div>
         </div>
-        <Link to={"/daily-report"}>
+        <Link to={"/daylevel"}>
           <button
             id={"route-button"}
             className={`btn-${"primary"} btn-${"sm"}`}
