@@ -31,21 +31,10 @@ export default function Workspace(props) {
     }
   }, [history]);
 
-  const handleGoBack = () => {
-    console.log('workspace');
-    history.goBack();
-  };
-
   return (
     <div className='container flex flex-row nav-padding'>
       <NavBar />
-      <BlocklyCanvasPanel
-        day={day}
-        lessonName={`${day.learning_standard_name}, Day ${day.number}`}
-        handleGoBack={handleGoBack}
-        handleLogout={handleLogout}
-        isStudent={true}
-      />
+      <BlocklyCanvasPanel day={day} />
     </div>
   );
 }

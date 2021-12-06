@@ -92,10 +92,12 @@ export default function NavBar() {
       <Link
         id='link'
         to={
-          value.role
-            ? value.role === 'Mentor'
-              ? '/dashboard'
-              : '/ccdashboard'
+          value.role === 'ContentCreator'
+            ? '/ccdashboard'
+            : value.role === 'Mentor'
+            ? '/dashboard'
+            : value.role === 'Student'
+            ? '/student'
             : '/'
         }
       >

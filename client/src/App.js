@@ -20,7 +20,6 @@ import BugReport from './views/BugReport/BugReport';
 
 const App = () => {
   let history = useHistory();
-
   return (
     <div>
       <Switch>
