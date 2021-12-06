@@ -44,6 +44,38 @@ const makeRequest = async ({ method, path, data, auth = false, error }) => {
   return { data: res, err: err };
 };
 
+export const getDays = async () => 
+  makeRequest({
+    method: GET,
+    path: `${server}/days`,
+    auth: true,
+    error: 'Days could not be retrieved.',
+  });
+
+export const getTeachers = async () =>
+  makeRequest({
+    method: GET,
+    path: `${server}/mentors`,
+    auth: true,
+    error: 'Teachers could not be retrieved.',
+  });
+
+export const getAllClassrooms = async () => 
+  makeRequest({
+    method: GET,
+    path: `${server}/classrooms`,
+    auth: true,
+    error: 'Classrooms could not be retrieved.',
+  });
+
+export const getAllStudents = async () => 
+makeRequest({
+  method: GET,
+  path: `${server}/students`,
+  auth: true,
+  error: 'Students could not be retrieved.',
+});
+
 export const getDayToolboxAll = async () =>
   makeRequest({
     method: GET,
@@ -90,6 +122,14 @@ export const getStudents = async (code) =>
   makeRequest({
     method: GET,
     path: `${server}/classrooms/join/${code}`,
+    error: 'Student info could not be retrieved.',
+  });
+
+export const getStudent = async (id) =>
+  makeRequest({
+    method: GET,
+    path: `${server}/students/${id}`,
+    auth: true,
     error: 'Student info could not be retrieved.',
   });
 
