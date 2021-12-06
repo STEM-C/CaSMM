@@ -11,12 +11,13 @@
     "BugReport": "/bugreport"
   },
   "users": {
-    "defaultUser": ["Home", "TeacherLogin", "Sandbox", "About"],
-    "isMentor": ["Dashboard", "AccountInfo", "SignOut", "BugReport"],
-    "isStudent": ["SignOut"],
-    "isContentCreator": [
+    "DefaultUser": ["Home", "TeacherLogin", "Sandbox", "About"],
+    "Mentor": ["Dashboard", "AccountInfo", "SignOut", "Sandbox", "BugReport"],
+    "Student": ["SignOut"],
+    "ContentCreator": [
       "ContentCreatorDashboard",
       "AccountInfo",
+      "Sandbox",
       "SignOut",
       "BugReport"
     ]

@@ -1,33 +1,28 @@
 import React from 'react';
-import { Route, Switch, useHistory } from 'react-router-dom';
+import { Route, withRouter, Switch, useHistory } from 'react-router-dom';
 import PrivateRoute from './Utils/PrivateRoute';
 
 import Home from './views/Home/Home';
 import About from './views/About/About';
 import Workspace from './views/Workspace/Workspace';
-import Dashboard from './views/Dashboard/Dashboard';
+import Dashboard from './views/Mentor/Dashboard/Dashboard';
 import Student from './views/Student/Student';
 import NotFound from './views/NotFound';
-// import NotChrome from './views/NotChrome'
 import StudentLogin from './views/StudentLogin/StudentLogin';
 import Sandbox from './views/Sandbox/Sandbox';
 import Day from './views/Day/Day';
-import Classroom from './views/Classroom/Classroom';
+import Classroom from './views/Mentor/Classroom/Classroom';
 import TeacherLogin from './views/TeacherLogin/TeacherLogin';
 import ContentCreator from './views/ContentCreator/ContentCreator';
 import UnitCreator from './views/ContentCreator/UnitCreator/UnitCreator';
 import UploadBlocks from './views/UploadBlocks/UploadBlocks';
 import ForgetPassword from './views/TeacherLogin/ForgetPassword';
 import ResetPassword from './views/TeacherLogin/ResetPassword';
-import BugReport from './views/BugReport/BugReport'
+import BugReport from './views/BugReport/BugReport';
 
 const App = () => {
   let history = useHistory();
-  // const isChrome = !!window.chrome && (!!window.chrome.webstore || !!window.chrome.runtime);
 
-  // if(!isChrome){
-  //     return <Route component={NotChrome}></Route>
-  // }
   return (
     <div>
       <Switch>
@@ -93,4 +88,4 @@ const App = () => {
   );
 };
 
-export default App;
+export default withRouter(App);

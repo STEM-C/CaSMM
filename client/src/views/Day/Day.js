@@ -3,20 +3,18 @@ import BlocklyCanvasPanel from '../../components/DayPanels/BlocklyCanvasPanel/Bl
 import NavBar from '../../components/NavBar/NavBar';
 import { getDayToolbox } from '../../Utils/requests';
 import { message } from 'antd';
-import { getUser } from '../../Utils/AuthRequests';
+import { useGlobalState } from '../../Utils/userState';
 
 export default function Day(props) {
   const [day, setDay] = useState({});
+  const [value] = useGlobalState('currUser');
   const { history } = props;
 
-  const user = getUser();
-  const userType = user.role.type;
+  const userRole = value().role;
   let isContentCreator = false;
   let isMentor = false;
 
-  userType === 'content_creator'
-    ? (isContentCreator = true)
-    : (isMentor = true);
+  userRole === 'ContentCreator' ? (isContentCreator = true) : (isMentor = true);
 
   useEffect(() => {
     const localDay = JSON.parse(localStorage.getItem('my-day'));
