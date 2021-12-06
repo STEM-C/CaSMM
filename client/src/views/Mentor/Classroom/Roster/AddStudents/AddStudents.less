@@ -1,0 +1,54 @@
+@import '../../../../../assets/style.less';
+
+#add-students {
+  #manual-input {
+    input[type='text'] {
+      display: block;
+      background: none;
+      margin: 20px auto 0px;
+      border: 1px solid;
+      border-color: #colors[secondary];
+      padding: 10px 10px;
+      width: 40%;
+      outline: none;
+      color: #colors[text-primary];
+      border-radius: 8px;
+      transition: 0.25s;
+    }
+  }
+
+  input[type='button'] {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #colors[quaternary];
+    width: 40%;
+    height: 6vh;
+    margin: 0 auto;
+    border: none;
+    color: #colors[text-primary];
+    font-size: 1em;
+    font-weight: 500;
+    border-radius: 30px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.377);
+    cursor: pointer;
+    transition: 0.25s;
+
+    &:hover {
+      width: 42%;
+      background: #colors[quinary];
+    }
+  }
+
+  #emoji-picker {
+    width: 40%;
+    margin: 2vh auto;
+
+    .emoji-picker-react {
+      width: 100%;
+    }
+    .emoji-categories {
+      justify-content: space-around;
+    }
+  }
+}
