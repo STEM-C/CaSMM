@@ -153,11 +153,11 @@ export default function DayLevelReport() {
               <br />
               <ReportDropdown label="Day: " menuName="Day" menuItems={days}/>
               <br />
-              
-              <ReportDropdown label="Student's Partner Name HERE??: " menuName="Grade" menuItems={grades}/>
-              <button type="button" className="btn btn-outline-primary"><a href="">Generate Report</a></button>
+              <ReportDropdown label="Grade: " menuName="Grade" menuItems={grades}/>
             </section>
           </section>
+          <br />
+          <button type="button" id="gen-report-btn" className="btn btn-outline-primary"><a href="">Generate Report</a></button>
         </div>
         <Table
           columns={columns}
