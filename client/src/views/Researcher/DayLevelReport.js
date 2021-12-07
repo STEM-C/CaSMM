@@ -124,7 +124,7 @@ export default function DayLevelReport() {
     <div className="container nav-padding">
       <NavBar />
       <div className="menu-bar">
-        <div id="daily-report-header">Day Level - Student Report</div>
+        <div id="day-level-report-header">Day Level - Student Report</div>
         
         {/* Menu to return to landing page at /reports */}
         <Link to={"/report"}>
