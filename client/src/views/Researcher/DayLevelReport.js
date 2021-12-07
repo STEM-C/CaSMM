@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import { Link } from 'react-router-dom';
 import { Table } from 'antd';
-import './DailyReport.less';
+import './DayLevelReport.less';
 
 import NavBar from '../../components/NavBar/NavBar';
 import ReportDropdown from '../../components/DropdownMenu/ReportDropdown';
@@ -15,7 +15,7 @@ import {
   getAllSessions
 } from "../../Utils/requests";
 
-export default function DailyReport() {
+export default function DayLevelReport() {
 
   const [teachers, setTeachers] = useState([])
   const [classRooms, setClassrooms] = useState([])

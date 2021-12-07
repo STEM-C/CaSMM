@@ -21,8 +21,8 @@ import ForgetPassword from './views/TeacherLogin/ForgetPassword';
 import ResetPassword from './views/TeacherLogin/ResetPassword';
 import BugReport from './views/BugReport/BugReport'
 import Report from './views/Researcher/Report';
-import DailyReport from './views/Researcher/DailyReport';
-import DailyReportView from './views/Researcher/DailyReportView';
+import DayLevelReport from './views/Researcher/DayLevelReport';
+import DayLevelReportView from './views/Researcher/DayLevelReportView';
 import GroupReport from './views/Researcher/GroupReport';
 import Replay from './views/Replay/Replay';
 
@@ -63,10 +63,10 @@ const App = () => {
           render={() => <Report history={history} />}
         />
         <Route exact path='/daylevel'>
-          <DailyReport />
+          <DayLevelReport />
         </Route>
         <Route exact path='/daylevel/:id'>
-          <DailyReportView />
+          <DayLevelReportView />
         </Route>
         <Route exact path='/group-report'>
           <GroupReport />
