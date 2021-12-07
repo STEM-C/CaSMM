@@ -14,10 +14,10 @@ export default function Report(props) {
       <div id="main-header">Welcome Researcher, {user.username}!</div>
 
       <div>
-        <div class='parent'>
+        {/* <div class='parent'>
           <div class='child inline-block-child'>Home</div>
           <div class='child inline-block-child'>Reports</div>
-        </div>
+        </div> */}
         <Link to={"/daylevel"}>
           <button
             id={"route-button"}
