@@ -64,6 +64,14 @@ const Replay = () => {
     getReplay();
   }, [])
 
+  // const dataSource = [
+  //   {
+  //     key: timestamp,
+  //     name: blockName,
+  //     action: action,
+  //   }
+  // ];
+
   const columns = [
     {
       title: 'Timestamp',
@@ -77,8 +85,8 @@ const Replay = () => {
     },
     {
       title: 'Blocks',
-      dataIndex: 'blocks',
-      key: 'blocks',
+      dataIndex: 'blockName',
+      key: 'blockName',
       width: '3%',
       align: 'center'
     },
@@ -149,7 +157,8 @@ const Replay = () => {
               { replay.map((item, index) => <p className={step === index ? 'bold' : null} key={item.timestamp}> {timeConverter(item.timestamp)} </p>)}
             </div>
             <Table
-              columns={columns}
+              columns={columns} 
+              // dataSource={dataSource}
             />
           </section>
 
