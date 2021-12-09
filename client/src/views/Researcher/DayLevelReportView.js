@@ -41,7 +41,7 @@ const DayLevelReportView = () => {
   };
 
   const calculateEndTime = () => {
-    if(session.saves) {
+    if(session.saves?.length) {
       if (session.saves[session.saves.length - 1].created_at) {
         return session.saves[session.saves.length - 1].created_at
       }
