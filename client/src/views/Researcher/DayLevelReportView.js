@@ -75,7 +75,7 @@ const DayLevelReportView = () => {
         <section id="container-section">
           <section>
             <h2>Student Name: {studentName}</h2>
-            <h2>Partner Name: {studentPartner}</h2>
+            {/* <h2>Partner Name: {studentPartner}</h2> */}
             <h2>Class Name: {className}</h2>
             <br />
             <h2>Started: {timeConverter(session.created_at)}</h2>
