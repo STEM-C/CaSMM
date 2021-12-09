@@ -2,9 +2,9 @@ import React, { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import NavBar from '../../components/NavBar/NavBar';
 import { getSession } from '../../Utils/requests';
-import './DailyReport.less';
+import './DayLevelReport.less';
 
-const DailyReportView = () => {
+const DayLevelReportView = () => {
   const { id } = useParams();
   const [session, setSession] = useState({});
   useEffect(function() {
@@ -65,4 +65,4 @@ const DailyReportView = () => {
   )
 };
 
-export default DailyReportView;
+export default DayLevelReportView;
