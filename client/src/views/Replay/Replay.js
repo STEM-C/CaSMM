@@ -48,13 +48,19 @@ const Replay = () => {
       } 
       else{
         let blocksData = new Set();
+        // Get blocks data
         saveObj.forEach((obj) => blocksData.add(obj.xmlData.blocks));
         setBlocksData(blocksData);
 
+        // Convert Set to Array
         let blocksArr = [...blocksData];
-        const blocks = blocksArr.map(block => block);
+        
+        // How to parse 
+        const blockName = blocksArr.map(block => block.key);
+        const action = blocksArr.map(block => block.value);
         console.log(blocksArr);
-        console.log(blocks);
+        console.log(blockName);
+        console.log(action);
         
         // const blockKeys = blocksData.map(obj => obj[0]);
         // console.log(blockKeys);
