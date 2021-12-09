@@ -59,6 +59,7 @@ export default function DayLevelReport() {
         return {...session, student: session.students[0].name, hasPartners: session.students.length > 1 ? 'Yes' : 'No'}
       })
       setSessions(formattedSessions);
+
     }
     getAllData();
   }, [])
