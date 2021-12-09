@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import { Link } from 'react-router-dom';
 import { Table } from 'antd';
-import './DailyReport.less';
+import './DayLevelReport.less';
 
 import NavBar from '../../components/NavBar/NavBar';
 import ReportDropdown from '../../components/DropdownMenu/ReportDropdown';
@@ -13,7 +13,7 @@ import {
   getAllSessions
 } from "../../Utils/requests";
 
-export default function DailyReport() {
+export default function DayLevelReport() {
 
   const [classRooms, setClassrooms] = useState([])
   const [students, setStudents] = useState([])
@@ -75,6 +75,7 @@ export default function DailyReport() {
           hasPartners: session.students.length > 1 ? 'Yes' : 'No'}
       })
       setSessions(formattedSessions);
+
     }
     getAllData();
     
@@ -172,7 +173,7 @@ export default function DailyReport() {
     <div className="container nav-padding">
       <NavBar />
       <div className="menu-bar">
-        <div id="daily-report-header">Day Level - Student Report</div>
+        <div id="day-level-report-header">Day Level - Student Report</div>
         
         {/* Menu to return to landing page at /reports */}
         <Link to={"/report"}>
@@ -187,6 +188,26 @@ export default function DailyReport() {
       </div>
 
       <main id="content-wrapper">
+        <div className="cards">
+          <section id="container-section-day">
+            <section>
+              <ReportDropdown label="Teacher Name: " menuName="Teacher Name" menuItems={teachers}/>
+              <br />
+              <ReportDropdown label="Classroom Number: " menuName="Classroom Number" menuItems={classRooms}/>
+              <br />
+              <ReportDropdown label="Select Student: " menuName="Select Student" menuItems={students}/>
+            </section>
+            <section>
+              <ReportDropdown label="Unit Name: " menuName="Unit Name" menuItems={units}/>
+              <br />
+              <ReportDropdown label="Day: " menuName="Day" menuItems={days}/>
+              <br />
+              <ReportDropdown label="Grade: " menuName="Grade" menuItems={grades}/>
+            </section>
+          </section>
+          <br />
+          <button type="button" id="gen-report-btn" className="btn btn-outline-primary"><a href="">Generate Report</a></button>
+        </div>
         <Table
           columns={columns}
           dataSource={sessions}

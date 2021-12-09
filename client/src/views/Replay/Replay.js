@@ -3,6 +3,7 @@ import './Replay.less'
 import { Link, useParams } from 'react-router-dom';
 import NavBar from '../../components/NavBar/NavBar';
 import Marker from './Marker';
+import { Table } from 'antd';
 import { getSave } from '../../Utils/requests';
 
 const Replay = () => {
@@ -10,7 +11,9 @@ const Replay = () => {
   const workspaceRef = useRef(null);
   const [step, setStep] = useState(0);
   const [replay, setReplay] = useState([])
+  const [ blocksData, setBlocksData ] = useState([])
   let playback;
+
   const setWorkspace = () => {
     workspaceRef.current = window.Blockly.inject('blockly-canvas',
         { toolbox: document.getElementById('toolbox') }
@@ -28,13 +31,80 @@ const Replay = () => {
   };
 
   useEffect(() => {
+
     const getReplay = async () => {
       const save = await getSave(saveID);
-      console.log(save)
-      setReplay(save.data.replay)
+      console.log(save.data.replay)
+      setReplay(save.data.replay);
+      
+      // TODO: if xmlData does not exist, do not show table, else show table of blocks
+      // SAVES Obj
+      const saveObj = save.data.replay;
+      console.log(saveObj);
+
+      // If SAVES Obj does not contain key 'xmlData', do no show Table
+      if (!('xmlData' in saveObj[0])) {
+        console.log('HIDE TABLE');
+      } 
+      else{
+        let blocksData = new Set();
+        // Get blocks data
+        saveObj.forEach((obj) => blocksData.add(obj.xmlData.blocks));
+        setBlocksData(blocksData);
+
+        // Convert Set to Array
+        let blocksArr = [...blocksData];
+        
+        // How to parse 
+        const blockName = blocksArr.map(block => block.key);
+        const action = blocksArr.map(block => block.value);
+        console.log(blocksArr);
+        console.log(blockName);
+        console.log(action);
+        
+        // const blockKeys = blocksData.map(obj => obj[0]);
+        // console.log(blockKeys);
+      }
     }
+
     getReplay();
   }, [])
+
+  // const dataSource = [
+  //   {
+  //     key: timestamp,
+  //     name: blockName,
+  //     action: action,
+  //   }
+  // ];
+
+  const columns = [
+    {
+      title: 'Timestamp',
+      dataIndex: 'timestamp',
+      key: 'timestamp',
+      width: '3%',
+      align: 'center',
+      sorter: {
+        compare: (a, b) => (a.last_logged_in < b.last_logged_in ? -1 : 1),
+      }
+    },
+    {
+      title: 'Blocks',
+      dataIndex: 'blockName',
+      key: 'blockName',
+      width: '3%',
+      align: 'center'
+    },
+    {
+      title: 'Action',
+      dataIndex: 'action',
+      key: 'action',
+      width: '3%',
+      align: 'center'
+    }
+  ];
+
   useEffect(() => {
     if (replay.length) {
       workspaceRef.current ? workspaceRef.current.clear() : setWorkspace();
@@ -56,6 +126,8 @@ const Replay = () => {
   const goForward = () => {
     setStep(step + 1);
   }
+
+
 
   return (
     <main className="container nav-padding">
@@ -88,10 +160,16 @@ const Replay = () => {
           <section id='bottom-container' className="flex flex-column vertical-container overflow-visible">
             <h2 id="section-header">Logs</h2>
             <div>
-              { replay.map((item, index) => <p className={step === index ? 'bold' : null} key={item.timestamp}>{timeConverter(item.timestamp)}</p>)}
+              { replay.map((item, index) => <p className={step === index ? 'bold' : null} key={item.timestamp}> {timeConverter(item.timestamp)} </p>)}
             </div>
+            <Table
+              columns={columns} 
+              // dataSource={dataSource}
+            />
           </section>
+
         </div>
+      
       </div>
       <xml id="toolbox" is="Blockly workspace"></xml>
     </main>

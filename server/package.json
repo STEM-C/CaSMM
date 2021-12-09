@@ -15,6 +15,7 @@
     "dotenv": "^10.0.0",
     "knex": "0.21.18",
     "pg": "^8.7.1",
+    "sharp": "^0.29.3",
     "strapi": "3.6.7",
     "strapi-admin": "3.6.7",
     "strapi-connector-bookshelf": "3.6.7",
