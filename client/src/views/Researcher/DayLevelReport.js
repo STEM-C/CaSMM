@@ -4,7 +4,6 @@ import { Table } from 'antd';
 import './DayLevelReport.less';
 
 import NavBar from '../../components/NavBar/NavBar';
-import ReportDropdown from '../../components/DropdownMenu/ReportDropdown';
 import {
   getAllStudents,
   getDays,
@@ -188,26 +187,6 @@ export default function DayLevelReport() {
       </div>
 
       <main id="content-wrapper">
-        <div className="cards">
-          <section id="container-section-day">
-            <section>
-              <ReportDropdown label="Teacher Name: " menuName="Teacher Name" menuItems={teachers}/>
-              <br />
-              <ReportDropdown label="Classroom Number: " menuName="Classroom Number" menuItems={classRooms}/>
-              <br />
-              <ReportDropdown label="Select Student: " menuName="Select Student" menuItems={students}/>
-            </section>
-            <section>
-              <ReportDropdown label="Unit Name: " menuName="Unit Name" menuItems={units}/>
-              <br />
-              <ReportDropdown label="Day: " menuName="Day" menuItems={days}/>
-              <br />
-              <ReportDropdown label="Grade: " menuName="Grade" menuItems={grades}/>
-            </section>
-          </section>
-          <br />
-          <button type="button" id="gen-report-btn" className="btn btn-outline-primary"><a href="">Generate Report</a></button>
-        </div>
         <Table
           columns={columns}
           dataSource={sessions}
