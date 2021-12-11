@@ -10,25 +10,6 @@ export default function Day({ history, isSandbox }) {
   const [value] = useGlobalState('currUser');
 
   const userRole = value.role;
-  let isContentCreator = false;
-  let isMentor = false;
-  let isStudent = false;
-  let isDefaultUser = false;
-
-  switch (userRole) {
-    case 'ContentCreator':
-      isContentCreator = true;
-      break;
-    case 'Mentor':
-      isMentor = true;
-      break;
-    case 'Student':
-      isStudent = true;
-      break;
-    default:
-      isDefaultUser = true;
-      break;
-  }
 
   useEffect(() => {
     // if we are in sandbox mode show all toolbox

@@ -14,6 +14,8 @@ const BlocklyCanvasPanel = ({ day, isSandbox, userRole }) => {
       return <MentorCanvas day={day} />;
     case 'ContentCreator':
       return <ContentCreatorCanvas day={day} isSandbox={isSandbox} />;
+    default:
+      return <div></div>;
   }
 };
 
