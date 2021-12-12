@@ -175,19 +175,11 @@ export default function BlocklyCanvasPanel(props) {
 
     return currentObj
   }
-  const compareXML = ({blocks: currentBlocks}, {blocks: previousBlocks}) => {
-    const blocks = diffObjects(currentBlocks, previousBlocks);
-    return {
-      blocks
-    }
-  }
+
   const handleClick = () => {
     setClicks(clicks + 1)
-    console.log("Clicks: ", clicks)
   }
 
-    return currentObj
-  }
   const compareXML = ({blocks: currentBlocks}, {blocks: previousBlocks}) => {
     const blocks = diffObjects(currentBlocks, previousBlocks);
     return {
