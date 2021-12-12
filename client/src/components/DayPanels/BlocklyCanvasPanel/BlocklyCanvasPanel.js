@@ -175,17 +175,17 @@ export default function BlocklyCanvasPanel(props) {
 
     return currentObj
   }
+
+  const handleClick = () => {
+    setClicks(clicks + 1)
+  }
+
   const compareXML = ({blocks: currentBlocks}, {blocks: previousBlocks}) => {
     const blocks = diffObjects(currentBlocks, previousBlocks);
     return {
       blocks
     }
   }
-  const handleClick = () => {
-    setClicks(clicks + 1)
-    console.log("Clicks: ", clicks)
-  }
-
   useEffect(() => {
     // automatically save workspace every min
     let autosaveInterval = setInterval(async () => {

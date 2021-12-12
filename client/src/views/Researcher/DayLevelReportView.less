@@ -5,7 +5,7 @@
     justify-content:space-between;
 }
 
-#daily-report-header {
+#day-level-report-header {
     color: #colors[text-secondary];
     font-size: 3em;
     font-weight: bolder;
@@ -15,13 +15,24 @@
     padding-top: 20px;
 }
 
-#gen-report {
-    text-align: center;
+#replay-btn {
+    flex-direction: column;
+    width: fit-content;
+    align-self: center;
+    height: 45px;
+    margin: 20px 50px;
+    padding: 10px 20px;
+    border-radius: 5px;
+    background-color: white;
+    font-size: 15px;
+    font-weight: 800;
+    font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.377);
+
 }
 
 .cards {
-    display: flex;
-    justify-content: space-around;
+    flex-direction: column;
     margin-bottom: 2rem;
     
 }
@@ -62,9 +73,16 @@ section {
     font-weight: 300;
 }
 
-label {
-    display: inline-block;
+h2{
+  font-weight: 500;
 }
+
+@media only screen and (max-width: 915px) {
+    #day-level-return {
+        height: 110px;
+    }
+}
+
 
 
 
