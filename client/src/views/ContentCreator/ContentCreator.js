@@ -16,6 +16,7 @@ import UnitEditor from './UnitEditor/UnitEditor';
 import LessonEditor from './LessonEditor/LessonEditor';
 
 import './ContentCreator.less';
+import { Link } from 'react-router-dom';
 
 const { TabPane } = Tabs;
 
@@ -180,6 +181,16 @@ export default function ContentCreator({ history }) {
       editable: false,
       width: '20%',
       align: 'left',
+      render: (_, key) => (
+        <Link
+          onClick={() =>
+            localStorage.setItem('sandbox-day', JSON.stringify(key))
+          }
+          to={'/sandbox'}
+        >
+          Open
+        </Link>
+      ),
     },
     {
       title: 'Delete',

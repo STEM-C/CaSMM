@@ -547,6 +547,14 @@ export const getCCWorkspaces = async () =>
     error: 'Unable to retrive cc worksapces',
   });
 
+export const getCCWorkspace = async (id) =>
+  makeRequest({
+    method: GET,
+    path: `${server}/cc-workspaces/${id}`,
+    auth: true,
+    error: 'Unable to retrive cc worksapce',
+  });
+
 export const createCCWorkspace = async (name, description, template, blocks) =>
   makeRequest({
     method: POST,
@@ -559,4 +567,11 @@ export const createCCWorkspace = async (name, description, template, blocks) =>
       blocks,
     },
     error: 'Unable to create cc workspace',
+  });
+export const getCCWorkspaceToolbox = async (id) =>
+  makeRequest({
+    method: GET,
+    path: `${server}/cc-workspaces/toolbox/${id}`,
+    auth: true,
+    error: 'Toolbox could not be retrieved.',
   });

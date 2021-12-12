@@ -61,7 +61,13 @@ export default function NavBar() {
         </Menu.Item>
       ) : null}
       {shouldShowRoute('Sandbox') ? (
-        <Menu.Item key='1' onClick={() => handleRouteChange(routes.Sandbox)}>
+        <Menu.Item
+          key='1'
+          onClick={() => {
+            sessionStorage.removeItem('ccWorkspaceId');
+            handleRouteChange(routes.Sandbox);
+          }}
+        >
           <i className='fa fa-window-maximize' />
           &nbsp; Sandbox
         </Menu.Item>

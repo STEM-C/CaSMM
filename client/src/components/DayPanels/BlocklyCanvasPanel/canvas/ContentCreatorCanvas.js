@@ -2,7 +2,6 @@ import React, { useEffect, useRef, useState, useReducer } from 'react';
 import '../../DayPanels.less';
 import { compileArduinoCode, handleCreatorSaveDay } from '../../Utils/helpers';
 import { message, Spin, Row, Col, Alert } from 'antd';
-import { getSaves, createCCWorkspace } from '../../../../Utils/requests';
 import CodeModal from '../modals/CodeModal';
 import SaveAsModal from '../modals/SaveAsModal';
 import ConsoleModal from '../modals/ConsoleModal';
@@ -36,12 +35,12 @@ export default function ContentCreatorCanvas({ day, isSandbox }) {
   const [selectedCompile, setSelectedCompile] = useState(false);
   const [compileError, setCompileError] = useState('');
   const [studentToolbox, setStudentToolbox] = useState([]);
+  const [ccWorkspace, setCcWorkspace] = useState({});
 
   const history = useHistory();
   const [ignored, forceUpdate] = useReducer((x) => x + 1, 0);
   const workspaceRef = useRef(null);
   const dayRef = useRef(null);
-  const replayRef = useRef([]);
 
   const setWorkspace = () => {
     workspaceRef.current = window.Blockly.inject('blockly-canvas', {
@@ -64,30 +63,14 @@ export default function ContentCreatorCanvas({ day, isSandbox }) {
       dayRef.current = day;
       if (!workspaceRef.current && day && Object.keys(day).length !== 0) {
         setWorkspace();
-
-        if (!isSandbox) {
-          let onLoadSave = null;
-          const res = await getSaves(day.id);
-          if (res.data) {
-            if (res.data.current) onLoadSave = res.data.current;
-          } else {
-            console.log(res.err);
-          }
-
-          if (onLoadSave) {
-            let xml = window.Blockly.Xml.textToDom(onLoadSave.workspace);
-            window.Blockly.Xml.domToWorkspace(xml, workspaceRef.current);
-            replayRef.current = onLoadSave.replay;
-          } else if (day.template) {
-            let xml = window.Blockly.Xml.textToDom(day.template);
-            window.Blockly.Xml.domToWorkspace(xml, workspaceRef.current);
-          }
-        }
+        console.log(day);
+        let xml = window.Blockly.Xml.textToDom(day.template);
+        window.Blockly.Xml.domToWorkspace(xml, workspaceRef.current);
         workspaceRef.current.clearUndo();
       }
     };
     setUp();
-  }, [day]);
+  }, [day, isSandbox]);
 
   const handleCreatorSave = async () => {
     const res = await handleCreatorSaveDay(
@@ -361,7 +344,7 @@ export default function ContentCreatorCanvas({ day, isSandbox }) {
           </Spin>
         </div>
         <StudentToolboxMenu
-          day={day}
+          day={day.selectedToolbox ? day : ccWorkspace}
           studentToolbox={studentToolbox}
           setStudentToolbox={setStudentToolbox}
         />
