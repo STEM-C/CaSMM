@@ -10,7 +10,7 @@ const DayLevelReportView = () => {
   const [studentName, setStudentsName] = useState([])
   const [studentPartner, setStudentsPartner] = useState([])
   const [className, setClassName] = useState([])
-  const [clicks, setClicks] = useState([])
+  const [clicks, setClicks] = useState(0)
   
   useEffect(function() {
     const getData = async () => {
@@ -28,8 +28,8 @@ const DayLevelReportView = () => {
       const fetchedClassroomNames = session.data.classroom.name;
       setClassName(fetchedClassroomNames);
       
-      const fetchedClicks = session.data.saves[0].replay[0].clicks;
-      setClicks(fetchedClicks);
+      // const fetchedClicks = session.data.saves[0].replay[0].clicks;
+      // setClicks(fetchedClicks);
 
     }
     getData();
