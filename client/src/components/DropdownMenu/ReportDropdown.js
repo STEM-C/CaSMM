@@ -10,7 +10,6 @@ function handleChange(value) {
 
 export default function ReportDropdown({label, menuName, menuItems}) {
     const menus = Object.entries(menuItems).map((key) => {
-        console.log("key :", key)
         return (
             <Option className="report-menu-item" value={`${key[1]}`}>
                 {`${key[1]}`}

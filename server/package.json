@@ -15,6 +15,7 @@
     "dotenv": "^10.0.0",
     "knex": "0.21.18",
     "pg": "^8.7.1",
+    "sharp": "^0.29.3",
     "strapi": "3.6.7",
     "strapi-admin": "3.6.7",
     "strapi-connector-bookshelf": "3.6.7",
@@ -22,7 +23,6 @@
     "strapi-plugin-content-type-builder": "3.6.7",
     "strapi-plugin-email": "3.6.7",
     "strapi-plugin-sentry": "^3.6.8",
-    "strapi-plugin-upload": "3.6.7",
     "strapi-plugin-users-permissions": "3.6.7",
     "strapi-provider-email-nodemailer": "^3.6.8",
     "strapi-utils": "3.6.7"
