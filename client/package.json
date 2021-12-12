@@ -9,6 +9,7 @@
     "@testing-library/jest-dom": "^5.14.1",
     "@testing-library/react": "^12.0.0",
     "@testing-library/user-event": "^7.1.2",
+    "strapi-provider-email-nodemailer": "^3.6.8",
     "antd": "^4.16.12",
     "axios": "^0.21.1",
     "craco-less": "^1.18.0",

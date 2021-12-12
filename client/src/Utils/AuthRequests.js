@@ -4,7 +4,7 @@ import { setUserState } from './userState';
 import axios from 'axios';
 
 // Get the role of user from the session storage
-const getCurrUser = () => {
+export const getCurrUser = () => {
   const result = JSON.parse(sessionStorage.getItem('user'));
   if (!result) {
     return {
