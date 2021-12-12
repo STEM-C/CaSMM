@@ -45,8 +45,8 @@
       "required": true
     },
     "session": {
-      "model": "session",
-      "via": "submissions"
+      "via": "submissions",
+      "model": "session"
     },
     "day": {
       "model": "day"

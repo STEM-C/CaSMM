@@ -34,18 +34,18 @@ export default function PlotterModal({
   const [ignored, forceUpdate] = useReducer((x) => x + 1, 0);
 
   useEffect(() => {
-    navigator.serial.addEventListener('disconnect', (e) => {
-      console.log('device disconnected');
-      window.port = undefined;
-      setConnectionOpen(false);
-      document.getElementById('connect-button').innerHTML = 'Connect';
-      setDeviceDisconnect(true);
-      message.error('Device Disconnected');
-    });
-    navigator.serial.addEventListener('connect', (e) => {
-      setDeviceDisconnect(false);
-      message.success('Device Connected');
-    });
+    // navigator.serial.addEventListener('disconnect', (e) => {
+    //   console.log('device disconnected');
+    //   window.port = undefined;
+    //   setConnectionOpen(false);
+    //   document.getElementById('connect-button').innerHTML = 'Connect';
+    //   setDeviceDisconnect(true);
+    //   message.error('Device Disconnected');
+    // });
+    // navigator.serial.addEventListener('connect', (e) => {
+    //   setDeviceDisconnect(false);
+    //   message.success('Device Connected');
+    // });
   }, [deviceDisconnect, setConnectionOpen]);
 
   const handleConnect = async () => {
