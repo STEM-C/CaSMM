@@ -25,6 +25,14 @@
       }
     },
     {
+      "method": "GET",
+      "path": "/cc-workspaces/toolbox/:id",
+      "handler": "cc-workspace.toolbox",
+      "config": {
+        "policies": []
+      }
+    },
+    {
       "method": "POST",
       "path": "/cc-workspaces",
       "handler": "cc-workspace.create",
