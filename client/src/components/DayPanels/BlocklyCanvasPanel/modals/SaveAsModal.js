@@ -1,7 +1,13 @@
 import { Modal, Button, Input, Form, message } from 'antd';
+import { handleCreatorSaveAsWorkspace } from '../../Utils/helpers';
 import React, { useState } from 'react';
 
-export default function SaveAsModal({ hover, setHover }) {
+export default function SaveAsModal({
+  hover,
+  setHover,
+  workspaceRef,
+  studentToolbox,
+}) {
   const [visible, setVisible] = useState(false);
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
@@ -16,9 +22,19 @@ export default function SaveAsModal({ hover, setHover }) {
     setVisible(false);
   };
 
-  const handleOk = () => {
-    message.success('Saved!');
-    setVisible(false);
+  const handleSaveAs = async () => {
+    const res = await handleCreatorSaveAsWorkspace(
+      name,
+      description,
+      workspaceRef,
+      studentToolbox
+    );
+    if (res.err) {
+      message.error(res.err);
+    } else {
+      message.success('Workspace saved successfully');
+      setVisible(false);
+    }
   };
 
   return (
@@ -35,14 +51,7 @@ export default function SaveAsModal({ hover, setHover }) {
         visible={visible}
         onCancel={handleCancel}
         width='25vw'
-        footer={[
-          <Button key='calcel' type='primary' onClick={handleCancel}>
-            Cancel
-          </Button>,
-          <Button key='ok' type='primary' onClick={handleOk}>
-            Save
-          </Button>,
-        ]}
+        footer={null}
       >
         <Form
           layout='horizontal'
@@ -53,7 +62,7 @@ export default function SaveAsModal({ hover, setHover }) {
           wrapperCol={{
             span: 14,
           }}
-          onFinish={handleOk}
+          onFinish={handleSaveAs}
         >
           <Form.Item label='Workspace Name: '>
             <Input
@@ -72,6 +81,24 @@ export default function SaveAsModal({ hover, setHover }) {
               placeholder='Enter description'
               required
             ></Input.TextArea>
+          </Form.Item>
+          <Form.Item
+            wrapperCol={{
+              offset: 2,
+              span: 20,
+            }}
+            style={{ marginBottom: '0px' }}
+          >
+            <Button
+              type='primary'
+              htmlType='submit'
+              className='content-creator-button'
+            >
+              Submit
+            </Button>
+            <Button onClick={handleCancel} className='content-creator-button'>
+              Cancel
+            </Button>
           </Form.Item>
         </Form>
       </Modal>

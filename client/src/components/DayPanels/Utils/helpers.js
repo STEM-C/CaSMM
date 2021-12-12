@@ -3,6 +3,7 @@ import {
   getSubmission,
   saveWorkspace,
   updateDayTemplate,
+  createCCWorkspace,
 } from '../../../Utils/requests';
 import { message } from 'antd';
 
@@ -194,4 +195,16 @@ export const handleCreatorSaveDay = async (dayId, workspaceRef, blocksList) => {
   let xml_text = window.Blockly.Xml.domToText(xml);
 
   return await updateDayTemplate(dayId, xml_text, blocksList);
+};
+
+export const handleCreatorSaveAsWorkspace = async (
+  name,
+  description,
+  workspaceRef,
+  blocksList
+) => {
+  let xml = window.Blockly.Xml.workspaceToDom(workspaceRef.current);
+  let xml_text = window.Blockly.Xml.domToText(xml);
+
+  return await createCCWorkspace(name, description, xml_text, blocksList);
 };

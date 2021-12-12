@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState, useReducer } from 'react';
 import '../../DayPanels.less';
 import { compileArduinoCode, handleCreatorSaveDay } from '../../Utils/helpers';
 import { message, Spin, Row, Col, Alert } from 'antd';
-import { getSaves } from '../../../../Utils/requests';
+import { getSaves, createCCWorkspace } from '../../../../Utils/requests';
 import CodeModal from '../modals/CodeModal';
 import SaveAsModal from '../modals/SaveAsModal';
 import ConsoleModal from '../modals/ConsoleModal';
@@ -102,8 +102,6 @@ export default function ContentCreatorCanvas({ day, isSandbox }) {
       message.success('Day saved successfully');
     }
   };
-
-  const handleSaveAs = async () => {};
 
   const handleUndo = () => {
     if (workspaceRef.current.undoStack_.length > 0)
@@ -253,6 +251,8 @@ export default function ContentCreatorCanvas({ day, isSandbox }) {
                         <SaveAsModal
                           hover={hoverSaveAs}
                           setHover={setHoverSaveAs}
+                          workspaceRef={workspaceRef}
+                          studentToolbox={studentToolbox}
                         />
                       </Col>
                       <Col className='flex flex-row'>
