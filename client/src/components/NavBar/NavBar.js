@@ -51,6 +51,15 @@ export default function NavBar() {
           &nbsp; Dashboard
         </Menu.Item>
       ) : null}
+      {shouldShowRoute('ResearcherDashboard') ? (
+        <Menu.Item
+          key='1'
+          onClick={() => handleRouteChange(routes.ResearcherDashboard)}
+        >
+          <i className='fa fa-home' />
+          &nbsp; Dashboard
+        </Menu.Item>
+      ) : null}
       {shouldShowRoute('Sandbox') ? (
         <Menu.Item key='1' onClick={() => handleRouteChange(routes.Sandbox)}>
           <i className='fa fa-window-maximize' />
@@ -98,6 +107,8 @@ export default function NavBar() {
             ? '/dashboard'
             : value.role === 'Student'
             ? '/student'
+            : value.role === 'Researcher'
+            ? '/report'
             : '/'
         }
       >

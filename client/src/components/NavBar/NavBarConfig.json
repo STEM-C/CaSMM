@@ -8,6 +8,7 @@
     "SignOut": "/",
     "AccountInfo": "/account",
     "ContentCreatorDashboard": "/ccdashboard",
+    "ResearcherDashboard": "/report",
     "BugReport": "/bugreport"
   },
   "users": {
@@ -20,6 +21,7 @@
       "Sandbox",
       "SignOut",
       "BugReport"
-    ]
+    ],
+    "Researcher": ["ResearcherDashboard", "BugReport", "SignOut"]
   }
 }
