@@ -64,7 +64,7 @@ export default function NavBar() {
         <Menu.Item
           key='1'
           onClick={() => {
-            sessionStorage.removeItem('ccWorkspaceId');
+            localStorage.removeItem('sandbox-day');
             handleRouteChange(routes.Sandbox);
           }}
         >

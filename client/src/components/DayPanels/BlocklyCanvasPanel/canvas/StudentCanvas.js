@@ -39,7 +39,7 @@ export default function StudentCanvas({ day }) {
   const [clicks, setClicks] = useState(0);
   const parser = new DOMParser();
 
-  const [ignored, forceUpdate] = useReducer((x) => x + 1, 0);
+  const [forceUpdate] = useReducer((x) => x + 1, 0);
   const history = useHistory();
   const workspaceRef = useRef(null);
   const dayRef = useRef(null);

@@ -30,7 +30,7 @@ export default function StudentToolboxMenu(props) {
       setStudentToolbox(tempToolBox);
     };
     setUp();
-  }, [day]);
+  }, [day, setStudentToolbox]);
 
   const handleSearchFilterChange = (value) => {
     let validCategories = [];
@@ -151,6 +151,7 @@ export default function StudentToolboxMenu(props) {
           height='95%'
           width='95%'
           src={process.env.PUBLIC_URL + block.image_url}
+          alt={block.name}
         />
       );
     } else return block.name;

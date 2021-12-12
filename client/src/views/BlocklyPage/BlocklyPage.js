@@ -21,7 +21,7 @@ export default function BlocklyPage({ history, isSandbox }) {
       const sanboxDay = JSON.parse(localStorage.getItem('sandbox-day'));
       if (isSandbox) {
         const AllToolboxRes = await getDayToolboxAll();
-        if (!sanboxDay.id) {
+        if (!sanboxDay?.id) {
           if (AllToolboxRes.data) {
             let loadedDay = { toolbox: AllToolboxRes.data.toolbox };
             localStorage.setItem('sandbox-day', JSON.stringify(loadedDay));
@@ -67,7 +67,7 @@ export default function BlocklyPage({ history, isSandbox }) {
     };
 
     setup();
-  }, []);
+  }, [history, isSandbox]);
 
   return (
     <div className='container nav-padding'>

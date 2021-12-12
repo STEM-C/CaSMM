@@ -32,7 +32,7 @@ export default function MentorCanvas({ day }) {
   const [selectedCompile, setSelectedCompile] = useState(false);
   const [compileError, setCompileError] = useState('');
 
-  const [ignored, forceUpdate] = useReducer((x) => x + 1, 0);
+  const [forceUpdate] = useReducer((x) => x + 1, 0);
   const workspaceRef = useRef(null);
   const dayRef = useRef(null);
   const replayRef = useRef([]);

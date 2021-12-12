@@ -35,10 +35,9 @@ export default function ContentCreatorCanvas({ day, isSandbox }) {
   const [selectedCompile, setSelectedCompile] = useState(false);
   const [compileError, setCompileError] = useState('');
   const [studentToolbox, setStudentToolbox] = useState([]);
-  const [ccWorkspace, setCcWorkspace] = useState({});
 
   const history = useHistory();
-  const [ignored, forceUpdate] = useReducer((x) => x + 1, 0);
+  const [forceUpdate] = useReducer((x) => x + 1, 0);
   const workspaceRef = useRef(null);
   const dayRef = useRef(null);
 
@@ -63,7 +62,6 @@ export default function ContentCreatorCanvas({ day, isSandbox }) {
       dayRef.current = day;
       if (!workspaceRef.current && day && Object.keys(day).length !== 0) {
         setWorkspace();
-        console.log(day);
         let xml = window.Blockly.Xml.textToDom(day.template);
         window.Blockly.Xml.domToWorkspace(xml, workspaceRef.current);
         workspaceRef.current.clearUndo();
@@ -344,7 +342,7 @@ export default function ContentCreatorCanvas({ day, isSandbox }) {
           </Spin>
         </div>
         <StudentToolboxMenu
-          day={day.selectedToolbox ? day : ccWorkspace}
+          day={day}
           studentToolbox={studentToolbox}
           setStudentToolbox={setStudentToolbox}
         />

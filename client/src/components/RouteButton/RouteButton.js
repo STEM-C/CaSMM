@@ -1,13 +1,13 @@
-import React, { useState } from "react";
-import {Link } from "react-router-dom";
-import './RouteButton.less'
+import React from 'react';
+import { Link } from 'react-router-dom';
+import './RouteButton.less';
 
-export default function RouteButton({link, id, size, variant, children}) {
-
-  
+export default function RouteButton({ link, id, size, variant, children }) {
   return (
     <Link to={link}>
-        <button id={id} className={`btn-${variant} btn-${size}`} type="button">{children}</button>
+      <button id={id} className={`btn-${variant} btn-${size}`} type='button'>
+        {children}
+      </button>
     </Link>
   );
 }

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { AutoComplete, Button, Divider, message, Tag } from 'antd';
+import { AutoComplete, Divider, message, Tag } from 'antd';
 import './LearningStandardSelect.less';
 import {
   getLearningStandard,

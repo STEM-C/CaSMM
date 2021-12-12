@@ -26,7 +26,7 @@ export default function Dashboard({ history, currUser }) {
         history.push('/teacherlogin');
       }
     });
-  }, []);
+  }, [history]);
 
   const handleViewClassroom = (classroomId) => {
     history.push(`/classroom/${classroomId}`);
