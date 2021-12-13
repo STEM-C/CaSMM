@@ -5,11 +5,16 @@ import { Menu, Checkbox, Input, Switch } from 'antd';
 export default function StudentToolboxMenu(props) {
   const [searchFilter, setSearchFilter] = useState('');
   const [selectAll, setSelectAll] = useState(false);
-  const [openedToolBoxCategories, setOpenedToolBoxCategories] = useState([]);
   const [selectedToolBoxCategories, setSelectedToolBoxCategories] = useState(
     []
   );
-  const { day, studentToolbox, setStudentToolbox } = props;
+  const {
+    day,
+    studentToolbox,
+    setStudentToolbox,
+    openedToolBoxCategories,
+    setOpenedToolBoxCategories,
+  } = props;
 
   const { SubMenu } = Menu;
 
@@ -30,7 +35,7 @@ export default function StudentToolboxMenu(props) {
       setStudentToolbox(tempToolBox);
     };
     setUp();
-  }, [day, setStudentToolbox]);
+  }, [day, setStudentToolbox, setOpenedToolBoxCategories]);
 
   const handleSearchFilterChange = (value) => {
     let validCategories = [];

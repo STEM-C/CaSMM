@@ -7,13 +7,9 @@ import {
   getCCWorkspaceToolbox,
 } from '../../Utils/requests';
 import { message } from 'antd';
-import { useGlobalState } from '../../Utils/userState';
 
 export default function BlocklyPage({ history, isSandbox }) {
   const [day, setDay] = useState({});
-  const [value] = useGlobalState('currUser');
-
-  const userRole = value.role;
 
   useEffect(() => {
     const setup = async () => {
@@ -73,11 +69,7 @@ export default function BlocklyPage({ history, isSandbox }) {
     <div className='container nav-padding'>
       <NavBar />
       <div className='flex flex-row'>
-        <BlocklyCanvasPanel
-          day={day}
-          isSandbox={isSandbox}
-          userRole={userRole}
-        />
+        <BlocklyCanvasPanel day={day} isSandbox={isSandbox} />
       </div>
     </div>
   );
