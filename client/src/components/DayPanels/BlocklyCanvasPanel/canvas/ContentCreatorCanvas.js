@@ -103,6 +103,10 @@ export default function ContentCreatorCanvas({ day, isSandbox, setDay }) {
           setDay(localDay);
         }
       }
+      return true;
+    } else {
+      message.error(res.err);
+      return false;
     }
   };
 
@@ -279,17 +283,13 @@ export default function ContentCreatorCanvas({ day, isSandbox, setDay }) {
               <Col flex='auto'>
                 <Row align='middle' justify='end' id='description-container'>
                   <Col flex={'30px'}>
-                    <Row>
-                      <Col>
-                        <button
-                          onClick={handleGoBack}
-                          id='link'
-                          className='flex flex-column'
-                        >
-                          <i id='icon-btn' className='fa fa-arrow-left' />
-                        </button>
-                      </Col>
-                    </Row>
+                    <button
+                      onClick={handleGoBack}
+                      id='link'
+                      className='flex flex-column'
+                    >
+                      <i id='icon-btn' className='fa fa-arrow-left' />
+                    </button>
                   </Col>
                   <Col flex='auto' />
                   <Row>
@@ -326,97 +326,104 @@ export default function ContentCreatorCanvas({ day, isSandbox, setDay }) {
                         isSandbox={isSandbox}
                       />
                     </Col>
-                    <button
-                      onClick={handleUndo}
-                      id='link'
-                      className='flex flex-column'
-                    >
-                      <i
-                        id='icon-btn'
-                        className='fa fa-undo-alt'
-                        style={
-                          workspaceRef.current
-                            ? workspaceRef.current.undoStack_.length < 1
-                              ? { color: 'grey', cursor: 'default' }
+                    <Col className='flex flex-row'>
+                      <button
+                        onClick={handleUndo}
+                        id='link'
+                        className='flex flex-column'
+                      >
+                        <i
+                          id='icon-btn'
+                          className='fa fa-undo-alt'
+                          style={
+                            workspaceRef.current
+                              ? workspaceRef.current.undoStack_.length < 1
+                                ? { color: 'grey', cursor: 'default' }
+                                : null
                               : null
-                            : null
-                        }
-                        onMouseEnter={() => setHoverUndo(true)}
-                        onMouseLeave={() => setHoverUndo(false)}
-                      />
-                      {hoverUndo && (
-                        <div className='popup ModalCompile4'>Undo</div>
-                      )}
-                    </button>
-                    <button
-                      onClick={handleRedo}
-                      id='link'
-                      className='flex flex-column'
-                    >
-                      <i
-                        id='icon-btn'
-                        className='fa fa-redo-alt'
-                        style={
-                          workspaceRef.current
-                            ? workspaceRef.current.redoStack_.length < 1
-                              ? { color: 'grey', cursor: 'default' }
+                          }
+                          onMouseEnter={() => setHoverUndo(true)}
+                          onMouseLeave={() => setHoverUndo(false)}
+                        />
+                        {hoverUndo && (
+                          <div className='popup ModalCompile4'>Undo</div>
+                        )}
+                      </button>
+                      <button
+                        onClick={handleRedo}
+                        id='link'
+                        className='flex flex-column'
+                      >
+                        <i
+                          id='icon-btn'
+                          className='fa fa-redo-alt'
+                          style={
+                            workspaceRef.current
+                              ? workspaceRef.current.redoStack_.length < 1
+                                ? { color: 'grey', cursor: 'default' }
+                                : null
                               : null
-                            : null
-                        }
-                        onMouseEnter={() => setHoverRedo(true)}
-                        onMouseLeave={() => setHoverRedo(false)}
-                      />
-                      {hoverRedo && (
-                        <div className='popup ModalCompile4'>Redo</div>
-                      )}
-                    </button>
+                          }
+                          onMouseEnter={() => setHoverRedo(true)}
+                          onMouseLeave={() => setHoverRedo(false)}
+                        />
+                        {hoverRedo && (
+                          <div className='popup ModalCompile4'>Redo</div>
+                        )}
+                      </button>
+                    </Col>
+                    <Col className='flex flex-row'>
+                      <div
+                        id='action-btn-container'
+                        className='flex space-around'
+                      >
+                        <CodeModal
+                          title={'XML'}
+                          workspaceRef={workspaceRef.current}
+                          setHover={setHoverXml}
+                          hover={hoverXml}
+                        />
+                        <CodeModal
+                          title={'Arduino Code'}
+                          workspaceRef={workspaceRef.current}
+                          setHover={setHoverArduino}
+                          hover={hoverArduino}
+                        />
+
+                        <ArduinoLogo
+                          setHoverCompile={setHoverCompile}
+                          handleCompile={handleCompile}
+                        />
+                        {hoverCompile && (
+                          <div className='popup ModalCompile'>
+                            Upload to Arduino
+                          </div>
+                        )}
+
+                        <i
+                          onClick={() => handleConsole()}
+                          className='fas fa-terminal hvr-info'
+                          style={{ marginLeft: '6px' }}
+                          onMouseEnter={() => setHoverConsole(true)}
+                          onMouseLeave={() => setHoverConsole(false)}
+                        />
+                        {hoverConsole && (
+                          <div className='popup ModalCompile'>
+                            Show Serial Monitor
+                          </div>
+                        )}
+                        <PlotterLogo
+                          setHoverPlotter={setHoverPlotter}
+                          handlePlotter={handlePlotter}
+                        />
+                        {hoverPlotter && (
+                          <div className='popup ModalCompile'>
+                            Show Serial Plotter
+                          </div>
+                        )}
+                      </div>
+                    </Col>
                   </Row>
-                  <div id='action-btn-container' className='flex space-around'>
-                    <CodeModal
-                      title={'XML'}
-                      workspaceRef={workspaceRef.current}
-                      setHover={setHoverXml}
-                      hover={hoverXml}
-                    />
-                    <CodeModal
-                      title={'Arduino Code'}
-                      workspaceRef={workspaceRef.current}
-                      setHover={setHoverArduino}
-                      hover={hoverArduino}
-                    />
-
-                    <ArduinoLogo
-                      setHoverCompile={setHoverCompile}
-                      handleCompile={handleCompile}
-                    />
-                    {hoverCompile && (
-                      <div className='popup ModalCompile'>
-                        Upload to Arduino
-                      </div>
-                    )}
-
-                    <i
-                      onClick={() => handleConsole()}
-                      className='fas fa-terminal hvr-info'
-                      style={{ marginLeft: '6px' }}
-                      onMouseEnter={() => setHoverConsole(true)}
-                      onMouseLeave={() => setHoverConsole(false)}
-                    />
-                    {hoverConsole && (
-                      <div className='popup ModalCompile'>
-                        Show Serial Monitor
-                      </div>
-                    )}
-                    <PlotterLogo
-                      setHoverPlotter={setHoverPlotter}
-                      handlePlotter={handlePlotter}
-                    />
-                    {hoverPlotter && (
-                      <div className='popup ModalCompile'>
-                        Show Serial Plotter
-                      </div>
-                    )}
-                  </div>
                 </Row>
               </Col>
             </Row>

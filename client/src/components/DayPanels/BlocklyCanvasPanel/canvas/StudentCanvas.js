@@ -387,22 +387,18 @@ export default function StudentCanvas({ day }) {
               <Col flex='auto'>
                 <Row align='middle' justify='end' id='description-container'>
                   <Col flex={'30px'}>
-                    <Row>
-                      <Col>
-                        <button
-                          onClick={handleGoBack}
-                          id='link'
-                          className='flex flex-column'
-                        >
-                          <i id='icon-btn' className='fa fa-arrow-left' />
-                        </button>
-                      </Col>
-                    </Row>
+                    <button
+                      onClick={handleGoBack}
+                      id='link'
+                      className='flex flex-column'
+                    >
+                      <i id='icon-btn' className='fa fa-arrow-left' />
+                    </button>
                   </Col>
                   <Col flex='auto' />
 
                   <Col flex={'300px'}>
-                    {`Last changes saved ${lastSavedTime}`}
+                    {lastSavedTime ? `Last changes saved ${lastSavedTime}` : ''}
                   </Col>
                   <Col flex={'350px'}>
                     <Row>

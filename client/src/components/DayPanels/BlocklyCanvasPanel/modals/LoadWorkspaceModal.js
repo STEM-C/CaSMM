@@ -15,8 +15,7 @@ const LoadWorkspaceModal = ({ hover, setHover, loadSave }) => {
   };
 
   const handleSelected = (id) => {
-    loadSave(id);
-    setVisible(false);
+    if (loadSave(id)) setVisible(false);
   };
 
   const handleCancel = () => {
