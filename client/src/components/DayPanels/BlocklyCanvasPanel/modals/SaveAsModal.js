@@ -1,6 +1,7 @@
 import { Modal, Button, Input, Form, message } from 'antd';
 import { handleCreatorSaveAsWorkspace } from '../../Utils/helpers';
 import React, { useState } from 'react';
+import { getCCWorkspaceToolbox } from '../../../../Utils/requests';
 
 export default function SaveAsModal({
   hover,
@@ -9,6 +10,8 @@ export default function SaveAsModal({
   studentToolbox,
   visible,
   setVisible,
+  day,
+  setDay,
 }) {
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
@@ -33,13 +36,19 @@ export default function SaveAsModal({
     if (res.err) {
       message.error(res.err);
     } else {
-      message.success('Workspace saved successfully');
-
-      // set local storage
-      let localDay = { ...res.data, selectedToolbox: studentToolbox };
-      localStorage.setItem('sandbox-day', JSON.stringify(localDay));
-
-      setVisible(false);
+      const toolboxRes = await getCCWorkspaceToolbox(res.data.id);
+      if (toolboxRes.data) {
+        message.success('Workspace saved successfully');
+        let localDay = {
+          ...res.data,
+          selectedToolbox: toolboxRes.data.toolbox,
+          toolbox: day.toolbox,
+        };
+        setDay(localDay);
+        setVisible(false);
+      } else {
+        message.error(toolboxRes.err);
+      }
     }
   };
 

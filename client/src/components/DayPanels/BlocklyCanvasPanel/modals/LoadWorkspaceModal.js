@@ -33,7 +33,7 @@ const LoadWorkspaceModal = ({ hover, setHover, loadSave }) => {
     <div id='link'>
       <i
         onClick={showModal}
-        className='flex fas fa-file-download'
+        className='flex fas fa-file-upload'
         onMouseEnter={() => setHover(true)}
         onMouseLeave={() => setHover(false)}
       />

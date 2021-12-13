@@ -27,7 +27,7 @@ import { useHistory } from 'react-router';
 
 let plotId = 1;
 
-export default function ContentCreatorCanvas({ day, isSandbox }) {
+export default function ContentCreatorCanvas({ day, isSandbox, setDay }) {
   const [hoverXml, setHoverXml] = useState(false);
   const [hoverLoadWorkspace, setHoverLoadWorkspace] = useState(false);
   const [hoverSave, setHoverSave] = useState(false);
@@ -71,18 +71,13 @@ export default function ContentCreatorCanvas({ day, isSandbox }) {
       // set up the student toolbox
       const toolboxRes = await getCCWorkspaceToolbox(res.data.id);
       if (toolboxRes.data) {
-        let tempCategories = [],
-          tempToolBox = [];
-        toolboxRes.data.toolbox.forEach(([category, blocks]) => {
-          tempCategories.push(category);
-          tempToolBox = [...tempToolBox, ...blocks.map((block) => block.name)];
-        });
-        setOpenedToolBoxCategories(tempCategories);
-        setStudentToolbox(tempToolBox);
-
         //update localstorage
-        let localDay = { ...res.data, selectedToolbox: tempToolBox };
-        localStorage.setItem('sandbox-day', JSON.stringify(localDay));
+        let localDay = {
+          ...res.data,
+          selectedToolbox: toolboxRes.data.toolbox,
+          toolbox: day.toolbox,
+        };
+        setDay(localDay);
       }
     }
   };
@@ -124,11 +119,10 @@ export default function ContentCreatorCanvas({ day, isSandbox }) {
         message.success('Day saved successfully');
       }
     } else {
-      const sandboxDay = JSON.parse(localStorage.getItem('sandbox-day'));
       // if we already have the workspace in the db, just update it.
-      if (sandboxDay && sandboxDay.id) {
+      if (day && day.id) {
         const updateRes = await handleCreatorUpdateWorkspace(
-          sandboxDay.id,
+          day.id,
           workspaceRef,
           studentToolbox
         );
@@ -303,6 +297,8 @@ export default function ContentCreatorCanvas({ day, isSandbox }) {
                         setVisible={setShowSaveAsModal}
                         workspaceRef={workspaceRef}
                         studentToolbox={studentToolbox}
+                        day={day}
+                        setDay={setDay}
                       />
                     </Col>
                     <button

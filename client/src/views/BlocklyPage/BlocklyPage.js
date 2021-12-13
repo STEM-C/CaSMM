@@ -69,7 +69,7 @@ export default function BlocklyPage({ history, isSandbox }) {
     <div className='container nav-padding'>
       <NavBar />
       <div className='flex flex-row'>
-        <BlocklyCanvasPanel day={day} isSandbox={isSandbox} />
+        <BlocklyCanvasPanel day={day} setDay={setDay} isSandbox={isSandbox} />
       </div>
     </div>
   );
