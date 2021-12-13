@@ -68,16 +68,40 @@ export default function ContentCreatorCanvas({ day, isSandbox, setDay }) {
       let xml = window.Blockly.Xml.textToDom(res.data.template);
       window.Blockly.Xml.domToWorkspace(xml, workspaceRef.current);
 
-      // set up the student toolbox
-      const toolboxRes = await getCCWorkspaceToolbox(res.data.id);
-      if (toolboxRes.data) {
-        //update localstorage
-        let localDay = {
-          ...res.data,
-          selectedToolbox: toolboxRes.data.toolbox,
-          toolbox: day.toolbox,
-        };
-        setDay(localDay);
+      // if we are not in sandbox mode, only the canvas will be changed.
+      // set the toolbox here
+      if (!isSandbox) {
+        const toolboxRes = await getCCWorkspaceToolbox(workspaceId);
+        if (toolboxRes.data) {
+          let tempCategories = [],
+            tempToolBox = [];
+          toolboxRes.data.toolbox &&
+            toolboxRes.data.toolbox.forEach(([category, blocks]) => {
+              tempCategories.push(category);
+              tempToolBox = [
+                ...tempToolBox,
+                ...blocks.map((block) => block.name),
+              ];
+            });
+
+          setOpenedToolBoxCategories(tempCategories);
+          setStudentToolbox(tempToolBox);
+        }
+      }
+
+      // else if we are in sandbox, we will change the current workspace to the loaded worksapce
+      else {
+        // set up the student toolbox
+        const toolboxRes = await getCCWorkspaceToolbox(res.data.id);
+        if (toolboxRes.data) {
+          //update localstorage
+          let localDay = {
+            ...res.data,
+            selectedToolbox: toolboxRes.data.toolbox,
+            toolbox: day.toolbox,
+          };
+          setDay(localDay);
+        }
       }
     }
   };
@@ -249,7 +273,7 @@ export default function ContentCreatorCanvas({ day, isSandbox, setDay }) {
                 {day.learning_standard_name
                   ? `${day.learning_standard_name} - Day ${day.number}`
                   : day.name
-                  ? `Workspace ${day.id}: ${day.name}`
+                  ? `Workspace: ${day.name}`
                   : 'New Workspace!'}
               </Col>
               <Col flex='auto'>
@@ -299,6 +323,7 @@ export default function ContentCreatorCanvas({ day, isSandbox, setDay }) {
                         studentToolbox={studentToolbox}
                         day={day}
                         setDay={setDay}
+                        isSandbox={isSandbox}
                       />
                     </Col>
                     <button

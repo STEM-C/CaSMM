@@ -6,19 +6,13 @@ const LoadWorkspaceModal = ({ hover, setHover, loadSave }) => {
   const [visible, setVisible] = useState(false);
   const [workspaces, setWorkspaces] = useState([]);
 
-  const showModal = () => {
+  const showModal = async () => {
+    const res = await getCCWorkspaces();
+    if (res.data) {
+      setWorkspaces(res.data);
+    }
     setVisible(true);
   };
-
-  useEffect(() => {
-    const setup = async () => {
-      const res = await getCCWorkspaces();
-      if (res.data) {
-        setWorkspaces(res.data);
-      }
-    };
-    setup();
-  }, []);
 
   const handleSelected = (id) => {
     loadSave(id);

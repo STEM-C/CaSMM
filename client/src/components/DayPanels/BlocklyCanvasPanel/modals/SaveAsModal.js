@@ -12,6 +12,7 @@ export default function SaveAsModal({
   setVisible,
   day,
   setDay,
+  isSandbox,
 }) {
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
@@ -36,19 +37,22 @@ export default function SaveAsModal({
     if (res.err) {
       message.error(res.err);
     } else {
-      const toolboxRes = await getCCWorkspaceToolbox(res.data.id);
-      if (toolboxRes.data) {
-        message.success('Workspace saved successfully');
-        let localDay = {
-          ...res.data,
-          selectedToolbox: toolboxRes.data.toolbox,
-          toolbox: day.toolbox,
-        };
-        setDay(localDay);
-        setVisible(false);
-      } else {
-        message.error(toolboxRes.err);
+      // if we are on sandbox mode, set the current workspace to the saved worksapce
+      if (isSandbox) {
+        const toolboxRes = await getCCWorkspaceToolbox(res.data.id);
+        if (toolboxRes.data) {
+          message.success('Workspace saved successfully');
+          let localDay = {
+            ...res.data,
+            selectedToolbox: toolboxRes.data.toolbox,
+            toolbox: day.toolbox,
+          };
+          setDay(localDay);
+        } else {
+          message.error(toolboxRes.err);
+        }
       }
+      setVisible(false);
     }
   };
 

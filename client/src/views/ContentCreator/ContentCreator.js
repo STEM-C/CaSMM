@@ -11,6 +11,7 @@ import {
   deleteLearningStandard,
   getGrades,
   getCCWorkspaces,
+  deleteCCWorkspace,
 } from '../../Utils/requests';
 import UnitEditor from './UnitEditor/UnitEditor';
 import LessonEditor from './LessonEditor/LessonEditor';
@@ -107,13 +108,17 @@ export default function ContentCreator({ history }) {
           title={'Are you sure you want to delete this learning standard?'}
           icon={<QuestionCircleOutlined style={{ color: 'red' }} />}
           onConfirm={async () => {
-            await deleteLearningStandard(key.id);
-            setLearningStandardList(
-              learningStandardList.filter((ls) => {
-                return ls.id !== key.id;
-              })
-            );
-            message.success('Delete success');
+            const res = await deleteLearningStandard(key.id);
+            if (res.err) {
+              message.error(res.err);
+            } else {
+              setLearningStandardList(
+                learningStandardList.filter((ls) => {
+                  return ls.id !== key.id;
+                })
+              );
+              message.success('Delete success');
+            }
           }}
         >
           <button id={'link-btn'}>Delete</button>
@@ -203,13 +208,17 @@ export default function ContentCreator({ history }) {
           title={'Are you sure you want to delete this workspace?'}
           icon={<QuestionCircleOutlined style={{ color: 'red' }} />}
           onConfirm={async () => {
-            await deleteLearningStandard(key.id);
-            setLearningStandardList(
-              learningStandardList.filter((ls) => {
-                return ls.id !== key.id;
-              })
-            );
-            message.success('Delete success');
+            const res = await deleteCCWorkspace(key.id);
+            if (res.err) {
+              message.error(res.err);
+            } else {
+              setWorkspaceList(
+                workspaceList.filter((ws) => {
+                  return ws.id !== key.id;
+                })
+              );
+              message.success('Delete success');
+            }
           }}
         >
           <button id={'link-btn'}>Delete</button>

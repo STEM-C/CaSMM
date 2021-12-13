@@ -587,3 +587,10 @@ export const updateCCWorkspace = async (id, template, blocks) =>
     },
     error: 'Unable to create cc workspace',
   });
+export const deleteCCWorkspace = async (id) =>
+  makeRequest({
+    method: DELETE,
+    path: `${server}/cc-workspaces/${id}`,
+    auth: true,
+    error: 'Unable to delete cc workspace',
+  });
