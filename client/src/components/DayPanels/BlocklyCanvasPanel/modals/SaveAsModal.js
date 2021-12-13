@@ -7,8 +7,9 @@ export default function SaveAsModal({
   setHover,
   workspaceRef,
   studentToolbox,
+  visible,
+  setVisible,
 }) {
-  const [visible, setVisible] = useState(false);
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
 
@@ -33,6 +34,11 @@ export default function SaveAsModal({
       message.error(res.err);
     } else {
       message.success('Workspace saved successfully');
+
+      // set local storage
+      let localDay = { ...res.data, selectedToolbox: studentToolbox };
+      localStorage.setItem('sandbox-day', JSON.stringify(localDay));
+
       setVisible(false);
     }
   };

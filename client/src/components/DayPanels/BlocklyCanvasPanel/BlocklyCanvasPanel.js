@@ -10,8 +10,6 @@ const BlocklyCanvasPanel = ({ day, isSandbox }) => {
 
   const userRole = value.role;
 
-  console.log(userRole);
-
   switch (userRole) {
     case 'DefaultUser':
       return <PublicCanvas day={day} isSandbox={isSandbox} />;

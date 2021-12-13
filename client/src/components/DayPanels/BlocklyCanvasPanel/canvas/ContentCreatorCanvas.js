@@ -1,6 +1,10 @@
 import React, { useEffect, useRef, useState, useReducer } from 'react';
 import '../../DayPanels.less';
-import { compileArduinoCode, handleCreatorSaveDay } from '../../Utils/helpers';
+import {
+  compileArduinoCode,
+  handleCreatorSaveDay,
+  handleCreatorUpdateWorkspace,
+} from '../../Utils/helpers';
 import { message, Spin, Row, Col, Alert } from 'antd';
 import CodeModal from '../modals/CodeModal';
 import SaveAsModal from '../modals/SaveAsModal';
@@ -36,6 +40,7 @@ export default function ContentCreatorCanvas({ day, isSandbox }) {
   const [hoverPlotter, setHoverPlotter] = useState(false);
   const [showConsole, setShowConsole] = useState(false);
   const [showPlotter, setShowPlotter] = useState(false);
+  const [showSaveAsModal, setShowSaveAsModal] = useState(false);
   const [plotData, setPlotData] = useState([]);
   const [connectionOpen, setConnectionOpen] = useState(false);
   const [selectedCompile, setSelectedCompile] = useState(false);
@@ -74,6 +79,10 @@ export default function ContentCreatorCanvas({ day, isSandbox }) {
         });
         setOpenedToolBoxCategories(tempCategories);
         setStudentToolbox(tempToolBox);
+
+        //update localstorage
+        let localDay = { ...res.data, selectedToolbox: tempToolBox };
+        localStorage.setItem('sandbox-day', JSON.stringify(localDay));
       }
     }
   };
@@ -102,16 +111,37 @@ export default function ContentCreatorCanvas({ day, isSandbox }) {
   }, [day, isSandbox]);
 
   const handleCreatorSave = async () => {
-    const res = await handleCreatorSaveDay(
-      day.id,
-      workspaceRef,
-      studentToolbox
-    );
-    console.log(res);
-    if (res.err) {
-      message.error(res.err);
+    // Save day
+    if (!isSandbox) {
+      const res = await handleCreatorSaveDay(
+        day.id,
+        workspaceRef,
+        studentToolbox
+      );
+      if (res.err) {
+        message.error(res.err);
+      } else {
+        message.success('Day saved successfully');
+      }
     } else {
-      message.success('Day saved successfully');
+      const sandboxDay = JSON.parse(localStorage.getItem('sandbox-day'));
+      // if we already have the workspace in the db, just update it.
+      if (sandboxDay && sandboxDay.id) {
+        const updateRes = await handleCreatorUpdateWorkspace(
+          sandboxDay.id,
+          workspaceRef,
+          studentToolbox
+        );
+        if (updateRes.err) {
+          message.error(updateRes.err);
+        } else {
+          message.success('Workspace saved successfully');
+        }
+      }
+      // else create a new workspace and update local storage
+      else {
+        setShowSaveAsModal(true);
+      }
     }
   };
 
@@ -223,8 +253,10 @@ export default function ContentCreatorCanvas({ day, isSandbox }) {
             <Row id='icon-control-panel'>
               <Col flex='none' id='section-header'>
                 {day.learning_standard_name
-                  ? day.learning_standard_name
-                  : 'Program your Arduino...'}
+                  ? `${day.learning_standard_name} - Day ${day.number}`
+                  : day.name
+                  ? `Workspace ${day.id}: ${day.name}`
+                  : 'New Workspace!'}
               </Col>
               <Col flex='auto'>
                 <Row align='middle' justify='end' id='description-container'>
@@ -267,6 +299,8 @@ export default function ContentCreatorCanvas({ day, isSandbox }) {
                       <SaveAsModal
                         hover={hoverSaveAs}
                         setHover={setHoverSaveAs}
+                        visible={showSaveAsModal}
+                        setVisible={setShowSaveAsModal}
                         workspaceRef={workspaceRef}
                         studentToolbox={studentToolbox}
                       />

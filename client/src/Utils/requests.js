@@ -575,3 +575,15 @@ export const getCCWorkspaceToolbox = async (id) =>
     auth: true,
     error: 'Toolbox could not be retrieved.',
   });
+
+export const updateCCWorkspace = async (id, template, blocks) =>
+  makeRequest({
+    method: PUT,
+    path: `${server}/cc-workspaces/${id}`,
+    auth: true,
+    data: {
+      template,
+      blocks,
+    },
+    error: 'Unable to create cc workspace',
+  });
