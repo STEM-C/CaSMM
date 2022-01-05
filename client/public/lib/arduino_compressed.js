@@ -1804,6 +1804,8 @@ Blockly.Arduino.io_notone = function (a) {
   return 'noTone(' + b + ');\n';
 };
 
+//dht sensor
+
 Blockly.Arduino.sensor_set_dht_pin = function (block) {
   var dropdown_pin = block.getFieldValue('dht_pin');
   Blockly.Arduino.addInclude('dht', '#include <DHT.h>');
