@@ -1812,7 +1812,7 @@ Blockly.Arduino.sensor_set_dht_pin = function (block) {
 
   Blockly.Arduino.addDeclaration(
     'dht',
-    `DHT dht(${parseInt(dropdown_pin)}, "DHT11");`
+    `DHT dht(${parseInt(dropdown_pin)}, DHT11);`
   );
 
   Blockly.Arduino.addSetup('dht', 'dht.begin();', true);
