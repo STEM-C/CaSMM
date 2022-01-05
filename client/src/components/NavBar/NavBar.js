@@ -5,25 +5,14 @@ import Logo from '../../assets/casmm_logo.png';
 import { Link, useHistory } from 'react-router-dom';
 import { Menu, Dropdown } from 'antd';
 import { DownOutlined } from '@ant-design/icons';
-import { getUser, removeUserSession } from '../../Utils/AuthRequests';
+import { removeUserSession } from '../../Utils/AuthRequests';
+import { useGlobalState } from '../../Utils/userState';
 
-export default function NavBar(props) {
-  const { isMentor, isStudent, isContentCreator } = props;
-  const user = getUser();
+export default function NavBar() {
+  const [value] = useGlobalState('currUser');
   let currentRoute = window.location.pathname;
-  let profile = '';
   let history = useHistory();
   let routes = config.routes;
-
-  if (isMentor) {
-    profile = 'isMentor';
-  } else if (isStudent) {
-    profile = 'isStudent';
-  } else if (isContentCreator) {
-    profile = 'isContentCreator';
-  } else {
-    profile = 'defaultUser';
-  }
 
   const handleLogout = () => {
     removeUserSession();
@@ -36,7 +25,7 @@ export default function NavBar(props) {
 
   const shouldShowRoute = (route) => {
     if (currentRoute === routes[route]) return false;
-    return config.users[profile].includes(route);
+    return config.users[value.role].includes(route);
   };
 
   const menu = (
@@ -47,10 +36,6 @@ export default function NavBar(props) {
           &nbsp; Home
         </Menu.Item>
       ) : null}
-      {/*{ shouldShowRoute("AccountInfo") ? <Menu.Item key="0" onClick={() => handleRouteChange(routes.AccountInfo)}>*/}
-      {/*    <i className="fa fa-user-circle"/>*/}
-      {/*    &nbsp; Account Info*/}
-      {/*</Menu.Item> : null}*/}
       {shouldShowRoute('Dashboard') ? (
         <Menu.Item key='1' onClick={() => handleRouteChange(routes.Dashboard)}>
           <i className='fa fa-home' />
@@ -66,8 +51,23 @@ export default function NavBar(props) {
           &nbsp; Dashboard
         </Menu.Item>
       ) : null}
+      {shouldShowRoute('ResearcherDashboard') ? (
+        <Menu.Item
+          key='1'
+          onClick={() => handleRouteChange(routes.ResearcherDashboard)}
+        >
+          <i className='fa fa-home' />
+          &nbsp; Dashboard
+        </Menu.Item>
+      ) : null}
       {shouldShowRoute('Sandbox') ? (
-        <Menu.Item key='1' onClick={() => handleRouteChange(routes.Sandbox)}>
+        <Menu.Item
+          key='1'
+          onClick={() => {
+            localStorage.removeItem('sandbox-day');
+            handleRouteChange(routes.Sandbox);
+          }}
+        >
           <i className='fa fa-window-maximize' />
           &nbsp; Sandbox
         </Menu.Item>
@@ -104,7 +104,20 @@ export default function NavBar(props) {
 
   return (
     <span id='navBar'>
-      <Link id='link' to={isMentor ? '/dashboard' : '/'}>
+      <Link
+        id='link'
+        to={
+          value.role === 'ContentCreator'
+            ? '/ccdashboard'
+            : value.role === 'Mentor'
+            ? '/dashboard'
+            : value.role === 'Student'
+            ? '/student'
+            : value.role === 'Researcher'
+            ? '/report'
+            : '/'
+        }
+      >
         <img src={Logo} id='casmm-logo' alt='logo' />
       </Link>
       <div id='dropdown-menu'>
@@ -113,7 +126,7 @@ export default function NavBar(props) {
             className='ant-dropdown-link'
             onClick={(e) => e.preventDefault()}
           >
-            {isMentor ? user.username : 'Menu'} <DownOutlined />
+            {value.name ? value.name : 'Menu'} <DownOutlined />
           </button>
         </Dropdown>
       </div>

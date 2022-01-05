@@ -1,0 +1,144 @@
+@import '../../../assets/style.less';
+
+#main-header {
+  color: #colors[text-secondary];
+  font-size: 2em;
+  font-weight: bolder;
+  margin-left: 10%;
+  margin-bottom: 3%;
+  text-align: left;
+  padding-top: 20px;
+}
+
+#classrooms-container {
+  margin: 6vh auto 4vh auto;
+  padding-top: 40px;
+  padding-bottom: 40px;
+  width: 80vw;
+  height: auto;
+  background: #colors[senary];
+  border-radius: 5px;
+  border: 2px solid #colors[secondary];
+}
+
+#dashboard-card-container {
+  display: inline-grid;
+  grid-template-columns: auto auto;
+  justify-content: center;
+  width: 80vw;
+  margin: auto auto auto 2%;
+}
+
+#dashboard-class-card {
+  display: flex;
+  flex-direction: row;
+  text-align: center;
+  width: 24vw;
+  height: auto;
+  margin: auto 6vh 6vh auto;
+  background: #colors[tertiary];
+  color: #colors[text-primary];
+  border: none;
+  border-color: #colors[secondary];
+  border-radius: 10px;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.377);
+
+  #card-button-container {
+    // margin: 10% auto 0 auto;
+
+    button {
+      width: 9vw;
+      height: auto;
+      font-size: 1vw;
+      font-weight: 500;
+      border-radius: 30px;
+      margin: 10% auto auto auto;
+      background: #colors[quaternary];
+      border: none;
+      color: #colors[text-primary];
+      transition: 0.25s;
+      cursor: pointer;
+      box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.377);
+
+      &:hover {
+        width: 10vw;
+        background: #colors[quinary];
+      }
+    }
+  }
+
+  #card-left-content-container {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 72%;
+    padding: 24px 24px;
+
+    #card-title {
+      text-align: center;
+      font-size: 1.4vw;
+      margin: 10px;
+      line-height: 1.6vw;
+    }
+  }
+
+  #card-right-content-container {
+    display: flex;
+    flex-direction: column;
+    min-width: 28%;
+
+    #number {
+      font-size: 1.4vw;
+      margin: 0;
+      padding-top: 20px;
+    }
+
+    #label {
+      font-size: 1vw;
+      padding-bottom: 20px;
+    }
+
+    #dashboard-display-code-modal {
+      height: 49.5%;
+
+      #dashboard-display-code-btn {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        width: 100%;
+        height: 100%;
+        background-color: #colors[quaternary];
+        border-top-right-radius: 10px;
+        border: none;
+
+        &:hover {
+          background: #colors[quinary];
+        }
+
+        #code-display-text {
+          font-size: 15em;
+          text-align: center;
+        }
+      }
+    }
+
+    #divider {
+      background-color: #colors[tertiary];
+      height: 1%;
+    }
+
+    #student-number-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      width: 100%;
+      height: 49.5%;
+      background-color: #colors[quaternary];
+      border-bottom-right-radius: 10px;
+    }
+  }
+}

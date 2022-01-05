@@ -7,10 +7,10 @@ const PlotterLogo = ({ setHoverPlotter, handlePlotter }) => {
       height='450.000000pt'
       viewBox='0 0 105.000000 105.000000'
       xmlns='http://www.w3.org/2000/svg'
-      stroke-miterlimit='2'
-      stroke-linejoin='round'
-      clip-rule='evenodd'
-      fill-rule='evenodd'
+      strokeMiterlimit='2'
+      strokeLinejoin='round'
+      clipRule='evenodd'
+      fillRule='evenodd'
       version='1.1'
       onMouseEnter={() => setHoverPlotter(true)}
       onMouseLeave={() => setHoverPlotter(false)}
