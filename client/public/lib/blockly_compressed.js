@@ -18293,6 +18293,7 @@ Blockly.Field.prototype.dispose = function () {
 Blockly.Field.prototype.updateEditable = function () {
   this.EDITABLE &&
     this.sourceBlock_ &&
+    this.fieldGroup_ &&
     (this.sourceBlock_.isEditable()
       ? (Blockly.addClass_(this.fieldGroup_, 'blocklyEditableText'),
         Blockly.removeClass_(this.fieldGroup_, 'blocklyNoNEditableText'),
@@ -21758,6 +21759,16 @@ Blockly.BlockSvg.prototype.showHelp_ = function () {
   a && window.open(a);
 };
 Blockly.BlockSvg.prototype.showContextMenu_ = function (a) {
+  let showDeletable = false;
+  if (
+    (sessionStorage.getItem('user') &&
+      JSON.parse(sessionStorage.getItem('user')).role &&
+      JSON.parse(sessionStorage.getItem('user')).role.type ===
+        'content_creator') ||
+    !sessionStorage.getItem('user')
+  ) {
+    showDeletable = true;
+  }
   if (!this.workspace.options.readOnly && this.contextMenu) {
     var b = this,
       c = [];
@@ -21853,6 +21864,23 @@ Blockly.BlockSvg.prototype.showContextMenu_ = function (a) {
     d.text = Blockly.Msg.HELP;
     d.callback = function () {
       b.showHelp_();
+    };
+    c.push(d);
+    d = {
+      text: this.movable_ ? 'Set to Not Movable' : 'Set to Movtable',
+      enabled: showDeletable,
+      callback: function () {
+        b.setMovable(!b.movable_);
+      },
+    };
+    c.push(d);
+    d = {
+      text: this.editable_ ? 'Set to Not Editable' : 'Set to Editable',
+      enabled: showDeletable,
+      callback: function () {
+        b.setEditable(!b.editable_);
+        b.setDeletable(!b.deletable_);
+      },
     };
     c.push(d);
     this.customContextMenu && !b.isInFlyout && this.customContextMenu(c);
