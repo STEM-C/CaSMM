@@ -3611,13 +3611,13 @@ Blockly.Blocks.sensor_read_dht_humidity = {
   init: function () {
     this.appendDummyInput().appendField('Humidity');
     this.setInputsInline(false);
-    this.setOutput(true, Blockly.Types.NUMBER.output);
+    this.setOutput(true, Blockly.Types.DECIMAL.output);
     this.setColour(230);
     this.setTooltip('');
     this.setHelpUrl('https://learn.adafruit.com/dht');
   },
   getBlockType: function () {
-    return Blockly.Types.NUMBER;
+    return Blockly.Types.DECIMAL;
   },
 };
 
@@ -3625,12 +3625,12 @@ Blockly.Blocks.sensor_read_dht_temperature = {
   init: function () {
     this.appendDummyInput().appendField('Temperature');
     this.setInputsInline(false);
-    this.setOutput(true, Blockly.Types.NUMBER.output);
+    this.setOutput(true, Blockly.Types.DECIMAL.output);
     this.setColour(230);
     this.setTooltip('');
     this.setHelpUrl('https://learn.adafruit.com/dht');
   },
   getBlockType: function () {
-    return Blockly.Types.NUMBER;
+    return Blockly.Types.DECIMAL;
   },
 };
