@@ -27,10 +27,13 @@ export default function TeacherLogin(props) {
 
     postUser(body)
       .then((response) => {
+        console.log(response.data);
         setUserSession(response.data.jwt, JSON.stringify(response.data.user));
         setLoading(false);
         if (response.data.user.role.name === 'Content Creator') {
           props.history.push('/ccdashboard');
+        } else if (response.data.user.role.name === 'Researcher') {
+          props.history.push('/report');
         } else {
           props.history.push('/dashboard');
         }

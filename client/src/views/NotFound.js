@@ -1,3 +1,5 @@
+import React from 'react'
+
 const NotFound = () => {
   return (
     <div style={{ marginTop: '5rem' }}>
@@ -8,7 +10,7 @@ const NotFound = () => {
         Page Not Found
       </h1>
     </div>
-  );
+  )
 };
 
 export default NotFound;

@@ -32,7 +32,7 @@ function Student(props) {
 
   return (
     <div className='container nav-padding'>
-      <NavBar isStudent={true} />
+      <NavBar />
       <div id='activity-container'>
         <div id='header'>
           <div>Select your Day</div>

@@ -1,0 +1,87 @@
+@import '../../assets/style.less';
+
+.menu-bar {
+    display:flex;
+    justify-content:space-between;
+}
+
+#day-level-report-header {
+    color: #colors[text-secondary];
+    font-size: 3em;
+    font-weight: bolder;
+    margin-left: 5%;
+    margin-bottom: 3%;
+    text-align: left;
+    padding-top: 20px;
+}
+
+#gen-report-btn {
+    flex-direction: column;
+    width: fit-content;
+    align-self: center;
+    height: 45px;
+    margin: 20px 50px;
+    padding: 10px 20px;
+    border-radius: 5px;
+    font-size: 15px;
+    font-weight: 800;
+    font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.377);
+
+}
+
+.cards {
+    flex-direction: column;
+    margin-bottom: 2rem;
+    
+}
+
+#container-section-day{
+    border : 2px solid #5BABDE;
+    border-radius: 5px;
+    display: flex;
+    justify-content: space-between;
+}
+section {
+    background-color: white;
+    text-align: left;
+    padding: 2rem;
+}
+
+#day-level-return {
+    height: 55px;
+    margin: 20px 50px;
+    padding: 10px 20px;
+    border-radius: 5px;
+    font-size: 20px;
+    font-weight: 800;
+    font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.377);
+}
+
+#day-level-dropdown {
+    font-size: x-large;
+    color: #262626;
+    font-weight: 500;
+}
+
+#report-menu-item{
+    text-align: right;
+    font-size: large;
+    color: #262626;
+    font-weight: 300;
+}
+
+label {
+    display: inline-block;
+}
+
+@media only screen and (max-width: 915px) {
+    #day-level-return {
+        height: 110px;
+    }
+}
+
+
+
+
