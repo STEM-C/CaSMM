@@ -17,8 +17,8 @@
       "via": "classrooms"
     },
     "sessions": {
-      "collection": "session",
-      "via": "classroom"
+      "via": "classroom",
+      "collection": "session"
     },
     "mentors": {
       "collection": "mentor",

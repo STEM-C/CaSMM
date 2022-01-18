@@ -21,8 +21,8 @@
       "via": "students"
     },
     "sessions": {
-      "collection": "session",
       "via": "students",
+      "collection": "session",
       "dominant": true
     },
     "enrolled": {

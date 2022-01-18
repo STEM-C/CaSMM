@@ -44,6 +44,41 @@ const makeRequest = async ({ method, path, data, auth = false, error }) => {
   return { data: res, err: err };
 };
 
+<<<<<<< HEAD
+=======
+export const getDays = async () =>
+  makeRequest({
+    method: GET,
+    path: `${server}/days`,
+    auth: true,
+    error: 'Days could not be retrieved.',
+  });
+
+export const getTeachers = async () =>
+  makeRequest({
+    method: GET,
+    path: `${server}/mentors`,
+    auth: true,
+    error: 'Teachers could not be retrieved.',
+  });
+
+export const getAllClassrooms = async () =>
+  makeRequest({
+    method: GET,
+    path: `${server}/classrooms`,
+    auth: true,
+    error: 'Classrooms could not be retrieved.',
+  });
+
+export const getAllStudents = async () =>
+  makeRequest({
+    method: GET,
+    path: `${server}/students`,
+    auth: true,
+    error: 'Students could not be retrieved.',
+  });
+
+>>>>>>> origin/release/v1.0
 export const getDayToolboxAll = async () =>
   makeRequest({
     method: GET,
@@ -93,6 +128,17 @@ export const getStudents = async (code) =>
     error: 'Student info could not be retrieved.',
   });
 
+<<<<<<< HEAD
+=======
+export const getStudent = async (id) =>
+  makeRequest({
+    method: GET,
+    path: `${server}/students/${id}`,
+    auth: true,
+    error: 'Student info could not be retrieved.',
+  });
+
+>>>>>>> origin/release/v1.0
 export const postJoin = async (code, ids) =>
   makeRequest({
     method: POST,
@@ -217,6 +263,17 @@ export const getSaves = async (day) =>
     error: 'Past saves could not be retrieved.',
   });
 
+<<<<<<< HEAD
+=======
+export const getSave = async (id) =>
+  makeRequest({
+    method: GET,
+    path: `${server}/saves/${id}`,
+    auth: true,
+    error: 'Save could not be retrieved.',
+  });
+
+>>>>>>> origin/release/v1.0
 export const createSubmission = async (id, workspace, sketch, path, isAuth) =>
   makeRequest({
     method: POST,
@@ -454,4 +511,95 @@ export const resetPassword = async (code, password, passwordConfirmation) =>
     },
     error:
       'Cannot update new password. Please try again or get a new link from the forgot password page.',
+  });
+
+export const getAllSessions = async () =>
+  makeRequest({
+    method: GET,
+    path: `${server}/sessions`,
+    auth: true,
+    error: 'Sessions could not be retrieved.',
+  });
+
+export const getSession = async (id) =>
+  makeRequest({
+    method: GET,
+    path: `${server}/sessions/${id}`,
+    auth: true,
+    error: 'Sessions could not be retrieved.',
+  });
+export const submitBugReport = async (
+  description,
+  steps,
+  name,
+  email,
+  systemInfo
+) =>
+  makeRequest({
+    method: POST,
+    path: `${server}/bug-report`,
+    data: {
+      description,
+      steps,
+      name,
+      email,
+      systemInfo,
+    },
+    error: 'Unable to submit bug-report',
+  });
+
+export const getCCWorkspaces = async () =>
+  makeRequest({
+    method: GET,
+    path: `${server}/cc-workspaces`,
+    auth: true,
+    error: 'Unable to retrive cc worksapces',
+  });
+
+export const getCCWorkspace = async (id) =>
+  makeRequest({
+    method: GET,
+    path: `${server}/cc-workspaces/${id}`,
+    auth: true,
+    error: 'Unable to retrive cc worksapce',
+  });
+
+export const createCCWorkspace = async (name, description, template, blocks) =>
+  makeRequest({
+    method: POST,
+    path: `${server}/cc-workspaces`,
+    auth: true,
+    data: {
+      name,
+      description,
+      template,
+      blocks,
+    },
+    error: 'Unable to create cc workspace',
+  });
+export const getCCWorkspaceToolbox = async (id) =>
+  makeRequest({
+    method: GET,
+    path: `${server}/cc-workspaces/toolbox/${id}`,
+    auth: true,
+    error: 'Toolbox could not be retrieved.',
+  });
+
+export const updateCCWorkspace = async (id, template, blocks) =>
+  makeRequest({
+    method: PUT,
+    path: `${server}/cc-workspaces/${id}`,
+    auth: true,
+    data: {
+      template,
+      blocks,
+    },
+    error: 'Unable to create cc workspace',
+  });
+export const deleteCCWorkspace = async (id) =>
+  makeRequest({
+    method: DELETE,
+    path: `${server}/cc-workspaces/${id}`,
+    auth: true,
+    error: 'Unable to delete cc workspace',
   });

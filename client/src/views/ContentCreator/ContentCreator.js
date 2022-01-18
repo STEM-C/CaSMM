@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 
-import { Tabs, Table, Popconfirm, message, Pagination } from 'antd';
+import { Tabs, Table, Popconfirm, message } from 'antd';
 import Navbar from '../../components/NavBar/NavBar';
 import { QuestionCircleOutlined } from '@ant-design/icons';
 
@@ -10,17 +10,21 @@ import {
   getLearningStandardAll,
   deleteLearningStandard,
   getGrades,
+  getCCWorkspaces,
+  deleteCCWorkspace,
 } from '../../Utils/requests';
 import UnitEditor from './UnitEditor/UnitEditor';
 import LessonEditor from './LessonEditor/LessonEditor';
 
 import './ContentCreator.less';
+import { Link } from 'react-router-dom';
 
 const { TabPane } = Tabs;
 
 export default function ContentCreator({ history }) {
   const [gradeList, setGradeList] = useState([]);
   const [learningStandardList, setLearningStandardList] = useState([]);
+  const [workspaceList, setWorkspaceList] = useState([]);
   const [tab, setTab] = useState(
     history.location.hash.split('#')[1]
       ? history.location.hash.split('#')[1]
@@ -37,15 +41,19 @@ export default function ContentCreator({ history }) {
 
   useEffect(() => {
     const fetchData = async () => {
-      const [lsResponse, gradeResponse] = await Promise.all([
+      const [lsResponse, gradeResponse, wsResponse] = await Promise.all([
         getLearningStandardAll(),
         getGrades(),
+        getCCWorkspaces(),
       ]);
       await setLearningStandardList(lsResponse.data);
 
       const grades = await gradeResponse.data;
       grades.sort((a, b) => (a.id > b.id ? 1 : -1));
       setGradeList(grades);
+
+      await setWorkspaceList(wsResponse.data);
+      console.log(wsResponse.data);
     };
     fetchData();
   }, []);
@@ -100,13 +108,17 @@ export default function ContentCreator({ history }) {
           title={'Are you sure you want to delete this learning standard?'}
           icon={<QuestionCircleOutlined style={{ color: 'red' }} />}
           onConfirm={async () => {
-            await deleteLearningStandard(key.id);
-            setLearningStandardList(
-              learningStandardList.filter((ls) => {
-                return ls.id !== key.id;
-              })
-            );
-            message.success('Delete success');
+            const res = await deleteLearningStandard(key.id);
+            if (res.err) {
+              message.error(res.err);
+            } else {
+              setLearningStandardList(
+                learningStandardList.filter((ls) => {
+                  return ls.id !== key.id;
+                })
+              );
+              message.success('Delete success');
+            }
           }}
         >
           <button id={'link-btn'}>Delete</button>
@@ -148,9 +160,76 @@ export default function ContentCreator({ history }) {
     );
   };
 
+  const wsColumn = [
+    {
+      title: 'Name',
+      dataIndex: 'name',
+      key: 'name',
+      editable: true,
+      width: '30%',
+      align: 'left',
+      render: (_, key) => key.name,
+    },
+    {
+      title: 'Description',
+      dataIndex: 'description',
+      key: 'description',
+      editable: true,
+      width: '40%',
+      align: 'left',
+      render: (_, key) => key.description,
+    },
+    {
+      title: 'Open Workspace',
+      dataIndex: 'open',
+      key: 'open',
+      editable: false,
+      width: '20%',
+      align: 'left',
+      render: (_, key) => (
+        <Link
+          onClick={() =>
+            localStorage.setItem('sandbox-day', JSON.stringify(key))
+          }
+          to={'/sandbox'}
+        >
+          Open
+        </Link>
+      ),
+    },
+    {
+      title: 'Delete',
+      dataIndex: 'delete',
+      key: 'delete',
+      width: '10%',
+      align: 'right',
+      render: (_, key) => (
+        <Popconfirm
+          title={'Are you sure you want to delete this workspace?'}
+          icon={<QuestionCircleOutlined style={{ color: 'red' }} />}
+          onConfirm={async () => {
+            const res = await deleteCCWorkspace(key.id);
+            if (res.err) {
+              message.error(res.err);
+            } else {
+              setWorkspaceList(
+                workspaceList.filter((ws) => {
+                  return ws.id !== key.id;
+                })
+              );
+              message.success('Delete success');
+            }
+          }}
+        >
+          <button id={'link-btn'}>Delete</button>
+        </Popconfirm>
+      ),
+    },
+  ];
+
   return (
     <div className='container nav-padding'>
-      <Navbar isContentCreator={true} />
+      <Navbar />
       <div id='main-header'>Welcome Content Creator</div>
 
       <Tabs
@@ -195,6 +274,28 @@ export default function ContentCreator({ history }) {
         {gradeList.map((grade) => {
           return setTabs(grade);
         })}
+
+        <TabPane tab='Saved Workspaces' key='workspace'>
+          <div id='page-header'>
+            <h1>Saved Worksapces</h1>
+          </div>
+          <div
+            id='content-creator-table-container'
+            style={{ marginTop: '6.6vh' }}
+          >
+            <Table
+              columns={wsColumn}
+              dataSource={workspaceList}
+              rowClassName='editable-row'
+              onChange={(Pagination) => {
+                setViewing(undefined);
+                setPage(Pagination.current);
+                history.push(`#${tab}#${Pagination.current}`);
+              }}
+              pagination={{ current: page ? page : 1 }}
+            ></Table>
+          </div>
+        </TabPane>
       </Tabs>
     </div>
   );
