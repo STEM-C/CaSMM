@@ -13,6 +13,7 @@ const sortCategory = (toolbox) => {
     'Audio',
     'Motors',
     'Comms',
+    'DHT',
   ];
 
   const sorted = toolbox.sort(function (a, b) {
