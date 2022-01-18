@@ -1,0 +1,29 @@
+{
+  "kind": "collectionType",
+  "collectionName": "cc_workspaces",
+  "info": {
+    "name": "CCWorkspace",
+    "description": ""
+  },
+  "options": {
+    "increments": true,
+    "timestamps": true,
+    "draftAndPublish": true
+  },
+  "attributes": {
+    "name": {
+      "type": "string",
+      "required": true
+    },
+    "description": {
+      "type": "text"
+    },
+    "template": {
+      "type": "text",
+      "required": true
+    },
+    "blocks": {
+      "collection": "block"
+    }
+  }
+}
