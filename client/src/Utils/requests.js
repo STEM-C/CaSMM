@@ -44,8 +44,6 @@ const makeRequest = async ({ method, path, data, auth = false, error }) => {
   return { data: res, err: err };
 };
 
-<<<<<<< HEAD
-=======
 export const getDays = async () =>
   makeRequest({
     method: GET,
@@ -78,7 +76,6 @@ export const getAllStudents = async () =>
     error: 'Students could not be retrieved.',
   });
 
->>>>>>> origin/release/v1.0
 export const getDayToolboxAll = async () =>
   makeRequest({
     method: GET,
@@ -128,8 +125,6 @@ export const getStudents = async (code) =>
     error: 'Student info could not be retrieved.',
   });
 
-<<<<<<< HEAD
-=======
 export const getStudent = async (id) =>
   makeRequest({
     method: GET,
@@ -138,7 +133,6 @@ export const getStudent = async (id) =>
     error: 'Student info could not be retrieved.',
   });
 
->>>>>>> origin/release/v1.0
 export const postJoin = async (code, ids) =>
   makeRequest({
     method: POST,
@@ -263,8 +257,6 @@ export const getSaves = async (day) =>
     error: 'Past saves could not be retrieved.',
   });
 
-<<<<<<< HEAD
-=======
 export const getSave = async (id) =>
   makeRequest({
     method: GET,
@@ -273,7 +265,6 @@ export const getSave = async (id) =>
     error: 'Save could not be retrieved.',
   });
 
->>>>>>> origin/release/v1.0
 export const createSubmission = async (id, workspace, sketch, path, isAuth) =>
   makeRequest({
     method: POST,

@@ -22,15 +22,6 @@ const sortCategory = (toolbox) => {
   return sorted;
 };
 
-const sortCategory = (toolbox) =>{
-    const order = ['Logic', 'Control', 'Math', 'Text', 'Variables', 'Functions', 'IO', 'Time', 'Audio', 'Motors', 'Comms'];
-
-    const sorted = toolbox.sort(function(a,b) {
-        return order.indexOf(a[0]) - order.indexOf(b[0]);
-    })
-    return sorted;
-}
-
 // get all the blocks for a day
 module.exports.findByDay = async (id) => {
   // get the target day
