@@ -24,7 +24,8 @@
       "collection": "submission"
     },
     "saves": {
-      "collection": "save"
+      "collection": "save",
+      "via": "session"
     }
   }
 }
