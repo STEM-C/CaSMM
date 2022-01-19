@@ -185,7 +185,6 @@ export default function DayLevelReport() {
           </button>
         </Link>
       </div>
-
       <main id="content-wrapper">
         <Table
           columns={columns}

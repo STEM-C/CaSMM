@@ -9,8 +9,9 @@ export default function Report(props) {
     <div className='container nav-padding'>
       <NavBar />
       <div id='main-header'>Welcome Researcher!</div>
+      <h1 id='report-subheader'>Reports</h1>
 
-      <div>
+      <div id='button-container'>
         {/* <div class='parent'>
           <div class='child inline-block-child'>Home</div>
           <div class='child inline-block-child'>Reports</div>
