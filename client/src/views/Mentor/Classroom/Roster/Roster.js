@@ -189,7 +189,7 @@ export default function Roster(props) {
         <i className='fa fa-arrow-left' aria-hidden='true' />
       </button>
       <MentorSubHeader
-        title={'Your Students:'}
+        title={'Your Students'}
         addStudentsToTable={addStudentsToTable}
         addUserActive={true}
         classroomId={classroomId}

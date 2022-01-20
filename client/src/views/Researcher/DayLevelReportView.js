@@ -73,16 +73,16 @@ const DayLevelReportView = () => {
 
       <main id="content-wrapper">
         <section id="container-section">
-          <section>
-            <h2>Student Name: {studentName}</h2>
+          <section id='student-report-section'>
+            <p><strong>Student Name: </strong>{studentName}</p>
             {/* <h2>Partner Name: {studentPartner}</h2> */}
-            <h2>Class Name: {className}</h2>
+            <p><strong>Class Name: </strong>{className}</p>
             <br />
-            <h2>Started: {timeConverter(session.created_at)}</h2>
-            <h2>Ended: {timeConverter(calculateEndTime())}</h2>
-            <h2>Mouse Clicks: {clicks}</h2>
-            <h2>Deleted Blocks: N/A</h2>
-            <h2>Times Tested: {session.submissions?.length} times</h2>
+            <p><strong>Started: </strong>{timeConverter(session.created_at)}</p>
+            <p><strong>Ended: </strong>{timeConverter(calculateEndTime())}</p>
+            <p><strong>Mouse Clicks: </strong>{clicks}</p>
+            <p><strong>Deleted Blocks: </strong>N/A</p>
+            <p><strong>Times Tested: </strong>{session.submissions?.length} times</p>
           </section>
         </section>
         <br />
