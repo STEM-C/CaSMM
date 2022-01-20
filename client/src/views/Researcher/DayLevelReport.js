@@ -153,7 +153,7 @@ export default function DayLevelReport() {
           Return to Dashboard
         </button>
       </div>
-      <main id='content-wrapper'>
+      <main id='day-report-content-wrapper'>
         <Table
           columns={columns}
           dataSource={sessions}

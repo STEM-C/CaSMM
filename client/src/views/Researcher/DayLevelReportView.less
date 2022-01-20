@@ -39,7 +39,7 @@
 
 #container-section-day{
     border : 2px solid #5BABDE;
-    border-radius: 5px;
+    border-radius: 10px;
     display: flex;
     justify-content: space-between;
 }
@@ -49,15 +49,28 @@ section {
     padding: 2rem;
 }
 
+#student-report-section {
+    font-size: 1.2em;
+}
+
 #day-level-return {
-    height: 55px;
+    height: auto;
     margin: 20px 50px;
     padding: 10px 20px;
-    border-radius: 5px;
-    font-size: 20px;
-    font-weight: 800;
-    font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
+    border-radius: 30px;
+    font-size: 1vw;
+    font-weight: 500;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+        sans-serif;
+    color: #colors[text-primary];
+    background: #colors[quaternary];
+    border: none;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.377);
+
+    &:hover {
+        background: #colors[quinary];
+      }
 }
 
 #day-level-dropdown {
