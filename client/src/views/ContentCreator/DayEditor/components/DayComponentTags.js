@@ -30,10 +30,10 @@ const DayComponentTags = ({ components, setComponents, colorOffset }) => {
 
   const handleInputConfirm = () => {
     if (inputValue) {
-      let word = inputValue.trim();
-      word = word.charAt(0).toUpperCase() + word.slice(1);
-      if (components.indexOf(word) === -1) {
-        setComponents([...components, word]);
+      const upperCase =
+        inputValue.charAt(0).toUpperCase() + inputValue.slice(1);
+      if (components.indexOf(upperCase) === -1) {
+        setComponents([...components, upperCase]);
       }
     }
     setInputVisible(false);

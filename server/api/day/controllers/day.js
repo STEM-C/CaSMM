@@ -38,11 +38,9 @@ module.exports = {
 
     // add the science components
     scienceComponents.forEach(async (component) => {
-      let word = component.trim();
-      word = word.charAt(0).toUpperCase() + word.slice(1);
       // find the existing components first
       let foundComponent = await strapi.services['learning-components'].findOne(
-        { type: word, learning_component_type: SCIENCE }
+        { type: component, learning_component_type: SCIENCE }
       );
       if (foundComponent) {
         dayComponents.push(foundComponent);
@@ -52,7 +50,7 @@ module.exports = {
         const newComponent = await strapi.services[
           'learning-components'
         ].create({
-          type: word,
+          type: component,
           days: id,
           learning_component_type: SCIENCE,
         });
@@ -62,10 +60,8 @@ module.exports = {
 
     // add the making components
     makingComponents.forEach(async (component) => {
-      let word = component.trim();
-      word = word.charAt(0).toUpperCase() + word.slice(1);
       let foundComponent = await strapi.services['learning-components'].findOne(
-        { type: word, learning_component_type: MAKING }
+        { type: component, learning_component_type: MAKING }
       );
       if (foundComponent) {
         dayComponents.push(foundComponent);
@@ -73,7 +69,7 @@ module.exports = {
         const newComponent = await strapi.services[
           'learning-components'
         ].create({
-          type: word,
+          type: component,
           days: id,
           learning_component_type: MAKING,
         });
@@ -83,10 +79,8 @@ module.exports = {
 
     // add the computation components
     computationComponents.forEach(async (component) => {
-      let word = component.trim();
-      word = word.charAt(0).toUpperCase() + word.slice(1);
       let foundComponent = await strapi.services['learning-components'].findOne(
-        { type: word, learning_component_type: COMPUTATION }
+        { type: component, learning_component_type: COMPUTATION }
       );
       if (foundComponent) {
         dayComponents.push(foundComponent);
@@ -94,7 +88,7 @@ module.exports = {
         const newComponent = await strapi.services[
           'learning-components'
         ].create({
-          type: word,
+          type: component,
           days: id,
           learning_component_type: COMPUTATION,
         });
