@@ -10,8 +10,8 @@ const Replay = () => {
   const { saveID } = useParams();
   const workspaceRef = useRef(null);
   const [step, setStep] = useState(0);
-  const [replay, setReplay] = useState([])
-  const [ blocksData, setBlocksData ] = useState([])
+  const [replay, setReplay] = useState([]);
+  const [ blocksData, setBlocksData ] = useState([]);
   let playback;
 
   const setWorkspace = () => {
@@ -30,6 +30,7 @@ const Replay = () => {
     var time = hour + ':' + min + ':' + sec ;
     return time;
   };
+
 
   useEffect(() => {
 
@@ -65,10 +66,12 @@ const Replay = () => {
         
         // const blockKeys = blocksData.map(obj => obj[0]);
         // console.log(blockKeys);
+
       }
     }
 
     getReplay();
+    
   }, [])
 
   // const dataSource = [
