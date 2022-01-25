@@ -1,14 +1,23 @@
 @import '../../assets/style.less';
 
 #timeline {
-  height: 2px;
-  background: purple;
+  height: 1px;
+  background: rgb(221, 221, 221);
   position: absolute;
   width: 100%;
-  bottom: 15px;
+  bottom: 20px;
   display: flex;
   align-items: center;
   justify-content: space-around;
+}
+
+.current-time {
+  font-weight: bold;
+  transform: rotate(45deg);
+}
+
+.all-times {
+  transform: rotate(45deg);
 }
 
 .marker {
