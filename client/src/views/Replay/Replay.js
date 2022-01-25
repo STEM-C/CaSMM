@@ -26,7 +26,8 @@ const Replay = () => {
     var hour = a.getHours();
     var min = a.getMinutes();
     var sec = a.getSeconds();
-    var time = dateVal + ' ' + hour + ':' + min + ':' + sec ;
+    // var time = dateVal + ' ' + hour + ':' + min + ':' + sec ;
+    var time = hour + ':' + min + ':' + sec ;
     return time;
   };
 
@@ -152,11 +153,11 @@ const Replay = () => {
             <h1 id="section-header">Code Replay</h1>
             <div id="blockly-canvas"/>
             <div id="timeline">
-              { replay.map((item, index) => <div className={step === index ? 'bold' : null} key={item.timestamp}>{timeConverter(item.timestamp)}<Marker /></div>)}
+              { replay.map((item, index) => <div className={step === index ? 'current-time' : 'all-times'} key={item.timestamp}>{timeConverter(item.timestamp)}<Marker/></div>)}
             </div>
           </div>
         </div>
-        <div className='flex flex-row'>
+        {/* <div className='flex flex-row'>
           <section id='bottom-container' className="flex flex-column vertical-container overflow-visible">
             <h2 id="section-header">Logs</h2>
             <div>
@@ -167,8 +168,7 @@ const Replay = () => {
               // dataSource={dataSource}
             />
           </section>
-
-        </div>
+        </div> */}
       
       </div>
       <xml id="toolbox" is="Blockly workspace"></xml>

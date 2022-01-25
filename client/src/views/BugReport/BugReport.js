@@ -38,7 +38,7 @@ const BugReport = () => {
       <div id='forgot-pass-wrapper' style={{ marginTop: '0px' }}>
         <div id='forgot-pass-title'>Report a Bug</div>
         <Form id='forgot-pass-form' onFinish={handleSubmit}>
-          <Form.Item id='form-label' label='Contect name'>
+          <Form.Item id='form-label' label='Contact name'>
             <Input
               onChange={(e) => setName(e.target.value)}
               value={name}
@@ -47,7 +47,7 @@ const BugReport = () => {
               required
             />
           </Form.Item>
-          <Form.Item id='form-label' label='Contect Email'>
+          <Form.Item id='form-label' label='Contact Email'>
             <Input
               onChange={(e) => setEmail(e.target.value)}
               value={email}
