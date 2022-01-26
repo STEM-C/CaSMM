@@ -35,7 +35,6 @@ export default function MentorCanvas({ day }) {
   const [forceUpdate] = useReducer((x) => x + 1, 0);
   const workspaceRef = useRef(null);
   const dayRef = useRef(null);
-  const replayRef = useRef([]);
   const history = useHistory();
 
   const setWorkspace = () => {
@@ -50,20 +49,7 @@ export default function MentorCanvas({ day }) {
       dayRef.current = day;
       if (!workspaceRef.current && day && Object.keys(day).length !== 0) {
         setWorkspace();
-
-        let onLoadSave = null;
-        const res = await getSaves(day.id);
-        if (res.data) {
-          if (res.data.current) onLoadSave = res.data.current;
-        } else {
-          console.log(res.err);
-        }
-
-        if (onLoadSave) {
-          let xml = window.Blockly.Xml.textToDom(onLoadSave.workspace);
-          window.Blockly.Xml.domToWorkspace(xml, workspaceRef.current);
-          replayRef.current = onLoadSave.replay;
-        } else if (day.template) {
+        if (day.template) {
           let xml = window.Blockly.Xml.textToDom(day.template);
           window.Blockly.Xml.domToWorkspace(xml, workspaceRef.current);
         }
