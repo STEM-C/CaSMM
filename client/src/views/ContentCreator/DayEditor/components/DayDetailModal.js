@@ -9,6 +9,7 @@ import {
 } from '../../../../Utils/requests';
 import DayComponentTags from './DayComponentTags';
 import '../DayEditor.less';
+import { useNavigate } from 'react-router-dom';
 
 const SCIENCE = 1;
 const MAKING = 2;
@@ -20,7 +21,6 @@ const DayDetailModal = ({
   setDayDetailsVisible,
   setDays,
   viewing,
-  history,
 }) => {
   const [description, setDescription] = useState('');
   const [TekS, setTekS] = useState('');
@@ -32,6 +32,7 @@ const DayDetailModal = ({
 
   const [linkError, setLinkError] = useState(false);
   const [submitButton, setSubmitButton] = useState(0);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const showDayDetailsModal = async () => {
@@ -88,7 +89,7 @@ const DayDetailModal = ({
 
     day.learning_standard_name = learningStandard.name;
     localStorage.setItem('my-day', JSON.stringify(day));
-    history.push('/day');
+    navigate('/day');
   };
 
   const handleSave = async () => {

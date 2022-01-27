@@ -4,10 +4,11 @@ import NavBar from '../../components/NavBar/NavBar';
 import { getDayToolbox } from '../../Utils/requests';
 import { message } from 'antd';
 import { getUser } from '../../Utils/AuthRequests';
+import { useNavigate } from 'react-router-dom';
 
-export default function Day(props) {
+export default function Day() {
   const [day, setDay] = useState({});
-  const { history } = props;
+  const navigate = useNavigate();
 
   const user = getUser();
   const userType = user.role.type;
@@ -37,12 +38,12 @@ export default function Day(props) {
         });
       }
     } else {
-      history.goBack();
+      navigate(-1);
     }
-  }, [history]);
+  }, []);
 
   const handleGoBack = () => {
-    history.goBack();
+    navigate(-1);
   };
 
   return (

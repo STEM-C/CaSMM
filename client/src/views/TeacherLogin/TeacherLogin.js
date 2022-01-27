@@ -3,6 +3,7 @@ import NavBar from '../../components/NavBar/NavBar';
 import React, { useState } from 'react';
 import { postUser, setUserSession } from '../../Utils/AuthRequests';
 import './TeacherLogin.less';
+import { useNavigate } from 'react-router-dom';
 
 const useFormInput = (initialValue) => {
   const [value, setValue] = useState(initialValue);
@@ -16,10 +17,11 @@ const useFormInput = (initialValue) => {
   };
 };
 
-export default function TeacherLogin(props) {
+export default function TeacherLogin() {
   const email = useFormInput('');
   const password = useFormInput('');
   const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
   const handleLogin = () => {
     setLoading(true);
@@ -31,11 +33,11 @@ export default function TeacherLogin(props) {
         setUserSession(response.data.jwt, JSON.stringify(response.data.user));
         setLoading(false);
         if (response.data.user.role.name === 'Content Creator') {
-          props.history.push('/ccdashboard');
+          navigate('/ccdashboard');
         } else if (response.data.user.role.name === 'Researcher') {
-          props.history.push('/report');
+          navigate('/report');
         } else {
-          props.history.push('/dashboard');
+          navigate('/dashboard');
         }
       })
       .catch((error) => {
@@ -67,10 +69,7 @@ export default function TeacherLogin(props) {
             placeholder='Password'
             autoComplete='current-password'
           />
-          <p
-            id='forgot-password'
-            onClick={() => props.history.push('/forgot-password')}
-          >
+          <p id='forgot-password' onClick={() => navigate('/forgot-password')}>
             Forgot Password?
           </p>
           <input

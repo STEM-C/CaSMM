@@ -1,9 +1,8 @@
 import React, { useEffect, useRef, useState, useReducer } from 'react';
-import { useHistory } from 'react-router';
+import { useNavigate } from 'react-router-dom';
 import '../../DayPanels.less';
 import { compileArduinoCode } from '../../Utils/helpers';
 import { message, Spin, Row, Col, Alert } from 'antd';
-import { getSaves } from '../../../../Utils/requests';
 import CodeModal from '../modals/CodeModal';
 import ConsoleModal from '../modals/ConsoleModal';
 import PlotterModal from '../modals/PlotterModal';
@@ -35,8 +34,7 @@ export default function MentorCanvas({ day }) {
   const [forceUpdate] = useReducer((x) => x + 1, 0);
   const workspaceRef = useRef(null);
   const dayRef = useRef(null);
-  const replayRef = useRef([]);
-  const history = useHistory();
+  const navigate = useNavigate();
 
   const setWorkspace = () => {
     workspaceRef.current = window.Blockly.inject('blockly-canvas', {
@@ -50,20 +48,7 @@ export default function MentorCanvas({ day }) {
       dayRef.current = day;
       if (!workspaceRef.current && day && Object.keys(day).length !== 0) {
         setWorkspace();
-
-        let onLoadSave = null;
-        const res = await getSaves(day.id);
-        if (res.data) {
-          if (res.data.current) onLoadSave = res.data.current;
-        } else {
-          console.log(res.err);
-        }
-
-        if (onLoadSave) {
-          let xml = window.Blockly.Xml.textToDom(onLoadSave.workspace);
-          window.Blockly.Xml.domToWorkspace(xml, workspaceRef.current);
-          replayRef.current = onLoadSave.replay;
-        } else if (day.template) {
+        if (day.template) {
           let xml = window.Blockly.Xml.textToDom(day.template);
           window.Blockly.Xml.domToWorkspace(xml, workspaceRef.current);
         }
@@ -172,7 +157,7 @@ export default function MentorCanvas({ day }) {
         'All unsaved progress will be lost. Do you still want to go back?'
       )
     )
-      history.goBack();
+      navigate(-1);
   };
 
   return (
