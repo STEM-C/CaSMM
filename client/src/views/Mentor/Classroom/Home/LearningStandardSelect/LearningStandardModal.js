@@ -6,24 +6,23 @@ import {
   setSelection,
   getLearningStandardDays,
 } from '../../../../../Utils/requests';
+import { useSearchParams } from 'react-router-dom';
 
-export default function LearningStandardModal(props) {
+export default function LearningStandardModal({
+  setActiveLearningStandard,
+  gradeId,
+  classroomId,
+  viewing,
+  setDays,
+}) {
   const [visible, setVisible] = useState(false);
   const [activePanel, setActivePanel] = useState('panel-1');
   const [selectedDays, setSelectedDays] = useState([]);
   const [selected, setSelected] = useState({});
-  const {
-    history,
-    setActiveLearningStandard,
-    gradeId,
-    classroomId,
-    viewing,
-    setDays,
-  } = props;
+  const [setSearchParams] = useSearchParams();
 
   useEffect(() => {
     const fetchData = async () => {
-      console.log(viewing);
       if (viewing) {
         const res = await getLearningStandard(viewing);
         if (res.data) {
@@ -49,12 +48,11 @@ export default function LearningStandardModal(props) {
   };
 
   const handleCancel = () => {
-    history.push('#home');
+    setSearchParams({ tab: 'home' });
     setVisible(false);
   };
 
   const handleOk = async () => {
-    history.push('#home');
     const res = await setSelection(classroomId, selected.id);
     if (res.err) {
       message.error(res.err);
@@ -62,12 +60,13 @@ export default function LearningStandardModal(props) {
       setActiveLearningStandard(selected);
       setDays(selectedDays);
       message.success('Successfully updated active learning standard.');
+      setSearchParams({ tab: 'home' });
       setVisible(false);
     }
   };
 
   const handleReview = () => {
-    history.push(`#home#${selected.id}`);
+    setSearchParams({ tab: 'home', viewing: selected.id });
     setActivePanel('panel-2');
   };
 
@@ -99,7 +98,6 @@ export default function LearningStandardModal(props) {
         ]}
       >
         <LearningStandardSelect
-          history={history}
           activePanel={activePanel}
           setActivePanel={setActivePanel}
           selected={selected}

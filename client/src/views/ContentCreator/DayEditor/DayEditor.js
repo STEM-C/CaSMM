@@ -7,19 +7,14 @@ import {
 } from '../../../Utils/requests';
 import DayDetailModal from './components/DayDetailModal';
 import './DayEditor.less';
+import { useSearchParams } from 'react-router-dom';
 
-const DayEditor = ({
-  learningStandard,
-  history,
-  viewing,
-  setViewing,
-  page,
-  tab,
-}) => {
+const DayEditor = ({ learningStandard, viewing, setViewing, page, tab }) => {
   const [visible, setVisible] = useState(false);
   const [dayDetailsVisible, setDayDetailsVisible] = useState(false);
   const [days, setDays] = useState([]);
   const [selectDay, setSelectDay] = useState('');
+  const [setSearchParams] = useSearchParams();
 
   const showDayDetailsModal = async (dayObj) => {
     setDayDetailsVisible(true);
@@ -70,7 +65,7 @@ const DayEditor = ({
   const handleCancel = () => {
     setVisible(false);
     setViewing(undefined);
-    history.push(`#${tab}#${page}`);
+    setSearchParams({ tab, page });
   };
 
   return (
@@ -85,7 +80,9 @@ const DayEditor = ({
         <div className='list-position'>
           {days.length > 0 ? (
             <div>
-              <p id='day-editor-subtitle'>Click on a <strong>Day</strong> to edit details and workspace</p>
+              <p id='day-editor-subtitle'>
+                Click on a <strong>Day</strong> to edit details and workspace
+              </p>
               <List
                 grid={{ gutter: 16, column: 3 }}
                 style={{ marginTop: '2vh' }}
@@ -156,7 +153,6 @@ const DayEditor = ({
           setDayDetailsVisible={setDayDetailsVisible}
           setDays={setDays}
           viewing={viewing}
-          history={history}
         />
       )}
     </div>

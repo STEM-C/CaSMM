@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Link, useSearchParams } from 'react-router-dom';
+import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import { Table } from 'antd';
 import './DayLevelReport.less';
 
@@ -11,11 +11,14 @@ export default function DayLevelReport() {
   const [sessionCount, setSessionCount] = useState(0);
   const [gradeList, setGradeList] = useState({});
   const [searchParams, setSearchParams] = useSearchParams();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchData = async () => {
       const [sessionRes, sessionCountRes] = await Promise.all([
-        getSessions((searchParams.get('page') - 1) * 10),
+        getSessions(
+          searchParams.has('page') ? (searchParams.get('page') - 1) * 10 : 0
+        ),
         getSessionCount(),
       ]);
 
@@ -115,15 +118,14 @@ export default function DayLevelReport() {
         <div id='day-level-report-header'>Day Level - Student Report</div>
 
         {/* Menu to return to landing page at /reports */}
-        <Link to={'/report'}>
-          <button
-            id={'day-level-return'}
-            className={`btn-${'primary'} btn-${'sm'}`}
-            type='button'
-          >
-            Return to Reports
-          </button>
-        </Link>
+        <button
+          id={'day-level-return'}
+          className={`btn-${'primary'} btn-${'sm'}`}
+          type='button'
+          onClick={() => navigate('/report')}
+        >
+          Return to Dashboard
+        </button>
       </div>
 
       <main id='table-wrapper'>

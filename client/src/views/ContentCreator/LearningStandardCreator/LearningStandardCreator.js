@@ -8,10 +8,10 @@ import {
 } from '../../../Utils/requests';
 import './LearningStandardCreator.less';
 import DayEditor from '../DayEditor/DayEditor';
+import { useSearchParams } from 'react-router-dom';
 
 export default function LearningStandardCreator({
   setLearningStandardList,
-  history,
   viewing,
   setViewing,
 }) {
@@ -25,6 +25,8 @@ export default function LearningStandardCreator({
   const [link, setLink] = useState('');
   const [linkError, setLinkError] = useState(false);
   const [learningStandardObj, setLearningStandardObj] = useState('');
+  const [setSearchParams] = useSearchParams();
+
   let found;
 
   useEffect(() => {
@@ -88,7 +90,8 @@ export default function LearningStandardCreator({
       found = Math.ceil(found / 10);
       // set the history so that modal will reopen when
       // user comes back from workspace
-      history.push(`#home#${found}#${res.data.id}`);
+      setSearchParams({ tab: 'home', day: res.data.id });
+
       setViewing(res.data.id);
       setVisible(false);
     }
@@ -228,7 +231,6 @@ export default function LearningStandardCreator({
 
       {!visible ? (
         <DayEditor
-          history={history}
           learningStandard={learningStandardObj}
           viewing={viewing}
           setViewing={setViewing}

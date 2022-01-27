@@ -15,29 +15,26 @@ import {
 } from '../../Utils/requests';
 import UnitEditor from './UnitEditor/UnitEditor';
 import LessonEditor from './LessonEditor/LessonEditor';
+import { useSearchParams } from 'react-router-dom';
 
 import './ContentCreator.less';
 import { Link } from 'react-router-dom';
 
 const { TabPane } = Tabs;
 
-export default function ContentCreator({ history }) {
+export default function ContentCreator() {
   const [gradeList, setGradeList] = useState([]);
   const [learningStandardList, setLearningStandardList] = useState([]);
   const [workspaceList, setWorkspaceList] = useState([]);
+  const [searchParams, setSearchParams] = useSearchParams();
+
   const [tab, setTab] = useState(
-    history.location.hash.split('#')[1]
-      ? history.location.hash.split('#')[1]
-      : 'home'
+    searchParams.has('tab') ? searchParams.get('tab') : 'home'
   );
   const [page, setPage] = useState(
-    history.location.hash.split('#')[1]
-      ? parseInt(history.location.hash.split('#')[2])
-      : 1
+    searchParams.has('page') ? parseInt(searchParams.get('page')) : 1
   );
-  const [viewing, setViewing] = useState(
-    parseInt(history.location.hash.split('#')[3])
-  );
+  const [viewing, setViewing] = useState(parseInt(searchParams.get('day')));
 
   useEffect(() => {
     const fetchData = async () => {
@@ -80,7 +77,6 @@ export default function ContentCreator({ history }) {
       render: (_, key) => (
         <LessonEditor
           learningStandard={key}
-          history={history}
           linkBtn={true}
           viewing={viewing}
           setViewing={setViewing}
@@ -152,7 +148,7 @@ export default function ContentCreator({ history }) {
             onChange={(Pagination) => {
               setViewing(undefined);
               setPage(Pagination.current);
-              history.push(`#${tab}#${Pagination.current}`);
+              setSearchParams({ tab, page: Pagination.current });
             }}
             pagination={{ current: page ? page : 1 }}
           ></Table>
@@ -238,7 +234,7 @@ export default function ContentCreator({ history }) {
           setTab(activeKey);
           setPage(1);
           setViewing(undefined);
-          history.push(`#${activeKey}`);
+          setSearchParams({ tab: activeKey });
         }}
         activeKey={tab ? tab : 'home'}
       >
@@ -251,7 +247,6 @@ export default function ContentCreator({ history }) {
               <UnitCreator gradeList={gradeList} />
               <LearningStandardDayCreator
                 setLearningStandardList={setLearningStandardList}
-                history={history}
                 viewing={viewing}
                 setViewing={setViewing}
                 tab={tab}
@@ -266,7 +261,7 @@ export default function ContentCreator({ history }) {
               onChange={(Pagination) => {
                 setViewing(undefined);
                 setPage(Pagination.current);
-                history.push(`#${tab}#${Pagination.current}`);
+                setSearchParams({ tab, page: Pagination.current });
               }}
               pagination={{ current: page ? page : 1 }}
             ></Table>
@@ -293,7 +288,7 @@ export default function ContentCreator({ history }) {
               onChange={(Pagination) => {
                 setViewing(undefined);
                 setPage(Pagination.current);
-                history.push(`#${tab}#${Pagination.current}`);
+                setSearchParams({ tab, page: Pagination.current });
               }}
               pagination={{ current: page ? page : 1 }}
             ></Table>
