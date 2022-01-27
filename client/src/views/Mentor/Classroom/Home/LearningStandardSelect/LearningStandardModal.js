@@ -19,7 +19,8 @@ export default function LearningStandardModal({
   const [activePanel, setActivePanel] = useState('panel-1');
   const [selectedDays, setSelectedDays] = useState([]);
   const [selected, setSelected] = useState({});
-  const [setSearchParams] = useSearchParams();
+  // eslint-disable-next-line
+  const [_, setSearchParams] = useSearchParams();
 
   useEffect(() => {
     const fetchData = async () => {

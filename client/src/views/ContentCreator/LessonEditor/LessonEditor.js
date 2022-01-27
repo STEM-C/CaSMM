@@ -21,7 +21,8 @@ export default function LessonEditor({
   const [link, setLink] = useState('');
   const [linkError, setLinkError] = useState(false);
   const [displayName, setDisplayName] = useState(learningStandard.name);
-  const [setSearchParams] = useSearchParams();
+  // eslint-disable-next-line
+  const [_, setSearchParams] = useSearchParams();
 
   const showModal = async () => {
     setVisible(true);

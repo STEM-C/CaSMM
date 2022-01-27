@@ -25,7 +25,8 @@ export default function LearningStandardCreator({
   const [link, setLink] = useState('');
   const [linkError, setLinkError] = useState(false);
   const [learningStandardObj, setLearningStandardObj] = useState('');
-  const [setSearchParams] = useSearchParams();
+  // eslint-disable-next-line
+  const [_, setSearchParams] = useSearchParams();
 
   let found;
 

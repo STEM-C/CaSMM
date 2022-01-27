@@ -14,7 +14,8 @@ const DayEditor = ({ learningStandard, viewing, setViewing, page, tab }) => {
   const [dayDetailsVisible, setDayDetailsVisible] = useState(false);
   const [days, setDays] = useState([]);
   const [selectDay, setSelectDay] = useState('');
-  const [setSearchParams] = useSearchParams();
+  // eslint-disable-next-line
+  const [_, setSearchParams] = useSearchParams();
 
   const showDayDetailsModal = async (dayObj) => {
     setDayDetailsVisible(true);

@@ -23,7 +23,8 @@ export default function LearningStandardSelect({
   const [visibleStandardsByUnit, setVisibleStandardsByUnit] = useState([]);
   const [plainOptions, setPlainOptions] = useState([]);
   const [checkedList, setCheckedList] = useState([]);
-  const [setSearchParams] = useSearchParams();
+  // eslint-disable-next-line
+  const [_, setSearchParams] = useSearchParams();
   const navigator = useNavigate();
 
   useEffect(() => {
