@@ -35,9 +35,7 @@ export default function Roster({ classroomId }) {
               id: student.id,
               enrolled: student.enrolled,
             },
-            last_logged_in: student.last_logged_in
-              ? cleanDatetime(student.last_logged_in)
-              : null,
+            last_logged_in: student.last_logged_in,
           });
         });
         setStudentData(data);
@@ -47,22 +45,10 @@ export default function Roster({ classroomId }) {
     });
   }, [classroomId]);
 
-  const cleanDatetime = (dt) => {
-    const date = new Date(Date.parse(dt));
-    return date;
-  };
-
-  const getFormattedDate = (d) => {
-    if (d) {
-      const day = d.getDate();
-      const month = d.getMonth() + 1;
-      let hrs = d.getHours();
-      const ampm = hrs >= 12 ? 'PM' : 'AM';
-      hrs = hrs % 12;
-      hrs = hrs ? hrs : 12;
-      let min = d.getMinutes();
-      min = min < 10 ? '0' + min : min;
-      return `${month}/${day} ${hrs}:${min} ${ampm}`;
+  const getFormattedDate = (value, locale = 'en-US') => {
+    if (value) {
+      let output = new Date(value).toLocaleDateString(locale);
+      return output + ' ' + new Date(value).toLocaleTimeString(locale);
     } else {
       return 'N/A';
     }
@@ -84,9 +70,7 @@ export default function Roster({ classroomId }) {
           id: updatedStudent.id,
           enrolled: updatedStudent.enrolled,
         },
-        last_logged_in: updatedStudent.last_logged_in
-          ? cleanDatetime(updatedStudent.last_logged_in)
-          : null,
+        last_logged_in: updatedStudent.last_logged_in,
       };
       setStudentData(newStudentData);
       message.success(
@@ -108,9 +92,7 @@ export default function Roster({ classroomId }) {
           id: student.id,
           enrolled: student.enrolled,
         },
-        last_logged_in: student.last_logged_in
-          ? cleanDatetime(student.last_logged_in)
-          : null,
+        last_logged_in: student.last_logged_in,
       })
     );
     setStudentData(newStudentData);

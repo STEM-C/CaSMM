@@ -351,20 +351,9 @@ export default function StudentCanvas({ day }) {
       navigate(-1);
   };
 
-  const getFormattedDate = (dt) => {
-    const d = new Date(Date.parse(dt));
-    const day = d.getDate();
-    const month = d.getMonth() + 1;
-    const year = d.getFullYear();
-    let hrs = d.getHours();
-    const ampm = hrs >= 12 ? 'PM' : 'AM';
-    hrs = hrs % 12;
-    hrs = hrs ? hrs : 12;
-    let min = d.getMinutes();
-    min = min < 10 ? '0' + min : min;
-    let sec = d.getSeconds();
-    sec = sec < 10 ? '0' + sec : sec;
-    return `${month}/${day}/${year}, ${hrs}:${min}:${sec} ${ampm}`;
+  const getFormattedDate = (value, locale = 'en-US') => {
+    let output = new Date(value).toLocaleDateString(locale);
+    return output + ' ' + new Date(value).toLocaleTimeString(locale);
   };
 
   return (

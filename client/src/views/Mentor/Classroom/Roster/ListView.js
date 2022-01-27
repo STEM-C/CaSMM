@@ -148,7 +148,13 @@ export default function ListView(props) {
       key: 'view',
       width: '10%',
       align: 'right',
-      render: (_, record) => <StudentModal student={record} linkBtn={true} />,
+      render: (_, record) => (
+        <StudentModal
+          student={record}
+          linkBtn={true}
+          getFormattedDate={getFormattedDate}
+        />
+      ),
     },
     {
       title: 'Edit',

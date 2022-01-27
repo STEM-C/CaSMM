@@ -50,10 +50,10 @@ export default function DayLevelReport() {
     fetchGradeList();
   }, []);
 
-  function formatMyDate(value, locale = 'en-US') {
+  const formatMyDate = (value, locale = 'en-US') => {
     let output = new Date(value).toLocaleDateString(locale);
     return output + ' ' + new Date(value).toLocaleTimeString(locale);
-  }
+  };
 
   const columns = [
     {
