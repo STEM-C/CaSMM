@@ -8,14 +8,16 @@ import {
 import MentorSubHeader from '../../../components/MentorSubHeader/MentorSubHeader';
 import DisplayCodeModal from './DisplayCodeModal';
 import LearningStandardModal from './LearningStandardSelect/LearningStandardModal';
-import { Button, message, Tag } from 'antd';
+import { message, Tag } from 'antd';
+import { useNavigate } from 'react-router-dom';
 
-export default function Home(props) {
+export default function Home({ classroomId, viewing }) {
   const [classroom, setClassroom] = useState({});
   const [days, setDays] = useState([]);
   const [gradeId, setGradeId] = useState(null);
   const [activeLearningStandard, setActiveLearningStandard] = useState(null);
-  const { classroomId, history, viewing } = props;
+
+  const navigate = useNavigate();
 
   const SCIENCE = 1;
   const MAKING = 2;
@@ -55,11 +57,11 @@ export default function Home(props) {
   const handleViewDay = (day, name) => {
     day.learning_standard_name = name;
     localStorage.setItem('my-day', JSON.stringify(day));
-    history.push('/day');
+    navigate('/day');
   };
 
   const handleBack = () => {
-    history.push('/dashboard');
+    navigate('/dashboard');
   };
 
   const color = [
@@ -90,7 +92,6 @@ export default function Home(props) {
               <div id='active-learning-standard-title-container'>
                 <h3>{`Learning Standard - ${activeLearningStandard.name}`}</h3>
                 <LearningStandardModal
-                  history={history}
                   setActiveLearningStandard={setActiveLearningStandard}
                   classroomId={classroomId}
                   gradeId={gradeId}
@@ -204,7 +205,6 @@ export default function Home(props) {
               <p>There is currently no active lesson set.</p>
               <p>Click the button below to browse available lessons.</p>
               <LearningStandardModal
-                history={history}
                 setActiveLearningStandard={setActiveLearningStandard}
                 classroomId={classroomId}
                 gradeId={gradeId}

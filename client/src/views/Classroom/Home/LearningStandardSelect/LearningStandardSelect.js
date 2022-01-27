@@ -7,6 +7,7 @@ import {
   getLearningStandardDays,
 } from '../../../../Utils/requests';
 import CheckUnits from './CheckUnits';
+import { useNavigate } from 'react-router-dom';
 
 export default function LearningStandardSelect(props) {
   const [searchOptions, setSearchOptions] = useState([]);
@@ -15,7 +16,6 @@ export default function LearningStandardSelect(props) {
   const [plainOptions, setPlainOptions] = useState([]);
   const [checkedList, setCheckedList] = useState([]);
   const {
-    history,
     selected,
     setSelected,
     activePanel,
@@ -24,6 +24,7 @@ export default function LearningStandardSelect(props) {
     days,
     setDays,
   } = props;
+  const navigate = useNavigate();
 
   useEffect(() => {
     async function fetchData() {
@@ -110,11 +111,11 @@ export default function LearningStandardSelect(props) {
   const handleViewDay = (day) => {
     day.learning_standard_name = selected.name;
     localStorage.setItem('my-day', JSON.stringify(day));
-    history.push('/day');
+    navigate('/day');
   };
 
   const handleBack = () => {
-    history.push('#home');
+    navigate('#home');
     setActivePanel('panel-1');
   };
 

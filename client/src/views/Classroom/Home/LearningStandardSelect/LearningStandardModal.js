@@ -6,14 +6,17 @@ import {
   setSelection,
   getLearningStandardDays,
 } from '../../../../Utils/requests';
+import { useNavigate } from 'react-router-dom';
 
 export default function LearningStandardModal(props) {
   const [visible, setVisible] = useState(false);
   const [activePanel, setActivePanel] = useState('panel-1');
   const [selectedDays, setSelectedDays] = useState([]);
   const [selected, setSelected] = useState({});
-  const { history, setActiveLearningStandard, gradeId, classroomId, viewing, setDays } =
+  const { setActiveLearningStandard, gradeId, classroomId, viewing, setDays } =
     props;
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -43,7 +46,7 @@ export default function LearningStandardModal(props) {
   };
 
   const handleCancel = () => {
-    history.push('#home');
+    navigate('#home');
     setVisible(false);
   };
 

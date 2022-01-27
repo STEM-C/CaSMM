@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Button, List, Card, Modal, Form, Input, message } from 'antd';
+import { Button, List, Card, Modal, Form, message } from 'antd';
 import {
   createDay,
   deleteDay,
@@ -8,10 +8,13 @@ import {
   getLearningStandard,
 } from '../../../Utils/requests';
 import './DayEditor.less';
+import { useNavigate } from 'react-router-dom';
 
-export default function ContentCreator({ learningStandard, history }) {
+export default function ContentCreator({ learningStandard }) {
   const [visible, setVisible] = useState(false);
   const [days, setDay] = useState([]);
+
+  const navigate = useNavigate();
 
   const handleCancel = () => {
     setVisible(false);
@@ -62,7 +65,7 @@ export default function ContentCreator({ learningStandard, history }) {
 
     day.learning_standard_name = learningStandard.name;
     localStorage.setItem('my-day', JSON.stringify(day));
-    history.push('/day');
+    navigate('/day');
   };
 
   return (

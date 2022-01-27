@@ -6,10 +6,13 @@ import {
   getDayToolboxAll,
   getCCWorkspaceToolbox,
 } from '../../Utils/requests';
+import { useNavigate } from 'react-router-dom';
+
 import { message } from 'antd';
 
-export default function BlocklyPage({ history, isSandbox }) {
+export default function BlocklyPage({ isSandbox }) {
   const [day, setDay] = useState({});
+  const navigate = useNavigate();
 
   useEffect(() => {
     const setup = async () => {
@@ -57,13 +60,13 @@ export default function BlocklyPage({ history, isSandbox }) {
             }
           }
         } else {
-          history.goBack();
+          navigate(-1);
         }
       }
     };
 
     setup();
-  }, [history, isSandbox]);
+  }, [isSandbox]);
 
   return (
     <div className='container nav-padding'>

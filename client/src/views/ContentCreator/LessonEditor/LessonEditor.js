@@ -8,7 +8,6 @@ import {
 
 export default function LessonEditor({
   learningStandard,
-  history,
   viewing,
   setViewing,
   tab,

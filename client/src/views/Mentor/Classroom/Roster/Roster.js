@@ -10,14 +10,15 @@ import MentorSubHeader from '../../../../components/MentorSubHeader/MentorSubHea
 import ListView from './ListView';
 import CardView from './CardView';
 import { Form, message } from 'antd';
+import { useNavigate } from 'react-router-dom';
 
-export default function Roster(props) {
+export default function Roster({ classroomId }) {
   const [form] = Form.useForm();
   const [studentData, setStudentData] = useState([]);
   const [editingKey, setEditingKey] = useState('');
   const [listView, setListView] = useState(true);
   const [classroom, setClassroom] = useState({});
-  const { classroomId, history } = props;
+  const navigate = useNavigate();
 
   useEffect(() => {
     let data = [];
@@ -180,7 +181,7 @@ export default function Roster(props) {
   };
 
   const handleBack = () => {
-    history.push('/dashboard');
+    navigate('/dashboard');
   };
 
   return (

@@ -1,9 +1,8 @@
 import React, { useEffect, useRef, useState, useReducer } from 'react';
-import { useHistory } from 'react-router';
+import { useNavigate } from 'react-router-dom';
 import '../../DayPanels.less';
 import { compileArduinoCode } from '../../Utils/helpers';
 import { message, Spin, Row, Col, Alert } from 'antd';
-import { getSaves } from '../../../../Utils/requests';
 import CodeModal from '../modals/CodeModal';
 import ConsoleModal from '../modals/ConsoleModal';
 import PlotterModal from '../modals/PlotterModal';
@@ -35,7 +34,7 @@ export default function MentorCanvas({ day }) {
   const [forceUpdate] = useReducer((x) => x + 1, 0);
   const workspaceRef = useRef(null);
   const dayRef = useRef(null);
-  const history = useHistory();
+  const navigate = useNavigate();
 
   const setWorkspace = () => {
     workspaceRef.current = window.Blockly.inject('blockly-canvas', {
@@ -158,7 +157,7 @@ export default function MentorCanvas({ day }) {
         'All unsaved progress will be lost. Do you still want to go back?'
       )
     )
-      history.goBack();
+      navigate(-1);
   };
 
   return (

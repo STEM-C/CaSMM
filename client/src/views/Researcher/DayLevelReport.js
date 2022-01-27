@@ -1,25 +1,21 @@
 import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useSearchParams } from 'react-router-dom';
 import { Table } from 'antd';
 import './DayLevelReport.less';
 
 import NavBar from '../../components/NavBar/NavBar';
 import { getSessions, getSessionCount, getGrades } from '../../Utils/requests';
 
-export default function DayLevelReport({ history }) {
+export default function DayLevelReport() {
   const [sessions, setSessions] = useState([]);
   const [sessionCount, setSessionCount] = useState(0);
-  const [page, setPage] = useState(
-    history.location.hash.split('#')[1]
-      ? parseInt(history.location.hash.split('#')[1])
-      : 1
-  );
   const [gradeList, setGradeList] = useState({});
+  const [searchParams, setSearchParams] = useSearchParams();
 
   useEffect(() => {
     const fetchData = async () => {
       const [sessionRes, sessionCountRes] = await Promise.all([
-        getSessions((page - 1) * 10),
+        getSessions((searchParams.get('page') - 1) * 10),
         getSessionCount(),
       ]);
 
@@ -32,7 +28,7 @@ export default function DayLevelReport({ history }) {
       setSessionCount(sessionCountRes.data);
     };
     fetchData();
-  }, [page]);
+  }, [searchParams]);
 
   useEffect(() => {
     const fetchGradeList = async () => {
@@ -136,8 +132,7 @@ export default function DayLevelReport({ history }) {
           dataSource={sessions}
           rowKey='id'
           onChange={(Pagination) => {
-            setPage(Pagination.current);
-            history.push(`#${Pagination.current}`);
+            setSearchParams({ page: Pagination.current });
           }}
           pagination={{
             defaultCurrent: 1,

@@ -6,11 +6,12 @@ import './Dashboard.less';
 import DashboardDisplayCodeModal from './DashboardDisplayCodeModal';
 import MentorSubHeader from '../../components/MentorSubHeader/MentorSubHeader';
 import NavBar from '../../components/NavBar/NavBar';
+import { useNavigate } from 'react-router-dom';
 
-export default function Dashboard(props) {
+export default function Dashboard() {
   const [classrooms, setClassrooms] = useState([]);
   const user = getUser();
-  const { history } = props;
+  const navigate = useNavigate();
 
   useEffect(() => {
     let classroomIds = [];
@@ -30,7 +31,7 @@ export default function Dashboard(props) {
   }, []);
 
   const handleViewClassroom = (classroomId) => {
-    history.push(`/classroom/${classroomId}`);
+    navigate(`/classroom/${classroomId}`);
   };
 
   return (

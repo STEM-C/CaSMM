@@ -2,7 +2,7 @@ import React from 'react';
 import './NavBar.less';
 import config from './NavBarConfig.json';
 import Logo from '../../assets/casmm_logo.png';
-import { Link, useHistory } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Menu, Dropdown } from 'antd';
 import { DownOutlined } from '@ant-design/icons';
 import { removeUserSession } from '../../Utils/AuthRequests';
@@ -11,16 +11,16 @@ import { useGlobalState } from '../../Utils/userState';
 export default function NavBar() {
   const [value] = useGlobalState('currUser');
   let currentRoute = window.location.pathname;
-  let history = useHistory();
+  let navigate = useNavigate();
   let routes = config.routes;
 
   const handleLogout = () => {
     removeUserSession();
-    history.push('/');
+    navigate('/');
   };
 
   const handleRouteChange = (route) => {
-    history.push(route);
+    navigate(route);
   };
 
   const shouldShowRoute = (route) => {
