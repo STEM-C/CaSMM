@@ -5,10 +5,10 @@ import {
   getLearningStandard,
   updateLearningStandard,
 } from '../../../Utils/requests';
+import { useSearchParams } from 'react-router-dom';
 
 export default function LessonEditor({
   learningStandard,
-  history,
   viewing,
   setViewing,
   tab,
@@ -20,8 +20,9 @@ export default function LessonEditor({
   const [teks, setTeks] = useState('');
   const [link, setLink] = useState('');
   const [linkError, setLinkError] = useState(false);
-
   const [displayName, setDisplayName] = useState(learningStandard.name);
+  // eslint-disable-next-line
+  const [_, setSearchParams] = useSearchParams();
 
   const showModal = async () => {
     setVisible(true);
@@ -62,7 +63,7 @@ export default function LessonEditor({
     } else {
       message.success('Update lesson success');
       setDisplayName(name);
-      history.push(`#${tab}#${page}#${response.data.id}`);
+      setSearchParams({ tab, page, day: response.data.id });
       setViewing(response.data.id);
       setVisible(false);
     }
@@ -164,7 +165,6 @@ export default function LessonEditor({
       </Modal>
       {!visible ? (
         <DayEditor
-          history={history}
           learningStandard={learningStandard}
           viewing={viewing}
           setViewing={setViewing}

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Route, withRouter, Switch, useHistory } from 'react-router-dom';
+import { Route, Routes } from 'react-router-dom';
 import PrivateRoute from './Utils/PrivateRoute';
 
 import Home from './views/Home/Home';
@@ -22,85 +22,102 @@ import GroupReport from './views/Researcher/GroupReport';
 import Replay from './views/Replay/Replay';
 
 const App = () => {
-  let history = useHistory();
   return (
     <div>
-      <Switch>
-        <Route exact path='/'>
-          <Home />
-        </Route>
-        <Route exact path='/about'>
-          <About />
-        </Route>
-        <Route exact path='/teacherlogin'>
-          <TeacherLogin history={history} />
-        </Route>
-        <Route exact path='/forgot-password'>
-          <ForgetPassword />
-        </Route>
-        <Route exact path='/reset-password'>
-          <ResetPassword />
-        </Route>
-        <Route exact path='/login'>
-          <StudentLogin history={history} />
-        </Route>
-        <Route exact path='/replay/:saveID'>
-          <Replay />
-        </Route>
-        <PrivateRoute
-          exact
+      <Routes>
+        <Route path='/' element={<Home />} />
+        <Route path='/about' element={<About />} />
+        <Route path='/teacherlogin' element={<TeacherLogin />} />
+        <Route path='/forgot-password' element={<ForgetPassword />} />
+        <Route path='/reset-password' element={<ResetPassword />} />
+        <Route path='/login' element={<StudentLogin />} />
+        <Route path='/replay/:saveID' element={<Replay />} />
+        <Route path='/sandbox' element={<BlocklyPage isSandbox={true} />} />
+        <Route
           path='/report'
-          render={() => <Report history={history} />}
+          element={
+            <PrivateRoute>
+              <Report />
+            </PrivateRoute>
+          }
         />
-        <Route exact path='/daylevel'>
-          <DayLevelReport />
-        </Route>
-        <Route exact path='/daylevel/:id'>
-          <DayLevelReportView />
-        </Route>
-        <Route exact path='/group-report'>
-          <GroupReport />
-        </Route>
-        <PrivateRoute
-          exact
+        <Route
+          path='/daylevel'
+          element={
+            <PrivateRoute>
+              <DayLevelReport />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path='/daylevel/:id'
+          element={
+            <PrivateRoute>
+              <DayLevelReportView />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path='/group-report'
+          element={
+            <PrivateRoute>
+              <GroupReport />
+            </PrivateRoute>
+          }
+        />
+        <Route
           path='/dashboard'
-          render={() => <Dashboard history={history} />}
+          element={
+            <PrivateRoute>
+              <Dashboard />
+            </PrivateRoute>
+          }
         />
-        {/* <PrivateRoute
-          exact
-          path='/researcherdashboard'
-          render={() => <Dashboard history={history} />}
-        /> */}
-        <PrivateRoute
-          exact
+        <Route
           path='/student'
-          render={() => <Student history={history} />}
+          element={
+            <PrivateRoute>
+              <Student />
+            </PrivateRoute>
+          }
         />
-        <PrivateRoute exact path='/workspace'>
-          <BlocklyPage history={history} isSandbox={false} />
-        </PrivateRoute>
-        <Route path='/sandbox'>
-          <BlocklyPage history={history} isSandbox={true} />
-        </Route>
-        <PrivateRoute
-          exact
-          path='/day'
-          render={() => <BlocklyPage history={history} isSandbox={false} />}
-        />
-        <PrivateRoute
+        <Route
           path='/classroom/:id'
-          render={() => <Classroom history={history} />}
+          element={
+            <PrivateRoute>
+              <Classroom />
+            </PrivateRoute>
+          }
         />
-        <Route exact path='/ccdashboard'>
-          <ContentCreator history={history} />
-        </Route>
-        <Route exact path='/bugreport'>
-          <BugReport history={history} />
-        </Route>
-        <Route component={NotFound} />
-      </Switch>
+        <Route
+          path='/workspace'
+          element={
+            <PrivateRoute>
+              <BlocklyPage isSandbox={false} />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path='/day'
+          element={
+            <PrivateRoute>
+              <BlocklyPage isSandbox={false} />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path='/ccdashboard'
+          element={
+            <PrivateRoute>
+              <ContentCreator />
+            </PrivateRoute>
+          }
+        />
+        <Route path='/bugreport' element={<BugReport />} />
+        <Route element={NotFound} />
+      </Routes>
     </div>
   );
 };
 
-export default withRouter(App);
+export default App;

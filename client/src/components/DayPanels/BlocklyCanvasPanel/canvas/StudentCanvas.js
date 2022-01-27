@@ -14,7 +14,7 @@ import {
 } from '../../Utils/consoleHelpers';
 import ArduinoLogo from '../Icons/ArduinoLogo';
 import PlotterLogo from '../Icons/PlotterLogo';
-import { useHistory } from 'react-router';
+import { useNavigate } from 'react-router-dom';
 
 let plotId = 1;
 
@@ -40,7 +40,7 @@ export default function StudentCanvas({ day }) {
   const parser = new DOMParser();
 
   const [forceUpdate] = useReducer((x) => x + 1, 0);
-  const history = useHistory();
+  const navigate = useNavigate();
   const workspaceRef = useRef(null);
   const dayRef = useRef(null);
   const replayRef = useRef([]);
@@ -348,23 +348,12 @@ export default function StudentCanvas({ day }) {
         'All unsaved progress will be lost. Do you still want to go back?'
       )
     )
-      history.goBack();
+      navigate(-1);
   };
 
-  const getFormattedDate = (dt) => {
-    const d = new Date(Date.parse(dt));
-    const day = d.getDate();
-    const month = d.getMonth() + 1;
-    const year = d.getFullYear();
-    let hrs = d.getHours();
-    const ampm = hrs >= 12 ? 'PM' : 'AM';
-    hrs = hrs % 12;
-    hrs = hrs ? hrs : 12;
-    let min = d.getMinutes();
-    min = min < 10 ? '0' + min : min;
-    let sec = d.getSeconds();
-    sec = sec < 10 ? '0' + sec : sec;
-    return `${month}/${day}/${year}, ${hrs}:${min}:${sec} ${ampm}`;
+  const getFormattedDate = (value, locale = 'en-US') => {
+    let output = new Date(value).toLocaleDateString(locale);
+    return output + ' ' + new Date(value).toLocaleTimeString(locale);
   };
 
   return (

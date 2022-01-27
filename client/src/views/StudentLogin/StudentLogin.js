@@ -6,8 +6,9 @@ import StudentLoginForm from './StudentLoginForm';
 import { setUserSession } from '../../Utils/AuthRequests';
 import { message } from 'antd';
 import NavBar from '../../components/NavBar/NavBar';
+import { useNavigate } from 'react-router-dom';
 
-export default function StudentLogin(props) {
+export default function StudentLogin() {
   const [studentList, setStudentList] = useState([]);
   const [animalList, setAnimalList] = useState([]);
   const [studentIds, setStudentIds] = useState([null, null, null]);
@@ -15,6 +16,8 @@ export default function StudentLogin(props) {
   const [numForms, setNumForms] = useState(2);
   const [authFail, setAuthFail] = useState([false, false, false]);
   const [attemp, setAttemp] = useState(5);
+
+  const navigate = useNavigate();
 
   const joinCode = localStorage.getItem('join-code');
 
@@ -69,7 +72,7 @@ export default function StudentLogin(props) {
       const res = await postJoin(joinCode, ids);
       if (res.data) {
         setUserSession(res.data.jwt, JSON.stringify(res.data.students));
-        props.history.push('/student');
+        navigate('/student');
       } else {
         message.error('Name or Animal not selected.');
       }

@@ -23,7 +23,7 @@ import {
 } from '../../../../Utils/requests';
 import ArduinoLogo from '../Icons/ArduinoLogo';
 import PlotterLogo from '../Icons/PlotterLogo';
-import { useHistory } from 'react-router';
+import { useNavigate } from 'react-router-dom';
 
 let plotId = 1;
 
@@ -48,7 +48,7 @@ export default function ContentCreatorCanvas({ day, isSandbox, setDay }) {
   const [studentToolbox, setStudentToolbox] = useState([]);
   const [openedToolBoxCategories, setOpenedToolBoxCategories] = useState([]);
 
-  const history = useHistory();
+  const navigate = useNavigate();
   const [forceUpdate] = useReducer((x) => x + 1, 0);
   const workspaceRef = useRef(null);
   const dayRef = useRef(null);
@@ -116,7 +116,7 @@ export default function ContentCreatorCanvas({ day, isSandbox, setDay }) {
         'All unsaved progress will be lost. Do you still want to go back?'
       )
     )
-      history.goBack();
+      navigate(-1);
   };
 
   useEffect(() => {

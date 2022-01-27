@@ -1,161 +1,130 @@
-import React, {useEffect, useState} from 'react';
-import { Link } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import { Table } from 'antd';
 import './DayLevelReport.less';
 
 import NavBar from '../../components/NavBar/NavBar';
-import {
-  getAllStudents,
-  getDays,
-  getAllClassrooms,
-  getGrades,
-  getAllSessions
-} from "../../Utils/requests";
+import { getSessions, getSessionCount, getGrades } from '../../Utils/requests';
 
 export default function DayLevelReport() {
+  const [sessions, setSessions] = useState([]);
+  const [sessionCount, setSessionCount] = useState(0);
+  const [gradeList, setGradeList] = useState({});
+  const [searchParams, setSearchParams] = useSearchParams();
+  const navigate = useNavigate();
 
-  const [classRooms, setClassrooms] = useState([])
-  const [students, setStudents] = useState([])
-  const [grades, setGrades] = useState([])
-  const [days, setDays] = useState([])
-  const [sessions, setSessions] = useState([])
-
-  useEffect(function() {
-
-    async function getAllData() {
-      const studentsP = getAllStudents();
-      const gradesP = getGrades()
-      const classroomsP = getAllClassrooms()
-      const daysP = getDays()
-      const sessionsP = getAllSessions();
-      const [students, grades, classrooms, days, sessions] = await Promise.all([studentsP, gradesP, classroomsP, daysP, sessionsP]);
-
-      const fetchedStudents = students.data.map(student => {
-        var filter = {
-          text: student.name + ' ' + student.id,
-          value: student.name + ' ' + student.id
-        }
-        return filter
-      })
-      setStudents(fetchedStudents);
-
-      const fetchedGrades = grades.data.map(grade => {
-        console.log("Grade: ", grade)
-        var Grade = {
-          text: grade.id,
-          value: grade.id
-        }
-        return Grade
+  useEffect(() => {
+    const fetchGradeList = async () => {
+      setSearchParams({
+        page: searchParams.has('page') ? searchParams.get('page') : 1,
+        _sort: searchParams.has('_sort')
+          ? searchParams.get('_sort')
+          : 'created_at:DESC',
       });
-      setGrades(fetchedGrades)
+      const gradesRes = await getGrades();
+      if (gradesRes.error) {
+        console.error(gradesRes.error);
+      }
 
-      const classRoomNames = classrooms.data.map(room => {
-        var classRoom = {
-          text: room.name,
-          value: room.name
-        }
-        return classRoom
+      let list = {};
+      gradesRes.data.forEach((grade) => {
+        list[grade.id] = grade.name;
       });
-      setClassrooms(classRoomNames)
+      setGradeList(list);
+      console.log(list);
+    };
+    fetchGradeList();
+  }, []);
 
-      const fetchedDays = days.data.map(day => {
-        var Day = {
-          text: day.id,
-          value: day.id
-        }
-        return Day
-      })
-      setDays(fetchedDays)
+  useEffect(() => {
+    const fetchData = async () => {
+      let sort = searchParams.get('_sort');
+      const [sessionRes, sessionCountRes] = await Promise.all([
+        getSessions((searchParams.get('page') - 1) * 10, sort),
+        getSessionCount(),
+      ]);
 
-      const formattedSessions = sessions.data.map(session => {
-        return {
-          ...session, 
-          student: session.students[0].name + ' ' + session.students[0].id, 
-          hasPartners: session.students.length > 1 ? 'Yes' : 'No'}
-      })
-      setSessions(formattedSessions);
+      if (sessionRes.error) {
+        console.error(sessionRes.error);
+      }
+      setSessions(sessionRes.data);
+      console.log(sessionRes.data);
 
+      setSessionCount(sessionCountRes.data);
+    };
+    if (searchParams.has('page') && searchParams.has('_sort')) {
+      fetchData();
     }
-    getAllData();
-    
-  }, [])
+  }, [searchParams]);
+
+  const formatMyDate = (value, locale = 'en-US') => {
+    let output = new Date(value).toLocaleDateString(locale);
+    return output + ' ' + new Date(value).toLocaleTimeString(locale);
+  };
+
   const columns = [
     {
-      title: 'ID',
-      dataIndex: 'id',
-      key: 'id',
-      width: '3%',
-      align: 'left',
-      sorter: {
-        compare: (a, b) => (a.name < b.name ? -1 : 1),
-      },
-    },
-    {
       title: 'Student',
-      dataIndex: 'student',
       key: 'student',
       width: '3%',
       align: 'left',
-      filters: students,
-      onFilter: (value, record) => record.student === value,
+      render: (_, key) => <div>{key.students[0].name}</div>,
     },
     {
       title: 'Classroom',
+      key: 'classroom',
       dataIndex: ['classroom', 'name'],
-      width: '3%',
-      align: 'right',
-      filters: classRooms,
-      onFilter: (value, record) => record.classroom.name === value,
+      width: '6%',
+      align: 'left',
     },
     {
       title: 'Grade',
       dataIndex: ['classroom', 'grade'],
+      key: 'grade',
       width: '3%',
-      align: 'right',
-      filters: grades,
-      onFilter: (value, record) => record.classroom.grade === value,
-    },
-    {
-      title: 'Day',
-      dataIndex: ['submissions', '0', 'day'],
-      width: '3%',
-      align: 'right',
-      filters: days,
-      onFilter: (value, record) => {
-        console.log("Day Record: ", record)
-        console.log("Value: ", value)
-        return record.submissions.grade === value
-      },
+      align: 'left',
+      render: (_, key) => <div>{gradeList[key.classroom.grade]}</div>,
     },
     {
       title: 'Session Started',
       dataIndex: 'created_at',
-      key: 'created_at',
-      width: '3%',
+      key: 'sessionStart',
+      width: '6%',
       align: 'left',
-      sorter: {
-        compare: (a, b) => (a.last_logged_in < b.last_logged_in ? -1 : 1),
-      }
-      // render: (_, record) => getFormattedDate(record.last_logged_in),
+      sorter: true,
+      sortOrder:
+        searchParams.get('_sort') === 'created_at:DESC' ? 'descend' : 'ascend',
+      sortDirections:
+        searchParams.get('_sort') === 'created_at:DESC'
+          ? ['ascend', 'descend', 'ascend']
+          : ['descend', 'ascend', 'descend'],
+      onHeaderCell: () => {
+        return {
+          onClick: () => {
+            const page = searchParams.get('page');
+            const _sort =
+              searchParams.get('_sort') === 'created_at:DESC'
+                ? 'created_at:ASC'
+                : 'created_at:DESC';
+            setSearchParams({ page, _sort });
+          },
+        };
+      },
+      render: (_, key) => <div>{formatMyDate(key.created_at)}</div>,
     },
     {
       title: 'Partners',
-      dataIndex: 'hasPartners',
       key: 'hasPartners',
       width: '3%',
-      align: 'right',
-      filters: [
-        {
-          text: 'Yes',
-          value: 'Yes',
-        },
-        {
-          text: 'No',
-          value: 'No',
-        },
-      ],
-      filterMultiple: false,
-      onFilter: (value, record) => record.hasPartners === value,
+      align: 'left',
+      render: (_, key) => (
+        <div>
+          {key.students
+            .slice(1)
+            .map((student) => student.name)
+            .join(', ')}
+        </div>
+      ),
     },
     {
       title: 'View Report',
@@ -163,33 +132,44 @@ export default function DayLevelReport() {
       key: 'enrolled',
       width: '3%',
       align: 'right',
-      render: (_, session) => <Link to={`/daylevel/${session.id}`}>View Report</Link>
+      render: (_, session) => (
+        <Link to={`/daylevel/${session.id}`}>View Report</Link>
+      ),
     },
   ];
-  console.log(sessions);
-  console.log("Students: ", students)
   return (
-    <div className="container nav-padding">
+    <div className='container nav-padding'>
       <NavBar />
-      <div className="menu-bar">
-        <div id="day-level-report-header">Day Level - Student Report</div>
-        
+      <div className='menu-bar'>
+        <div id='day-level-report-header'>Day Level - Student Report</div>
+
         {/* Menu to return to landing page at /reports */}
-        <Link to={"/report"}>
-          <button
-            id={"day-level-return"}
-            className={`btn-${"primary"} btn-${"sm"}`}
-            type="button"
-          >
-            Return to Reports
-          </button>
-        </Link>
+        <button
+          id={'day-level-return'}
+          className={`btn-${'primary'} btn-${'sm'}`}
+          type='button'
+          onClick={() => navigate('/report')}
+        >
+          Return to Dashboard
+        </button>
       </div>
 
-      <main id="content-wrapper">
+      <main id='table-wrapper'>
         <Table
           columns={columns}
           dataSource={sessions}
+          rowKey='id'
+          onChange={(Pagination) => {
+            setSearchParams({
+              page: Pagination.current,
+              _sort: searchParams.get('_sort'),
+            });
+          }}
+          pagination={{
+            current: searchParams.get('page'),
+            defaultPageSize: 10,
+            total: sessionCount,
+          }}
         />
       </main>
     </div>

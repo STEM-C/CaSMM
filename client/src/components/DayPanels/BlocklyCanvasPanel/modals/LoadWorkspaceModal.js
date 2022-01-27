@@ -1,5 +1,5 @@
 import { Button, Modal } from 'antd';
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { getCCWorkspaces } from '../../../../Utils/requests';
 
 const LoadWorkspaceModal = ({ hover, setHover, loadSave }) => {

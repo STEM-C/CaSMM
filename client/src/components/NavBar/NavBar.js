@@ -2,7 +2,7 @@ import React from 'react';
 import './NavBar.less';
 import config from './NavBarConfig.json';
 import Logo from '../../assets/casmm_logo.png';
-import { Link, useHistory } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Menu, Dropdown } from 'antd';
 import { DownOutlined } from '@ant-design/icons';
 import { removeUserSession } from '../../Utils/AuthRequests';
@@ -11,16 +11,16 @@ import { useGlobalState } from '../../Utils/userState';
 export default function NavBar() {
   const [value] = useGlobalState('currUser');
   let currentRoute = window.location.pathname;
-  let history = useHistory();
+  let navigate = useNavigate();
   let routes = config.routes;
 
   const handleLogout = () => {
     removeUserSession();
-    history.push('/');
+    navigate('/');
   };
 
   const handleRouteChange = (route) => {
-    history.push(route);
+    navigate(route);
   };
 
   const shouldShowRoute = (route) => {
@@ -44,7 +44,7 @@ export default function NavBar() {
       ) : null}
       {shouldShowRoute('ContentCreatorDashboard') ? (
         <Menu.Item
-          key='1'
+          key='2'
           onClick={() => handleRouteChange(routes.ContentCreatorDashboard)}
         >
           <i className='fa fa-home' />
@@ -53,7 +53,7 @@ export default function NavBar() {
       ) : null}
       {shouldShowRoute('ResearcherDashboard') ? (
         <Menu.Item
-          key='1'
+          key='3'
           onClick={() => handleRouteChange(routes.ResearcherDashboard)}
         >
           <i className='fa fa-home' />
@@ -62,7 +62,7 @@ export default function NavBar() {
       ) : null}
       {shouldShowRoute('Sandbox') ? (
         <Menu.Item
-          key='1'
+          key='4'
           onClick={() => {
             localStorage.removeItem('sandbox-day');
             handleRouteChange(routes.Sandbox);
@@ -74,7 +74,7 @@ export default function NavBar() {
       ) : null}
       {shouldShowRoute('TeacherLogin') ? (
         <Menu.Item
-          key='2'
+          key='5'
           onClick={() => handleRouteChange(routes.TeacherLogin)}
         >
           <i className='fa fa-sign-in-alt' />
@@ -82,19 +82,19 @@ export default function NavBar() {
         </Menu.Item>
       ) : null}
       {shouldShowRoute('About') ? (
-        <Menu.Item key='3' onClick={() => handleRouteChange(routes.About)}>
+        <Menu.Item key='6' onClick={() => handleRouteChange(routes.About)}>
           <i className='fa fa-info-circle' />
           &nbsp; About
         </Menu.Item>
       ) : null}
       {shouldShowRoute('BugReport') ? (
-        <Menu.Item key='2' onClick={() => handleRouteChange(routes.BugReport)}>
+        <Menu.Item key='7' onClick={() => handleRouteChange(routes.BugReport)}>
           <i className='fa fa-calendar-times' />
           &nbsp; Report a Bug
         </Menu.Item>
       ) : null}
       {shouldShowRoute('SignOut') ? (
-        <Menu.Item key='3' onClick={() => handleLogout()}>
+        <Menu.Item key='8' onClick={() => handleLogout()}>
           <i className='fa fa-sign-out-alt' />
           &nbsp; Sign Out
         </Menu.Item>
