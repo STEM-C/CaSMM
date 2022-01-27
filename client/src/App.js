@@ -52,15 +52,15 @@ const App = () => {
           path='/report'
           render={() => <Report history={history} />}
         />
-        <Route exact path='/daylevel'>
-          <DayLevelReport />
-        </Route>
-        <Route exact path='/daylevel/:id'>
-          <DayLevelReportView />
-        </Route>
-        <Route exact path='/group-report'>
-          <GroupReport />
-        </Route>
+        <PrivateRoute exact path='/daylevel'>
+          <DayLevelReport history={history} />
+        </PrivateRoute>
+        <PrivateRoute exact path='/daylevel/:id'>
+          <DayLevelReportView history={history} />
+        </PrivateRoute>
+        <PrivateRoute exact path='/group-report'>
+          <GroupReport history={history} />
+        </PrivateRoute>
         <PrivateRoute
           exact
           path='/dashboard'

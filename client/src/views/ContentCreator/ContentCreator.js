@@ -46,13 +46,13 @@ export default function ContentCreator({ history }) {
         getGrades(),
         getCCWorkspaces(),
       ]);
-      await setLearningStandardList(lsResponse.data);
+      setLearningStandardList(lsResponse.data);
 
-      const grades = await gradeResponse.data;
+      const grades = gradeResponse.data;
       grades.sort((a, b) => (a.id > b.id ? 1 : -1));
       setGradeList(grades);
 
-      await setWorkspaceList(wsResponse.data);
+      setWorkspaceList(wsResponse.data);
       console.log(wsResponse.data);
     };
     fetchData();
@@ -148,6 +148,7 @@ export default function ContentCreator({ history }) {
             columns={columns}
             dataSource={filterLS(grade)}
             rowClassName='editable-row'
+            rowKey='id'
             onChange={(Pagination) => {
               setViewing(undefined);
               setPage(Pagination.current);
@@ -261,6 +262,7 @@ export default function ContentCreator({ history }) {
               columns={columns}
               dataSource={learningStandardList}
               rowClassName='editable-row'
+              rowKey='id'
               onChange={(Pagination) => {
                 setViewing(undefined);
                 setPage(Pagination.current);
@@ -287,6 +289,7 @@ export default function ContentCreator({ history }) {
               columns={wsColumn}
               dataSource={workspaceList}
               rowClassName='editable-row'
+              rowKey='id'
               onChange={(Pagination) => {
                 setViewing(undefined);
                 setPage(Pagination.current);
