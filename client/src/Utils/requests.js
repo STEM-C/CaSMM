@@ -504,10 +504,10 @@ export const resetPassword = async (code, password, passwordConfirmation) =>
       'Cannot update new password. Please try again or get a new link from the forgot password page.',
   });
 
-export const getSessions = async (start) =>
+export const getSessions = async (start, sort = 'created_at:DESC') =>
   makeRequest({
     method: GET,
-    path: `${server}/sessions?_start=${start}&_limit=10`,
+    path: `${server}/sessions?_sort=${sort}&_start=${start}&_limit=10`,
     auth: true,
     error: 'Sessions could not be retrieved.',
   });

@@ -14,27 +14,13 @@ export default function DayLevelReport() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const fetchData = async () => {
-      const [sessionRes, sessionCountRes] = await Promise.all([
-        getSessions(
-          searchParams.has('page') ? (searchParams.get('page') - 1) * 10 : 0
-        ),
-        getSessionCount(),
-      ]);
-
-      if (sessionRes.error) {
-        console.error(sessionRes.error);
-      }
-      setSessions(sessionRes.data);
-      console.log(sessionRes.data);
-
-      setSessionCount(sessionCountRes.data);
-    };
-    fetchData();
-  }, [searchParams]);
-
-  useEffect(() => {
     const fetchGradeList = async () => {
+      setSearchParams({
+        page: searchParams.has('page') ? searchParams.get('page') : 1,
+        _sort: searchParams.has('_sort')
+          ? searchParams.get('_sort')
+          : 'created_at:DESC',
+      });
       const gradesRes = await getGrades();
       if (gradesRes.error) {
         console.error(gradesRes.error);
@@ -49,6 +35,27 @@ export default function DayLevelReport() {
     };
     fetchGradeList();
   }, []);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      let sort = searchParams.get('_sort');
+      const [sessionRes, sessionCountRes] = await Promise.all([
+        getSessions((searchParams.get('page') - 1) * 10, sort),
+        getSessionCount(),
+      ]);
+
+      if (sessionRes.error) {
+        console.error(sessionRes.error);
+      }
+      setSessions(sessionRes.data);
+      console.log(sessionRes.data);
+
+      setSessionCount(sessionCountRes.data);
+    };
+    if (searchParams.has('page') && searchParams.has('_sort')) {
+      fetchData();
+    }
+  }, [searchParams]);
 
   const formatMyDate = (value, locale = 'en-US') => {
     let output = new Date(value).toLocaleDateString(locale);
@@ -84,6 +91,25 @@ export default function DayLevelReport() {
       key: 'sessionStart',
       width: '6%',
       align: 'left',
+      sorter: true,
+      sortOrder:
+        searchParams.get('_sort') === 'created_at:DESC' ? 'descend' : 'ascend',
+      sortDirections:
+        searchParams.get('_sort') === 'created_at:DESC'
+          ? ['ascend', 'descend', 'ascend']
+          : ['descend', 'ascend', 'descend'],
+      onHeaderCell: () => {
+        return {
+          onClick: () => {
+            const page = searchParams.get('page');
+            const _sort =
+              searchParams.get('_sort') === 'created_at:DESC'
+                ? 'created_at:ASC'
+                : 'created_at:DESC';
+            setSearchParams({ page, _sort });
+          },
+        };
+      },
       render: (_, key) => <div>{formatMyDate(key.created_at)}</div>,
     },
     {
@@ -134,10 +160,13 @@ export default function DayLevelReport() {
           dataSource={sessions}
           rowKey='id'
           onChange={(Pagination) => {
-            setSearchParams({ page: Pagination.current });
+            setSearchParams({
+              page: Pagination.current,
+              _sort: searchParams.get('_sort'),
+            });
           }}
           pagination={{
-            defaultCurrent: 1,
+            current: searchParams.get('page'),
             defaultPageSize: 10,
             total: sessionCount,
           }}
