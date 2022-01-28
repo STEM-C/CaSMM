@@ -15,8 +15,8 @@
       "unique": true
     },
     "classrooms": {
-      "collection": "classroom",
-      "via": "grade"
+      "via": "grade",
+      "collection": "classroom"
     },
     "units": {
       "via": "grade",
