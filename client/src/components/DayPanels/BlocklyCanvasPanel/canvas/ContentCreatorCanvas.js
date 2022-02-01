@@ -5,7 +5,7 @@ import {
   handleCreatorSaveDay,
   handleCreatorUpdateWorkspace,
 } from '../../Utils/helpers';
-import { message, Spin, Row, Col, Alert } from 'antd';
+import { message, Spin, Row, Col, Alert, Dropdown, Menu} from 'antd';
 import CodeModal from '../modals/CodeModal';
 import SaveAsModal from '../modals/SaveAsModal';
 import ConsoleModal from '../modals/ConsoleModal';
@@ -259,6 +259,21 @@ export default function ContentCreatorCanvas({ day, isSandbox, setDay }) {
     }
   };
 
+  const menu = (
+    <Menu>
+      <Menu.Item>
+        <button
+            onClick={handleCreatorSave}
+            // id='link'
+            className='flex flex-column'
+          >
+            <i className='fa fa-save'/>
+            &nbsp; Save
+        </button>
+      </Menu.Item>
+    </Menu>
+  )
+
   return (
     <div id='horizontal-container' className='flex flex-column'>
       <div className='flex flex-row'>
@@ -292,13 +307,16 @@ export default function ContentCreatorCanvas({ day, isSandbox, setDay }) {
                     </button>
                   </Col>
                   <Col flex='auto' />
-                  <Row>
+                  <Row id='testing'>
                     <Col className='flex flex-row'>
                       <LoadWorkspaceModal
                         hover={hoverLoadWorkspace}
                         setHover={setHoverLoadWorkspace}
                         loadSave={loadSave}
                       />
+                      <Dropdown overlay={menu}  trigger={['click']}>
+                        <p>Testing</p>
+                      </Dropdown>
                       <button
                         onClick={handleCreatorSave}
                         id='link'
