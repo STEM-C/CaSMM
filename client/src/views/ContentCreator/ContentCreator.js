@@ -22,7 +22,6 @@ const { TabPane } = Tabs;
 export default function ContentCreator() {
   const [gradeList, setGradeList] = useState([]);
   const [learningStandardList, setLearningStandardList] = useState([]);
-  const [workspaceList, setWorkspaceList] = useState([]);
   const [searchParams, setSearchParams] = useSearchParams();
 
   const [tab, setTab] = useState(
@@ -45,8 +44,6 @@ export default function ContentCreator() {
       grades.sort((a, b) => (a.id > b.id ? 1 : -1));
       setGradeList(grades);
 
-      setWorkspaceList(wsResponse.data);
-      console.log(wsResponse.data);
     };
     fetchData();
   }, []);
@@ -202,26 +199,10 @@ export default function ContentCreator() {
         })}
 
         <TabPane tab='Saved Workspaces' key='workspace'>
-          <div id='page-header'>
-            <h1>Saved Worksapces</h1>
-          </div>
-          <div
-            id='content-creator-table-container'
-            style={{ marginTop: '6.6vh' }}
-          >
-            <Table
-              columns={wsColumn}
-              dataSource={workspaceList}
-              rowClassName='editable-row'
-              rowKey='id'
-              onChange={(Pagination) => {
-                setViewing(undefined);
-                setPage(Pagination.current);
-                setSearchParams({ tab, page: Pagination.current });
-              }}
-              pagination={{ current: page ? page : 1 }}
-            ></Table>
-          </div>
+          <SavedWorkSpaceTab
+            searchParams={searchParams}
+            setSearchParams={setSearchParams}
+          />
         </TabPane>
       </Tabs>
     </div>

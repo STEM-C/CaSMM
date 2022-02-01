@@ -4,18 +4,30 @@ import { QuestionCircleOutlined } from '@ant-design/icons';
 import { Link } from 'react-router-dom';
 import {
     getCCWorkspaces,
+    getClassroomWorkspace,
     deleteCCWorkspace,
   } from '../../Utils/requests';
 
 
-export default function SavedWorkSpaceTab({history, page, setPage, tab, setViewing}){
+export default function SavedWorkSpaceTab({searchParams, setSearchParams, classroomId}){
     const [workspaceList, setWorkspaceList] = useState([]);
-
+    const [tab, setTab] = useState(
+      searchParams.has('tab') ? searchParams.get('tab') : 'home'
+    );
+    const [page, setPage] = useState(
+      searchParams.has('page') ? parseInt(searchParams.get('page')) : 1
+    );
     useEffect(() => {
         const fetchData = async () => {
-            const wsResponse = await getCCWorkspaces();
+          let wsResponse;
+          if(classroomId){
+            wsResponse = await getClassroomWorkspace(classroomId);
+          }
+          else{
+            wsResponse = await getCCWorkspaces();
+          }
             
-            await setWorkspaceList(wsResponse.data);
+            setWorkspaceList(wsResponse.data);
             console.log(wsResponse.data);
         };
         fetchData();
@@ -102,10 +114,10 @@ export default function SavedWorkSpaceTab({history, page, setPage, tab, setViewi
               columns={wsColumn}
               dataSource={workspaceList}
               rowClassName='editable-row'
+              rowKey='id'
               onChange={(Pagination) => {
-                setViewing(undefined);
                 setPage(Pagination.current);
-                history.push(`#${tab}#${Pagination.current}`);
+                setSearchParams({ tab, page: Pagination.current });
               }}
               pagination={{ current: page ? page : 1 }}
             ></Table>

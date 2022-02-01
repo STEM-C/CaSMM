@@ -28,7 +28,7 @@ export default function Dashboard() {
         navigate('/teacherlogin');
       }
     });
-  });
+  }, []);
 
   const handleViewClassroom = (classroomId) => {
     navigate(`/classroom/${classroomId}`);
