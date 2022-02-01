@@ -135,7 +135,7 @@ const Replay = () => {
 
   return (
     <main className="container nav-padding">
-      <NavBar />
+      <NavBar /> 
       <div id="horizontal-container" className="flex flex-column">
         <div id="top-container" className="flex flex-column vertical-container">
           <div id="description-container" className="flex flex-row space-between card">
@@ -150,28 +150,33 @@ const Replay = () => {
               <button className="replayButton" onClick={goForward} disabled={step === (replay.length - 1)}>&#9197;</button>
             </div>
           </div>
+          <div id="timeline-container">
+        <div id="timeline">
+              { replay.map((item, index) => <div className={step === index ? 'current-time' : 'all-times'} key={item.timestamp}>{timeConverter(item.timestamp)}<Marker/></div>)}
+        </div>
+      </div>
         </div>
         <div className='flex flex-row'>
           <div id='bottom-container' className="flex flex-column vertical-container overflow-visible">
             <h1 id="section-header">Code Replay</h1>
             <div id="blockly-canvas"/>
-            <div id="timeline">
+            {/* <div id="timeline">
               { replay.map((item, index) => <div className={step === index ? 'current-time' : 'all-times'} key={item.timestamp}>{timeConverter(item.timestamp)}<Marker/></div>)}
-            </div>
+            </div> */}
           </div>
         </div>
-        {/* <div className='flex flex-row'>
+        <div className='flex flex-row'>
           <section id='bottom-container' className="flex flex-column vertical-container overflow-visible">
-            <h2 id="section-header">Logs</h2>
-            <div>
+            <h2 id="logs-title">Logs</h2>
+            {/* <div id='logs'>
               { replay.map((item, index) => <p className={step === index ? 'bold' : null} key={item.timestamp}> {timeConverter(item.timestamp)} </p>)}
-            </div>
+            </div> */}
             <Table
               columns={columns} 
               // dataSource={dataSource}
             />
           </section>
-        </div> */}
+        </div>
       
       </div>
       <xml id="toolbox" is="Blockly workspace"></xml>
