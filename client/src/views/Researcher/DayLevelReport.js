@@ -159,13 +159,15 @@ export default function DayLevelReport() {
           dataSource={sessions}
           rowKey='id'
           onChange={(Pagination) => {
+            console.log(Pagination);
             setSearchParams({
               page: Pagination.current,
               _sort: searchParams.get('_sort'),
             });
           }}
           pagination={{
-            current: searchParams.get('page'),
+            defaultCurrent: searchParams.get('page'),
+            showQuickJumper: true,
             defaultPageSize: 10,
             total: sessionCount,
           }}
