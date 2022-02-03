@@ -69,7 +69,7 @@ export default function BlocklyPage({ isSandbox }) {
     };
 
     setup();
-  }, [isSandbox, navigate]);
+  }, [isSandbox, navigate, value.role]);
 
   return (
     <div className='container nav-padding'>
