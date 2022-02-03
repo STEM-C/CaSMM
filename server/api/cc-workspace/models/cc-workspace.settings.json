@@ -23,6 +23,7 @@
       "required": true
     },
     "blocks": {
+      "private": true,
       "collection": "block"
     }
   }

@@ -31,7 +31,7 @@ export default function SavedWorkSpaceTab({searchParams, setSearchParams, classr
             console.log(wsResponse.data);
         };
         fetchData();
-      }, []);
+      }, [classroomId]);
     
     const wsColumn = [
         {

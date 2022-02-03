@@ -7,10 +7,12 @@ import {
   getCCWorkspaceToolbox,
 } from '../../Utils/requests';
 import { useNavigate } from 'react-router-dom';
+import { useGlobalState } from '../../Utils/userState';
 
 import { message } from 'antd';
 
 export default function BlocklyPage({ isSandbox }) {
+  const [value] = useGlobalState('currUser');
   const [day, setDay] = useState({});
   const navigate = useNavigate();
 
@@ -28,7 +30,8 @@ export default function BlocklyPage({ isSandbox }) {
           } else {
             message.error(AllToolboxRes.err);
           }
-        } else {
+        } else if(value.role === 'ContentCreator'){
+
           const res = await getCCWorkspaceToolbox(sanboxDay.id);
           if (res.data) {
             let loadedDay = { ...sanboxDay, selectedToolbox: res.data.toolbox };
