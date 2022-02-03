@@ -19,12 +19,12 @@ export default function BlocklyPage({ isSandbox }) {
   useEffect(() => {
     const setup = async () => {
       // if we are in sandbox mode show all toolbox
-      const sanboxDay = JSON.parse(localStorage.getItem('sandbox-day'));
+      const sandboxDay = JSON.parse(localStorage.getItem('sandbox-day'));
       if (isSandbox) {
         const AllToolboxRes = await getDayToolboxAll();
-        if (!sanboxDay?.id) {
+        if (!sandboxDay?.id || value.role === 'Mentor') {
           if (AllToolboxRes.data) {
-            let loadedDay = { toolbox: AllToolboxRes.data.toolbox };
+            let loadedDay = { ...sandboxDay, toolbox: AllToolboxRes.data.toolbox };
             localStorage.setItem('sandbox-day', JSON.stringify(loadedDay));
             setDay(loadedDay);
           } else {
@@ -32,9 +32,9 @@ export default function BlocklyPage({ isSandbox }) {
           }
         } else if(value.role === 'ContentCreator'){
 
-          const res = await getCCWorkspaceToolbox(sanboxDay.id);
+          const res = await getCCWorkspaceToolbox(sandboxDay.id);
           if (res.data) {
-            let loadedDay = { ...sanboxDay, selectedToolbox: res.data.toolbox };
+            let loadedDay = { ...sandboxDay, selectedToolbox: res.data.toolbox };
             loadedDay = { ...loadedDay, toolbox: AllToolboxRes.data.toolbox };
 
             localStorage.setItem('sandbox-day', JSON.stringify(loadedDay));

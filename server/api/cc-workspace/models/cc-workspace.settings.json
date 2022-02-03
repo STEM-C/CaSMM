@@ -25,6 +25,11 @@
     "blocks": {
       "private": true,
       "collection": "block"
+    },
+    "classroom": {
+      "private": true,
+      "via": "cc_workspaces",
+      "model": "classroom"
     }
   }
 }

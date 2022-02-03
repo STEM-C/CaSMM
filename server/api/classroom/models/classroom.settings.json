@@ -43,6 +43,7 @@
       "collection": "selection"
     },
     "cc_workspaces": {
+      "via": "classroom",
       "private": true,
       "collection": "cc-workspace"
     }

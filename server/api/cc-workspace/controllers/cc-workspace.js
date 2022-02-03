@@ -31,6 +31,13 @@ module.exports = {
       model: strapi.models['cc-workspace'],
     });
   },
+
+  // overload the find to only return workspaces that don't belong to any classrooms
+  async find(ctx){
+    const workspaces = await strapi.services['cc-workspace'].find({classroom_null: true});
+    console.log(workspaces);
+    return workspaces;
+  },
   // Update workspace template and block list
   async update(ctx) {
     // find the day
