@@ -123,22 +123,11 @@ module.exports = {
 
   async workspaces(ctx) {
     const { id } = ctx.params;
-
-    const classroom = await strapi.services.classroom.findOne(id);
+    const classroom = await strapi.services.classroom.findOne({id: id});
     // check if the classroom exists
     let response;
     if (classroom) {
       response = classroom.cc_workspaces;
-      // const workspaces = classroom.cc_workspaces;
-      // // respond with a list of cc_workspaces
-      // response = workspaces.map((workspace) => {
-      //   return {
-      //     id: workspace.id,
-      //     name: workspace.name,
-      //     description: workspace.description,
-      //     template: workspace.template
-      //   };
-      // });
     }
 
     return response;
