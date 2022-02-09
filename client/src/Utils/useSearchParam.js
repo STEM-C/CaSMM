@@ -21,6 +21,9 @@ export function useSearchParam() {
       classroom: searchParams.has('classroom')
         ? searchParams.get('classroom')
         : null,
+      students_in: searchParams.has('students_in')
+        ? searchParams.get('students_in')
+        : null,
     };
 
     Object.keys(obj).forEach((key) => {
@@ -37,6 +40,7 @@ export function useSearchParam() {
     learning_standard,
     unit,
     classroom,
+    student,
   }) => {
     let obj = {};
     if (_start == null && _sort == null) {
@@ -47,6 +51,7 @@ export function useSearchParam() {
         learning_standard,
         unit,
         classroom,
+        students_in: student,
       };
     } else {
       obj = paramObj;
@@ -56,6 +61,7 @@ export function useSearchParam() {
       if (learning_standard) obj['learning_standard'] = learning_standard;
       if (unit) obj['unit'] = unit;
       if (classroom) obj['classroom'] = classroom;
+      if (student) obj['students_in'] = student;
     }
     Object.keys(obj).forEach((key) => {
       if (obj[key] == null) delete obj[key];

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Table, Select, Button } from 'antd';
+import { Table, Button, Tag } from 'antd';
 import './DayLevelReport.less';
 import { useSearchParam } from '../../Utils/useSearchParam';
 import NavBar from '../../components/NavBar/NavBar';
@@ -159,8 +159,16 @@ const DayLevelReport = () => {
           Return to Dashboard
         </button>
       </div>
-      <Filter paramObj={paramObj} setSearchParam={setSearchParam} />
+      <Filter setSearchParam={setSearchParam} />
       <main id='day-report-content-wrapper'>
+        <div>
+          <h3>Current Filter: </h3>
+          {Object.keys(paramObj).map((key) => (
+            <Tag>
+              {key === 'grade' ? `${key}(id)` : key}: {paramObj[key]}
+            </Tag>
+          ))}
+        </div>
         <Table
           columns={columns}
           dataSource={sessions}
@@ -182,9 +190,7 @@ const DayLevelReport = () => {
     </div>
   );
 };
-
-const { Option } = Select;
-const Filter = ({ paramObj, setSearchParam }) => {
+const Filter = ({ setSearchParam }) => {
   const [grades, setGrades] = useState([]);
   const [ls, setLs] = useState([]);
   const [units, setUnits] = useState([]);
@@ -212,8 +218,10 @@ const Filter = ({ paramObj, setSearchParam }) => {
     setselectedUnit('');
     setselectedLs('');
     setselectedClassroom('');
+    setselectedStudent('');
     setClassrooms([]);
     setLs([]);
+    setStudents([]);
 
     const grade = e.target.value;
     if (grade) {
@@ -259,6 +267,7 @@ const Filter = ({ paramObj, setSearchParam }) => {
     if (selectedUnit !== '') obj.unit = selectedUnit;
     if (selectedLs !== '') obj.learning_standard = selectedLs;
     if (selectedClassroom !== '') obj.classroom = selectedClassroom;
+    if (selectedStudent !== '') obj.student = selectedStudent;
     console.log(obj);
     setSearchParam(obj);
   };
@@ -277,7 +286,7 @@ const Filter = ({ paramObj, setSearchParam }) => {
       </select>
       <select
         placeholder='Select a unit'
-        disabled={units.length === 0}
+        disabled={units.length === 0 || selectedClassroom != ''}
         onChange={onUnitChange}
       >
         <option key='empty' value=''>
@@ -305,10 +314,10 @@ const Filter = ({ paramObj, setSearchParam }) => {
           </option>
         ))}
       </select>
-      <br />
+      <h3>Or</h3>
       <select
         placeholder='Select a classroom'
-        disabled={classrooms.length === 0}
+        disabled={classrooms.length === 0 || selectedUnit != ''}
         onChange={onClassroomChange}
       >
         <option key='empty' value=''>
