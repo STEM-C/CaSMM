@@ -504,10 +504,18 @@ export const resetPassword = async (code, password, passwordConfirmation) =>
       'Cannot update new password. Please try again or get a new link from the forgot password page.',
   });
 
-export const getSessions = async (path) =>
+export const getSessions = async () =>
   makeRequest({
     method: GET,
-    path,
+    path: `${server}/sessions`,
+    auth: true,
+    error: 'Sessions could not be retrieved.',
+  });
+
+export const getSessionsWithFilter = async (filterOptions) =>
+  makeRequest({
+    method: GET,
+    path: `${server}/sessions?${filterOptions}`,
     auth: true,
     error: 'Sessions could not be retrieved.',
   });
@@ -516,6 +524,14 @@ export const getSessionCount = async () =>
   makeRequest({
     method: GET,
     path: `${server}/sessions/count`,
+    auth: true,
+    error: 'Session count could not be retrieved.',
+  });
+
+export const getSessionCountWithFilter = async (filterOptions) =>
+  makeRequest({
+    method: GET,
+    path: `${server}/sessions/count?${filterOptions}`,
     auth: true,
     error: 'Session count could not be retrieved.',
   });

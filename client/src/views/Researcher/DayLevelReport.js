@@ -1,67 +1,55 @@
 import React, { useEffect, useState } from 'react';
-import { Link, useNavigate, useSearchParams } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Table, Select, Button } from 'antd';
 import './DayLevelReport.less';
-
+import { useSearchParam } from '../../Utils/useSearchParam';
 import NavBar from '../../components/NavBar/NavBar';
 import {
-  getSessions,
-  getSessionCount,
+  getSessionsWithFilter,
+  getSessionCountWithFilter,
   getGrades,
   getUnit,
   getGrade,
+  getClassroom,
 } from '../../Utils/requests';
 import Form from 'antd/lib/form/Form';
 
 const DayLevelReport = () => {
   const [sessions, setSessions] = useState([]);
   const [sessionCount, setSessionCount] = useState(0);
-  const [searchParams, setSearchParams] = useSearchParams();
   const navigate = useNavigate();
 
-  useEffect(() => {
-    setSearchParams({
-      page: searchParams.has('page') ? searchParams.get('page') : 1,
-      _sort: searchParams.has('_sort')
-        ? searchParams.get('_sort')
-        : 'created_at:DESC',
-    });
-  }, []);
+  const { paramObj, setSearchParam } = useSearchParam();
 
   useEffect(() => {
     const fetchData = async () => {
-      let sort = searchParams.get('_sort');
-      let start = (searchParams.get('page') - 1) * 10;
-      let options = {
-        grade: searchParams.get('grade'),
-        unit: searchParams.get('unit'),
-        learning_standard: searchParams.get('learning_standard'),
-        classroom: searchParams.get('classroom'),
-      };
-      let path = `http://localhost:1337/api/sessions?_sort=${sort}&_start=${start}&_limit=10`;
-      if (options.grade) path += `&grade=${options.grade}`;
-      if (options.unit) path += `&unit=${options.unit}`;
-      if (options.learning_standard)
-        path += `&learning_standard=${options.learning_standard}`;
-      if (options.classroom) path += `&classroom=${options.classroom}`;
-      // getSessions((searchParams.get('page') - 1) * 10, sort, options),
+      let filter = '';
+      for (const [k, v] of Object.entries(paramObj)) {
+        switch (k) {
+          case '_start':
+            filter += `_start=${v}&`;
+            break;
+          case '_sort':
+            filter += `_sort=${v}&`;
+            break;
+          default:
+            filter += `${k}=${v}&`;
+        }
+      }
+      filter += '_limit=10';
       const [sessionRes, sessionCountRes] = await Promise.all([
-        getSessions(path),
-        getSessionCount(),
+        getSessionsWithFilter(filter),
+        getSessionCountWithFilter(filter),
       ]);
-      console.log(sessionRes);
       if (sessionRes.error) {
         console.error(sessionRes.error);
       }
       setSessions(sessionRes.data);
-      console.log(sessionRes.data);
-
       setSessionCount(sessionCountRes.data);
     };
-    if (searchParams.has('page') && searchParams.has('_sort')) {
-      fetchData();
-    }
-  }, [searchParams]);
+    // console.log(paramObj);
+    if (paramObj['_sort']) fetchData();
+  }, [paramObj]);
 
   const formatMyDate = (value, locale = 'en-US') => {
     let output = new Date(value).toLocaleDateString(locale);
@@ -111,21 +99,20 @@ const DayLevelReport = () => {
       width: '4%',
       align: 'left',
       sorter: true,
-      sortOrder:
-        searchParams.get('_sort') === 'created_at:DESC' ? 'descend' : 'ascend',
+      sortOrder: paramObj['_sort'] === 'created_at:DESC' ? 'descend' : 'ascend',
       sortDirections:
-        searchParams.get('_sort') === 'created_at:DESC'
+        paramObj['_sort'] === 'created_at:DESC'
           ? ['ascend', 'descend', 'ascend']
           : ['descend', 'ascend', 'descend'],
       onHeaderCell: () => {
         return {
           onClick: () => {
-            const page = searchParams.get('page');
+            const _start = paramObj['_start'];
             const _sort =
-              searchParams.get('_sort') === 'created_at:DESC'
+              paramObj['_sort'] === 'created_at:DESC'
                 ? 'created_at:ASC'
                 : 'created_at:DESC';
-            setSearchParams({ page, _sort });
+            setSearchParam({ _start, _sort });
           },
         };
       },
@@ -158,7 +145,7 @@ const DayLevelReport = () => {
   ];
   return (
     <div className='container nav-padding'>
-      <NavBar searchParams={searchParams} setSearchParams={setSearchParams} />
+      <NavBar />
       <div className='menu-bar'>
         <div id='day-level-report-header'>Day Level - Student Report</div>
 
@@ -172,21 +159,20 @@ const DayLevelReport = () => {
           Return to Dashboard
         </button>
       </div>
-      <Filter />
+      <Filter paramObj={paramObj} setSearchParam={setSearchParam} />
       <main id='day-report-content-wrapper'>
         <Table
           columns={columns}
           dataSource={sessions}
           rowKey='id'
           onChange={(Pagination) => {
-            console.log(Pagination);
-            setSearchParams({
-              page: Pagination.current,
-              _sort: searchParams.get('_sort'),
+            setSearchParam({
+              _start: (Pagination.current - 1) * 10,
+              _sort: paramObj['_sort'],
             });
           }}
           pagination={{
-            defaultCurrent: searchParams.get('page'),
+            current: paramObj['_start'] / 10 + 1 || 1,
             showQuickJumper: true,
             defaultPageSize: 10,
             total: sessionCount,
@@ -198,18 +184,18 @@ const DayLevelReport = () => {
 };
 
 const { Option } = Select;
-const Filter = () => {
-  const [searchParams, setSearchParams] = useSearchParams();
-
+const Filter = ({ paramObj, setSearchParam }) => {
   const [grades, setGrades] = useState([]);
   const [ls, setLs] = useState([]);
   const [units, setUnits] = useState([]);
   const [classrooms, setClassrooms] = useState([]);
+  const [students, setStudents] = useState([]);
 
   const [selectedGrade, setselectedGrade] = useState('');
   const [selectedLs, setselectedLs] = useState('');
   const [selectedUnit, setselectedUnit] = useState('');
   const [selectedClassroom, setselectedClassroom] = useState('');
+  const [selectedStudent, setselectedStudent] = useState('');
 
   useEffect(() => {
     const fetchData = async () => {
@@ -222,7 +208,14 @@ const Filter = () => {
     fetchData();
   }, []);
 
-  const onGradeChange = async (grade) => {
+  const onGradeChange = async (e) => {
+    setselectedUnit('');
+    setselectedLs('');
+    setselectedClassroom('');
+    setClassrooms([]);
+    setLs([]);
+
+    const grade = e.target.value;
     if (grade) {
       setselectedGrade(grade);
       const gradeRes = await getGrade(grade);
@@ -231,12 +224,12 @@ const Filter = () => {
     } else {
       setselectedGrade('');
       setUnits([]);
-      setClassrooms([]);
-      setLs([]);
     }
   };
 
-  const onUnitChange = async (unit) => {
+  const onUnitChange = async (e) => {
+    setselectedLs('');
+    const unit = e.target.value;
     if (unit) {
       setselectedUnit(unit);
       const unitRes = await getUnit(unit);
@@ -247,119 +240,102 @@ const Filter = () => {
     }
   };
 
+  const onClassroomChange = async (e) => {
+    setselectedStudent('');
+    const classroom = e.target.value;
+    if (classroom) {
+      setselectedClassroom(classroom);
+      const classroomRes = await getClassroom(classroom);
+      setStudents(classroomRes.data.students);
+    } else {
+      setselectedClassroom('');
+      setStudents([]);
+    }
+  };
+
   const handleSubmit = async () => {
-    const page = searchParams.get('page');
-    const _sort = searchParams.get('_sort');
-    let paramObj = { page, _sort };
-    if (selectedGrade !== '') paramObj.grade = selectedGrade;
-    if (selectedUnit !== '') paramObj.unit = selectedUnit;
-    if (selectedLs !== '') paramObj.learning_standard = selectedLs;
-    if (selectedClassroom !== '') paramObj.classroom = selectedClassroom;
-    setSearchParams(paramObj);
+    let obj = {};
+    if (selectedGrade !== '') obj.grade = selectedGrade;
+    if (selectedUnit !== '') obj.unit = selectedUnit;
+    if (selectedLs !== '') obj.learning_standard = selectedLs;
+    if (selectedClassroom !== '') obj.classroom = selectedClassroom;
+    console.log(obj);
+    setSearchParam(obj);
   };
 
   return (
     <Form onFinish={handleSubmit}>
-      <Select
-        showSearch={true}
-        placeholder='Select a grade'
-        onChange={onGradeChange}
-        optionFilterProp='children'
-        filterOption={(input, option) =>
-          option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
-        }
-        filterSort={(optionA, optionB) =>
-          optionA.children
-            .toLowerCase()
-            .localeCompare(optionB.children.toLowerCase())
-        }
-      >
-        <Option key='empty' value=''>
-          {''}
-        </Option>
+      <select placeholder='Select a grade' onChange={onGradeChange}>
+        <option key='empty' value=''>
+          Select a grade
+        </option>
         {grades.map((grade) => (
-          <Option key={grade.id} value={grade.id}>
+          <option key={grade.id} value={grade.id}>
             {grade.name}
-          </Option>
+          </option>
         ))}
-      </Select>
-      <Select
-        showSearch={true}
+      </select>
+      <select
         placeholder='Select a unit'
         disabled={units.length === 0}
         onChange={onUnitChange}
-        optionFilterProp='children'
-        filterOption={(input, option) =>
-          option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
-        }
-        filterSort={(optionA, optionB) =>
-          optionA.children
-            .toLowerCase()
-            .localeCompare(optionB.children.toLowerCase())
-        }
       >
-        <Option key='empty' value=''>
-          {''}
-        </Option>
+        <option key='empty' value=''>
+          Select a unit
+        </option>
         {units.map((unit) => (
-          <Option key={unit.id} value={unit.id}>
+          <option key={unit.id} value={unit.id}>
             {unit.name}
-          </Option>
+          </option>
         ))}
-      </Select>
-      <Select
-        showSearch={true}
+      </select>
+      <select
         placeholder='Select a lesson'
         disabled={ls.length === 0}
-        onChange={(val) => {
-          setselectedLs(val);
+        onChange={(e) => {
+          setselectedLs(e.target.value);
         }}
-        optionFilterProp='children'
-        filterOption={(input, option) =>
-          option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
-        }
-        filterSort={(optionA, optionB) =>
-          optionA.children
-            .toLowerCase()
-            .localeCompare(optionB.children.toLowerCase())
-        }
       >
-        <Option key='empty' value=''>
-          {''}
-        </Option>
+        <option key='empty' value=''>
+          Select a lesson
+        </option>
         {ls.map((lesson) => (
-          <Option key={lesson.id} value={lesson.id}>
+          <option key={lesson.id} value={lesson.id}>
             {lesson.name}
-          </Option>
+          </option>
         ))}
-      </Select>
+      </select>
       <br />
-      <Select
-        showSearch={true}
+      <select
         placeholder='Select a classroom'
         disabled={classrooms.length === 0}
-        onChange={(val) => {
-          setselectedClassroom(val);
-        }}
-        optionFilterProp='children'
-        filterOption={(input, option) =>
-          option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
-        }
-        filterSort={(optionA, optionB) =>
-          optionA.children
-            .toLowerCase()
-            .localeCompare(optionB.children.toLowerCase())
-        }
+        onChange={onClassroomChange}
       >
-        <Option key='empty' value=''>
-          {''}
-        </Option>
+        <option key='empty' value=''>
+          Select a classroom
+        </option>
         {classrooms.map((classroom) => (
-          <Option key={classroom.id} value={classroom.id}>
+          <option key={classroom.id} value={classroom.id}>
             {classroom.name}
-          </Option>
+          </option>
         ))}
-      </Select>
+      </select>
+      <select
+        placeholder='Select a student'
+        disabled={students.length === 0}
+        onChange={(e) => {
+          setselectedStudent(e.target.value);
+        }}
+      >
+        <option key='empty' value=''>
+          Select a student
+        </option>
+        {students.map((stuent) => (
+          <option key={stuent.id} value={stuent.id}>
+            {stuent.name}
+          </option>
+        ))}
+      </select>
       <br />
       <Button type='secondary' htmlType='submit' size='large'>
         Submit
