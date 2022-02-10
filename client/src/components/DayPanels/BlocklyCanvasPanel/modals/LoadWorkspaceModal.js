@@ -1,13 +1,19 @@
 import { Button, Modal } from 'antd';
 import React, { useState } from 'react';
-import { getCCWorkspaces } from '../../../../Utils/requests';
+import { getCCWorkspaces, getClassroomWorkspace } from '../../../../Utils/requests';
 
-const LoadWorkspaceModal = ({ hover, setHover, loadSave }) => {
+const LoadWorkspaceModal = ({ hover, setHover, loadSave, classroomId }) => {
   const [visible, setVisible] = useState(false);
   const [workspaces, setWorkspaces] = useState([]);
 
   const showModal = async () => {
-    const res = await getCCWorkspaces();
+    let res;
+    if(classroomId){
+      res = await getClassroomWorkspace(classroomId);
+    }
+    else{
+      res = await getCCWorkspaces();
+    }
     if (res.data) {
       setWorkspaces(res.data);
     }

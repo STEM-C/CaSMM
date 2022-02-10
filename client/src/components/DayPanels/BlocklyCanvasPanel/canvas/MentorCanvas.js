@@ -37,6 +37,7 @@ export default function MentorCanvas({ day, isSandbox, setDay }) {
   const [connectionOpen, setConnectionOpen] = useState(false);
   const [selectedCompile, setSelectedCompile] = useState(false);
   const [compileError, setCompileError] = useState('');
+  const [classroomId, setClassroomId] = useState('');
 
   const [forceUpdate] = useReducer((x) => x + 1, 0);
   const workspaceRef = useRef(null);
@@ -52,6 +53,8 @@ export default function MentorCanvas({ day, isSandbox, setDay }) {
   useEffect(() => {
     // once the day state is set, set the workspace and save
     const setUp = async () => {
+      const classroom = sessionStorage.getItem('classroomId');
+      setClassroomId(classroom);
       dayRef.current = day;
       if (!workspaceRef.current && day && Object.keys(day).length !== 0) {
         setWorkspace();
@@ -74,7 +77,7 @@ export default function MentorCanvas({ day, isSandbox, setDay }) {
       if (workspaceRef.current) workspaceRef.current.clear();
       let xml = window.Blockly.Xml.textToDom(res.data.template);
       window.Blockly.Xml.domToWorkspace(xml, workspaceRef.current);
-
+      setDay(res.data);
     } else {
       message.error(res.err);
       return false;
@@ -242,6 +245,7 @@ export default function MentorCanvas({ day, isSandbox, setDay }) {
                         hover={hoverLoadWorkspace}
                         setHover={setHoverLoadWorkspace}
                         loadSave={loadSave}
+                        classroomId={classroomId}
                       />
                       <button
                         onClick={handleSave}
@@ -267,6 +271,7 @@ export default function MentorCanvas({ day, isSandbox, setDay }) {
                         day={day}
                         setDay={setDay}
                         isSandbox={isSandbox}
+                        classroomId={classroomId}
                       />
                     </Col>
                     <Col className='flex flex-row'>

@@ -13,7 +13,8 @@ export default function SaveAsModal({
   setVisible,
   day,
   setDay,
-  isSandbox}) {
+  isSandbox,
+  classroomId}) {
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
   const [value] = useGlobalState('currUser');
@@ -29,7 +30,6 @@ export default function SaveAsModal({
   };
 
   const handleSaveAs = async () => {
-    const classroomId = sessionStorage.getItem("classroomId");
     const res = await handleSaveAsWorkspace(
       name,
       description,
