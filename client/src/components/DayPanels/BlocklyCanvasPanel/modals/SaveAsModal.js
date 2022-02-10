@@ -1,7 +1,8 @@
 import { Modal, Button, Input, Form, message } from 'antd';
-import { handleCreatorSaveAsWorkspace } from '../../Utils/helpers';
+import { handleSaveAsWorkspace } from '../../Utils/helpers';
 import React, { useState } from 'react';
 import { getCCWorkspaceToolbox } from '../../../../Utils/requests';
+import { useGlobalState } from '../../../../Utils/userState';
 
 export default function SaveAsModal({
   hover,
@@ -12,10 +13,10 @@ export default function SaveAsModal({
   setVisible,
   day,
   setDay,
-  isSandbox,
-}) {
+  isSandbox}) {
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
+  const [value] = useGlobalState('currUser');
 
   const showModal = () => {
     setName('');
@@ -28,17 +29,19 @@ export default function SaveAsModal({
   };
 
   const handleSaveAs = async () => {
-    const res = await handleCreatorSaveAsWorkspace(
+    const classroomId = sessionStorage.getItem("classroomId");
+    const res = await handleSaveAsWorkspace(
       name,
       description,
       workspaceRef,
-      studentToolbox
+      studentToolbox,
+      classroomId
     );
     if (res.err) {
       message.error(res.err);
     } else {
       // if we are on sandbox mode, set the current workspace to the saved worksapce
-      if (isSandbox) {
+      if (isSandbox && value.role === 'ContentCreator') {
         const toolboxRes = await getCCWorkspaceToolbox(res.data.id);
         if (toolboxRes.data) {
           message.success('Workspace saved successfully');

@@ -563,7 +563,7 @@ export const getCCWorkspace = async (id) =>
     error: 'Unable to retrive cc workspace',
   });
 
-export const createCCWorkspace = async (name, description, template, blocks) =>
+export const createCCWorkspace = async (name, description, template, blocks, classroomId) =>
   makeRequest({
     method: POST,
     path: `${server}/cc-workspaces`,
@@ -573,6 +573,7 @@ export const createCCWorkspace = async (name, description, template, blocks) =>
       description,
       template,
       blocks,
+      classroomId
     },
     error: 'Unable to create cc workspace',
   });

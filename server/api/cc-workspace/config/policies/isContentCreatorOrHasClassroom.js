@@ -7,25 +7,28 @@ module.exports = async (ctx, next) => {
         // Go to next policy or controller
         return await next();
     }
+    let classroomId;
     
     // get the target classroom from either the
     // request body or the query params
     const { id } = ctx.params;
-    
-    const workspace = await strapi.services['cc-workspace'].findOne({id: id}, ["classroom.id"]);
-
-    if(workspace && workspace.classroom){
-        const classroomId = workspace.classroom.id;
-        
-        const { id: userId } = ctx.state.user
-        const { classrooms } = (await strapi.services['classroom-manager'].findById(userId)).classroomManager
-    
-        //check if the target classroom is one of the user's classrooms
-        if (classrooms.length && classrooms.find(cr => cr.id === classroomId)) {
-            return await next()
+    if(id){
+        const workspace = await strapi.services['cc-workspace'].findOne({id: id}, ["classroom.id"]);
+        if(workspace && workspace.classroom){
+            classroomId = workspace.classroom.id;
         }
-    
+    }
+    else{
+        classroomId = ctx.request.body.classroomId;
     }
 
+    const { id: userId } = ctx.state.user
+    const { classrooms } = (await strapi.services['classroom-manager'].findById(userId)).classroomManager
+
+    //check if the target classroom is one of the user's classrooms
+    if (classrooms.length && classrooms.find(cr => cr.id === classroomId)) {
+        return await next()
+    }
+    
     ctx.unauthorized(`You're not allowed to perform this action!`)
 }

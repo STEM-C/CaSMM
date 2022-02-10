@@ -24,6 +24,15 @@ module.exports = {
     }
     workspace.blocks = friendlyBlocks;
 
+    const classroomId = ctx.request.body.classroomId;
+    let classroom = null;
+
+    if(classroomId){
+      classroom = await strapi.services.classroom.findOne({id: classroomId});
+    }
+
+    workspace.classroom = classroom;
+
     const createdWorkspace = await strapi.services['cc-workspace'].create(
       workspace
     );
@@ -35,7 +44,6 @@ module.exports = {
   // overload the find to only return workspaces that don't belong to any classrooms
   async find(ctx){
     const workspaces = await strapi.services['cc-workspace'].find({classroom_null: true});
-    console.log(workspaces);
     return workspaces;
   },
   // Update workspace template and block list

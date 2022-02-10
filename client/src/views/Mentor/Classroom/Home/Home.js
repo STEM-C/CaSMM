@@ -25,6 +25,7 @@ export default function Home({ classroomId, viewing }) {
 
   useEffect(() => {
     const fetchData = async () => {
+      sessionStorage.setItem('classroomId', classroomId);
       const res = await getClassroom(classroomId);
       if (res.data) {
         const classroom = res.data;
