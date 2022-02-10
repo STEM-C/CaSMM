@@ -240,6 +240,7 @@ export default function MentorCanvas({ day, isSandbox, setDay }) {
                   <Col flex='auto' />
 
                   <Row>
+                  {isSandbox ? 
                     <Col className='flex flex-row'>
                       <LoadWorkspaceModal
                         hover={hoverLoadWorkspace}
@@ -274,6 +275,7 @@ export default function MentorCanvas({ day, isSandbox, setDay }) {
                         classroomId={classroomId}
                       />
                     </Col>
+                  : null}
                     <Col className='flex flex-row'>
                       <button
                         onClick={handleUndo}
