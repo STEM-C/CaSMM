@@ -11,8 +11,9 @@ module.exports = async (ctx, next) => {
     
     // get the target classroom from either the
     // request body or the query params
-    const { id } = ctx.params;
+    let { id } = ctx.params;
     if(id){
+        id = parseInt(id)
         const workspace = await strapi.services['cc-workspace'].findOne({id: id}, ["classroom.id"]);
         if(workspace && workspace.classroom){
             classroomId = workspace.classroom.id;
@@ -20,6 +21,7 @@ module.exports = async (ctx, next) => {
     }
     else{
         classroomId = ctx.request.body.classroomId;
+        classroomId = parseInt(classroomId)
     }
 
     const { id: userId } = ctx.state.user

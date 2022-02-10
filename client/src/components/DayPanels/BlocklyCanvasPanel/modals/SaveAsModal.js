@@ -40,21 +40,28 @@ export default function SaveAsModal({
     if (res.err) {
       message.error(res.err);
     } else {
+      let localDay = res.data;
       // if we are on sandbox mode, set the current workspace to the saved worksapce
-      if (isSandbox && value.role === 'ContentCreator') {
-        const toolboxRes = await getCCWorkspaceToolbox(res.data.id);
-        if (toolboxRes.data) {
+      if (isSandbox) {
+        if(value.role === 'ContentCreator'){
+          const toolboxRes = await getCCWorkspaceToolbox(res.data.id);
+          if (toolboxRes.data) {
+            message.success('Workspace saved successfully');
+            localDay = {
+              ...localDay,
+              selectedToolbox: toolboxRes.data.toolbox,
+              toolbox: day.toolbox,
+            };
+          } else {
+            message.error(toolboxRes.err);
+          }
+
+        }
+        else if(value.role === 'Mentor'){
           message.success('Workspace saved successfully');
-          let localDay = {
-            ...res.data,
-            selectedToolbox: toolboxRes.data.toolbox,
-            toolbox: day.toolbox,
-          };
-          setDay(localDay);
-        } else {
-          message.error(toolboxRes.err);
         }
       }
+      setDay(localDay);
       setVisible(false);
     }
   };

@@ -81,14 +81,13 @@ export default function MentorCanvas({ day, isSandbox, setDay }) {
     }
   };
 
-  const handleCreatorSave = async () => {
+  const handleSave = async () => {
   
     // if we already have the workspace in the db, just update it.
     if (day && day.id) {
       const updateRes = await handleUpdateWorkspace(
         day.id,
         workspaceRef,
-        day.classroom
       );
       if (updateRes.err) {
         message.error(updateRes.err);
@@ -245,7 +244,7 @@ export default function MentorCanvas({ day, isSandbox, setDay }) {
                         loadSave={loadSave}
                       />
                       <button
-                        onClick={handleCreatorSave}
+                        onClick={handleSave}
                         id='link'
                         className='flex flex-column'
                       >
@@ -268,7 +267,6 @@ export default function MentorCanvas({ day, isSandbox, setDay }) {
                         day={day}
                         setDay={setDay}
                         isSandbox={isSandbox}
-                        isContentCreator={false}
                       />
                     </Col>
                     <Col className='flex flex-row'>

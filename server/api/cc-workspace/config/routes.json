@@ -37,7 +37,7 @@
       "path": "/cc-workspaces",
       "handler": "cc-workspace.create",
       "config": {
-        "policies": []
+        "policies": ["isContentCreatorOrHasClassroom"]
       }
     },
     {
