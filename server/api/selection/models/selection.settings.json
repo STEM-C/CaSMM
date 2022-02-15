@@ -10,8 +10,8 @@
   },
   "attributes": {
     "classroom": {
-      "model": "classroom",
-      "via": "selections"
+      "via": "selections",
+      "model": "classroom"
     },
     "learning_standard": {
       "model": "learning-standard"

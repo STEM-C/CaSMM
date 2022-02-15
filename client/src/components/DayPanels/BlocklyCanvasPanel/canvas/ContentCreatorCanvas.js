@@ -3,7 +3,7 @@ import '../../DayPanels.less';
 import {
   compileArduinoCode,
   handleCreatorSaveDay,
-  handleCreatorUpdateWorkspace,
+  handleUpdateWorkspace,
 } from '../../Utils/helpers';
 import { message, Spin, Row, Col, Alert, Dropdown, Menu} from 'antd';
 import CodeModal from '../modals/CodeModal';
@@ -149,7 +149,7 @@ export default function ContentCreatorCanvas({ day, isSandbox, setDay }) {
     } else {
       // if we already have the workspace in the db, just update it.
       if (day && day.id) {
-        const updateRes = await handleCreatorUpdateWorkspace(
+        const updateRes = await handleUpdateWorkspace(
           day.id,
           workspaceRef,
           studentToolbox

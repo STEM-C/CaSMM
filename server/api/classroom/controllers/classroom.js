@@ -121,6 +121,18 @@ module.exports = {
     return sanitizeEntity(classroom, { model: strapi.models.classroom });
   },
 
+  async workspaces(ctx) {
+    const { id } = ctx.params;
+    const classroom = await strapi.services.classroom.findOne({id: id});
+    // check if the classroom exists
+    let response;
+    if (classroom) {
+      response = classroom.cc_workspaces;
+    }
+
+    return response;
+  },
+
   /**
    * Join a classroom and create a new student session
    *

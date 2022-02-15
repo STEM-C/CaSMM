@@ -1,35 +1,43 @@
 import React, { useEffect, useRef, useState, useReducer } from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../../DayPanels.less';
-import { compileArduinoCode } from '../../Utils/helpers';
+import { compileArduinoCode, handleUpdateWorkspace} from '../../Utils/helpers';
 import { message, Spin, Row, Col, Alert } from 'antd';
 import CodeModal from '../modals/CodeModal';
 import ConsoleModal from '../modals/ConsoleModal';
 import PlotterModal from '../modals/PlotterModal';
+import LoadWorkspaceModal from '../modals/LoadWorkspaceModal';
+import SaveAsModal from '../modals/SaveAsModal';
 import {
   connectToPort,
   handleCloseConnection,
   handleOpenConnection,
 } from '../../Utils/consoleHelpers';
+import { getCCWorkspace } from '../../../../Utils/requests';
 import ArduinoLogo from '../Icons/ArduinoLogo';
 import PlotterLogo from '../Icons/PlotterLogo';
 
 let plotId = 1;
 
-export default function MentorCanvas({ day }) {
+export default function MentorCanvas({ day, isSandbox, setDay }) {
   const [hoverXml, setHoverXml] = useState(false);
+  const [hoverLoadWorkspace, setHoverLoadWorkspace] = useState(false);
+  const [hoverSave, setHoverSave] = useState(false);
+  const [hoverSaveAs, setHoverSaveAs] = useState(false);
   const [hoverUndo, setHoverUndo] = useState(false);
   const [hoverRedo, setHoverRedo] = useState(false);
   const [hoverArduino, setHoverArduino] = useState(false);
   const [hoverCompile, setHoverCompile] = useState(false);
   const [hoverConsole, setHoverConsole] = useState(false);
   const [hoverPlotter, setHoverPlotter] = useState(false);
+  const [showSaveAsModal, setShowSaveAsModal] = useState(false);
   const [showConsole, setShowConsole] = useState(false);
   const [showPlotter, setShowPlotter] = useState(false);
   const [plotData, setPlotData] = useState([]);
   const [connectionOpen, setConnectionOpen] = useState(false);
   const [selectedCompile, setSelectedCompile] = useState(false);
   const [compileError, setCompileError] = useState('');
+  const [classroomId, setClassroomId] = useState('');
 
   const [forceUpdate] = useReducer((x) => x + 1, 0);
   const workspaceRef = useRef(null);
@@ -45,6 +53,8 @@ export default function MentorCanvas({ day }) {
   useEffect(() => {
     // once the day state is set, set the workspace and save
     const setUp = async () => {
+      const classroom = sessionStorage.getItem('classroomId');
+      setClassroomId(classroom);
       dayRef.current = day;
       if (!workspaceRef.current && day && Object.keys(day).length !== 0) {
         setWorkspace();
@@ -58,6 +68,41 @@ export default function MentorCanvas({ day }) {
     };
     setUp();
   }, [day]);
+
+  const loadSave = async (workspaceId) => {
+    // get the corresponding workspace
+    const res = await getCCWorkspace(workspaceId);
+    if (res.data) {
+      // set up the canvas
+      if (workspaceRef.current) workspaceRef.current.clear();
+      let xml = window.Blockly.Xml.textToDom(res.data.template);
+      window.Blockly.Xml.domToWorkspace(xml, workspaceRef.current);
+      setDay(res.data);
+    } else {
+      message.error(res.err);
+      return false;
+    }
+  };
+
+  const handleSave = async () => {
+  
+    // if we already have the workspace in the db, just update it.
+    if (day && day.id) {
+      const updateRes = await handleUpdateWorkspace(
+        day.id,
+        workspaceRef,
+      );
+      if (updateRes.err) {
+        message.error(updateRes.err);
+      } else {
+        message.success('Workspace saved successfully');
+      }
+    }
+    // else create a new workspace and update local storage
+    else {
+      setShowSaveAsModal(true);
+    }
+  };
 
   const handleUndo = () => {
     if (workspaceRef.current.undoStack_.length > 0)
@@ -175,7 +220,11 @@ export default function MentorCanvas({ day }) {
           >
             <Row id='icon-control-panel'>
               <Col flex='none' id='section-header'>
-                {day.learning_standard_name}
+              {day.learning_standard_name
+                  ? `${day.learning_standard_name} - Day ${day.number}`
+                  : day.name
+                  ? `Workspace: ${day.name}`
+                  : 'New Workspace!'}
               </Col>
               <Col flex='auto'>
                 <Row align='middle' justify='end' id='description-container'>
@@ -190,108 +239,141 @@ export default function MentorCanvas({ day }) {
                   </Col>
                   <Col flex='auto' />
 
-                  <Col flex={'200px'}>
-                    <Row>
-                      <Col className='flex flex-row'>
-                        <button
-                          onClick={handleUndo}
-                          id='link'
-                          className='flex flex-column'
-                        >
-                          <i
-                            id='icon-btn'
-                            className='fa fa-undo-alt'
-                            style={
-                              workspaceRef.current
-                                ? workspaceRef.current.undoStack_.length < 1
-                                  ? { color: 'grey', cursor: 'default' }
-                                  : null
+                  <Row>
+                  {isSandbox ? 
+                    <Col className='flex flex-row'>
+                      <LoadWorkspaceModal
+                        hover={hoverLoadWorkspace}
+                        setHover={setHoverLoadWorkspace}
+                        loadSave={loadSave}
+                        classroomId={classroomId}
+                      />
+                      <button
+                        onClick={handleSave}
+                        id='link'
+                        className='flex flex-column'
+                      >
+                        <i
+                          id='icon-btn'
+                          className='fa fa-save'
+                          onMouseEnter={() => setHoverSave(true)}
+                          onMouseLeave={() => setHoverSave(false)}
+                        />
+                        {hoverSave && (
+                          <div className='popup ModalCompile4'>Save</div>
+                        )}
+                      </button>
+                      <SaveAsModal
+                        hover={hoverSaveAs}
+                        setHover={setHoverSaveAs}
+                        visible={showSaveAsModal}
+                        setVisible={setShowSaveAsModal}
+                        workspaceRef={workspaceRef}
+                        day={day}
+                        setDay={setDay}
+                        isSandbox={isSandbox}
+                        classroomId={classroomId}
+                      />
+                    </Col>
+                  : null}
+                    <Col className='flex flex-row'>
+                      <button
+                        onClick={handleUndo}
+                        id='link'
+                        className='flex flex-column'
+                      >
+                        <i
+                          id='icon-btn'
+                          className='fa fa-undo-alt'
+                          style={
+                            workspaceRef.current
+                              ? workspaceRef.current.undoStack_.length < 1
+                                ? { color: 'grey', cursor: 'default' }
                                 : null
-                            }
-                            onMouseEnter={() => setHoverUndo(true)}
-                            onMouseLeave={() => setHoverUndo(false)}
-                          />
-                          {hoverUndo && (
-                            <div className='popup ModalCompile4'>Undo</div>
-                          )}
-                        </button>
-                        <button
-                          onClick={handleRedo}
-                          id='link'
-                          className='flex flex-column'
-                        >
-                          <i
-                            id='icon-btn'
-                            className='fa fa-redo-alt'
-                            style={
-                              workspaceRef.current
-                                ? workspaceRef.current.redoStack_.length < 1
-                                  ? { color: 'grey', cursor: 'default' }
-                                  : null
+                              : null
+                          }
+                          onMouseEnter={() => setHoverUndo(true)}
+                          onMouseLeave={() => setHoverUndo(false)}
+                        />
+                        {hoverUndo && (
+                          <div className='popup ModalCompile4'>Undo</div>
+                        )}
+                      </button>
+                      <button
+                        onClick={handleRedo}
+                        id='link'
+                        className='flex flex-column'
+                      >
+                        <i
+                          id='icon-btn'
+                          className='fa fa-redo-alt'
+                          style={
+                            workspaceRef.current
+                              ? workspaceRef.current.redoStack_.length < 1
+                                ? { color: 'grey', cursor: 'default' }
                                 : null
-                            }
-                            onMouseEnter={() => setHoverRedo(true)}
-                            onMouseLeave={() => setHoverRedo(false)}
-                          />
-                          {hoverRedo && (
-                            <div className='popup ModalCompile4'>Redo</div>
-                          )}
-                        </button>
-                      </Col>
-                    </Row>
-                  </Col>
-                  <Col flex={'230px'}>
-                    <div
-                      id='action-btn-container'
-                      className='flex space-around'
-                    >
-                      <CodeModal
-                        title={'XML'}
-                        workspaceRef={workspaceRef.current}
-                        setHover={setHoverXml}
-                        hover={hoverXml}
-                      />
+                              : null
+                          }
+                          onMouseEnter={() => setHoverRedo(true)}
+                          onMouseLeave={() => setHoverRedo(false)}
+                        />
+                        {hoverRedo && (
+                          <div className='popup ModalCompile4'>Redo</div>
+                        )}
+                      </button>
+                    </Col>
+                    <Col className='flex flex-row'>
+                      <div
+                        id='action-btn-container'
+                        className='flex space-around'
+                      >
+                        <CodeModal
+                          title={'XML'}
+                          workspaceRef={workspaceRef.current}
+                          setHover={setHoverXml}
+                          hover={hoverXml}
+                        />
+                        <CodeModal
+                          title={'Arduino Code'}
+                          workspaceRef={workspaceRef.current}
+                          setHover={setHoverArduino}
+                          hover={hoverArduino}
+                        />
 
-                      <CodeModal
-                        title={'Arduino Code'}
-                        workspaceRef={workspaceRef.current}
-                        setHover={setHoverArduino}
-                        hover={hoverArduino}
-                      />
+                        <ArduinoLogo
+                          setHoverCompile={setHoverCompile}
+                          handleCompile={handleCompile}
+                        />
+                        {hoverCompile && (
+                          <div className='popup ModalCompile'>
+                            Upload to Arduino
+                          </div>
+                        )}
 
-                      <ArduinoLogo
-                        setHoverCompile={setHoverCompile}
-                        handleCompile={handleCompile}
-                      />
-                      {hoverCompile && (
-                        <div className='popup ModalCompile'>
-                          Upload to Arduino
-                        </div>
-                      )}
-
-                      <i
-                        onClick={() => handleConsole()}
-                        className='fas fa-terminal hvr-info'
-                        style={{ marginLeft: '6px' }}
-                        onMouseEnter={() => setHoverConsole(true)}
-                        onMouseLeave={() => setHoverConsole(false)}
-                      />
-                      {hoverConsole && (
-                        <div className='popup ModalCompile'>
-                          Show Serial Monitor
-                        </div>
-                      )}
-                      <PlotterLogo
-                        setHoverPlotter={setHoverPlotter}
-                        handlePlotter={handlePlotter}
-                      />
-                      {hoverPlotter && (
-                        <div className='popup ModalCompile'>
-                          Show Serial Plotter
-                        </div>
-                      )}
-                    </div>
-                  </Col>
+                        <i
+                          onClick={() => handleConsole()}
+                          className='fas fa-terminal hvr-info'
+                          style={{ marginLeft: '6px' }}
+                          onMouseEnter={() => setHoverConsole(true)}
+                          onMouseLeave={() => setHoverConsole(false)}
+                        />
+                        {hoverConsole && (
+                          <div className='popup ModalCompile'>
+                            Show Serial Monitor
+                          </div>
+                        )}
+                        <PlotterLogo
+                          setHoverPlotter={setHoverPlotter}
+                          handlePlotter={handlePlotter}
+                        />
+                        {hoverPlotter && (
+                          <div className='popup ModalCompile'>
+                            Show Serial Plotter
+                          </div>
+                        )}
+                      </div>
+                    </Col>
+                  </Row>
                 </Row>
               </Col>
             </Row>

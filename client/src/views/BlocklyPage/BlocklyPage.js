@@ -7,31 +7,34 @@ import {
   getCCWorkspaceToolbox,
 } from '../../Utils/requests';
 import { useNavigate } from 'react-router-dom';
+import { useGlobalState } from '../../Utils/userState';
 
 import { message } from 'antd';
 
 export default function BlocklyPage({ isSandbox }) {
+  const [value] = useGlobalState('currUser');
   const [day, setDay] = useState({});
   const navigate = useNavigate();
 
   useEffect(() => {
     const setup = async () => {
       // if we are in sandbox mode show all toolbox
-      const sanboxDay = JSON.parse(localStorage.getItem('sandbox-day'));
+      const sandboxDay = JSON.parse(localStorage.getItem('sandbox-day'));
       if (isSandbox) {
         const AllToolboxRes = await getDayToolboxAll();
-        if (!sanboxDay?.id) {
+        if (!sandboxDay?.id || value.role === 'Mentor') {
           if (AllToolboxRes.data) {
-            let loadedDay = { toolbox: AllToolboxRes.data.toolbox };
+            let loadedDay = { ...sandboxDay, toolbox: AllToolboxRes.data.toolbox };
             localStorage.setItem('sandbox-day', JSON.stringify(loadedDay));
             setDay(loadedDay);
           } else {
             message.error(AllToolboxRes.err);
           }
-        } else {
-          const res = await getCCWorkspaceToolbox(sanboxDay.id);
+        } else if(value.role === 'ContentCreator'){
+
+          const res = await getCCWorkspaceToolbox(sandboxDay.id);
           if (res.data) {
-            let loadedDay = { ...sanboxDay, selectedToolbox: res.data.toolbox };
+            let loadedDay = { ...sandboxDay, selectedToolbox: res.data.toolbox };
             loadedDay = { ...loadedDay, toolbox: AllToolboxRes.data.toolbox };
 
             localStorage.setItem('sandbox-day', JSON.stringify(loadedDay));
@@ -66,7 +69,7 @@ export default function BlocklyPage({ isSandbox }) {
     };
 
     setup();
-  }, [isSandbox, navigate]);
+  }, [isSandbox, navigate, value.role]);
 
   return (
     <div className='container nav-padding'>

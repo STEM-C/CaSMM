@@ -34,6 +34,14 @@
     },
     {
       "method": "GET",
+      "path": "/classroom/workspaces/:id",
+      "handler": "classroom.workspaces",
+      "config": {
+        "policies": ["global::isClassroomManager", "global::hasClassroom"]
+      }
+    },
+    {
+      "method": "GET",
       "path": "/classrooms/join/:code",
       "handler": "classroom.initJoin",
       "config": {

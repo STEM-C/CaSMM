@@ -2,11 +2,13 @@
   "kind": "collectionType",
   "collectionName": "classrooms",
   "info": {
-    "name": "Classroom"
+    "name": "Classroom",
+    "description": ""
   },
   "options": {
     "increments": true,
-    "timestamps": true
+    "timestamps": true,
+    "draftAndPublish": false
   },
   "attributes": {
     "name": {
@@ -39,6 +41,11 @@
     "selections": {
       "via": "classroom",
       "collection": "selection"
+    },
+    "cc_workspaces": {
+      "via": "classroom",
+      "private": true,
+      "collection": "cc-workspace"
     }
   }
 }
