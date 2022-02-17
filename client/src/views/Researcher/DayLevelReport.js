@@ -286,6 +286,7 @@ const Filter = ({ setSearchParam }) => {
     if (selectedStudent !== '') obj.student = selectedStudent;
     console.log(obj);
     setSearchParam(obj);
+    // setIsModalVisible(false);
   };
 
   return (
