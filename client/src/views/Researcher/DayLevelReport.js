@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Table, Button, Tag } from 'antd';
+import { Table, Button, Tag, Modal } from 'antd';
 import './DayLevelReport.less';
 import { useSearchParam } from '../../Utils/useSearchParam';
 import NavBar from '../../components/NavBar/NavBar';
@@ -19,6 +19,7 @@ const DayLevelReport = () => {
   const [sessionCount, setSessionCount] = useState(0);
   const navigate = useNavigate();
 
+  const [isModalVisible, setIsModalVisible] = useState(false);
   const { paramObj, setSearchParam } = useSearchParam();
 
   useEffect(() => {
@@ -143,6 +144,14 @@ const DayLevelReport = () => {
       ),
     },
   ];
+
+
+
+  const showModal = () => {
+    setIsModalVisible(true);
+  };
+
+
   return (
     <div className='container nav-padding'>
       <NavBar />
@@ -159,16 +168,23 @@ const DayLevelReport = () => {
           Return to Dashboard
         </button>
       </div>
-      <Filter setSearchParam={setSearchParam} />
+      <div className='filter-container'>
+       <button className='filter-btn' onClick={showModal}>
+          Filter 
+        </button>
+        <Modal title="Filter" visible={isModalVisible} footer={null}>
+          <Filter setSearchParam={setSearchParam} />
+        </Modal>
+        <div className='current-filter-container'>
+            <h3>Current Filter: </h3>
+            {Object.keys(paramObj).map((key) => (
+              <Tag>
+                {key === 'grade' ? `${key}(id)` : key}: {paramObj[key]}
+              </Tag>
+            ))}
+          </div>
+      </div>
       <main id='day-report-content-wrapper'>
-        <div>
-          <h3>Current Filter: </h3>
-          {Object.keys(paramObj).map((key) => (
-            <Tag>
-              {key === 'grade' ? `${key}(id)` : key}: {paramObj[key]}
-            </Tag>
-          ))}
-        </div>
         <Table
           columns={columns}
           dataSource={sessions}
@@ -274,7 +290,10 @@ const Filter = ({ setSearchParam }) => {
 
   return (
     <Form onFinish={handleSubmit}>
-      <select placeholder='Select a grade' onChange={onGradeChange}>
+      <select 
+        className='select'
+        placeholder='Select a grade' 
+        onChange={onGradeChange}>
         <option key='empty' value=''>
           Select a grade
         </option>
@@ -285,6 +304,7 @@ const Filter = ({ setSearchParam }) => {
         ))}
       </select>
       <select
+        className='select'
         placeholder='Select a unit'
         disabled={units.length === 0 || selectedClassroom != ''}
         onChange={onUnitChange}
@@ -299,6 +319,7 @@ const Filter = ({ setSearchParam }) => {
         ))}
       </select>
       <select
+        className='select'
         placeholder='Select a lesson'
         disabled={ls.length === 0}
         onChange={(e) => {
@@ -316,6 +337,7 @@ const Filter = ({ setSearchParam }) => {
       </select>
       <h3>Or</h3>
       <select
+        className='select'
         placeholder='Select a classroom'
         disabled={classrooms.length === 0 || selectedUnit != ''}
         onChange={onClassroomChange}
@@ -330,6 +352,7 @@ const Filter = ({ setSearchParam }) => {
         ))}
       </select>
       <select
+        className='select'
         placeholder='Select a student'
         disabled={students.length === 0}
         onChange={(e) => {

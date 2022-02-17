@@ -90,6 +90,49 @@ label {
   display: inline-block;
 }
 
+.select {
+  padding: 10px;
+  margin: 10px;
+  background-color: #fff;
+}
+
+.filter-container {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-left: 120px;
+
+  .filter-btn {
+    background-color: #colors[quaternary];
+    border-radius: 10px;
+    margin-right: 10px;
+    padding: 4px;
+    font-size: 14px;
+    font-weight: 500;
+    border: none;
+
+    &:hover {
+      background-color: #colors[quinary];
+    }
+  }
+}
+
+.current-filter-container {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+
+  h3 {
+    color: #fff;
+    font-size: 14px;
+    padding-right: 6px;
+  }
+
+  Tag {
+    background-color: red;
+  }
+}
+
 @media only screen and (max-width: 915px) {
   #day-level-return {
     height: 110px;
