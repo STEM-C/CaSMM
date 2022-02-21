@@ -1,61 +1,55 @@
 import React, { useEffect, useState } from 'react';
-import { Link, useNavigate, useSearchParams } from 'react-router-dom';
-import { Table } from 'antd';
+import { Link, useNavigate } from 'react-router-dom';
+import { Table, Button, Tag } from 'antd';
 import './DayLevelReport.less';
-
+import { useSearchParam } from '../../Utils/useSearchParam';
 import NavBar from '../../components/NavBar/NavBar';
-import { getSessions, getSessionCount, getGrades } from '../../Utils/requests';
+import {
+  getSessionsWithFilter,
+  getSessionCountWithFilter,
+  getGrades,
+  getUnit,
+  getGrade,
+  getClassroom,
+} from '../../Utils/requests';
+import Form from 'antd/lib/form/Form';
 
-export default function DayLevelReport() {
+const DayLevelReport = () => {
   const [sessions, setSessions] = useState([]);
   const [sessionCount, setSessionCount] = useState(0);
-  const [gradeList, setGradeList] = useState({});
-  const [searchParams, setSearchParams] = useSearchParams();
   const navigate = useNavigate();
 
-  useEffect(() => {
-    const fetchGradeList = async () => {
-      setSearchParams({
-        page: searchParams.has('page') ? searchParams.get('page') : 1,
-        _sort: searchParams.has('_sort')
-          ? searchParams.get('_sort')
-          : 'created_at:DESC',
-      });
-      const gradesRes = await getGrades();
-      if (gradesRes.error) {
-        console.error(gradesRes.error);
-      }
-
-      let list = {};
-      gradesRes.data.forEach((grade) => {
-        list[grade.id] = grade.name;
-      });
-      setGradeList(list);
-      console.log(list);
-    };
-    fetchGradeList();
-  }, []);
+  const { paramObj, setSearchParam } = useSearchParam();
 
   useEffect(() => {
     const fetchData = async () => {
-      let sort = searchParams.get('_sort');
+      let filter = '';
+      for (const [k, v] of Object.entries(paramObj)) {
+        switch (k) {
+          case '_start':
+            filter += `_start=${v}&`;
+            break;
+          case '_sort':
+            filter += `_sort=${v}&`;
+            break;
+          default:
+            filter += `${k}=${v}&`;
+        }
+      }
+      filter += '_limit=10';
       const [sessionRes, sessionCountRes] = await Promise.all([
-        getSessions((searchParams.get('page') - 1) * 10, sort),
-        getSessionCount(),
+        getSessionsWithFilter(filter),
+        getSessionCountWithFilter(filter),
       ]);
-
       if (sessionRes.error) {
         console.error(sessionRes.error);
       }
       setSessions(sessionRes.data);
-      console.log(sessionRes.data);
-
       setSessionCount(sessionCountRes.data);
     };
-    if (searchParams.has('page') && searchParams.has('_sort')) {
-      fetchData();
-    }
-  }, [searchParams]);
+    // console.log(paramObj);
+    if (paramObj['_sort']) fetchData();
+  }, [paramObj]);
 
   const formatMyDate = (value, locale = 'en-US') => {
     let output = new Date(value).toLocaleDateString(locale);
@@ -66,7 +60,7 @@ export default function DayLevelReport() {
     {
       title: 'Student',
       key: 'student',
-      width: '3%',
+      width: '2%',
       align: 'left',
       render: (_, key) => <div>{key.students[0].name}</div>,
     },
@@ -79,34 +73,46 @@ export default function DayLevelReport() {
     },
     {
       title: 'Grade',
-      dataIndex: ['classroom', 'grade'],
+      dataIndex: ['grade', 'name'],
       key: 'grade',
+      width: '2%',
+      align: 'left',
+    },
+    {
+      title: 'Unit',
+      dataIndex: ['unit', 'name'],
+      key: 'unit',
+      width: '4%',
+      align: 'left',
+    },
+    {
+      title: 'Lesson',
+      dataIndex: ['learning_standard', 'name'],
+      key: 'unit',
       width: '3%',
       align: 'left',
-      render: (_, key) => <div>{gradeList[key.classroom.grade]}</div>,
     },
     {
       title: 'Session Started',
       dataIndex: 'created_at',
       key: 'sessionStart',
-      width: '6%',
+      width: '4%',
       align: 'left',
       sorter: true,
-      sortOrder:
-        searchParams.get('_sort') === 'created_at:DESC' ? 'descend' : 'ascend',
+      sortOrder: paramObj['_sort'] === 'created_at:DESC' ? 'descend' : 'ascend',
       sortDirections:
-        searchParams.get('_sort') === 'created_at:DESC'
+        paramObj['_sort'] === 'created_at:DESC'
           ? ['ascend', 'descend', 'ascend']
           : ['descend', 'ascend', 'descend'],
       onHeaderCell: () => {
         return {
           onClick: () => {
-            const page = searchParams.get('page');
+            const _start = paramObj['_start'];
             const _sort =
-              searchParams.get('_sort') === 'created_at:DESC'
+              paramObj['_sort'] === 'created_at:DESC'
                 ? 'created_at:ASC'
                 : 'created_at:DESC';
-            setSearchParams({ page, _sort });
+            setSearchParam({ _start, _sort });
           },
         };
       },
@@ -115,7 +121,7 @@ export default function DayLevelReport() {
     {
       title: 'Partners',
       key: 'hasPartners',
-      width: '3%',
+      width: '2%',
       align: 'left',
       render: (_, key) => (
         <div>
@@ -130,7 +136,7 @@ export default function DayLevelReport() {
       title: 'View Report',
       dataIndex: 'enrolled',
       key: 'enrolled',
-      width: '3%',
+      width: '2%',
       align: 'right',
       render: (_, session) => (
         <Link to={`/daylevel/${session.id}`}>View Report</Link>
@@ -153,19 +159,29 @@ export default function DayLevelReport() {
           Return to Dashboard
         </button>
       </div>
+      <Filter setSearchParam={setSearchParam} />
       <main id='day-report-content-wrapper'>
+        <div>
+          <h3>Current Filter: </h3>
+          {Object.keys(paramObj).map((key) => (
+            <Tag>
+              {key === 'grade' ? `${key}(id)` : key}: {paramObj[key]}
+            </Tag>
+          ))}
+        </div>
         <Table
           columns={columns}
           dataSource={sessions}
           rowKey='id'
           onChange={(Pagination) => {
-            setSearchParams({
-              page: Pagination.current,
-              _sort: searchParams.get('_sort'),
+            setSearchParam({
+              _start: (Pagination.current - 1) * 10,
+              _sort: paramObj['_sort'],
             });
           }}
           pagination={{
-            current: searchParams.get('page'),
+            current: paramObj['_start'] / 10 + 1 || 1,
+            showQuickJumper: true,
             defaultPageSize: 10,
             total: sessionCount,
           }}
@@ -173,4 +189,168 @@ export default function DayLevelReport() {
       </main>
     </div>
   );
-}
+};
+const Filter = ({ setSearchParam }) => {
+  const [grades, setGrades] = useState([]);
+  const [ls, setLs] = useState([]);
+  const [units, setUnits] = useState([]);
+  const [classrooms, setClassrooms] = useState([]);
+  const [students, setStudents] = useState([]);
+
+  const [selectedGrade, setselectedGrade] = useState('');
+  const [selectedLs, setselectedLs] = useState('');
+  const [selectedUnit, setselectedUnit] = useState('');
+  const [selectedClassroom, setselectedClassroom] = useState('');
+  const [selectedStudent, setselectedStudent] = useState('');
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const gradesRes = await getGrades();
+      if (gradesRes.error) {
+        console.error('Fail to retrive grades');
+      }
+      setGrades(gradesRes.data);
+    };
+    fetchData();
+  }, []);
+
+  const onGradeChange = async (e) => {
+    setselectedUnit('');
+    setselectedLs('');
+    setselectedClassroom('');
+    setselectedStudent('');
+    setClassrooms([]);
+    setLs([]);
+    setStudents([]);
+
+    const grade = e.target.value;
+    if (grade) {
+      setselectedGrade(grade);
+      const gradeRes = await getGrade(grade);
+      setUnits(gradeRes.data.units);
+      setClassrooms(gradeRes.data.classrooms);
+    } else {
+      setselectedGrade('');
+      setUnits([]);
+    }
+  };
+
+  const onUnitChange = async (e) => {
+    setselectedLs('');
+    const unit = e.target.value;
+    if (unit) {
+      setselectedUnit(unit);
+      const unitRes = await getUnit(unit);
+      setLs(unitRes.data.learning_standards);
+    } else {
+      setselectedUnit('');
+      setLs([]);
+    }
+  };
+
+  const onClassroomChange = async (e) => {
+    setselectedStudent('');
+    const classroom = e.target.value;
+    if (classroom) {
+      setselectedClassroom(classroom);
+      const classroomRes = await getClassroom(classroom);
+      setStudents(classroomRes.data.students);
+    } else {
+      setselectedClassroom('');
+      setStudents([]);
+    }
+  };
+
+  const handleSubmit = async () => {
+    let obj = {};
+    if (selectedGrade !== '') obj.grade = selectedGrade;
+    if (selectedUnit !== '') obj.unit = selectedUnit;
+    if (selectedLs !== '') obj.learning_standard = selectedLs;
+    if (selectedClassroom !== '') obj.classroom = selectedClassroom;
+    if (selectedStudent !== '') obj.student = selectedStudent;
+    console.log(obj);
+    setSearchParam(obj);
+  };
+
+  return (
+    <Form onFinish={handleSubmit}>
+      <select placeholder='Select a grade' onChange={onGradeChange}>
+        <option key='empty' value=''>
+          Select a grade
+        </option>
+        {grades.map((grade) => (
+          <option key={grade.id} value={grade.id}>
+            {grade.name}
+          </option>
+        ))}
+      </select>
+      <select
+        placeholder='Select a unit'
+        disabled={units.length === 0 || selectedClassroom != ''}
+        onChange={onUnitChange}
+      >
+        <option key='empty' value=''>
+          Select a unit
+        </option>
+        {units.map((unit) => (
+          <option key={unit.id} value={unit.id}>
+            {unit.name}
+          </option>
+        ))}
+      </select>
+      <select
+        placeholder='Select a lesson'
+        disabled={ls.length === 0}
+        onChange={(e) => {
+          setselectedLs(e.target.value);
+        }}
+      >
+        <option key='empty' value=''>
+          Select a lesson
+        </option>
+        {ls.map((lesson) => (
+          <option key={lesson.id} value={lesson.id}>
+            {lesson.name}
+          </option>
+        ))}
+      </select>
+      <h3>Or</h3>
+      <select
+        placeholder='Select a classroom'
+        disabled={classrooms.length === 0 || selectedUnit != ''}
+        onChange={onClassroomChange}
+      >
+        <option key='empty' value=''>
+          Select a classroom
+        </option>
+        {classrooms.map((classroom) => (
+          <option key={classroom.id} value={classroom.id}>
+            {classroom.name}
+          </option>
+        ))}
+      </select>
+      <select
+        placeholder='Select a student'
+        disabled={students.length === 0}
+        onChange={(e) => {
+          setselectedStudent(e.target.value);
+        }}
+      >
+        <option key='empty' value=''>
+          Select a student
+        </option>
+        {students.map((stuent) => (
+          <option key={stuent.id} value={stuent.id}>
+            {stuent.name}
+          </option>
+        ))}
+      </select>
+      <br />
+      <Button type='secondary' htmlType='submit' size='large'>
+        Submit
+      </Button>
+    </Form>
+  );
+};
+
+export default DayLevelReport;

@@ -35,7 +35,7 @@ export default function Classroom({
       >
         <TabPane tab='Home' key='home'>
           <Home
-            classroomId={id}
+            classroomId={parseInt(id)}
             selectedActivity={selectedActivity}
             setSelectedActivity={setSelectedActivity}
             viewing={viewing}
