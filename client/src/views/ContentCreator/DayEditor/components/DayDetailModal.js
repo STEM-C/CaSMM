@@ -45,7 +45,6 @@ const DayDetailModal = ({
       setTekS(response.data.TekS);
       setLink(response.data.link);
       setLinkError(false);
-      console.log(response.data);
       const science = response.data.learning_components
         .filter((component) => component.learning_component_type === SCIENCE)
         .map((element) => {
@@ -81,10 +80,20 @@ const DayDetailModal = ({
     return n;
   };
 
-  const handleViewDay = async (day) => {
+  const handleViewDayTemplate = async (day) => {
     const allToolBoxRes = await getDayToolboxAll();
     const selectedToolBoxRes = await getDayToolbox(day.id);
     day.selectedToolbox = selectedToolBoxRes.data.toolbox;
+    day.toolbox = allToolBoxRes.data.toolbox;
+
+    day.learning_standard_name = learningStandard.name;
+    localStorage.setItem('my-day', JSON.stringify(day));
+    navigate('/day');
+  };
+
+  const handleViewActivityTemplate = async (day) => {
+    const allToolBoxRes = await getDayToolboxAll();
+    delete day.selectedToolbox;
     day.toolbox = allToolBoxRes.data.toolbox;
 
     day.learning_standard_name = learningStandard.name;
@@ -124,7 +133,10 @@ const DayDetailModal = ({
         // save the form and go to workspace
       } else if (submitButton === 1) {
         setDayDetailsVisible(false);
-        handleViewDay(res.data);
+        handleViewDayTemplate(res.data);
+      } else if (submitButton === 2) {
+        setDayDetailsVisible(false);
+        handleViewActivityTemplate(res.data);
       }
     }
   };
@@ -207,15 +219,19 @@ const DayDetailModal = ({
         <Form.Item
           id='form-label'
           wrapperCol={{
-            offset: 7,
+            offset: 6,
             span: 30,
           }}
         >
-          <button
-            id='save-go-to-workspace-btn'
-            onClick={() => setSubmitButton(1)}
-          >
-            Save and go to Workspace
+          <button id='save--set-day-btn' onClick={() => setSubmitButton(1)}>
+            Save and Set
+            <br />
+            Day Template
+          </button>
+          <button id='save-set-activity-btn' onClick={() => setSubmitButton(2)}>
+            Save and Set
+            <br />
+            Activity Template
           </button>
         </Form.Item>
         <Form.Item

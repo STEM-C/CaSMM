@@ -14,8 +14,8 @@
       "type": "string"
     },
     "days": {
-      "collection": "day",
       "via": "learning_components",
+      "collection": "day",
       "dominant": true
     },
     "learning_component_type": {

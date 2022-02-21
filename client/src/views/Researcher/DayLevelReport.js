@@ -286,7 +286,7 @@ const Filter = ({ setSearchParam }) => {
       </select>
       <select
         placeholder='Select a unit'
-        disabled={units.length === 0 || selectedClassroom != ''}
+        disabled={units.length === 0 || selectedClassroom !== ''}
         onChange={onUnitChange}
       >
         <option key='empty' value=''>
@@ -317,7 +317,7 @@ const Filter = ({ setSearchParam }) => {
       <h3>Or</h3>
       <select
         placeholder='Select a classroom'
-        disabled={classrooms.length === 0 || selectedUnit != ''}
+        disabled={classrooms.length === 0 || selectedUnit !== ''}
         onChange={onClassroomChange}
       >
         <option key='empty' value=''>
