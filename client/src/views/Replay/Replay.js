@@ -16,7 +16,10 @@ const Replay = () => {
 
   const setWorkspace = () => {
     workspaceRef.current = window.Blockly.inject('blockly-canvas',
-        { toolbox: document.getElementById('toolbox') }
+        { 
+          toolbox: document.getElementById('toolbox'),
+          readOnly: true,
+        }
     );
   }
 
@@ -152,7 +155,13 @@ const Replay = () => {
           </div>
           <div id="timeline-container">
         <div id="timeline">
-              { replay.map((item, index) => <div className={step === index ? 'current-time' : 'all-times'} key={item.timestamp}>{timeConverter(item.timestamp)}<Marker/></div>)}
+              { replay.map((item, index) => 
+              <div className={step === index ? 'current-time' : 'all-times'} 
+                key={item.timestamp}
+                onClick={()=>setStep(index)}>
+                {timeConverter(item.timestamp)}
+                <Marker/>
+              </div>)}
         </div>
       </div>
         </div>
