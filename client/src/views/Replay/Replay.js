@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useReducer, useRef, useState } from 'react';
 import './Replay.less'
 import { Link, useParams } from 'react-router-dom';
 import NavBar from '../../components/NavBar/NavBar';
@@ -9,10 +9,26 @@ import { getSave } from '../../Utils/requests';
 const Replay = () => {
   const { saveID } = useParams();
   const workspaceRef = useRef(null);
-  const [step, setStep] = useState(0);
   const [replay, setReplay] = useState([]);
-  const [ blocksData, setBlocksData ] = useState([]);
-  let playback;
+  const [blocksData, setBlocksData ] = useState([]);
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [playbackRef, setPlaybackRef] = useState(null);
+
+  const reducer = (state, action) => {
+    switch(action.type){
+      case "Increment":
+        return state + 1;
+      case "Decrement":
+        return state - 1;
+      case "SetValue":
+        return action.value;
+      default:
+        return state;
+    }
+  };
+
+  const [step, dispatch] = useReducer(reducer, 0);
+
 
   const setWorkspace = () => {
     workspaceRef.current = window.Blockly.inject('blockly-canvas',
@@ -111,28 +127,54 @@ const Replay = () => {
       align: 'center'
     }
   ];
+  
+  const goBack = () => {
+    dispatch({type: "Decrement"});
+  }
+  
+  
+  const goForward = () => {
+    dispatch({type: "Increment"});
+  }
+  
+  const setStep = (value) => {
+    dispatch({type: "SetValue", value: value});
+  }
 
+  const handlePlay = ()=>{
+    goForward();
+    setPlaybackRef(setInterval(()=>{
+      goForward();
+    }, 500));
+    
+    setIsPlaying(true);
+  };
+  
+  const handlePause = useCallback(()=>{
+    
+    if (playbackRef) {
+      clearInterval(playbackRef);
+      setPlaybackRef(null);
+    }
+    setIsPlaying(false);
+
+  }, [playbackRef]);
+  
+  //handle dynamic playback changes
   useEffect(() => {
+    
     if (replay.length) {
+
+      if (step === replay.length-1 && isPlaying)
+        handlePause();
+
       workspaceRef.current ? workspaceRef.current.clear() : setWorkspace();
       const xml = window.Blockly.Xml.textToDom(replay[step].xml);
       window.Blockly.Xml.domToWorkspace(xml, workspaceRef.current);
     }
-  }, [replay, step]);
 
-  const goBack = () => {
-    setStep(step - 1);
-  }
-  // const play = () => {
-  //   playback = setInterval(() => {
-  //     console.log('firing');
-  //     setStep(step + 1);
-  //     console.log(step);
-  //   }, 1000);
-  // }
-  const goForward = () => {
-    setStep(step + 1);
-  }
+  }, [replay, step, isPlaying, handlePause]);
+
 
 
 
@@ -149,7 +191,12 @@ const Replay = () => {
             </div>
             <div className="flex flex-row">
               <button className="replayButton" onClick={goBack} disabled={step === 0}>&#9198;</button>
-              <button className="replayButton" disabled={playback}>&#9654;&#65039;</button>
+              <button className="replayButton" 
+                onClick={isPlaying ? handlePause : handlePlay}
+                disabled={step === (replay.length - 1)}
+              >
+                {isPlaying ? <span>&#9208;</span> : <span>&#9654;&#65039;</span>}
+              </button>
               <button className="replayButton" onClick={goForward} disabled={step === (replay.length - 1)}>&#9197;</button>
             </div>
           </div>
