@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Table, Button, Tag, Modal } from 'antd';
+import { Table, Button, Tag } from 'antd';
 import './DayLevelReport.less';
 import { useSearchParam } from '../../Utils/useSearchParam';
 import NavBar from '../../components/NavBar/NavBar';
+
 import {
   getSessionsWithFilter,
   getSessionCountWithFilter,
@@ -19,7 +20,6 @@ const DayLevelReport = () => {
   const [sessionCount, setSessionCount] = useState(0);
   const navigate = useNavigate();
 
-  const [isModalVisible, setIsModalVisible] = useState(false);
   const { paramObj, setSearchParam } = useSearchParam();
 
   useEffect(() => {
@@ -146,12 +146,6 @@ const DayLevelReport = () => {
   ];
 
 
-
-  const showModal = () => {
-    setIsModalVisible(true);
-  };
-
-
   return (
     <div className='container nav-padding'>
       <NavBar />
@@ -160,31 +154,27 @@ const DayLevelReport = () => {
 
         {/* Menu to return to landing page at /reports */}
         <button
-          id={'day-level-return'}
-          className={`btn-${'primary'} btn-${'sm'}`}
-          type='button'
+          className='day-level-return'
+          // className={`btn-${'primary'} btn-${'sm'}`}
+          // type='button'
           onClick={() => navigate('/report')}
         >
           Return to Dashboard
         </button>
       </div>
+      <h3 className='filter-text'>Filter:</h3>
       <div className='filter-container'>
-       <button className='filter-btn' onClick={showModal}>
-          Filter 
-        </button>
-        <Modal title="Filter" visible={isModalVisible} footer={null}>
-          <Filter setSearchParam={setSearchParam} />
-        </Modal>
-        <div className='current-filter-container'>
-            <h3>Current Filter: </h3>
-            {Object.keys(paramObj).map((key) => (
-              <Tag>
-                {key === 'grade' ? `${key}(id)` : key}: {paramObj[key]}
-              </Tag>
-            ))}
-          </div>
+        <Filter setSearchParam={setSearchParam} />
       </div>
       <main id='day-report-content-wrapper'>
+        <div>
+          <h3 className='filter-text'>Current Filter: </h3>
+          {Object.keys(paramObj).map((key) => (
+            <Tag>
+              {key === 'grade' ? `${key}(id)` : key}: {paramObj[key]}
+            </Tag>
+          ))}
+        </div>
         <Table
           columns={columns}
           dataSource={sessions}
@@ -286,7 +276,6 @@ const Filter = ({ setSearchParam }) => {
     if (selectedStudent !== '') obj.student = selectedStudent;
     console.log(obj);
     setSearchParam(obj);
-    // setIsModalVisible(false);
   };
 
   return (
@@ -336,7 +325,7 @@ const Filter = ({ setSearchParam }) => {
           </option>
         ))}
       </select>
-      <h3>Or</h3>
+      <h3 className='filter-text'>Or</h3>
       <select
         className='select'
         placeholder='Select a classroom'
@@ -370,7 +359,7 @@ const Filter = ({ setSearchParam }) => {
         ))}
       </select>
       <br />
-      <Button type='secondary' htmlType='submit' size='large'>
+      <Button type='secondary' className='day-level-submit' htmlType='submit' size='large'>
         Submit
       </Button>
     </Form>
