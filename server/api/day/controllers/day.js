@@ -152,4 +152,22 @@ module.exports = {
       toolbox: strapi.services.block.blocksToToolbox(blocks),
     };
   },
+
+  // Update day activity template
+  async activityTemplateUpdate(ctx) {
+    // find the day
+    const { id } = ctx.params;
+    let day = await strapi.services.day.findOne({ id: id });
+    if (!day)
+      return ctx.notFound(
+        'The student id provided does not correspond to a valid student!',
+        { id: 'day.id.invalid', error: 'ValidationError' }
+      );
+
+    // update template and blocks
+    day.activity_template = ctx.request.body.activity_template;
+
+    const updatedDay = await strapi.services.day.update({ id: id }, day);
+    return sanitizeEntity(updatedDay, { model: strapi.models.day });
+  },
 };

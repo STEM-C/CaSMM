@@ -5,6 +5,7 @@ import {
   updateDayTemplate,
   createCCWorkspace,
   updateCCWorkspace,
+  updateActivityTemplate,
 } from '../../../Utils/requests';
 import { message } from 'antd';
 
@@ -198,6 +199,13 @@ export const handleCreatorSaveDay = async (dayId, workspaceRef, blocksList) => {
   return await updateDayTemplate(dayId, xml_text, blocksList);
 };
 
+export const handleCreatorSaveActivity = async (dayId, workspaceRef) => {
+  let xml = window.Blockly.Xml.workspaceToDom(workspaceRef.current);
+  let xml_text = window.Blockly.Xml.domToText(xml);
+
+  return await updateActivityTemplate(dayId, xml_text);
+};
+
 export const handleSaveAsWorkspace = async (
   name,
   description,
@@ -205,23 +213,25 @@ export const handleSaveAsWorkspace = async (
   blocksList,
   classroomId
 ) => {
-  if(!blocksList){
-    blocksList = []
+  if (!blocksList) {
+    blocksList = [];
   }
 
   let xml = window.Blockly.Xml.workspaceToDom(workspaceRef.current);
   let xml_text = window.Blockly.Xml.domToText(xml);
 
-  return await createCCWorkspace(name, description, xml_text, blocksList, classroomId);
+  return await createCCWorkspace(
+    name,
+    description,
+    xml_text,
+    blocksList,
+    classroomId
+  );
 };
 
-export const handleUpdateWorkspace = async (
-  id,
-  workspaceRef,
-  blocksList
-) => {
-  if(!blocksList){
-    blocksList = []
+export const handleUpdateWorkspace = async (id, workspaceRef, blocksList) => {
+  if (!blocksList) {
+    blocksList = [];
   }
   let xml = window.Blockly.Xml.workspaceToDom(workspaceRef.current);
   let xml_text = window.Blockly.Xml.domToText(xml);

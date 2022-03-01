@@ -2,10 +2,11 @@ import React, { useEffect, useRef, useState, useReducer } from 'react';
 import '../../DayPanels.less';
 import {
   compileArduinoCode,
+  handleCreatorSaveActivity,
   handleCreatorSaveDay,
   handleUpdateWorkspace,
 } from '../../Utils/helpers';
-import { message, Spin, Row, Col, Alert, Dropdown, Menu} from 'antd';
+import { message, Spin, Row, Col, Alert, Dropdown, Menu } from 'antd';
 import CodeModal from '../modals/CodeModal';
 import SaveAsModal from '../modals/SaveAsModal';
 import ConsoleModal from '../modals/ConsoleModal';
@@ -27,7 +28,12 @@ import { useNavigate } from 'react-router-dom';
 
 let plotId = 1;
 
-export default function ContentCreatorCanvas({ day, isSandbox, setDay }) {
+export default function ContentCreatorCanvas({
+  day,
+  isSandbox,
+  setDay,
+  isMentorActivity,
+}) {
   const [hoverXml, setHoverXml] = useState(false);
   const [hoverLoadWorkspace, setHoverLoadWorkspace] = useState(false);
   const [hoverSave, setHoverSave] = useState(false);
@@ -125,7 +131,10 @@ export default function ContentCreatorCanvas({ day, isSandbox, setDay }) {
       dayRef.current = day;
       if (!workspaceRef.current && day && Object.keys(day).length !== 0) {
         setWorkspace();
-        let xml = window.Blockly.Xml.textToDom(day.template);
+
+        let xml = isMentorActivity
+          ? window.Blockly.Xml.textToDom(day.activity_template)
+          : window.Blockly.Xml.textToDom(day.template);
         window.Blockly.Xml.domToWorkspace(xml, workspaceRef.current);
         workspaceRef.current.clearUndo();
       }
@@ -134,8 +143,8 @@ export default function ContentCreatorCanvas({ day, isSandbox, setDay }) {
   }, [day, isSandbox]);
 
   const handleCreatorSave = async () => {
-    // Save day
-    if (!isSandbox) {
+    // Save day template
+    if (!isSandbox && !isMentorActivity) {
       const res = await handleCreatorSaveDay(
         day.id,
         workspaceRef,
@@ -144,7 +153,15 @@ export default function ContentCreatorCanvas({ day, isSandbox, setDay }) {
       if (res.err) {
         message.error(res.err);
       } else {
-        message.success('Day saved successfully');
+        message.success('Day Template saved successfully');
+      }
+    } else if (!isSandbox && isMentorActivity) {
+      // Save activity template
+      const res = await handleCreatorSaveActivity(day.id, workspaceRef);
+      if (res.err) {
+        message.error(res.err);
+      } else {
+        message.success('Activity template saved successfully');
       }
     } else {
       // if we already have the workspace in the db, just update it.
@@ -263,16 +280,16 @@ export default function ContentCreatorCanvas({ day, isSandbox, setDay }) {
     <Menu>
       <Menu.Item>
         <button
-            onClick={handleCreatorSave}
-            // id='link'
-            className='flex flex-column'
-          >
-            <i className='fa fa-save'/>
-            &nbsp; Save
+          onClick={handleCreatorSave}
+          // id='link'
+          className='flex flex-column'
+        >
+          <i className='fa fa-save' />
+          &nbsp; Save
         </button>
       </Menu.Item>
     </Menu>
-  )
+  );
 
   return (
     <div id='horizontal-container' className='flex flex-column'>
@@ -290,7 +307,9 @@ export default function ContentCreatorCanvas({ day, isSandbox, setDay }) {
             <Row id='icon-control-panel'>
               <Col flex='none' id='section-header'>
                 {day.learning_standard_name
-                  ? `${day.learning_standard_name} - Day ${day.number}`
+                  ? `${day.learning_standard_name} - Day ${day.number} - ${
+                      isMentorActivity ? 'Activity' : 'Day'
+                    } Template`
                   : day.name
                   ? `Workspace: ${day.name}`
                   : 'New Workspace!'}
@@ -314,7 +333,7 @@ export default function ContentCreatorCanvas({ day, isSandbox, setDay }) {
                         setHover={setHoverLoadWorkspace}
                         loadSave={loadSave}
                       />
-                      <Dropdown overlay={menu}  trigger={['click']}>
+                      <Dropdown overlay={menu} trigger={['click']}>
                         <p>Testing</p>
                       </Dropdown>
                       <button
@@ -448,13 +467,15 @@ export default function ContentCreatorCanvas({ day, isSandbox, setDay }) {
             <div id='blockly-canvas' />
           </Spin>
         </div>
-        <StudentToolboxMenu
-          day={day}
-          studentToolbox={studentToolbox}
-          setStudentToolbox={setStudentToolbox}
-          openedToolBoxCategories={openedToolBoxCategories}
-          setOpenedToolBoxCategories={setOpenedToolBoxCategories}
-        />
+        {!isMentorActivity && (
+          <StudentToolboxMenu
+            day={day}
+            studentToolbox={studentToolbox}
+            setStudentToolbox={setStudentToolbox}
+            openedToolBoxCategories={openedToolBoxCategories}
+            setOpenedToolBoxCategories={setOpenedToolBoxCategories}
+          />
+        )}
         <ConsoleModal
           show={showConsole}
           connectionOpen={connectionOpen}
