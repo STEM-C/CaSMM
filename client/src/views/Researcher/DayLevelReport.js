@@ -19,8 +19,8 @@ const DayLevelReport = () => {
   const [sessions, setSessions] = useState([]);
   const [sessionCount, setSessionCount] = useState(0);
   const navigate = useNavigate();
-
   const { paramObj, setSearchParam } = useSearchParam();
+  const [ showFilter, setShowFilter ] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -162,10 +162,18 @@ const DayLevelReport = () => {
           Return to Dashboard
         </button>
       </div>
-      <h3 className='filter-text'>Filter:</h3>
-      <div className='filter-container'>
-        <Filter setSearchParam={setSearchParam} />
-      </div>
+      <button id ='show-filter-btn' onClick={() => setShowFilter(!showFilter)}>
+      { showFilter ? <p> Click to Hide Filter</p> : <p> Click to Show Filter</p>}
+        </button>
+      { showFilter ?  
+          <div className='filter-show'>
+            <Filter setSearchParam={setSearchParam} />
+          </div>
+       :  
+          <div className='filter-hide'>
+            <Filter setSearchParam={setSearchParam} />
+          </div>
+      }
       <main id='day-report-content-wrapper'>
         <div>
           <h3 className='filter-text'>Current Filter: </h3>

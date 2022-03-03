@@ -92,13 +92,13 @@ label {
 }
 
 .select {
-  padding: 10px;
-  margin: 10px;
+  padding: 4px 10px;
+  margin: 2px;
   background-color: #fff;
   border-radius: 10px;
 }
 
-.filter-container {
+.filter-show {
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -106,12 +106,30 @@ label {
 
 }
 
+.filter-hide {
+  display: none;
+}
+
 .filter-text {
   color: #fff;
 }
 
+#show-filter-btn {
+  color: #colors[quaternary];
+  background-color: transparent;
+  border: none;
+  font-weight: 500;
+  font-size: 18px;
+
+  &:hover {
+    color: #colors[quinary];
+    cursor: pointer;
+  }
+}
+
 .ant-btn.day-level-submit {
   background-color: #colors[quaternary];
+  margin: 4px 0;
   border: none;
   border-radius: 20px;
   font-weight: 500;
