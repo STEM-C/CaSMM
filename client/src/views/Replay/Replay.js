@@ -41,15 +41,10 @@ const Replay = () => {
     );
   }
 
-  const timeConverter = (timestamp) => {
-    var dateVal = new Date(timestamp).toLocaleDateString('en-US');
-    var a = new Date(timestamp * 1000);
-    var hour = a.getHours();
-    var min = a.getMinutes();
-    var sec = a.getSeconds();
-    // var time = dateVal + ' ' + hour + ':' + min + ':' + sec ;
-    var time = hour + ':' + min + ':' + sec ;
-    return time;
+
+  const formatMyDate = (timestamp, locale = 'en-GB') => {
+    // let output = new Date(value).toLocaleDateString(timestamp);
+    return new Date(timestamp).toLocaleTimeString(locale);
   };
 
 
@@ -219,8 +214,8 @@ const Replay = () => {
               <div className={step === index ? 'current-time' : 'all-times'} 
                 key={item.timestamp}
                 onClick={()=>setStep(index)}>
-                {timeConverter(item.timestamp)}
-                <Marker/>
+                {formatMyDate(item.timestamp)}
+                <div className="marker"/>
               </div>)}
         </div>
       </div>
