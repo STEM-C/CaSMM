@@ -36,20 +36,19 @@ export default function StudentCanvas({ day }) {
   const [lastSavedTime, setLastSavedTime] = useState(null);
   const [lastAutoSave, setLastAutoSave] = useState(null);
 
-  const [clicks, setClicks] = useState(0);
-  const parser = new DOMParser();
-
   const [forceUpdate] = useReducer((x) => x + 1, 0);
   const navigate = useNavigate();
   const workspaceRef = useRef(null);
   const dayRef = useRef(null);
+
   const replayRef = useRef([]);
-  const undoLength = useRef(0);
+  const clicks = useRef(0);
 
   const setWorkspace = () => {
     workspaceRef.current = window.Blockly.inject('blockly-canvas', {
       toolbox: document.getElementById('toolbox'),
     });
+    window.Blockly.addChangeListener(blocklyEvent);
   };
 
   const loadSave = (selectedSave) => {
@@ -84,72 +83,59 @@ export default function StudentCanvas({ day }) {
     }
   };
 
-  const parseXML = (xml) => {
-    const xmlData = {
-      blocks: {},
-      categories: {},
-    };
-    let xmlDoc = parser.parseFromString(xml, 'text/xml');
-    console.log(xmlDoc);
-    const xmlBlocks = xmlDoc.querySelectorAll('block');
-    for (const block of xmlBlocks) {
-      const blockType = block.getAttribute('type');
-      if (xmlData.blocks[blockType]) {
-        xmlData.blocks[blockType].count++;
-      } else {
-        xmlData.blocks[blockType] = {
-          count: 1,
-          deleted: 0,
-        };
-      }
-    }
-    return xmlData;
+  const pushEvent = (type) => {
+    let xml = window.Blockly.Xml.workspaceToDom(workspaceRef.current);
+    let xml_text = window.Blockly.Xml.domToText(xml);
+    replayRef.current.push({
+      xml: xml_text,
+      action: type,
+      timestamp: Date.now(),
+      clicks: clicks.current,
+    });
+    console.log(replayRef.current);
   };
-  const diffObjects = (currentObj, previousObj) => {
-    const currentKeys = Object.keys(currentObj);
-    const prevKeys = Object.keys(previousObj);
-    // deleted all of one type of block
-    if (prevKeys.length > currentKeys.length) {
-      for (let key of prevKeys) {
-        if (currentKeys.indexOf(key) === -1) {
-          console.log('deleted all of one block');
-          currentObj[key] = {
-            count: 0,
-            deleted: previousObj[key].deleted + 1,
-          };
-        }
-      }
-    }
-    for (let key of currentKeys) {
-      if (key in previousObj) {
-        if (currentObj[key].count < previousObj[key].count) {
-          currentObj[key].deleted = previousObj[key].deleted + 1;
-          console.log('a block was deleted');
-        }
-        if (currentObj[key].deleted < previousObj[key].deleted) {
-          console.log('a block was reintroduced');
-          currentObj[key] = {
-            count: 1,
-            deleted: previousObj[key].deleted,
-          };
-        }
-      }
+
+  let blocked = false;
+  const blocklyEvent = (event) => {
+    // if it is a click event, add click
+    if (
+      (event.type === 'ui' && event.element === 'click') ||
+      event.element === 'selected'
+    ) {
+      clicks.current++;
     }
 
-    return currentObj;
-  };
-  const handleClick = () => {
-    setClicks(clicks + 1);
-    console.log('Clicks: ', clicks);
-  };
-  const compareXML = (
-    { blocks: currentBlocks },
-    { blocks: previousBlocks }
-  ) => {
-    const blocks = diffObjects(currentBlocks, previousBlocks);
-    return {
-      blocks,
-    };
+    // if it is other ui events or create events or is [undo, redo], return
+    if (event.type === 'ui' || event.type === 'create' || !event.recordUndo) {
+      return;
+    }
+
+    // if event is in timeout, return
+    if ((event.type === 'move' || event.type === 'change') && blocked) {
+      return;
+    }
+
+    // if the event is change field value, only accept the latest change
+    if (
+      event.type === 'change' &&
+      event.element === 'field' &&
+      replayRef.current[replayRef.current.length - 1].action === 'change'
+    ) {
+      replayRef.current.pop();
+    }
+
+    // event delete always comes after a move, ignore the move
+    if (event.type === 'delete') {
+      if (replayRef.current[replayRef.current.length - 1].action === 'move') {
+        replayRef.current.pop();
+      }
+    }
+    pushEvent(event.type);
+    console.log(event);
+    blocked = true;
+    setTimeout(() => {
+      blocked = false;
+    }, 500);
   };
 
   useEffect(() => {
@@ -167,40 +153,10 @@ export default function StudentCanvas({ day }) {
         }
       }
     }, 60000);
-    let replaySaveInterval = setInterval(async () => {
-      if (
-        workspaceRef.current &&
-        workspaceRef.current.undoStack_.length !== undoLength.current
-      ) {
-        undoLength.current = workspaceRef.current.undoStack_.length;
-        let xml = window.Blockly.Xml.workspaceToDom(workspaceRef.current);
-        let xml_text = window.Blockly.Xml.domToText(xml);
-        const xmlData = parseXML(xml_text);
-        let previousData;
-        let finalData;
-        // XML replay starts empty, check to make sure there's at least 2 there
-        if (replayRef.current.length > 1) {
-          previousData = replayRef.current[replayRef.current.length - 1];
-          finalData = compareXML(xmlData, previousData.xmlData);
-        }
-        const replay = {
-          xml: xml_text,
-          timestamp: Date.now(),
-          xmlData: finalData || xmlData,
-          clicks: clicks,
-        };
-        replayRef.current.push(replay);
-        console.log(replayRef.current);
-      }
-    }, 1000);
+
     // clean up - saves workspace and removes blockly div from DOM
     return async () => {
       clearInterval(autosaveInterval);
-      clearInterval(replaySaveInterval);
-      if (dayRef.current && workspaceRef.current)
-        await handleSave(dayRef.current.id, workspaceRef, replayRef.current);
-      if (workspaceRef.current) workspaceRef.current.dispose();
-      dayRef.current = null;
     };
   }, []);
 
@@ -217,7 +173,7 @@ export default function StudentCanvas({ day }) {
           if (res.data.current) onLoadSave = res.data.current;
           setSaves(res.data);
         } else {
-          console.log(res.err);
+          // console.log(res.err);
         }
 
         if (onLoadSave) {
@@ -238,6 +194,7 @@ export default function StudentCanvas({ day }) {
 
   const handleManualSave = async () => {
     // save workspace then update load save options
+    console.log(replayRef.current);
     const res = await handleSave(day.id, workspaceRef, replayRef.current);
     if (res.err) {
       message.error(res.err);
@@ -251,13 +208,17 @@ export default function StudentCanvas({ day }) {
   };
 
   const handleUndo = () => {
-    if (workspaceRef.current.undoStack_.length > 0)
+    if (workspaceRef.current.undoStack_.length > 0) {
       workspaceRef.current.undo(false);
+      pushEvent('undo');
+    }
   };
 
   const handleRedo = () => {
-    if (workspaceRef.current.redoStack_.length > 0)
+    if (workspaceRef.current.redoStack_.length > 0) {
       workspaceRef.current.undo(true);
+      pushEvent('redo');
+    }
   };
 
   const handleConsole = async () => {
@@ -339,6 +300,7 @@ export default function StudentCanvas({ day }) {
         day,
         true
       );
+      pushEvent('compile');
     }
   };
 
@@ -398,6 +360,7 @@ export default function StudentCanvas({ day }) {
                           defaultTemplate={day}
                           getFormattedDate={getFormattedDate}
                           loadSave={loadSave}
+                          pushEvent={pushEvent}
                         />
                         <button
                           onClick={handleManualSave}
@@ -512,7 +475,7 @@ export default function StudentCanvas({ day }) {
                 </Row>
               </Col>
             </Row>
-            <div id='blockly-canvas' onClick={handleClick} />
+            <div id='blockly-canvas' />
           </Spin>
         </div>
 
