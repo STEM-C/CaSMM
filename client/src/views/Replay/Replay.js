@@ -1,4 +1,5 @@
 import React, { useCallback, useEffect, useReducer, useRef, useState } from 'react';
+import { Slider } from 'antd';
 import './Replay.less'
 import { Link, useParams } from 'react-router-dom';
 import NavBar from '../../components/NavBar/NavBar';
@@ -13,6 +14,7 @@ const Replay = () => {
   const [blocksData, setBlocksData ] = useState([]);
   const [isPlaying, setIsPlaying] = useState(false);
   const [playbackRef, setPlaybackRef] = useState(null);
+  const [playSpeed, setPlaySpeed] = useState(500);
 
   const reducer = (state, action) => {
     switch(action.type){
@@ -142,10 +144,9 @@ const Replay = () => {
   }
 
   const handlePlay = ()=>{
-    goForward();
     setPlaybackRef(setInterval(()=>{
       goForward();
-    }, 500));
+    }, playSpeed));
     
     setIsPlaying(true);
   };
@@ -175,9 +176,11 @@ const Replay = () => {
 
   }, [replay, step, isPlaying, handlePause]);
 
-
-
-
+  const changePlaySpeed = (value) => {
+    setPlaySpeed(value);
+  }
+  
+  
   return (
     <main className="container nav-padding">
       <NavBar /> 
@@ -189,7 +192,17 @@ const Replay = () => {
                 <i className="fa fa-home"/>
               </Link>
             </div>
-            <div className="flex flex-row">
+            <div className='flex flex-row'>
+              <div className='flex flex-row'>
+                &#128034;
+                <Slider className="playspeed-slider" 
+                  defaultValue={playSpeed}
+                  max={1000} min={50} step={50}
+                  onAfterChange={changePlaySpeed}
+                  disabled={isPlaying}
+                  reverse={true} /> 
+                &#128007;
+              </div>
               <button className="replayButton" onClick={goBack} disabled={step === 0}>&#9198;</button>
               <button className="replayButton" 
                 onClick={isPlaying ? handlePause : handlePlay}
