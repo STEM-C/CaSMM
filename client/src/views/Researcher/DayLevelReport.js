@@ -163,11 +163,13 @@ const DayLevelReport = () => {
         </button>
       </div>
       <button id ='show-filter-btn' onClick={() => setShowFilter(!showFilter)}>
-      { showFilter ? <p> Click to Hide Filter</p> : <p> Click to Show Filter</p>}
-        </button>
+        { showFilter ? <p> Click to Hide Filter</p> : <p> Click to Show Filter</p>}
+      </button>
       { showFilter ?  
           <div className='filter-show'>
-            <Filter setSearchParam={setSearchParam} />
+            <div className='filter-items'>
+              <Filter setSearchParam={setSearchParam} />
+            </div>
           </div>
        :  
           <div className='filter-hide'>
