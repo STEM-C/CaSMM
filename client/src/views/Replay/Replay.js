@@ -1,4 +1,5 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useReducer, useRef, useState } from 'react';
+import { Slider } from 'antd';
 import './Replay.less'
 import { Link, useParams } from 'react-router-dom';
 import NavBar from '../../components/NavBar/NavBar';
@@ -9,26 +10,41 @@ import { getSave } from '../../Utils/requests';
 const Replay = () => {
   const { saveID } = useParams();
   const workspaceRef = useRef(null);
-  const [step, setStep] = useState(0);
   const [replay, setReplay] = useState([]);
-  const [ blocksData, setBlocksData ] = useState([]);
-  let playback;
+  const [blocksData, setBlocksData ] = useState([]);
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [playbackRef, setPlaybackRef] = useState(null);
+  const [playSpeed, setPlaySpeed] = useState(500);
+
+  const reducer = (state, action) => {
+    switch(action.type){
+      case "Increment":
+        return state + 1;
+      case "Decrement":
+        return state - 1;
+      case "SetValue":
+        return action.value;
+      default:
+        return state;
+    }
+  };
+
+  const [step, dispatch] = useReducer(reducer, 0);
+
 
   const setWorkspace = () => {
     workspaceRef.current = window.Blockly.inject('blockly-canvas',
-        { toolbox: document.getElementById('toolbox') }
+        { 
+          toolbox: document.getElementById('toolbox'),
+          readOnly: true,
+        }
     );
   }
 
-  const timeConverter = (timestamp) => {
-    var dateVal = new Date(timestamp).toLocaleDateString('en-US');
-    var a = new Date(timestamp * 1000);
-    var hour = a.getHours();
-    var min = a.getMinutes();
-    var sec = a.getSeconds();
-    // var time = dateVal + ' ' + hour + ':' + min + ':' + sec ;
-    var time = hour + ':' + min + ':' + sec ;
-    return time;
+
+  const formatMyDate = (timestamp, locale = 'en-GB') => {
+    // let output = new Date(value).toLocaleDateString(timestamp);
+    return new Date(timestamp).toLocaleTimeString(locale);
   };
 
 
@@ -108,31 +124,58 @@ const Replay = () => {
       align: 'center'
     }
   ];
+  
+  const goBack = () => {
+    dispatch({type: "Decrement"});
+  }
+  
+  
+  const goForward = () => {
+    dispatch({type: "Increment"});
+  }
+  
+  const setStep = (value) => {
+    dispatch({type: "SetValue", value: value});
+  }
 
+  const handlePlay = ()=>{
+    setPlaybackRef(setInterval(()=>{
+      goForward();
+    }, playSpeed));
+    
+    setIsPlaying(true);
+  };
+  
+  const handlePause = useCallback(()=>{
+    
+    if (playbackRef) {
+      clearInterval(playbackRef);
+      setPlaybackRef(null);
+    }
+    setIsPlaying(false);
+
+  }, [playbackRef]);
+  
+  //handle dynamic playback changes
   useEffect(() => {
+    
     if (replay.length) {
+
+      if (step === replay.length-1 && isPlaying)
+        handlePause();
+
       workspaceRef.current ? workspaceRef.current.clear() : setWorkspace();
       const xml = window.Blockly.Xml.textToDom(replay[step].xml);
       window.Blockly.Xml.domToWorkspace(xml, workspaceRef.current);
     }
-  }, [replay, step]);
 
-  const goBack = () => {
-    setStep(step - 1);
+  }, [replay, step, isPlaying, handlePause]);
+
+  const changePlaySpeed = (value) => {
+    setPlaySpeed(value);
   }
-  // const play = () => {
-  //   playback = setInterval(() => {
-  //     console.log('firing');
-  //     setStep(step + 1);
-  //     console.log(step);
-  //   }, 1000);
-  // }
-  const goForward = () => {
-    setStep(step + 1);
-  }
-
-
-
+  
+  
   return (
     <main className="container nav-padding">
       <NavBar /> 
@@ -144,15 +187,36 @@ const Replay = () => {
                 <i className="fa fa-home"/>
               </Link>
             </div>
-            <div className="flex flex-row">
+            <div className='flex flex-row'>
+              <div className='flex flex-row'>
+                &#128034;
+                <Slider className="playspeed-slider" 
+                  defaultValue={playSpeed}
+                  max={1000} min={50} step={50}
+                  onAfterChange={changePlaySpeed}
+                  disabled={isPlaying}
+                  reverse={true} /> 
+                &#128007;
+              </div>
               <button className="replayButton" onClick={goBack} disabled={step === 0}>&#9198;</button>
-              <button className="replayButton" disabled={playback}>&#9654;&#65039;</button>
+              <button className="replayButton" 
+                onClick={isPlaying ? handlePause : handlePlay}
+                disabled={step === (replay.length - 1)}
+              >
+                {isPlaying ? <span>&#9208;</span> : <span>&#9654;&#65039;</span>}
+              </button>
               <button className="replayButton" onClick={goForward} disabled={step === (replay.length - 1)}>&#9197;</button>
             </div>
           </div>
           <div id="timeline-container">
         <div id="timeline">
-              { replay.map((item, index) => <div className={step === index ? 'current-time' : 'all-times'} key={item.timestamp}>{timeConverter(item.timestamp)}<Marker/></div>)}
+              { replay.map((item, index) => 
+              <div className={step === index ? 'current-time' : 'all-times'} 
+                key={item.timestamp}
+                onClick={()=>setStep(index)}>
+                {formatMyDate(item.timestamp)}
+                <div className="marker"/>
+              </div>)}
         </div>
       </div>
         </div>
