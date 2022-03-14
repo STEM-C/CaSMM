@@ -39,6 +39,10 @@
     "learning_components": {
       "via": "days",
       "collection": "learning-components"
+    },
+    "activity_template": {
+      "type": "text",
+      "required": false
     }
   }
 }

@@ -60,6 +60,15 @@ export default function Home({ classroomId, viewing }) {
     navigate('/day');
   };
 
+  const openActivityInWorkspace = (day, name) => {
+    day.learning_standard_name = name;
+    day.template = day.activity_template;
+    delete day.id;
+    delete day.activity_template;
+    localStorage.setItem('sandbox-day', JSON.stringify(day));
+    navigate('/sandbox');
+  };
+
   const handleBack = () => {
     navigate('/dashboard');
   };
@@ -116,12 +125,29 @@ export default function Home({ classroomId, viewing }) {
                 <div id='card-btn-container' className='flex space-between'>
                   {days.map((day) => (
                     <div id='view-day-card' key={day.id}>
-                      <h3
-                        onClick={() =>
-                          handleViewDay(day, activeLearningStandard.name)
-                        }
-                        id='view-day-title'
-                      >{`View Day ${day.number}`}</h3>
+                      <div id='view-day-heading'>
+                        <button
+                          id='view-day-button'
+                          onClick={() =>
+                            handleViewDay(day, activeLearningStandard.name)
+                          }
+                        >
+                          Day {day.number} Template
+                        </button>
+                        {day.activity_template && (
+                          <button
+                            id='dayview-day-button'
+                            onClick={() =>
+                              openActivityInWorkspace(
+                                day,
+                                activeLearningStandard.name
+                              )
+                            }
+                          >
+                            Activity Template
+                          </button>
+                        )}
+                      </div>
                       <div id='view-day-info'>
                         <p>
                           <strong>TEKS: </strong>

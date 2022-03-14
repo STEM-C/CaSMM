@@ -21,7 +21,7 @@
       "path": "/cc-workspaces/:id",
       "handler": "cc-workspace.findOne",
       "config": {
-        "policies": []
+        "policies": ["isContentCreatorOrHasClassroom"]
       }
     },
     {
@@ -37,7 +37,7 @@
       "path": "/cc-workspaces",
       "handler": "cc-workspace.create",
       "config": {
-        "policies": []
+        "policies": ["isContentCreatorOrHasClassroom"]
       }
     },
     {
@@ -45,7 +45,7 @@
       "path": "/cc-workspaces/:id",
       "handler": "cc-workspace.update",
       "config": {
-        "policies": []
+        "policies": ["isContentCreatorOrHasClassroom"]
       }
     },
     {
@@ -53,7 +53,7 @@
       "path": "/cc-workspaces/:id",
       "handler": "cc-workspace.delete",
       "config": {
-        "policies": []
+        "policies": ["isContentCreatorOrHasClassroom"]
       }
     }
   ]

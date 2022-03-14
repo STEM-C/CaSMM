@@ -84,7 +84,7 @@ The staging environment is a Heroku app. It is composed of a web dyno, compile d
 
 The production environment is a Heroku app. It is composed of a web dyno, compile dyno, Heroku Postgres add-on, and Heroku Redis add-on.
 
-* `casmm` - [casmm.herokuapp.com](https://casmm.herokuapp.com/)
+* `casmm` - [www.casmm.org](https://www.casmm.org/)
   * The web dyno runs `server`
   * The compile dyno runs `compile`
 
@@ -139,7 +139,7 @@ All of the deployments and releases are handled automatically with [GitHub Actio
 
 ### Pull Requests
 
-Before submitting a pull request, merge the target branch into the working branch to resolve any merge conflicts. Include a description of the changes made.
+Before submitting a pull request, rebase the feature branch into the target branch to resolve any merge conflicts.
 
 - PRs to **master** should squash and merge
 - PRs to all other branches should create a merge commit

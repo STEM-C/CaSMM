@@ -326,7 +326,18 @@ export const updateDayTemplate = async (id, workspace, blocksList) =>
       blocks: blocksList,
     },
     auth: true,
-    error: 'Failed to update the toolbox for the day',
+    error: 'Failed to update the template for the day',
+  });
+
+export const updateActivityTemplate = async (id, workspace) =>
+  makeRequest({
+    method: PUT,
+    path: `${server}/days/activity_template/${id}`,
+    data: {
+      activity_template: workspace,
+    },
+    auth: true,
+    error: 'Failed to update the activity template for the day',
   });
 
 export const deleteDay = async (id) =>
@@ -504,10 +515,18 @@ export const resetPassword = async (code, password, passwordConfirmation) =>
       'Cannot update new password. Please try again or get a new link from the forgot password page.',
   });
 
-export const getSessions = async (start, sort = 'created_at:DESC') =>
+export const getSessions = async () =>
   makeRequest({
     method: GET,
-    path: `${server}/sessions?_sort=${sort}&_start=${start}&_limit=10`,
+    path: `${server}/sessions`,
+    auth: true,
+    error: 'Sessions could not be retrieved.',
+  });
+
+export const getSessionsWithFilter = async (filterOptions) =>
+  makeRequest({
+    method: GET,
+    path: `${server}/sessions?${filterOptions}`,
     auth: true,
     error: 'Sessions could not be retrieved.',
   });
@@ -516,6 +535,14 @@ export const getSessionCount = async () =>
   makeRequest({
     method: GET,
     path: `${server}/sessions/count`,
+    auth: true,
+    error: 'Session count could not be retrieved.',
+  });
+
+export const getSessionCountWithFilter = async (filterOptions) =>
+  makeRequest({
+    method: GET,
+    path: `${server}/sessions/count?${filterOptions}`,
     auth: true,
     error: 'Session count could not be retrieved.',
   });
@@ -560,10 +587,16 @@ export const getCCWorkspace = async (id) =>
     method: GET,
     path: `${server}/cc-workspaces/${id}`,
     auth: true,
-    error: 'Unable to retrive cc worksapce',
+    error: 'Unable to retrive cc workspace',
   });
 
-export const createCCWorkspace = async (name, description, template, blocks) =>
+export const createCCWorkspace = async (
+  name,
+  description,
+  template,
+  blocks,
+  classroomId
+) =>
   makeRequest({
     method: POST,
     path: `${server}/cc-workspaces`,
@@ -573,6 +606,7 @@ export const createCCWorkspace = async (name, description, template, blocks) =>
       description,
       template,
       blocks,
+      classroomId,
     },
     error: 'Unable to create cc workspace',
   });
@@ -601,4 +635,12 @@ export const deleteCCWorkspace = async (id) =>
     path: `${server}/cc-workspaces/${id}`,
     auth: true,
     error: 'Unable to delete cc workspace',
+  });
+
+export const getClassroomWorkspace = async (id) =>
+  makeRequest({
+    method: GET,
+    path: `${server}/classroom/workspaces/${id}`,
+    auth: true,
+    error: 'Unable to retrive classroom workspaces',
   });

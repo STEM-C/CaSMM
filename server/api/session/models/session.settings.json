@@ -26,6 +26,15 @@
     "saves": {
       "collection": "save",
       "via": "session"
+    },
+    "unit": {
+      "model": "unit"
+    },
+    "grade": {
+      "model": "grade"
+    },
+    "learning_standard": {
+      "model": "learning-standard"
     }
   }
 }
