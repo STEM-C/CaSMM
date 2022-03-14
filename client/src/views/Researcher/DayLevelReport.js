@@ -4,6 +4,7 @@ import { Table, Button, Tag } from 'antd';
 import './DayLevelReport.less';
 import { useSearchParam } from '../../Utils/useSearchParam';
 import NavBar from '../../components/NavBar/NavBar';
+
 import {
   getSessionsWithFilter,
   getSessionCountWithFilter,
@@ -18,8 +19,8 @@ const DayLevelReport = () => {
   const [sessions, setSessions] = useState([]);
   const [sessionCount, setSessionCount] = useState(0);
   const navigate = useNavigate();
-
   const { paramObj, setSearchParam } = useSearchParam();
+  const [ showFilter, setShowFilter ] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -143,6 +144,8 @@ const DayLevelReport = () => {
       ),
     },
   ];
+
+
   return (
     <div className='container nav-padding'>
       <NavBar />
@@ -151,18 +154,31 @@ const DayLevelReport = () => {
 
         {/* Menu to return to landing page at /reports */}
         <button
-          id={'day-level-return'}
-          className={`btn-${'primary'} btn-${'sm'}`}
-          type='button'
+          className='day-level-return'
+          // className={`btn-${'primary'} btn-${'sm'}`}
+          // type='button'
           onClick={() => navigate('/report')}
         >
           Return to Dashboard
         </button>
       </div>
-      <Filter setSearchParam={setSearchParam} />
+      <button id ='show-filter-btn' onClick={() => setShowFilter(!showFilter)}>
+        { showFilter ? <p> Click to Hide Filter</p> : <p> Click to Show Filter</p>}
+      </button>
+      { showFilter ?  
+          <div className='filter-show'>
+            <div className='filter-items'>
+              <Filter setSearchParam={setSearchParam} />
+            </div>
+          </div>
+       :  
+          <div className='filter-hide'>
+            <Filter setSearchParam={setSearchParam} />
+          </div>
+      }
       <main id='day-report-content-wrapper'>
         <div>
-          <h3>Current Filter: </h3>
+          <h3 className='filter-text'>Current Filter: </h3>
           {Object.keys(paramObj).map((key) => (
             <Tag>
               {key === 'grade' ? `${key}(id)` : key}: {paramObj[key]}
@@ -274,7 +290,10 @@ const Filter = ({ setSearchParam }) => {
 
   return (
     <Form onFinish={handleSubmit}>
-      <select placeholder='Select a grade' onChange={onGradeChange}>
+      <select 
+        className='select'
+        placeholder='Select a grade' 
+        onChange={onGradeChange}>
         <option key='empty' value=''>
           Select a grade
         </option>
@@ -285,6 +304,7 @@ const Filter = ({ setSearchParam }) => {
         ))}
       </select>
       <select
+        className='select'
         placeholder='Select a unit'
         disabled={units.length === 0 || selectedClassroom !== ''}
         onChange={onUnitChange}
@@ -299,6 +319,7 @@ const Filter = ({ setSearchParam }) => {
         ))}
       </select>
       <select
+        className='select'
         placeholder='Select a lesson'
         disabled={ls.length === 0}
         onChange={(e) => {
@@ -314,8 +335,9 @@ const Filter = ({ setSearchParam }) => {
           </option>
         ))}
       </select>
-      <h3>Or</h3>
+      <h3 className='filter-text'>Or</h3>
       <select
+        className='select'
         placeholder='Select a classroom'
         disabled={classrooms.length === 0 || selectedUnit !== ''}
         onChange={onClassroomChange}
@@ -330,6 +352,7 @@ const Filter = ({ setSearchParam }) => {
         ))}
       </select>
       <select
+        className='select'
         placeholder='Select a student'
         disabled={students.length === 0}
         onChange={(e) => {
@@ -346,7 +369,7 @@ const Filter = ({ setSearchParam }) => {
         ))}
       </select>
       <br />
-      <Button type='secondary' htmlType='submit' size='large'>
+      <Button type='secondary' className='day-level-submit' htmlType='submit' size='large'>
         Submit
       </Button>
     </Form>
