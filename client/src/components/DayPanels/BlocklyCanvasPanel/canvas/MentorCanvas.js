@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState, useReducer } from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../../DayPanels.less';
 import { compileArduinoCode, handleUpdateWorkspace} from '../../Utils/helpers';
-import { message, Spin, Row, Col, Alert } from 'antd';
+import { message, Spin, Row, Col, Alert, Menu, Dropdown } from 'antd';
 import CodeModal from '../modals/CodeModal';
 import ConsoleModal from '../modals/ConsoleModal';
 import PlotterModal from '../modals/PlotterModal';
@@ -205,6 +205,32 @@ export default function MentorCanvas({ day, isSandbox, setDay }) {
       navigate(-1);
   };
 
+  const menu = (
+    <Menu>
+      <Menu.Item>
+        <PlotterLogo
+          setHoverPlotter={setHoverPlotter}
+          handlePlotter={handlePlotter}
+        />        
+        &nbsp; Show Serial Plotter
+      </Menu.Item>
+      <CodeModal
+          title={'XML'}
+          workspaceRef={workspaceRef.current}
+          setHover={setHoverXml}
+          hover={hoverXml}
+        />
+      <Menu.Item>
+        <CodeModal
+          title={'Arduino Code'}
+          workspaceRef={workspaceRef.current}
+          setHover={setHoverArduino}
+          hover={hoverArduino}
+        />
+      </Menu.Item>
+  </Menu>
+  );
+
   return (
     <div id='horizontal-container' className='flex flex-column'>
       <div className='flex flex-row'>
@@ -242,13 +268,13 @@ export default function MentorCanvas({ day, isSandbox, setDay }) {
                   <Row>
                   {isSandbox ? 
                     <Col className='flex flex-row'>
-                      <LoadWorkspaceModal
+                      {/* <LoadWorkspaceModal
                         hover={hoverLoadWorkspace}
                         setHover={setHoverLoadWorkspace}
                         loadSave={loadSave}
                         classroomId={classroomId}
-                      />
-                      <button
+                      /> */}
+                      {/* <button
                         onClick={handleSave}
                         id='link'
                         className='flex flex-column'
@@ -262,8 +288,8 @@ export default function MentorCanvas({ day, isSandbox, setDay }) {
                         {hoverSave && (
                           <div className='popup ModalCompile4'>Save</div>
                         )}
-                      </button>
-                      <SaveAsModal
+                      </button> */}
+                      {/* <SaveAsModal
                         hover={hoverSaveAs}
                         setHover={setHoverSaveAs}
                         visible={showSaveAsModal}
@@ -273,7 +299,7 @@ export default function MentorCanvas({ day, isSandbox, setDay }) {
                         setDay={setDay}
                         isSandbox={isSandbox}
                         classroomId={classroomId}
-                      />
+                      /> */}
                     </Col>
                   : null}
                     <Col className='flex flex-row'>
@@ -327,7 +353,7 @@ export default function MentorCanvas({ day, isSandbox, setDay }) {
                         id='action-btn-container'
                         className='flex space-around'
                       >
-                        <CodeModal
+                        {/* <CodeModal
                           title={'XML'}
                           workspaceRef={workspaceRef.current}
                           setHover={setHoverXml}
@@ -338,7 +364,7 @@ export default function MentorCanvas({ day, isSandbox, setDay }) {
                           workspaceRef={workspaceRef.current}
                           setHover={setHoverArduino}
                           hover={hoverArduino}
-                        />
+                        /> */}
 
                         <ArduinoLogo
                           setHoverCompile={setHoverCompile}
@@ -371,6 +397,9 @@ export default function MentorCanvas({ day, isSandbox, setDay }) {
                             Show Serial Plotter
                           </div>
                         )}
+                        <Dropdown overlay={menu}>
+                            <i className="fas fa-ellipsis-v"></i>
+                        </Dropdown>
                       </div>
                     </Col>
                   </Row>

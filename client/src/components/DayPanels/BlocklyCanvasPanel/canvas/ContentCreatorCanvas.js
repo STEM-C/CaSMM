@@ -276,17 +276,56 @@ export default function ContentCreatorCanvas({
     }
   };
 
+
   const menu = (
     <Menu>
-      <Menu.Item>
-        <button
-          onClick={handleCreatorSave}
-          // id='link'
-          className='flex flex-column'
+      <Menu.Item id='menu-save'
+        onClick={handleCreatorSave}
         >
           <i className='fa fa-save' />
           &nbsp; Save
-        </button>
+      </Menu.Item>
+      <SaveAsModal 
+        hover={hoverSaveAs}
+        setHover={setHoverSaveAs}
+        visible={showSaveAsModal}
+        setVisible={setShowSaveAsModal}
+        workspaceRef={workspaceRef}
+        studentToolbox={studentToolbox}
+        day={day}
+        setDay={setDay}
+        isSandbox={isSandbox}
+      />
+        <LoadWorkspaceModal
+        hover={hoverLoadWorkspace}
+        setHover={setHoverLoadWorkspace}
+        loadSave={loadSave}
+      />
+    </Menu>
+  );
+
+  const menuShow = (
+    <Menu>
+      <Menu.Item>
+        <PlotterLogo
+          setHoverPlotter={setHoverPlotter}
+          handlePlotter={handlePlotter}
+        />        
+        &nbsp; Show Serial Plotter
+      </Menu.Item>
+        <CodeModal
+          title={'XML'}
+          workspaceRef={workspaceRef.current}
+          setHover={setHoverXml}
+          hover={hoverXml}
+        />
+      <Menu.Item>
+        <CodeModal
+          title={'Arduino Code'}
+          workspaceRef={workspaceRef.current}
+          setHover={setHoverArduino}
+          hover={hoverArduino}
+        />
       </Menu.Item>
     </Menu>
   );
@@ -326,42 +365,14 @@ export default function ContentCreatorCanvas({
                     </button>
                   </Col>
                   <Col flex='auto' />
-                  <Row id='testing'>
+                  <Row>
                     <Col className='flex flex-row'>
-                      <LoadWorkspaceModal
-                        hover={hoverLoadWorkspace}
-                        setHover={setHoverLoadWorkspace}
-                        loadSave={loadSave}
-                      />
-                      <Dropdown overlay={menu} trigger={['click']}>
-                        <p>Testing</p>
+                    <Col className='flex flex-row' id='save-dropdown-container'>
+                      <Dropdown overlay={menu}>
+                        <i id='save-dropdown-icon' className='fa fa-save' /> 
                       </Dropdown>
-                      <button
-                        onClick={handleCreatorSave}
-                        id='link'
-                        className='flex flex-column'
-                      >
-                        <i
-                          id='icon-btn'
-                          className='fa fa-save'
-                          onMouseEnter={() => setHoverSave(true)}
-                          onMouseLeave={() => setHoverSave(false)}
-                        />
-                        {hoverSave && (
-                          <div className='popup ModalCompile4'>Save</div>
-                        )}
-                      </button>
-                      <SaveAsModal
-                        hover={hoverSaveAs}
-                        setHover={setHoverSaveAs}
-                        visible={showSaveAsModal}
-                        setVisible={setShowSaveAsModal}
-                        workspaceRef={workspaceRef}
-                        studentToolbox={studentToolbox}
-                        day={day}
-                        setDay={setDay}
-                        isSandbox={isSandbox}
-                      />
+                      <i className='fas fa-angle-down' id='caret'></i>
+                    </Col>
                     </Col>
                     <Col className='flex flex-row'>
                       <button
@@ -414,19 +425,6 @@ export default function ContentCreatorCanvas({
                         id='action-btn-container'
                         className='flex space-around'
                       >
-                        <CodeModal
-                          title={'XML'}
-                          workspaceRef={workspaceRef.current}
-                          setHover={setHoverXml}
-                          hover={hoverXml}
-                        />
-                        <CodeModal
-                          title={'Arduino Code'}
-                          workspaceRef={workspaceRef.current}
-                          setHover={setHoverArduino}
-                          hover={hoverArduino}
-                        />
-
                         <ArduinoLogo
                           setHoverCompile={setHoverCompile}
                           handleCompile={handleCompile}

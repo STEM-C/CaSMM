@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState, useReducer } from 'react';
 import '../../DayPanels.less';
 import { compileArduinoCode, handleSave } from '../../Utils/helpers';
-import { message, Spin, Row, Col, Alert } from 'antd';
+import { message, Spin, Row, Col, Alert, Dropdown, Menu } from 'antd';
 import { getSaves } from '../../../../Utils/requests';
 import CodeModal from '../modals/CodeModal';
 import ConsoleModal from '../modals/ConsoleModal';
@@ -356,6 +356,26 @@ export default function StudentCanvas({ day }) {
     return output + ' ' + new Date(value).toLocaleTimeString(locale);
   };
 
+  const menu = (
+    <Menu>
+      <Menu.Item>
+        <PlotterLogo
+          setHoverPlotter={setHoverPlotter}
+          handlePlotter={handlePlotter}
+        />        
+        &nbsp; Show Serial Plotter
+      </Menu.Item>
+      <Menu.Item>
+        <CodeModal
+          title={'Arduino Code'}
+          workspaceRef={workspaceRef.current}
+          setHover={setHoverArduino}
+          hover={hoverArduino}
+        />
+      </Menu.Item>
+  </Menu>
+  );
+
   return (
     <div id='horizontal-container' className='flex flex-column'>
       <div className='flex flex-row'>
@@ -469,13 +489,7 @@ export default function StudentCanvas({ day }) {
                       id='action-btn-container'
                       className='flex space-around'
                     >
-                      <CodeModal
-                        title={'Arduino Code'}
-                        workspaceRef={workspaceRef.current}
-                        setHover={setHoverArduino}
-                        hover={hoverArduino}
-                      />
-
+                  
                       <ArduinoLogo
                         setHoverCompile={setHoverCompile}
                         handleCompile={handleCompile}
@@ -496,15 +510,6 @@ export default function StudentCanvas({ day }) {
                       {hoverConsole && (
                         <div className='popup ModalCompile'>
                           Show Serial Monitor
-                        </div>
-                      )}
-                      <PlotterLogo
-                        setHoverPlotter={setHoverPlotter}
-                        handlePlotter={handlePlotter}
-                      />
-                      {hoverPlotter && (
-                        <div className='popup ModalCompile'>
-                          Show Serial Plotter
                         </div>
                       )}
                     </div>

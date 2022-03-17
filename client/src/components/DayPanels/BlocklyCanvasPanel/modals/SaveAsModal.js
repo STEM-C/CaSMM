@@ -1,4 +1,4 @@
-import { Modal, Button, Input, Form, message } from 'antd';
+import { Modal, Button, Input, Form, message, Menu } from 'antd';
 import { handleSaveAsWorkspace } from '../../Utils/helpers';
 import React, { useState } from 'react';
 import { getCCWorkspaceToolbox } from '../../../../Utils/requests';
@@ -68,13 +68,20 @@ export default function SaveAsModal({
 
   return (
     <div id='link'>
-      <i
+      {/* <i
         onClick={showModal}
         className='flex fas fa-file-download'
         onMouseEnter={() => setHover(true)}
         onMouseLeave={() => setHover(false)}
       />
-      {hover && <div className='popup ModalCompile4'>SaveAs</div>}
+      {hover && <div className='popup ModalCompile4'>SaveAs</div>} */}
+      <Menu.Item 
+        id='menu-save'
+        onClick={showModal}>
+          <i className="fa fa-save"></i>
+          <i id='pencil-icon' className='fas fa-pencil-alt'></i>
+        &nbsp;Save As
+      </Menu.Item>
       <Modal
         title='Save As'
         visible={visible}
