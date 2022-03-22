@@ -83,12 +83,13 @@ export default function StudentCanvas({ day }) {
     }
   };
 
-  const pushEvent = (type) => {
+  const pushEvent = (type, blockId = '') => {
     let xml = window.Blockly.Xml.workspaceToDom(workspaceRef.current);
     let xml_text = window.Blockly.Xml.domToText(xml);
     replayRef.current.push({
       xml: xml_text,
       action: type,
+      blockId: blockId,
       timestamp: Date.now(),
       clicks: clicks.current,
     });
@@ -106,12 +107,12 @@ export default function StudentCanvas({ day }) {
     }
 
     // if it is other ui events or create events or is [undo, redo], return
-    if (event.type === 'ui' || event.type === 'create' || !event.recordUndo) {
+    if (event.type === 'ui' || !event.recordUndo) {
       return;
     }
 
     // if event is in timeout, return
-    if ((event.type === 'move' || event.type === 'change') && blocked) {
+    if (event.type === 'change' && blocked) {
       return;
     }
 
@@ -119,7 +120,10 @@ export default function StudentCanvas({ day }) {
     if (
       event.type === 'change' &&
       event.element === 'field' &&
-      replayRef.current[replayRef.current.length - 1].action === 'change'
+      replayRef.current.length > 1 &&
+      replayRef.current[replayRef.current.length - 1].action ===
+        'change field' &&
+      replayRef.current[replayRef.current.length - 1].blockId === event.blockId
     ) {
       replayRef.current.pop();
     }
@@ -130,8 +134,16 @@ export default function StudentCanvas({ day }) {
         replayRef.current.pop();
       }
     }
-    pushEvent(event.type);
     console.log(event);
+
+    // if event is change, add the detail action type
+    if (event.type === 'change' && event.element) {
+      pushEvent(`${event.type} ${event.element}`, event.blockId);
+    } else {
+      pushEvent(event.type, event.blockId);
+    }
+
+    // timeout for half a second
     blocked = true;
     setTimeout(() => {
       blocked = false;
@@ -173,7 +185,7 @@ export default function StudentCanvas({ day }) {
           if (res.data.current) onLoadSave = res.data.current;
           setSaves(res.data);
         } else {
-          // console.log(res.err);
+          console.log(res.err);
         }
 
         if (onLoadSave) {
@@ -186,6 +198,7 @@ export default function StudentCanvas({ day }) {
           window.Blockly.Xml.domToWorkspace(xml, workspaceRef.current);
         }
 
+        pushEvent('load workspace');
         workspaceRef.current.clearUndo();
       }
     };
@@ -194,7 +207,6 @@ export default function StudentCanvas({ day }) {
 
   const handleManualSave = async () => {
     // save workspace then update load save options
-    console.log(replayRef.current);
     const res = await handleSave(day.id, workspaceRef, replayRef.current);
     if (res.err) {
       message.error(res.err);
@@ -205,6 +217,7 @@ export default function StudentCanvas({ day }) {
 
     const savesRes = await getSaves(day.id);
     if (savesRes.data) setSaves(savesRes.data);
+    pushEvent('save');
   };
 
   const handleUndo = () => {
@@ -237,6 +250,7 @@ export default function StudentCanvas({ day }) {
       }
       setConnectionOpen(true);
       setShowConsole(true);
+      pushEvent('show serial monitor');
     }
     // if serial monitor is shown, close the connection
     else {
@@ -269,6 +283,7 @@ export default function StudentCanvas({ day }) {
       }
       setConnectionOpen(true);
       setShowPlotter(true);
+      pushEvent('show serial plotter');
     } else {
       plotId = 1;
       if (connectionOpen) {
