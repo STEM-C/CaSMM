@@ -20,11 +20,11 @@ const Replay = () => {
   const [replay, setReplay] = useState([]);
   const [startIndex, setStartIndex] = useState(0);
   const [endIndex, setEndIndex] = useState(TIME_LINE_SIZE);
-  const [blocksData, setBlocksData] = useState([]);
   const [isPlaying, setIsPlaying] = useState(false);
   const [playbackRef, setPlaybackRef] = useState(null);
   const [playSpeed, setPlaySpeed] = useState(500);
   const [action, setAction] = useState('');
+  const [logData, setLogData] = useState([]);
 
   const reducer = (state, action) => {
     switch (action.type) {
@@ -62,14 +62,6 @@ const Replay = () => {
     getReplay();
   }, []);
 
-  // const dataSource = [
-  //   {
-  //     key: timestamp,
-  //     name: blockName,
-  //     action: action,
-  //   }
-  // ];
-
   const columns = [
     {
       title: 'Timestamp',
@@ -78,8 +70,9 @@ const Replay = () => {
       width: '3%',
       align: 'center',
       sorter: {
-        compare: (a, b) => (a.last_logged_in < b.last_logged_in ? -1 : 1),
+        compare: (a, b) => (a < b ? -1 : 1),
       },
+      render: (timestamp) => formatMyDate(timestamp)
     },
     {
       title: 'Blocks',
@@ -150,6 +143,17 @@ const Replay = () => {
       const xml = window.Blockly.Xml.textToDom(replay[step].xml);
       window.Blockly.Xml.domToWorkspace(xml, workspaceRef.current);
       setAction(replay[step].action);
+      
+      //update log
+      let data = replay.slice(0, step+1).map((item, index) => 
+      {return {
+        key: index,
+        blockName: "",
+        timestamp: item.timestamp,
+        action: item.action
+      }});
+    
+      setLogData(data);
     }
   }, [replay, step, isPlaying, handlePause]);
 
@@ -270,12 +274,10 @@ const Replay = () => {
             className='flex flex-column vertical-container overflow-visible'
           >
             <h2 id='logs-title'>Logs</h2>
-            {/* <div id='logs'>
-              { replay.map((item, index) => <p className={step === index ? 'bold' : null} key={item.timestamp}> {timeConverter(item.timestamp)} </p>)}
-            </div> */}
             <Table
+              size='small'
               columns={columns}
-              // dataSource={dataSource}
+              dataSource={logData}
             />
           </section>
         </div>
