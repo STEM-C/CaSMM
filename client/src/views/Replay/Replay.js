@@ -17,6 +17,9 @@ const Replay = () => {
   const { saveID } = useParams();
   const workspaceRef = useRef(null);
   const [replay, setReplay] = useState([]);
+  const [startIndex, setStartIndex] = useState(0);
+  const [endIndex, setEndIndex] = useState(TIME_LINE_SIZE);
+  const [blocksData, setBlocksData] = useState([]);
   const [isPlaying, setIsPlaying] = useState(false);
   const [playbackRef, setPlaybackRef] = useState(null);
   const [playSpeed, setPlaySpeed] = useState(500);
@@ -130,11 +133,25 @@ const Replay = () => {
   ];
 
   const goBack = () => {
-    dispatchTimelineReducer({ type: 'DecrementStep' });
+    dispatch({ type: 'Decrement' });
+    
+    if(step < startIndex){
+      let newStart = Math.max(0, step-5);
+      setStartIndex(newStart);
+      setEndIndex(newStart + TIME_LINE_SIZE);
+    }
+
   };
 
   const goForward = () => {
-    dispatchTimelineReducer({ type: 'IncrementStep' });
+    dispatch({ type: 'Increment' });
+  
+    if(step >= endIndex){
+      let newEnd = Math.min(replay.length, step+5);
+      setEndIndex(newEnd);
+      setStartIndex(newEnd-TIME_LINE_SIZE);
+    }
+
   };
 
   const setStep = (value) => {
@@ -193,15 +210,18 @@ const Replay = () => {
   };
 
   const scrollTimelineForward = () => {
-    dispatchTimelineReducer({ type: 'IncrementTimeline' });
-  };
+    if(endIndex < replay.length){
+      setStartIndex(startIndex + 5);
+      setEndIndex(Math.min(endIndex + 5, replay.length));
+    }
+  }
 
   const scrollTimelineBackward = () => {
-    dispatchTimelineReducer({ type: 'DecrementTimeline' });
-  };
-  const handleGoBack = () => {
-    if (window.confirm('Comfirm going back')) navigate(-1);
-  };
+    if(startIndex > 0){
+      setStartIndex(Math.max(startIndex - 5, 0));
+      setEndIndex(endIndex - 5);
+    }
+  }
 
   return (
     <main className='container nav-padding'>
@@ -265,35 +285,24 @@ const Replay = () => {
           </div>
           <div id='timeline-container'>
             <button
-              disabled={timelineStates.startIndex <= 0}
+              disabled={startIndex <= 0}
               onClick={scrollTimelineBackward}
-            >
-              {' '}
-              &#8249;{' '}
-            </button>
+              > &#8249; </button>
             <div id='timeline'>
-              {replay
-                .map((item, index) => (
-                  <div
-                    className={
-                      timelineStates.step === index
-                        ? 'current-time'
-                        : 'all-times'
-                    }
-                    key={item.timestamp}
-                    onClick={() => setStep(index)}
-                  >
-                    {formatMyDate(item.timestamp)}
-                  </div>
-                ))
-                .slice(timelineStates.startIndex, timelineStates.endIndex)}
+              {replay.map((item, index) => (
+                <div
+                  className={step === index ? 'current-time' : 'all-times'}
+                  key={item.timestamp}
+                  onClick={() => setStep(index)}
+                >
+                  {formatMyDate(item.timestamp)}
+                </div>
+              )).slice(startIndex, endIndex)}
             </div>
             <button
-              disabled={timelineStates.endIndex >= replay.length}
-              onClick={scrollTimelineForward}
-            >
-              &#8250;
-            </button>
+            disabled={endIndex >= replay.length}
+            onClick={scrollTimelineForward}
+            >&#8250;</button>
           </div>
         </div>
         <h2 id='action-title'>{`[${timelineStates.step + 1}/${
