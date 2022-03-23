@@ -19,26 +19,12 @@ const Replay = () => {
   const [replay, setReplay] = useState([]);
   const [startIndex, setStartIndex] = useState(0);
   const [endIndex, setEndIndex] = useState(TIME_LINE_SIZE);
-  const [blocksData, setBlocksData] = useState([]);
   const [isPlaying, setIsPlaying] = useState(false);
   const [playbackRef, setPlaybackRef] = useState(null);
   const [playSpeed, setPlaySpeed] = useState(500);
   const navigate = useNavigate();
   const [action, setAction] = useState('');
   const [logData, setLogData] = useState([]);
-
-  const timelineReducer = (timeline, action) => {
-    const checkTimelineStepInBound = () => {
-      if (timeline.step >= timeline.endIndex) {
-        let newEnd = Math.min(replay.length, timeline.step + 7);
-        timeline.endIndex = newEnd;
-        timeline.startIndex = newEnd - TIME_LINE_SIZE;
-      } else if (timeline.step < timeline.startIndex) {
-        let newStart = Math.max(0, timeline.step - 6);
-        timeline.startIndex = newStart;
-        timeline.endIndex = newStart + TIME_LINE_SIZE;
-      }
-    };
 
     switch (action.type) {
       case 'IncrementStep':
@@ -114,7 +100,7 @@ const Replay = () => {
       sorter: {
         compare: (a, b) => (a < b ? -1 : 1),
       },
-      render: (timestamp) => formatMyDate(timestamp),
+      render: (timestamp) => formatMyDate(timestamp)
     },
     {
       title: 'Block ID',
@@ -184,23 +170,17 @@ const Replay = () => {
       workspaceRef.current ? workspaceRef.current.clear() : setWorkspace();
       const xml = window.Blockly.Xml.textToDom(replay[timelineStates.step].xml);
       window.Blockly.Xml.domToWorkspace(xml, workspaceRef.current);
-      setAction(replay[timelineStates.step].action);
-
-      if (replay[timelineStates.step].blockId)
-        window.Blockly.mainWorkspace
-          .getBlockById(replay[timelineStates.step].blockId)
-          ?.select();
-
+      setAction(replay[step].action);
+      
       //update log
-      let data = replay.slice(0, timelineStates.step + 1).map((item, index) => {
-        return {
-          key: index,
-          blockId: item.blockId,
-          timestamp: item.timestamp,
-          action: item.action,
-        };
-      });
-
+      let data = replay.slice(0, step+1).map((item, index) => 
+      {return {
+        key: index,
+        blockName: "",
+        timestamp: item.timestamp,
+        action: item.action
+      }});
+    
       setLogData(data);
     }
   }, [replay, timelineStates, isPlaying, handlePause]);
@@ -333,8 +313,7 @@ const Replay = () => {
           >
             <h2 id='logs-title'>Logs</h2>
             <Table
-              scroll={{ y: 300 }}
-              pagination={false}
+              size='small'
               columns={columns}
               dataSource={logData}
             />
