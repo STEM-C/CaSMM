@@ -69,6 +69,7 @@ const Replay = () => {
       key: 'timestamp',
       width: '3%',
       align: 'center',
+      defaultSortOrder: 'descend',
       sorter: {
         compare: (a, b) => (a < b ? -1 : 1),
       },
@@ -93,8 +94,8 @@ const Replay = () => {
   const goBack = () => {
     dispatch({ type: 'Decrement' });
     
-    if(step < startIndex){
-      let newStart = Math.max(0, step-5);
+    if(step < startIndex + 1){
+      let newStart = Math.max(0, step-6);
       setStartIndex(newStart);
       setEndIndex(newStart + TIME_LINE_SIZE);
     }
@@ -104,8 +105,8 @@ const Replay = () => {
   const goForward = () => {
     dispatch({ type: 'Increment' });
   
-    if(step >= endIndex){
-      let newEnd = Math.min(replay.length, step+5);
+    if(step >= endIndex - 1){
+      let newEnd = Math.min(replay.length, step+7);
       setEndIndex(newEnd);
       setStartIndex(newEnd-TIME_LINE_SIZE);
     }
