@@ -9,7 +9,7 @@ const ArduinoLogo = ({ setHoverCompile, handleCompile }) => {
         width='40px'
         height='20px'
         align="center"
-        viewBox="400 280 300 300"
+        viewBox="450 280 300 300"
         preserveAspectRatio='xMidYMid'
         onMouseEnter={() => setHoverCompile(true)}
         onMouseLeave={() => setHoverCompile(false)}

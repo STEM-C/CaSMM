@@ -3,8 +3,8 @@ import React from 'react';
 const PlotterLogo = ({ setHoverPlotter, handlePlotter }) => {
   return (
     <svg
-      width='450.000000pt'
-      height='450.000000pt'
+      width='10.000000pt'
+      height='10.000000pt'
       viewBox='0 0 105.000000 105.000000'
       xmlns='http://www.w3.org/2000/svg'
       strokeMiterlimit='2'

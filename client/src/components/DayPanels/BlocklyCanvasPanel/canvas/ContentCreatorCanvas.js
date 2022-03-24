@@ -374,7 +374,7 @@ export default function ContentCreatorCanvas({
                       <i className='fas fa-angle-down' id='caret'></i>
                     </Col>
                     </Col>
-                    <Col className='flex flex-row'>
+                    <Col className='flex flex-row' id='redo-undo-container'>
                       <button
                         onClick={handleUndo}
                         id='link'
@@ -447,15 +447,9 @@ export default function ContentCreatorCanvas({
                             Show Serial Monitor
                           </div>
                         )}
-                        <PlotterLogo
-                          setHoverPlotter={setHoverPlotter}
-                          handlePlotter={handlePlotter}
-                        />
-                        {hoverPlotter && (
-                          <div className='popup ModalCompile'>
-                            Show Serial Plotter
-                          </div>
-                        )}
+                        <Dropdown overlay={menuShow}>
+                            <i className='fas fa-ellipsis-v'></i>
+                        </Dropdown>
                       </div>
                     </Col>
                   </Row>

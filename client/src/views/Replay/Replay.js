@@ -215,7 +215,7 @@ const Replay = () => {
                 key={item.timestamp}
                 onClick={()=>setStep(index)}>
                 {formatMyDate(item.timestamp)}
-                <div className="marker"/>
+                {/* <div className="marker"/> */}
               </div>)}
         </div>
       </div>

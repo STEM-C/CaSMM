@@ -268,38 +268,6 @@ export default function MentorCanvas({ day, isSandbox, setDay }) {
                   <Row>
                   {isSandbox ? 
                     <Col className='flex flex-row'>
-                      {/* <LoadWorkspaceModal
-                        hover={hoverLoadWorkspace}
-                        setHover={setHoverLoadWorkspace}
-                        loadSave={loadSave}
-                        classroomId={classroomId}
-                      /> */}
-                      {/* <button
-                        onClick={handleSave}
-                        id='link'
-                        className='flex flex-column'
-                      >
-                        <i
-                          id='icon-btn'
-                          className='fa fa-save'
-                          onMouseEnter={() => setHoverSave(true)}
-                          onMouseLeave={() => setHoverSave(false)}
-                        />
-                        {hoverSave && (
-                          <div className='popup ModalCompile4'>Save</div>
-                        )}
-                      </button> */}
-                      {/* <SaveAsModal
-                        hover={hoverSaveAs}
-                        setHover={setHoverSaveAs}
-                        visible={showSaveAsModal}
-                        setVisible={setShowSaveAsModal}
-                        workspaceRef={workspaceRef}
-                        day={day}
-                        setDay={setDay}
-                        isSandbox={isSandbox}
-                        classroomId={classroomId}
-                      /> */}
                     </Col>
                   : null}
                     <Col className='flex flex-row'>
@@ -353,19 +321,6 @@ export default function MentorCanvas({ day, isSandbox, setDay }) {
                         id='action-btn-container'
                         className='flex space-around'
                       >
-                        {/* <CodeModal
-                          title={'XML'}
-                          workspaceRef={workspaceRef.current}
-                          setHover={setHoverXml}
-                          hover={hoverXml}
-                        />
-                        <CodeModal
-                          title={'Arduino Code'}
-                          workspaceRef={workspaceRef.current}
-                          setHover={setHoverArduino}
-                          hover={hoverArduino}
-                        /> */}
-
                         <ArduinoLogo
                           setHoverCompile={setHoverCompile}
                           handleCompile={handleCompile}
@@ -386,15 +341,6 @@ export default function MentorCanvas({ day, isSandbox, setDay }) {
                         {hoverConsole && (
                           <div className='popup ModalCompile'>
                             Show Serial Monitor
-                          </div>
-                        )}
-                        <PlotterLogo
-                          setHoverPlotter={setHoverPlotter}
-                          handlePlotter={handlePlotter}
-                        />
-                        {hoverPlotter && (
-                          <div className='popup ModalCompile'>
-                            Show Serial Plotter
                           </div>
                         )}
                         <Dropdown overlay={menu}>

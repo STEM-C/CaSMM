@@ -67,14 +67,7 @@ export default function SaveAsModal({
   };
 
   return (
-    <div id='link'>
-      {/* <i
-        onClick={showModal}
-        className='flex fas fa-file-download'
-        onMouseEnter={() => setHover(true)}
-        onMouseLeave={() => setHover(false)}
-      />
-      {hover && <div className='popup ModalCompile4'>SaveAs</div>} */}
+    <div>
       <Menu.Item 
         id='menu-save'
         onClick={showModal}>

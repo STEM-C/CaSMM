@@ -9,8 +9,7 @@
 #timeline {
   height: 1px;
   background: rgb(255, 255, 255);
-  margin: 30px 20px;
-  // position: absolute;
+  margin: 60px 20px;
   width: 100%;
   display: flex;
   align-items: center;
@@ -23,8 +22,8 @@
   justify-content: center;
   align-items: center;
   font-weight: bold;
-  color: red;
-  background-color: white;
+  color: #colors[quaternary];
+  background-color: #colors[primary];
   transform: rotate(45deg);
   width: auto;
   height: 19px;
@@ -32,18 +31,20 @@
 }
 
 .all-times {
+  color: white;
+  background-color: #colors[primary];
   transform: rotate(45deg);
   &:hover {
     cursor: pointer;
   }
 }
 
-.marker {
-  border-radius: 50%;
-  height: 8px;
-  width: 8px;
-  background: rgb(255, 255, 255);
-}
+// .marker {
+//   border-radius: 50%;
+//   height: 8px;
+//   width: 8px;
+//   background: rgb(255, 255, 255);
+// }
 
 #description-container {
   border-radius: 10px;

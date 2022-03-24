@@ -28,7 +28,7 @@ export default function CodeModal(props) {
             onClick={showModal}
             className='far fa-file-code'
           />
-          &nbsp; Show XML
+          &nbsp;Show XML
         </Menu.Item>
 
       ) : (
