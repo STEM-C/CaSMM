@@ -60,7 +60,6 @@ export function useSearchParam() {
         students_in: student,
       };
     } else {
-      console.log(pageSize);
       obj = paramObj;
       if (_start !== null) obj['_start'] = _start;
       if (_sort) obj['_sort'] = _sort;

@@ -21,6 +21,11 @@ const DayLevelReport = () => {
   const navigate = useNavigate();
   const { paramObj, setSearchParam } = useSearchParam();
   const [showFilter, setShowFilter] = useState(false);
+  const [tbNameFilter, setTbNameFilter] = useState([]);
+  const [tbClassroomFilter, setTbClassroomFilter] = useState([]);
+  const [tbGradeFilter, setTbGradeFilter] = useState([]);
+  const [tbUnitFilter, setTbUnitFilter] = useState([]);
+  const [tbLessonFilter, setTbLessonFilter] = useState([]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -49,9 +54,46 @@ const DayLevelReport = () => {
       }
       setSessions(sessionRes.data);
       setSessionCount(sessionCountRes.data);
+
+      // set table head filter data
+      makeTbNameFilter(sessionRes.data);
+      setTbClassroomFilter(makeFilter(sessionRes.data, 'classroom'));
+      setTbGradeFilter(makeFilter(sessionRes.data, 'grade'));
+      setTbUnitFilter(makeFilter(sessionRes.data, 'unit'));
+      setTbLessonFilter(makeFilter(sessionRes.data, 'learning_standard'));
     };
     if (paramObj['_sort']) fetchData();
   }, [paramObj]);
+
+  const makeTbNameFilter = (data) => {
+    let filter = [];
+    const map = new Map();
+
+    data.forEach((element) => {
+      const names = element.students.map((student) => student.name);
+      names.forEach((name) => {
+        if (!map.get(name)) {
+          filter.push({ text: name, value: name });
+          map.set(name, true);
+        }
+      });
+    });
+    setTbNameFilter(filter);
+  };
+
+  const makeFilter = (data, category) => {
+    let filter = [];
+    const map = new Map();
+
+    data.forEach((element) => {
+      const name = element[category]?.name;
+      if (name && !map.has(name)) {
+        filter.push({ text: name, value: name });
+        map.set(name, true);
+      }
+    });
+    return filter;
+  };
 
   const formatMyDate = (value, locale = 'en-US') => {
     let output = new Date(value).toLocaleDateString(locale);
@@ -64,6 +106,17 @@ const DayLevelReport = () => {
       key: 'student',
       width: '2%',
       align: 'left',
+      filters: tbNameFilter,
+      onFilter: (value, key) => {
+        let result = false;
+        key.students.forEach((student) => {
+          if (student.name.indexOf(value) === 0) {
+            result = true;
+            return;
+          }
+        });
+        return result;
+      },
       render: (_, key) => <div>{key.students[0].name}</div>,
     },
     {
@@ -72,6 +125,8 @@ const DayLevelReport = () => {
       dataIndex: ['classroom', 'name'],
       width: '6%',
       align: 'left',
+      filters: tbClassroomFilter,
+      onFilter: (value, key) => key.classroom?.name.indexOf(value) === 0,
     },
     {
       title: 'Grade',
@@ -79,6 +134,8 @@ const DayLevelReport = () => {
       key: 'grade',
       width: '2%',
       align: 'left',
+      filters: tbGradeFilter,
+      onFilter: (value, key) => key.grade?.name.indexOf(value) === 0,
     },
     {
       title: 'Unit',
@@ -86,6 +143,8 @@ const DayLevelReport = () => {
       key: 'unit',
       width: '4%',
       align: 'left',
+      filters: tbUnitFilter,
+      onFilter: (value, key) => key.unit?.name.indexOf(value) === 0,
     },
     {
       title: 'Lesson',
@@ -93,6 +152,9 @@ const DayLevelReport = () => {
       key: 'unit',
       width: '3%',
       align: 'left',
+      filters: tbLessonFilter,
+      onFilter: (value, key) =>
+        key.learning_standard?.name.indexOf(value) === 0,
     },
     {
       title: 'Session Started',
