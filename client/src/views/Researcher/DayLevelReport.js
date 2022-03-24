@@ -20,7 +20,7 @@ const DayLevelReport = () => {
   const [sessionCount, setSessionCount] = useState(0);
   const navigate = useNavigate();
   const { paramObj, setSearchParam } = useSearchParam();
-  const [ showFilter, setShowFilter ] = useState(false);
+  const [showFilter, setShowFilter] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -33,11 +33,13 @@ const DayLevelReport = () => {
           case '_sort':
             filter += `_sort=${v}&`;
             break;
+          case 'pageSize':
+            filter += `_limit=${v}&`;
+            break;
           default:
             filter += `${k}=${v}&`;
         }
       }
-      filter += '_limit=10';
       const [sessionRes, sessionCountRes] = await Promise.all([
         getSessionsWithFilter(filter),
         getSessionCountWithFilter(filter),
@@ -48,7 +50,6 @@ const DayLevelReport = () => {
       setSessions(sessionRes.data);
       setSessionCount(sessionCountRes.data);
     };
-    // console.log(paramObj);
     if (paramObj['_sort']) fetchData();
   }, [paramObj]);
 
@@ -109,11 +110,12 @@ const DayLevelReport = () => {
         return {
           onClick: () => {
             const _start = paramObj['_start'];
+            const pageSize = paramObj['pageSize'];
             const _sort =
               paramObj['_sort'] === 'created_at:DESC'
                 ? 'created_at:ASC'
                 : 'created_at:DESC';
-            setSearchParam({ _start, _sort });
+            setSearchParam({ _start, _sort, pageSize });
           },
         };
       },
@@ -145,37 +147,37 @@ const DayLevelReport = () => {
     },
   ];
 
-
   return (
     <div className='container nav-padding'>
       <NavBar />
       <div className='menu-bar'>
         <div id='day-level-report-header'>Day Level - Student Report</div>
 
-        {/* Menu to return to landing page at /reports */}
         <button
           className='day-level-return'
-          // className={`btn-${'primary'} btn-${'sm'}`}
-          // type='button'
           onClick={() => navigate('/report')}
         >
           Return to Dashboard
         </button>
       </div>
-      <button id ='show-filter-btn' onClick={() => setShowFilter(!showFilter)}>
-        { showFilter ? <p> Click to Hide Filter</p> : <p> Click to Show Filter</p>}
+      <button id='show-filter-btn' onClick={() => setShowFilter(!showFilter)}>
+        {showFilter ? (
+          <p> Click to Hide Filter</p>
+        ) : (
+          <p> Click to Show Filter</p>
+        )}
       </button>
-      { showFilter ?  
-          <div className='filter-show'>
-            <div className='filter-items'>
-              <Filter setSearchParam={setSearchParam} />
-            </div>
-          </div>
-       :  
-          <div className='filter-hide'>
+      {showFilter ? (
+        <div className='filter-show'>
+          <div className='filter-items'>
             <Filter setSearchParam={setSearchParam} />
           </div>
-      }
+        </div>
+      ) : (
+        <div className='filter-hide'>
+          <Filter setSearchParam={setSearchParam} />
+        </div>
+      )}
       <main id='day-report-content-wrapper'>
         <div>
           <h3 className='filter-text'>Current Filter: </h3>
@@ -190,15 +192,18 @@ const DayLevelReport = () => {
           dataSource={sessions}
           rowKey='id'
           onChange={(Pagination) => {
+            console.log(Pagination);
             setSearchParam({
-              _start: (Pagination.current - 1) * 10,
+              _start: (Pagination.current - 1) * Pagination.pageSize,
               _sort: paramObj['_sort'],
+              pageSize: Pagination.pageSize,
             });
           }}
           pagination={{
-            current: paramObj['_start'] / 10 + 1 || 1,
+            current: paramObj['_start'] / paramObj['pageSize'] + 1 || 1,
             showQuickJumper: true,
-            defaultPageSize: 10,
+            showSizeChanger: true,
+            pageSize: paramObj['pageSize'] || 10,
             total: sessionCount,
           }}
         />
@@ -284,16 +289,16 @@ const Filter = ({ setSearchParam }) => {
     if (selectedLs !== '') obj.learning_standard = selectedLs;
     if (selectedClassroom !== '') obj.classroom = selectedClassroom;
     if (selectedStudent !== '') obj.student = selectedStudent;
-    console.log(obj);
     setSearchParam(obj);
   };
 
   return (
     <Form onFinish={handleSubmit}>
-      <select 
+      <select
         className='select'
-        placeholder='Select a grade' 
-        onChange={onGradeChange}>
+        placeholder='Select a grade'
+        onChange={onGradeChange}
+      >
         <option key='empty' value=''>
           Select a grade
         </option>
@@ -369,7 +374,12 @@ const Filter = ({ setSearchParam }) => {
         ))}
       </select>
       <br />
-      <Button type='secondary' className='day-level-submit' htmlType='submit' size='large'>
+      <Button
+        type='secondary'
+        className='day-level-submit'
+        htmlType='submit'
+        size='large'
+      >
         Submit
       </Button>
     </Form>
