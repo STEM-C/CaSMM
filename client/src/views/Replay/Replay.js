@@ -176,7 +176,7 @@ const Replay = () => {
       let data = replay.slice(0, step+1).map((item, index) => 
       {return {
         key: index,
-        blockName: "",
+        blockId: item.blockId,
         timestamp: item.timestamp,
         action: item.action
       }});
@@ -285,14 +285,7 @@ const Replay = () => {
             >&#8250;</button>
           </div>
         </div>
-        <h2 id='action-title'>{`[${timelineStates.step + 1}/${
-          replay.length
-        }] Action: ${action}`}</h2>
-        {replay[timelineStates.step]?.blockType !== '' && (
-          <h2 id='action-title'>{`Block Type: ${
-            replay[timelineStates.step]?.blockType
-          }`}</h2>
-        )}
+        <h2 id="action-title">{`Action ${step+1}/${replay.length}: ${action}`}</h2>
 
         <div className='flex flex-row'>
           <div
