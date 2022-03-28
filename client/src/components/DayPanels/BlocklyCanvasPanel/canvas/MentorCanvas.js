@@ -29,7 +29,6 @@ export default function MentorCanvas({ day, isSandbox, setDay }) {
   const [hoverArduino, setHoverArduino] = useState(false);
   const [hoverCompile, setHoverCompile] = useState(false);
   const [hoverConsole, setHoverConsole] = useState(false);
-  const [hoverPlotter, setHoverPlotter] = useState(false);
   const [showSaveAsModal, setShowSaveAsModal] = useState(false);
   const [showConsole, setShowConsole] = useState(false);
   const [showPlotter, setShowPlotter] = useState(false);
@@ -208,10 +207,7 @@ export default function MentorCanvas({ day, isSandbox, setDay }) {
   const menu = (
     <Menu>
       <Menu.Item onClick={handlePlotter}>
-        <PlotterLogo
-          setHoverPlotter={setHoverPlotter}
-          // handlePlotter={handlePlotter}
-        />        
+        <PlotterLogo/>        
         &nbsp; Show Serial Plotter
       </Menu.Item>
       <CodeModal
@@ -229,6 +225,33 @@ export default function MentorCanvas({ day, isSandbox, setDay }) {
         />
       </Menu.Item>
   </Menu>
+  );
+
+  const menuSave = (
+    <Menu>
+      <Menu.Item id='menu-save'
+        onClick={handleSave}
+        >
+          <i className='fa fa-save' />
+          &nbsp; Save
+      </Menu.Item>
+      <SaveAsModal 
+        hover={hoverSaveAs}
+        setHover={setHoverSaveAs}
+        visible={showSaveAsModal}
+        setVisible={setShowSaveAsModal}
+        workspaceRef={workspaceRef}
+        day={day}
+        setDay={setDay}
+        isSandbox={isSandbox}
+        classroomId={classroomId}
+      />
+        <LoadWorkspaceModal
+        hover={hoverLoadWorkspace}
+        setHover={setHoverLoadWorkspace}
+        loadSave={loadSave}
+      />
+    </Menu>
   );
 
   return (
@@ -264,12 +287,14 @@ export default function MentorCanvas({ day, isSandbox, setDay }) {
                     </button>
                   </Col>
                   <Col flex='auto' />
-
                   <Row>
                   {isSandbox ? 
                     <Col className='flex flex-row'>
+                      <Dropdown overlay={menuSave}>
+                        <i  id='icon-btn' className='fa fa-save' /> 
+                      </Dropdown>
                     </Col>
-                  : null}
+                  : null} 
                     <Col className='flex flex-row'>
                       <button
                         onClick={handleUndo}

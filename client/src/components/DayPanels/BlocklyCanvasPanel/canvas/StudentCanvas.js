@@ -359,10 +359,7 @@ export default function StudentCanvas({ day }) {
   const menu = (
     <Menu>
       <Menu.Item onClick={handlePlotter}>
-        <PlotterLogo
-          setHoverPlotter={setHoverPlotter}
-          handlePlotter={handlePlotter}
-        />        
+        <PlotterLogo/>        
         &nbsp; Show Serial Plotter
       </Menu.Item>
       <Menu.Item>

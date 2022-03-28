@@ -1,6 +1,6 @@
 import React from 'react';
 
-const PlotterLogo = ({ setHoverPlotter, handlePlotter }) => {
+const PlotterLogo = ( ) => {
   return (
     <svg
       width='10.000000pt'
@@ -12,9 +12,6 @@ const PlotterLogo = ({ setHoverPlotter, handlePlotter }) => {
       clipRule='evenodd'
       fillRule='evenodd'
       version='1.1'
-      onMouseEnter={() => setHoverPlotter(true)}
-      onMouseLeave={() => setHoverPlotter(false)}
-      onClick={handlePlotter}
     >
       <g>
         <title>Layer 1</title>

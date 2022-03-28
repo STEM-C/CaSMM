@@ -147,10 +147,7 @@ export default function PublicCanvas({ day, isSandbox }) {
   const menu = (
     <Menu>
       <Menu.Item onClick={handlePlotter}>
-        <PlotterLogo
-          setHoverPlotter={setHoverPlotter}
-          handlePlotter={handlePlotter}
-        />        
+        <PlotterLogo/>        
         &nbsp; Show Serial Plotter
       </Menu.Item>
       <CodeModal
