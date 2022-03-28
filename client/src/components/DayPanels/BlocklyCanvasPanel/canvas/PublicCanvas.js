@@ -146,7 +146,7 @@ export default function PublicCanvas({ day, isSandbox }) {
 
   const menu = (
     <Menu>
-      <Menu.Item>
+      <Menu.Item onClick={handlePlotter}>
         <PlotterLogo
           setHoverPlotter={setHoverPlotter}
           handlePlotter={handlePlotter}

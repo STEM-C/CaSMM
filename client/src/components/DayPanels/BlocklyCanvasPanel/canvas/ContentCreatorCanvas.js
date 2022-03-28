@@ -306,7 +306,7 @@ export default function ContentCreatorCanvas({
 
   const menuShow = (
     <Menu>
-      <Menu.Item>
+      <Menu.Item onClick={handlePlotter}>
         <PlotterLogo
           setHoverPlotter={setHoverPlotter}
           handlePlotter={handlePlotter}

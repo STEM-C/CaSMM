@@ -23,18 +23,16 @@ export default function CodeModal(props) {
   return (
     <div id='code-modal'>
        {title === 'XML' ? (
-        <Menu.Item>
+        <Menu.Item onClick={showModal}>
           <i
-            onClick={showModal}
             className='far fa-file-code'
           />
           &nbsp;Show XML
         </Menu.Item>
 
       ) : (
-        <Menu.Item id='show-arduino-icon'>
+        <Menu.Item id='show-arduino-icon' onClick={showModal}>
           <i
-            onClick={showModal}
             className='fas fa-code'
           />
           &nbsp;Show Arduino Code

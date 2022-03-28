@@ -358,7 +358,7 @@ export default function StudentCanvas({ day }) {
 
   const menu = (
     <Menu>
-      <Menu.Item>
+      <Menu.Item onClick={handlePlotter}>
         <PlotterLogo
           setHoverPlotter={setHoverPlotter}
           handlePlotter={handlePlotter}
@@ -512,7 +512,10 @@ export default function StudentCanvas({ day }) {
                           Show Serial Monitor
                         </div>
                       )}
-                    </div>
+                      <Dropdown overlay={menu}>
+                          <i className="fas fa-ellipsis-v"></i>
+                      </Dropdown>
+                  </div>
                   </Col>
                 </Row>
               </Col>

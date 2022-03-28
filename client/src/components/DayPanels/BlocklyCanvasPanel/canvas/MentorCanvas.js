@@ -207,10 +207,10 @@ export default function MentorCanvas({ day, isSandbox, setDay }) {
 
   const menu = (
     <Menu>
-      <Menu.Item>
+      <Menu.Item onClick={handlePlotter}>
         <PlotterLogo
           setHoverPlotter={setHoverPlotter}
-          handlePlotter={handlePlotter}
+          // handlePlotter={handlePlotter}
         />        
         &nbsp; Show Serial Plotter
       </Menu.Item>
