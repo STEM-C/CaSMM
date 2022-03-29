@@ -287,7 +287,7 @@ export default function MentorCanvas({ day, isSandbox, setDay }) {
                     </button>
                   </Col>
                   <Col flex='auto' />
-                  <Row>
+                  <Row id='right-icon-container' >
                   {isSandbox ? 
                     <Col className='flex flex-row'>
                       <Dropdown overlay={menuSave}>

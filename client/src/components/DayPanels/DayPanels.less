@@ -9,10 +9,6 @@ p {
   margin: 0;
 }
 
-#testing {
-  background-color: red;
-}
-
 #horizontal-container {
   height: 100%;
   width: 100%;
@@ -93,6 +89,7 @@ p {
   align-items: center;
   justify-content: center;
   float: right;
+  margin-left: 8px;
   margin-right: 30px;
 
   i {
@@ -106,7 +103,6 @@ p {
   }
 
   svg {
-    // width: 24px;
     height: 24px;
     x: 0px;
     y: 0px;
@@ -121,6 +117,11 @@ p {
       }
     }
   }
+}
+
+#right-icon-container {
+  display: flex;
+  align-items: center;
 }
 
 #description-container {
@@ -187,13 +188,6 @@ p {
   margin: auto;
   width: 95%;
   height: 72vh;
-  // position: relative;
-
-  //   transition: min-height 2s;
-
-  //   &.contract {
-  //     min-height: 28vh;
-  //   }
 }
 
 #console-container {
@@ -233,6 +227,9 @@ p {
 }
 
 #section-header {
+  display: flex;
+  justify-content: center;
+  align-items: center;
   background-color: #colors[secondary];
   border-radius: 80px;
   width: 40%;
@@ -242,9 +239,7 @@ p {
   font-weight: bold;
   position: relative;
   top: -10px;
-  top: -10px;
   left: -10px;
-  line-height: 50px;
   text-align: center;
 }
 
@@ -309,7 +304,7 @@ p {
   padding: 0 !important;
   color: #colors[primary];
   text-align: center;
-  margin: 0 5px 0 15px;
+  margin: 0 0 0 12px;
 
   &:focus {
     outline: none;
@@ -318,6 +313,7 @@ p {
   i {
     color: #colors[primary];
     font-size: 24px;
+
 
     &:hover {
       color: #colors[secondary];
@@ -439,3 +435,12 @@ p {
   padding-left: 0;
   margin-left: 0;
  }
+
+ @media only screen and (max-width: 915px) {
+
+  #section-header {
+    font-size: 2vw;
+    line-height: 2vw;
+  }
+  
+}
