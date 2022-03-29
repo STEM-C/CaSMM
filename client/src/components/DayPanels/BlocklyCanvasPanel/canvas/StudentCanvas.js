@@ -408,7 +408,7 @@ export default function StudentCanvas({ day }) {
                   </Col>
                   <Col flex={'350px'}>
                     <Row>
-                      <Col className='flex flex-row' id='right-icon-container'>
+                      <Col className='flex flex-row' id='icon-align'>
                         <VersionHistoryModal
                           saves={saves}
                           lastAutoSave={lastAutoSave}
@@ -433,7 +433,7 @@ export default function StudentCanvas({ day }) {
                         </button>
                       </Col>
 
-                      <Col className='flex flex-row' id='right-icon-container'>
+                      <Col className='flex flex-row' id='icon-align'>
                         <button
                           onClick={handleUndo}
                           id='link'

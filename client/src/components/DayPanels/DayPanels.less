@@ -79,10 +79,16 @@ p {
   align-items: center;
 }
 
-#icon-btn {
+#save-icon-btn {
   font-size: 24px;
   color: #colors[primary];
 }
+
+
+#icon-btn {
+  font-size: 24px;
+}
+
 
 #action-btn-container {
   display: flex;
@@ -119,7 +125,7 @@ p {
   }
 }
 
-#right-icon-container {
+#icon-align {
   display: flex;
   align-items: center;
 }
@@ -310,22 +316,7 @@ p {
     outline: none;
   }
 
-  i {
-    color: #colors[primary];
-    font-size: 24px;
-
-
-    &:hover {
-      color: #colors[secondary];
-    }
-  }
-
   &:hover {
-    i {
-      color: #colors[secondary];
-      cursor: pointer;
-    }
-
     color: #colors[secondary];
   }
 }
@@ -423,6 +414,7 @@ p {
 
 #caret {
   margin-left: 2px;
+  color: #colors[primary]
 }
 
 #version-save-container {

@@ -366,7 +366,7 @@ export default function ContentCreatorCanvas({
                     <Col className='flex flex-row'>
                     <Col className='flex flex-row' id='save-dropdown-container'>
                       <Dropdown overlay={menu}>
-                        <i id='save-dropdown-icon' className='fa fa-save' /> 
+                        <i id='save-icon-btn' className='fa fa-save' /> 
                       </Dropdown>
                       <i className='fas fa-angle-down' id='caret'></i>
                     </Col>
