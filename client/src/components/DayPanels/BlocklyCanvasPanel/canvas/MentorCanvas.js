@@ -289,14 +289,13 @@ export default function MentorCanvas({ day, isSandbox, setDay }) {
                   <Col flex='auto' />
                   <Row id='right-icon-container' >
                   {isSandbox ? 
-                    <Col className='flex flex-row' id='right-icon-container'>
+                    <Col className='flex flex-row'>
                       <Dropdown overlay={menuSave}>
-                        <i  id='save-icon-btn' className='fa fa-save' /> 
+                        <i  id='icon-btn' className='fa fa-save' /> 
                       </Dropdown>
-                      <i className='fas fa-angle-down' id='caret'></i>
                     </Col>
                   : null} 
-                    <Col className='flex flex-row'>
+                    <Col className='flex flex-row' id='redo-undo-container'>
                       <button
                         onClick={handleUndo}
                         id='link'
