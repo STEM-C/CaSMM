@@ -1,8 +1,8 @@
 name: Update Review App
-on: 
+on:
   pull_request:
-    branches: [ develop ]
-    types: [ synchronize ]
+    branches: [develop]
+    types: [synchronize]
 jobs:
   run:
     runs-on: ubuntu-latest
@@ -13,7 +13,7 @@ jobs:
         id: get_name
         run: echo ::set-output name=NAME::review-pr-$(echo $GITHUB_REF | awk 'BEGIN { FS = "/" } ; { print $3 }')
       - name: Built, test, and deploy app
-        uses: STEM-C/auto/build-test-deploy@v0.7
+        uses: STEM-C/auto/build-test-deploy@v0.7.2
         with:
           image_tag: ${{ steps.get_name.outputs.NAME }}
           app_name: ${{ steps.get_name.outputs.NAME }}

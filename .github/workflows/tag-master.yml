@@ -11,6 +11,6 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
       - name: Tag Master
-        uses: STEM-C/auto/tag@v0.6.1
+        uses: STEM-C/auto/tag@v0.7.2
         with:
-          repo_token: "${{ secrets.GITHUB_TOKEN }}"
+          repo_token: '${{ secrets.GITHUB_TOKEN }}'

@@ -21,6 +21,8 @@ const Replay = () => {
   const [playbackRef, setPlaybackRef] = useState(null);
   const [playSpeed, setPlaySpeed] = useState(500);
   const navigate = useNavigate();
+  const [action, setAction] = useState('');
+
 
   const reducer = (state, action) => {
     switch (action.type) {
@@ -45,7 +47,6 @@ const Replay = () => {
   };
 
   const formatMyDate = (timestamp, locale = 'en-GB') => {
-    // let output = new Date(value).toLocaleDateString(timestamp);
     return new Date(timestamp).toLocaleTimeString(locale);
   };
 
@@ -54,36 +55,7 @@ const Replay = () => {
       const save = await getSave(saveID);
       console.log(save.data.replay);
       setReplay(save.data.replay);
-
-      // TODO: if xmlData does not exist, do not show table, else show table of blocks
-      // SAVES Obj
-      const saveObj = save.data.replay;
-      console.log(saveObj);
-
-      // If SAVES Obj does not contain key 'xmlData', do no show Table
-      if (!('xmlData' in saveObj[0])) {
-        console.log('HIDE TABLE');
-      } else {
-        let blocksData = new Set();
-        // Get blocks data
-        saveObj.forEach((obj) => blocksData.add(obj.xmlData.blocks));
-        setBlocksData(blocksData);
-
-        // Convert Set to Array
-        let blocksArr = [...blocksData];
-
-        // How to parse
-        const blockName = blocksArr.map((block) => block.key);
-        const action = blocksArr.map((block) => block.value);
-        console.log(blocksArr);
-        console.log(blockName);
-        console.log(action);
-
-        // const blockKeys = blocksData.map(obj => obj[0]);
-        // console.log(blockKeys);
-      }
     };
-
     getReplay();
   }, []);
 
@@ -160,6 +132,7 @@ const Replay = () => {
       workspaceRef.current ? workspaceRef.current.clear() : setWorkspace();
       const xml = window.Blockly.Xml.textToDom(replay[step].xml);
       window.Blockly.Xml.domToWorkspace(xml, workspaceRef.current);
+      setAction(replay[step].action);
     }
   }, [replay, step, isPlaying, handlePause]);
 
@@ -188,6 +161,7 @@ const Replay = () => {
               >
                 <i id='icon-btn' className='fa fa-arrow-left' />
               </button>
+
             </div>
             <div className='flex flex-row'>
               <div className='flex flex-row'>
@@ -240,12 +214,14 @@ const Replay = () => {
                   onClick={() => setStep(index)}
                 >
                   {formatMyDate(item.timestamp)}
-                  {/* <div className="marker"/> */}
+                  <div className='marker' />
                 </div>
               ))}
             </div>
           </div>
         </div>
+        <h2>{`Action: ${action}`}</h2>
+
         <div className='flex flex-row'>
           <div
             id='bottom-container'

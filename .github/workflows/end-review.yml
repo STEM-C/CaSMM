@@ -1,8 +1,8 @@
 name: Delete Review App
-on: 
+on:
   pull_request:
-    branches: [ develop ]
-    types: [ closed ]
+    branches: [develop]
+    types: [closed]
 jobs:
   run:
     runs-on: ubuntu-latest
@@ -10,9 +10,8 @@ jobs:
       - uses: actions/checkout@v2
       - name: Delete review app
         id: app
-        uses: STEM-C/auto/review@v0.7
-        with: 
+        uses: STEM-C/auto/review@v0.7.2
+        with:
           base: review
           pipeline: ${{ secrets.PIPELINE_ID }}
           token: ${{ secrets.HEROKU_TOKEN }}
-    
