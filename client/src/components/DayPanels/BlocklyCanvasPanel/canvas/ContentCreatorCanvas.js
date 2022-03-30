@@ -36,14 +36,12 @@ export default function ContentCreatorCanvas({
 }) {
   const [hoverXml, setHoverXml] = useState(false);
   const [hoverLoadWorkspace, setHoverLoadWorkspace] = useState(false);
-  const [hoverSave, setHoverSave] = useState(false);
   const [hoverSaveAs, setHoverSaveAs] = useState(false);
   const [hoverUndo, setHoverUndo] = useState(false);
   const [hoverRedo, setHoverRedo] = useState(false);
   const [hoverArduino, setHoverArduino] = useState(false);
   const [hoverCompile, setHoverCompile] = useState(false);
   const [hoverConsole, setHoverConsole] = useState(false);
-  const [hoverPlotter, setHoverPlotter] = useState(false);
   const [showConsole, setShowConsole] = useState(false);
   const [showPlotter, setShowPlotter] = useState(false);
   const [showSaveAsModal, setShowSaveAsModal] = useState(false);
@@ -276,16 +274,13 @@ export default function ContentCreatorCanvas({
     }
   };
 
-
   const menu = (
     <Menu>
-      <Menu.Item id='menu-save'
-        onClick={handleCreatorSave}
-        >
-          <i className='fa fa-save' />
-          &nbsp; Save
+      <Menu.Item id='menu-save' onClick={handleCreatorSave}>
+        <i className='fa fa-save' />
+        &nbsp; Save
       </Menu.Item>
-      <SaveAsModal 
+      <SaveAsModal
         hover={hoverSaveAs}
         setHover={setHoverSaveAs}
         visible={showSaveAsModal}
@@ -296,7 +291,7 @@ export default function ContentCreatorCanvas({
         setDay={setDay}
         isSandbox={isSandbox}
       />
-        <LoadWorkspaceModal
+      <LoadWorkspaceModal
         hover={hoverLoadWorkspace}
         setHover={setHoverLoadWorkspace}
         loadSave={loadSave}
@@ -307,15 +302,15 @@ export default function ContentCreatorCanvas({
   const menuShow = (
     <Menu>
       <Menu.Item onClick={handlePlotter}>
-        <PlotterLogo/>        
+        <PlotterLogo />
         &nbsp; Show Serial Plotter
       </Menu.Item>
-        <CodeModal
-          title={'XML'}
-          workspaceRef={workspaceRef.current}
-          setHover={setHoverXml}
-          hover={hoverXml}
-        />
+      <CodeModal
+        title={'XML'}
+        workspaceRef={workspaceRef.current}
+        setHover={setHoverXml}
+        hover={hoverXml}
+      />
       <Menu.Item>
         <CodeModal
           title={'Arduino Code'}
@@ -364,12 +359,15 @@ export default function ContentCreatorCanvas({
                   <Col flex='auto' />
                   <Row>
                     <Col className='flex flex-row'>
-                    <Col className='flex flex-row' id='save-dropdown-container'>
-                      <Dropdown overlay={menu}>
-                        <i id='save-icon-btn' className='fa fa-save' /> 
-                      </Dropdown>
-                      <i className='fas fa-angle-down' id='caret'></i>
-                    </Col>
+                      <Col
+                        className='flex flex-row'
+                        id='save-dropdown-container'
+                      >
+                        <Dropdown overlay={menu}>
+                          <i id='save-icon-btn' className='fa fa-save' />
+                        </Dropdown>
+                        <i className='fas fa-angle-down' id='caret'></i>
+                      </Col>
                     </Col>
                     <Col className='flex flex-row' id='redo-undo-container'>
                       <button
@@ -445,7 +443,7 @@ export default function ContentCreatorCanvas({
                           </div>
                         )}
                         <Dropdown overlay={menuShow}>
-                            <i className='fas fa-ellipsis-v'></i>
+                          <i className='fas fa-ellipsis-v'></i>
                         </Dropdown>
                       </div>
                     </Col>

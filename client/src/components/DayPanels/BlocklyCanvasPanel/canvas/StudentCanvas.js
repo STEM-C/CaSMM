@@ -25,7 +25,6 @@ export default function StudentCanvas({ day }) {
   const [hoverArduino, setHoverArduino] = useState(false);
   const [hoverCompile, setHoverCompile] = useState(false);
   const [hoverConsole, setHoverConsole] = useState(false);
-  const [hoverPlotter, setHoverPlotter] = useState(false);
   const [showConsole, setShowConsole] = useState(false);
   const [showPlotter, setShowPlotter] = useState(false);
   const [plotData, setPlotData] = useState([]);
@@ -359,7 +358,7 @@ export default function StudentCanvas({ day }) {
   const menu = (
     <Menu>
       <Menu.Item onClick={handlePlotter}>
-        <PlotterLogo/>        
+        <PlotterLogo />
         &nbsp; Show Serial Plotter
       </Menu.Item>
       <Menu.Item>
@@ -370,7 +369,7 @@ export default function StudentCanvas({ day }) {
           hover={hoverArduino}
         />
       </Menu.Item>
-  </Menu>
+    </Menu>
   );
 
   return (
@@ -486,7 +485,6 @@ export default function StudentCanvas({ day }) {
                       id='action-btn-container'
                       className='flex space-around'
                     >
-                  
                       <ArduinoLogo
                         setHoverCompile={setHoverCompile}
                         handleCompile={handleCompile}
@@ -510,9 +508,9 @@ export default function StudentCanvas({ day }) {
                         </div>
                       )}
                       <Dropdown overlay={menu}>
-                          <i className="fas fa-ellipsis-v"></i>
+                        <i className='fas fa-ellipsis-v'></i>
                       </Dropdown>
-                  </div>
+                    </div>
                   </Col>
                 </Row>
               </Col>

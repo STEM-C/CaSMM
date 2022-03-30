@@ -23,7 +23,6 @@ export default function PublicCanvas({ day, isSandbox }) {
   const [hoverArduino, setHoverArduino] = useState(false);
   const [hoverCompile, setHoverCompile] = useState(false);
   const [hoverConsole, setHoverConsole] = useState(false);
-  const [hoverPlotter, setHoverPlotter] = useState(false);
   const [showConsole, setShowConsole] = useState(false);
   const [showPlotter, setShowPlotter] = useState(false);
   const [plotData, setPlotData] = useState([]);
@@ -147,15 +146,15 @@ export default function PublicCanvas({ day, isSandbox }) {
   const menu = (
     <Menu>
       <Menu.Item onClick={handlePlotter}>
-        <PlotterLogo/>        
+        <PlotterLogo />
         &nbsp; Show Serial Plotter
       </Menu.Item>
       <CodeModal
-          title={'XML'}
-          workspaceRef={workspaceRef.current}
-          setHover={setHoverXml}
-          hover={hoverXml}
-        />
+        title={'XML'}
+        workspaceRef={workspaceRef.current}
+        setHover={setHoverXml}
+        hover={hoverXml}
+      />
       <Menu.Item>
         <CodeModal
           title={'Arduino Code'}
@@ -164,7 +163,7 @@ export default function PublicCanvas({ day, isSandbox }) {
           hover={hoverArduino}
         />
       </Menu.Item>
-  </Menu>
+    </Menu>
   );
 
   return (
@@ -190,7 +189,7 @@ export default function PublicCanvas({ day, isSandbox }) {
                     <Row>
                       <Col>
                         <Link id='link' to={'/'} className='flex flex-column'>
-                          <i className='fa fa-home' />
+                          <i className='fa fa-home fa-lg' />
                         </Link>
                       </Col>
                     </Row>
@@ -252,7 +251,6 @@ export default function PublicCanvas({ day, isSandbox }) {
                       id='action-btn-container'
                       className='flex space-around'
                     >
-                  
                       <ArduinoLogo
                         setHoverCompile={setHoverCompile}
                         handleCompile={handleCompile}
@@ -276,7 +274,7 @@ export default function PublicCanvas({ day, isSandbox }) {
                         </div>
                       )}
                       <Dropdown overlay={menu}>
-                          <i className="fas fa-ellipsis-v"></i>
+                        <i className='fas fa-ellipsis-v'></i>
                       </Dropdown>
                     </div>
                   </Col>

@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState, useReducer } from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../../DayPanels.less';
-import { compileArduinoCode, handleUpdateWorkspace} from '../../Utils/helpers';
+import { compileArduinoCode, handleUpdateWorkspace } from '../../Utils/helpers';
 import { message, Spin, Row, Col, Alert, Menu, Dropdown } from 'antd';
 import CodeModal from '../modals/CodeModal';
 import ConsoleModal from '../modals/ConsoleModal';
@@ -22,7 +22,6 @@ let plotId = 1;
 export default function MentorCanvas({ day, isSandbox, setDay }) {
   const [hoverXml, setHoverXml] = useState(false);
   const [hoverLoadWorkspace, setHoverLoadWorkspace] = useState(false);
-  const [hoverSave, setHoverSave] = useState(false);
   const [hoverSaveAs, setHoverSaveAs] = useState(false);
   const [hoverUndo, setHoverUndo] = useState(false);
   const [hoverRedo, setHoverRedo] = useState(false);
@@ -84,13 +83,9 @@ export default function MentorCanvas({ day, isSandbox, setDay }) {
   };
 
   const handleSave = async () => {
-  
     // if we already have the workspace in the db, just update it.
     if (day && day.id) {
-      const updateRes = await handleUpdateWorkspace(
-        day.id,
-        workspaceRef,
-      );
+      const updateRes = await handleUpdateWorkspace(day.id, workspaceRef);
       if (updateRes.err) {
         message.error(updateRes.err);
       } else {
@@ -207,15 +202,15 @@ export default function MentorCanvas({ day, isSandbox, setDay }) {
   const menu = (
     <Menu>
       <Menu.Item onClick={handlePlotter}>
-        <PlotterLogo/>        
+        <PlotterLogo />
         &nbsp; Show Serial Plotter
       </Menu.Item>
       <CodeModal
-          title={'XML'}
-          workspaceRef={workspaceRef.current}
-          setHover={setHoverXml}
-          hover={hoverXml}
-        />
+        title={'XML'}
+        workspaceRef={workspaceRef.current}
+        setHover={setHoverXml}
+        hover={hoverXml}
+      />
       <Menu.Item>
         <CodeModal
           title={'Arduino Code'}
@@ -224,18 +219,16 @@ export default function MentorCanvas({ day, isSandbox, setDay }) {
           hover={hoverArduino}
         />
       </Menu.Item>
-  </Menu>
+    </Menu>
   );
 
   const menuSave = (
     <Menu>
-      <Menu.Item id='menu-save'
-        onClick={handleSave}
-        >
-          <i className='fa fa-save' />
-          &nbsp; Save
+      <Menu.Item id='menu-save' onClick={handleSave}>
+        <i className='fa fa-save' />
+        &nbsp; Save
       </Menu.Item>
-      <SaveAsModal 
+      <SaveAsModal
         hover={hoverSaveAs}
         setHover={setHoverSaveAs}
         visible={showSaveAsModal}
@@ -246,7 +239,7 @@ export default function MentorCanvas({ day, isSandbox, setDay }) {
         isSandbox={isSandbox}
         classroomId={classroomId}
       />
-        <LoadWorkspaceModal
+      <LoadWorkspaceModal
         hover={hoverLoadWorkspace}
         setHover={setHoverLoadWorkspace}
         loadSave={loadSave}
@@ -269,7 +262,7 @@ export default function MentorCanvas({ day, isSandbox, setDay }) {
           >
             <Row id='icon-control-panel'>
               <Col flex='none' id='section-header'>
-              {day.learning_standard_name
+                {day.learning_standard_name
                   ? `${day.learning_standard_name} - Day ${day.number}`
                   : day.name
                   ? `Workspace: ${day.name}`
@@ -287,14 +280,18 @@ export default function MentorCanvas({ day, isSandbox, setDay }) {
                     </button>
                   </Col>
                   <Col flex='auto' />
-                  <Row id='right-icon-container' >
-                  {isSandbox ? 
-                    <Col className='flex flex-row'>
-                      <Dropdown overlay={menuSave}>
-                        <i  id='icon-btn' className='fa fa-save' /> 
-                      </Dropdown>
-                    </Col>
-                  : null} 
+                  <Row id='right-icon-container'>
+                    {isSandbox ? (
+                      <Col
+                        className='flex flex-row'
+                        id='save-dropdown-container'
+                      >
+                        <Dropdown overlay={menuSave}>
+                          <i id='icon-btn' className='fa fa-save' />
+                        </Dropdown>
+                        <i className='fas fa-angle-down' id='caret'></i>
+                      </Col>
+                    ) : null}
                     <Col className='flex flex-row' id='redo-undo-container'>
                       <button
                         onClick={handleUndo}
@@ -369,7 +366,7 @@ export default function MentorCanvas({ day, isSandbox, setDay }) {
                           </div>
                         )}
                         <Dropdown overlay={menu}>
-                            <i className="fas fa-ellipsis-v"></i>
+                          <i className='fas fa-ellipsis-v'></i>
                         </Dropdown>
                       </div>
                     </Col>
