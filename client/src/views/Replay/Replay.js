@@ -23,7 +23,6 @@ const Replay = () => {
   const navigate = useNavigate();
   const [action, setAction] = useState('');
 
-
   const reducer = (state, action) => {
     switch (action.type) {
       case 'Increment':
@@ -161,7 +160,6 @@ const Replay = () => {
               >
                 <i id='icon-btn' className='fa fa-arrow-left' />
               </button>
-
             </div>
             <div className='flex flex-row'>
               <div className='flex flex-row'>
@@ -214,7 +212,6 @@ const Replay = () => {
                   onClick={() => setStep(index)}
                 >
                   {formatMyDate(item.timestamp)}
-                  <div className='marker' />
                 </div>
               ))}
             </div>
