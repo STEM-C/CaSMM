@@ -1,4 +1,4 @@
-import { Button, Modal } from 'antd';
+import { Button, Modal, Menu } from 'antd';
 import React, { useState } from 'react';
 import { getCCWorkspaces, getClassroomWorkspace } from '../../../../Utils/requests';
 
@@ -29,14 +29,12 @@ const LoadWorkspaceModal = ({ hover, setHover, loadSave, classroomId }) => {
   };
 
   return (
-    <div id='link'>
-      <i
-        onClick={showModal}
-        className='flex fas fa-file-upload'
-        onMouseEnter={() => setHover(true)}
-        onMouseLeave={() => setHover(false)}
-      />
-      {hover && <div className='popup ModalCompile4'>Load Workspaces</div>}
+    <div>
+      <Menu.Item id='menu-save'
+        onClick={showModal}>
+          <i className='flex fas fa-file-upload'></i>
+          &nbsp; Load Workspaces
+      </Menu.Item>
       <Modal
         title='Load From Saved Workspaces'
         visible={visible}

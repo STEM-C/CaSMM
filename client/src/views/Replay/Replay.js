@@ -7,7 +7,7 @@ import React, {
 } from 'react';
 import { Slider } from 'antd';
 import './Replay.less';
-import { Link, useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import NavBar from '../../components/NavBar/NavBar';
 import { Table } from 'antd';
 import { getSave } from '../../Utils/requests';
@@ -20,6 +20,7 @@ const Replay = () => {
   const [isPlaying, setIsPlaying] = useState(false);
   const [playbackRef, setPlaybackRef] = useState(null);
   const [playSpeed, setPlaySpeed] = useState(500);
+  const navigate = useNavigate();
   const [action, setAction] = useState('');
 
   const reducer = (state, action) => {
@@ -54,7 +55,6 @@ const Replay = () => {
       console.log(save.data.replay);
       setReplay(save.data.replay);
     };
-
     getReplay();
   }, []);
 
@@ -139,6 +139,10 @@ const Replay = () => {
     setPlaySpeed(value);
   };
 
+  const handleGoBack = () => {
+    if (window.confirm('Comfirm going back')) navigate(-1);
+  };
+
   return (
     <main className='container nav-padding'>
       <NavBar />
@@ -149,9 +153,13 @@ const Replay = () => {
             className='flex flex-row space-between card'
           >
             <div className='flex flex-row'>
-              <Link id='link' to='/' className='flex flex-column'>
-                <i className='fa fa-home' />
-              </Link>
+              <button
+                onClick={handleGoBack}
+                id='link'
+                className='flex flex-column'
+              >
+                <i id='icon-btn' className='fa fa-arrow-left' />
+              </button>
             </div>
             <div className='flex flex-row'>
               <div className='flex flex-row'>
@@ -204,7 +212,6 @@ const Replay = () => {
                   onClick={() => setStep(index)}
                 >
                   {formatMyDate(item.timestamp)}
-                  <div className='marker' />
                 </div>
               ))}
             </div>
