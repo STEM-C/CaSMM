@@ -26,6 +26,7 @@ const DayLevelReport = () => {
   const [tbGradeFilter, setTbGradeFilter] = useState([]);
   const [tbUnitFilter, setTbUnitFilter] = useState([]);
   const [tbLessonFilter, setTbLessonFilter] = useState([]);
+  const [tbPrevFilter, setTbPrevFilter] = useState(null);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -253,16 +254,25 @@ const DayLevelReport = () => {
           columns={columns}
           dataSource={sessions}
           rowKey='id'
-          onChange={(Pagination) => {
-            console.log(Pagination);
-            setSearchParam({
-              _start: (Pagination.current - 1) * Pagination.pageSize,
-              _sort: paramObj['_sort'],
-              pageSize: Pagination.pageSize,
-            });
+          onChange={(Pagination, filters) => {
+            if (
+              tbPrevFilter == null ||
+              JSON.stringify(filters) === JSON.stringify(tbPrevFilter)
+            ) {
+              setSearchParam({
+                _start: (Pagination.current - 1) * Pagination.pageSize,
+                _sort: paramObj['_sort'],
+                pageSize: Pagination.pageSize,
+              });
+              if (tbPrevFilter == null) {
+                setTbPrevFilter(filters);
+              }
+            } else {
+              setTbPrevFilter(filters);
+            }
           }}
           pagination={{
-            current: paramObj['_start'] / paramObj['pageSize'] + 1 || 1,
+            current: paramObj['_start'] / paramObj['pageSize'] + 1,
             showQuickJumper: true,
             showSizeChanger: true,
             pageSize: paramObj['pageSize'] || 10,
