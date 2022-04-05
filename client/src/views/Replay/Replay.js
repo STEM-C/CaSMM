@@ -276,7 +276,8 @@ const Replay = () => {
           >
             <h2 id='logs-title'>Logs</h2>
             <Table
-              size='small'
+              scroll={{y:300}}
+              pagination={false}
               columns={columns}
               dataSource={logData}
             />
