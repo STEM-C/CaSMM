@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState, useReducer } from 'react';
 import { Link } from 'react-router-dom';
 import '../../DayPanels.less';
 import { compileArduinoCode } from '../../Utils/helpers';
-import { message, Spin, Row, Col, Alert } from 'antd';
+import { message, Spin, Row, Col, Alert, Menu, Dropdown } from 'antd';
 import CodeModal from '../modals/CodeModal';
 import ConsoleModal from '../modals/ConsoleModal';
 import PlotterModal from '../modals/PlotterModal';
@@ -23,7 +23,6 @@ export default function PublicCanvas({ day, isSandbox }) {
   const [hoverArduino, setHoverArduino] = useState(false);
   const [hoverCompile, setHoverCompile] = useState(false);
   const [hoverConsole, setHoverConsole] = useState(false);
-  const [hoverPlotter, setHoverPlotter] = useState(false);
   const [showConsole, setShowConsole] = useState(false);
   const [showPlotter, setShowPlotter] = useState(false);
   const [plotData, setPlotData] = useState([]);
@@ -144,6 +143,29 @@ export default function PublicCanvas({ day, isSandbox }) {
     }
   };
 
+  const menu = (
+    <Menu>
+      <Menu.Item onClick={handlePlotter}>
+        <PlotterLogo />
+        &nbsp; Show Serial Plotter
+      </Menu.Item>
+      <CodeModal
+        title={'XML'}
+        workspaceRef={workspaceRef.current}
+        setHover={setHoverXml}
+        hover={hoverXml}
+      />
+      <Menu.Item>
+        <CodeModal
+          title={'Arduino Code'}
+          workspaceRef={workspaceRef.current}
+          setHover={setHoverArduino}
+          hover={hoverArduino}
+        />
+      </Menu.Item>
+    </Menu>
+  );
+
   return (
     <div id='horizontal-container' className='flex flex-column'>
       <div className='flex flex-row'>
@@ -167,7 +189,7 @@ export default function PublicCanvas({ day, isSandbox }) {
                     <Row>
                       <Col>
                         <Link id='link' to={'/'} className='flex flex-column'>
-                          <i className='fa fa-home' />
+                          <i className='fa fa-home fa-lg' />
                         </Link>
                       </Col>
                     </Row>
@@ -229,19 +251,6 @@ export default function PublicCanvas({ day, isSandbox }) {
                       id='action-btn-container'
                       className='flex space-around'
                     >
-                      <CodeModal
-                        title={'XML'}
-                        workspaceRef={workspaceRef.current}
-                        setHover={setHoverXml}
-                        hover={hoverXml}
-                      />
-                      <CodeModal
-                        title={'Arduino Code'}
-                        workspaceRef={workspaceRef.current}
-                        setHover={setHoverArduino}
-                        hover={hoverArduino}
-                      />
-
                       <ArduinoLogo
                         setHoverCompile={setHoverCompile}
                         handleCompile={handleCompile}
@@ -264,15 +273,9 @@ export default function PublicCanvas({ day, isSandbox }) {
                           Show Serial Monitor
                         </div>
                       )}
-                      <PlotterLogo
-                        setHoverPlotter={setHoverPlotter}
-                        handlePlotter={handlePlotter}
-                      />
-                      {hoverPlotter && (
-                        <div className='popup ModalCompile'>
-                          Show Serial Plotter
-                        </div>
-                      )}
+                      <Dropdown overlay={menu}>
+                        <i className='fas fa-ellipsis-v'></i>
+                      </Dropdown>
                     </div>
                   </Col>
                 </Row>

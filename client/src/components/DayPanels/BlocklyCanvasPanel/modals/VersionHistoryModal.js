@@ -4,7 +4,7 @@ import '../../DayPanels.less';
 
 export default function VersionHistoryModal(props) {
   const [visible, setVisible] = useState(false);
-  const { saves, loadSave, lastAutoSave, getFormattedDate } = props;
+  const { saves, loadSave, lastAutoSave, getFormattedDate, pushEvent } = props;
 
   const showModal = () => {
     setVisible(true);
@@ -20,6 +20,7 @@ export default function VersionHistoryModal(props) {
 
   const handleSelected = (selectedId) => {
     loadSave(selectedId);
+    pushEvent('restore');
     setVisible(false);
   };
 

@@ -1,6 +1,5 @@
 @import '../../assets/style.less';
 
-
 #timeline-container {
   display: flex;
   justify-content: center;
@@ -9,8 +8,7 @@
 #timeline {
   height: 1px;
   background: rgb(255, 255, 255);
-  margin: 30px 20px;
-  // position: absolute;
+  margin: 60px 20px;
   width: 100%;
   display: flex;
   align-items: center;
@@ -23,8 +21,8 @@
   justify-content: center;
   align-items: center;
   font-weight: bold;
-  color: red;
-  background-color: white;
+  color: #colors[quaternary];
+  background-color: #colors[primary];
   transform: rotate(45deg);
   width: auto;
   height: 19px;
@@ -32,17 +30,12 @@
 }
 
 .all-times {
+  color: white;
+  background-color: #colors[primary];
   transform: rotate(45deg);
   &:hover {
     cursor: pointer;
   }
-}
-
-.marker {
-  border-radius: 50%;
-  height: 8px;
-  width: 8px;
-  background: rgb(255, 255, 255);
 }
 
 #description-container {
@@ -56,8 +49,10 @@
 
 .playspeed-slider {
   width: 100px;
-  .ant-slider-rail, .ant-slider-track {
-    &, &:hover {
+  .ant-slider-rail,
+  .ant-slider-track {
+    &,
+    &:hover {
       background-color: #colors[secondary] !important;
     }
   }
