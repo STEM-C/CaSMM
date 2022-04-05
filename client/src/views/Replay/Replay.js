@@ -18,28 +18,67 @@ const Replay = () => {
   const { saveID } = useParams();
   const workspaceRef = useRef(null);
   const [replay, setReplay] = useState([]);
-  const [startIndex, setStartIndex] = useState(0);
-  const [endIndex, setEndIndex] = useState(TIME_LINE_SIZE);
   const [isPlaying, setIsPlaying] = useState(false);
   const [playbackRef, setPlaybackRef] = useState(null);
   const [playSpeed, setPlaySpeed] = useState(500);
   const [action, setAction] = useState('');
   const [logData, setLogData] = useState([]);
 
-  const reducer = (state, action) => {
+  const timelineReducer = (timeline, action) => {
+    const checkTimelineStepInBound = () =>{
+      if(timeline.step >= timeline.endIndex){
+        let newEnd = Math.min(replay.length, timeline.step+7);
+        timeline.endIndex = newEnd;
+        timeline.startIndex = newEnd-TIME_LINE_SIZE;
+      }
+      else if(timeline.step < timeline.startIndex){
+        let newStart = Math.max(0, timeline.step-6);
+        timeline.startIndex = newStart;
+        timeline.endIndex = newStart+TIME_LINE_SIZE;
+      }
+    }
+
     switch (action.type) {
-      case 'Increment':
-        return state + 1;
-      case 'Decrement':
-        return state - 1;
-      case 'SetValue':
-        return action.value;
+      case 'IncrementStep':
+        timeline.step  += 1;
+        checkTimelineStepInBound();
+        return {...timeline};
+
+      case 'DecrementStep':
+        timeline.step  -= 1;
+        checkTimelineStepInBound();
+        return {...timeline};
+
+      case 'SetStepValue':
+        timeline.step = action.value;
+        return {...timeline};
+
+      case 'IncrementTimeline':
+        if(timeline.endIndex <= replay.length){
+          timeline.startIndex += 5;
+          timeline.endIndex = Math.min(timeline.endIndex + 5, replay.length);
+        }
+        return {...timeline};
+
+      case 'DecrementTimeline':
+        if(timeline.startIndex >= 0){
+          timeline.startIndex = Math.max(timeline.startIndex - 5, 0);
+          timeline.endIndex -= 5;
+        }
+        return {...timeline};
+
       default:
-        return state;
+        return timeline;
     }
   };
 
-  const [step, dispatch] = useReducer(reducer, 0);
+  const [timelineStates, dispatchTimelineReducer] = useReducer(
+    timelineReducer, 
+    {
+      step: 0,
+      startIndex: 0,
+      endIndex: TIME_LINE_SIZE
+    });
 
   const setWorkspace = () => {
     workspaceRef.current = window.Blockly.inject('blockly-canvas', {
@@ -92,29 +131,15 @@ const Replay = () => {
   ];
 
   const goBack = () => {
-    dispatch({ type: 'Decrement' });
-    
-    if(step < startIndex + 1){
-      let newStart = Math.max(0, step-6);
-      setStartIndex(newStart);
-      setEndIndex(newStart + TIME_LINE_SIZE);
-    }
-
+    dispatchTimelineReducer({ type: 'DecrementStep' });
   };
 
   const goForward = () => {
-    dispatch({ type: 'Increment' });
-  
-    if(step >= endIndex - 1){
-      let newEnd = Math.min(replay.length, step+7);
-      setEndIndex(newEnd);
-      setStartIndex(newEnd-TIME_LINE_SIZE);
-    }
-
+    dispatchTimelineReducer({ type: 'IncrementStep' });
   };
 
   const setStep = (value) => {
-    dispatch({ type: 'SetValue', value: value });
+    dispatchTimelineReducer({ type: 'SetStepValue', value: value });
   };
 
   const handlePlay = () => {
@@ -138,15 +163,15 @@ const Replay = () => {
   //handle dynamic playback changes
   useEffect(() => {
     if (replay.length) {
-      if (step === replay.length - 1 && isPlaying) handlePause();
+      if (timelineStates.step === replay.length - 1 && isPlaying) handlePause();
 
       workspaceRef.current ? workspaceRef.current.clear() : setWorkspace();
-      const xml = window.Blockly.Xml.textToDom(replay[step].xml);
+      const xml = window.Blockly.Xml.textToDom(replay[timelineStates.step].xml);
       window.Blockly.Xml.domToWorkspace(xml, workspaceRef.current);
-      setAction(replay[step].action);
+      setAction(replay[timelineStates.step].action);
       
       //update log
-      let data = replay.slice(0, step+1).map((item, index) => 
+      let data = replay.slice(0, timelineStates.step+1).map((item, index) => 
       {return {
         key: index,
         blockId: item.blockId,
@@ -156,24 +181,18 @@ const Replay = () => {
     
       setLogData(data);
     }
-  }, [replay, step, isPlaying, handlePause]);
+  }, [replay, timelineStates, isPlaying, handlePause]);
 
   const changePlaySpeed = (value) => {
     setPlaySpeed(value);
   };
 
   const scrollTimelineForward = () => {
-    if(endIndex < replay.length){
-      setStartIndex(startIndex + 5);
-      setEndIndex(Math.min(endIndex + 5, replay.length));
-    }
+    dispatchTimelineReducer({type: 'IncrementTimeline'});    
   }
 
   const scrollTimelineBackward = () => {
-    if(startIndex > 0){
-      setStartIndex(Math.max(startIndex - 5, 0));
-      setEndIndex(endIndex - 5);
-    }
+    dispatchTimelineReducer({type: 'DecrementTimeline'});
   }
 
   return (
@@ -208,14 +227,14 @@ const Replay = () => {
               <button
                 className='replayButton'
                 onClick={goBack}
-                disabled={step === 0}
+                disabled={timelineStates.step === 0}
               >
                 &#9198;
               </button>
               <button
                 className='replayButton'
                 onClick={isPlaying ? handlePause : handlePlay}
-                disabled={step === replay.length - 1}
+                disabled={timelineStates.step === replay.length - 1}
               >
                 {isPlaying ? (
                   <span>&#9208;</span>
@@ -226,7 +245,7 @@ const Replay = () => {
               <button
                 className='replayButton'
                 onClick={goForward}
-                disabled={step === replay.length - 1}
+                disabled={timelineStates.step === replay.length - 1}
               >
                 &#9197;
               </button>
@@ -234,28 +253,28 @@ const Replay = () => {
           </div>
           <div id='timeline-container'>
             <button
-              disabled={startIndex <= 0}
+              disabled={timelineStates.startIndex <= 0}
               onClick={scrollTimelineBackward}
               > &#8249; </button>
             <div id='timeline'>
               {replay.map((item, index) => (
                 <div
-                  className={step === index ? 'current-time' : 'all-times'}
+                  className={timelineStates.step === index ? 'current-time' : 'all-times'}
                   key={item.timestamp}
                   onClick={() => setStep(index)}
                 >
                   {formatMyDate(item.timestamp)}
                   <div className='marker' />
                 </div>
-              )).slice(startIndex, endIndex)}
+              )).slice(timelineStates.startIndex, timelineStates.endIndex)}
             </div>
             <button
-            disabled={endIndex >= replay.length}
+            disabled={timelineStates.endIndex >= replay.length}
             onClick={scrollTimelineForward}
             >&#8250;</button>
           </div>
         </div>
-        <h2 id="action-title">{`Action ${step+1}/${replay.length}: ${action}`}</h2>
+        <h2 id="action-title">{`Action ${timelineStates.step+1}/${replay.length}: ${action}`}</h2>
 
         <div className='flex flex-row'>
           <div
