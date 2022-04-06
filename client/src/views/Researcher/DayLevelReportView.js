@@ -17,7 +17,6 @@ const DayLevelReportView = () => {
     const getData = async () => {
       const session = await getSession(id);
       setSession(session.data);
-      console.log(session.data);
 
       const fetchedStudents = session.data.students[0].name;
       setStudentsName(fetchedStudents);
@@ -30,8 +29,9 @@ const DayLevelReportView = () => {
       const fetchedClassroomNames = session.data.classroom.name;
       setClassName(fetchedClassroomNames);
 
-      // const fetchedClicks = session.data.saves[0].replay[0].clicks;
-      // setClicks(fetchedClicks);
+      const l = session.data.saves[0]?.replay.length;
+      const fetchedClicks = session.data.saves[0]?.replay[l - 1]?.clicks;
+      setClicks(fetchedClicks);
     };
     getData();
   }, []);
@@ -82,11 +82,10 @@ const DayLevelReportView = () => {
               <strong>Student Name: </strong>
               {studentName}
             </p>
-            {studentPartner.length > 0 ? (
-              <h2>Partner Name: {studentPartner.join(', ')}</h2>
-            ) : (
-              ''
-            )}
+            <p>
+              <strong>Partner Name: </strong>
+              {studentPartner.length > 0 ? studentPartner.join(', ') : ''}
+            </p>
             <p>
               <strong>Class Name: </strong>
               {className}
@@ -103,9 +102,6 @@ const DayLevelReportView = () => {
             <p>
               <strong>Mouse Clicks: </strong>
               {clicks}
-            </p>
-            <p>
-              <strong>Deleted Blocks: </strong>N/A
             </p>
             <p>
               <strong>Times Tested: </strong>
