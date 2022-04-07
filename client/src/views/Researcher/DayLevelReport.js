@@ -20,7 +20,13 @@ const DayLevelReport = () => {
   const [sessionCount, setSessionCount] = useState(0);
   const navigate = useNavigate();
   const { paramObj, setSearchParam } = useSearchParam();
-  const [ showFilter, setShowFilter ] = useState(false);
+  const [showFilter, setShowFilter] = useState(false);
+  const [tbNameFilter, setTbNameFilter] = useState([]);
+  const [tbClassroomFilter, setTbClassroomFilter] = useState([]);
+  const [tbGradeFilter, setTbGradeFilter] = useState([]);
+  const [tbUnitFilter, setTbUnitFilter] = useState([]);
+  const [tbLessonFilter, setTbLessonFilter] = useState([]);
+  const [tbPrevFilter, setTbPrevFilter] = useState(null);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -33,11 +39,13 @@ const DayLevelReport = () => {
           case '_sort':
             filter += `_sort=${v}&`;
             break;
+          case 'pageSize':
+            filter += `_limit=${v}&`;
+            break;
           default:
             filter += `${k}=${v}&`;
         }
       }
-      filter += '_limit=10';
       const [sessionRes, sessionCountRes] = await Promise.all([
         getSessionsWithFilter(filter),
         getSessionCountWithFilter(filter),
@@ -47,10 +55,46 @@ const DayLevelReport = () => {
       }
       setSessions(sessionRes.data);
       setSessionCount(sessionCountRes.data);
+
+      // set table head filter data
+      makeTbNameFilter(sessionRes.data);
+      setTbClassroomFilter(makeFilter(sessionRes.data, 'classroom'));
+      setTbGradeFilter(makeFilter(sessionRes.data, 'grade'));
+      setTbUnitFilter(makeFilter(sessionRes.data, 'unit'));
+      setTbLessonFilter(makeFilter(sessionRes.data, 'learning_standard'));
     };
-    // console.log(paramObj);
     if (paramObj['_sort']) fetchData();
   }, [paramObj]);
+
+  const makeTbNameFilter = (data) => {
+    let filter = [];
+    const map = new Map();
+
+    data.forEach((element) => {
+      const names = element.students.map((student) => student.name);
+      names.forEach((name) => {
+        if (!map.get(name)) {
+          filter.push({ text: name, value: name });
+          map.set(name, true);
+        }
+      });
+    });
+    setTbNameFilter(filter);
+  };
+
+  const makeFilter = (data, category) => {
+    let filter = [];
+    const map = new Map();
+
+    data.forEach((element) => {
+      const name = element[category]?.name;
+      if (name && !map.has(name)) {
+        filter.push({ text: name, value: name });
+        map.set(name, true);
+      }
+    });
+    return filter;
+  };
 
   const formatMyDate = (value, locale = 'en-US') => {
     let output = new Date(value).toLocaleDateString(locale);
@@ -63,6 +107,17 @@ const DayLevelReport = () => {
       key: 'student',
       width: '2%',
       align: 'left',
+      filters: tbNameFilter,
+      onFilter: (value, key) => {
+        let result = false;
+        key.students.forEach((student) => {
+          if (student.name.indexOf(value) === 0) {
+            result = true;
+            return;
+          }
+        });
+        return result;
+      },
       render: (_, key) => <div>{key.students[0].name}</div>,
     },
     {
@@ -71,6 +126,8 @@ const DayLevelReport = () => {
       dataIndex: ['classroom', 'name'],
       width: '6%',
       align: 'left',
+      filters: tbClassroomFilter,
+      onFilter: (value, key) => key.classroom?.name.indexOf(value) === 0,
     },
     {
       title: 'Grade',
@@ -78,6 +135,8 @@ const DayLevelReport = () => {
       key: 'grade',
       width: '2%',
       align: 'left',
+      filters: tbGradeFilter,
+      onFilter: (value, key) => key.grade?.name.indexOf(value) === 0,
     },
     {
       title: 'Unit',
@@ -85,6 +144,8 @@ const DayLevelReport = () => {
       key: 'unit',
       width: '4%',
       align: 'left',
+      filters: tbUnitFilter,
+      onFilter: (value, key) => key.unit?.name.indexOf(value) === 0,
     },
     {
       title: 'Lesson',
@@ -92,6 +153,9 @@ const DayLevelReport = () => {
       key: 'unit',
       width: '3%',
       align: 'left',
+      filters: tbLessonFilter,
+      onFilter: (value, key) =>
+        key.learning_standard?.name.indexOf(value) === 0,
     },
     {
       title: 'Session Started',
@@ -109,11 +173,12 @@ const DayLevelReport = () => {
         return {
           onClick: () => {
             const _start = paramObj['_start'];
+            const pageSize = paramObj['pageSize'];
             const _sort =
               paramObj['_sort'] === 'created_at:DESC'
                 ? 'created_at:ASC'
                 : 'created_at:DESC';
-            setSearchParam({ _start, _sort });
+            setSearchParam({ _start, _sort, pageSize });
           },
         };
       },
@@ -145,37 +210,37 @@ const DayLevelReport = () => {
     },
   ];
 
-
   return (
     <div className='container nav-padding'>
       <NavBar />
       <div className='menu-bar'>
         <div id='day-level-report-header'>Day Level - Student Report</div>
 
-        {/* Menu to return to landing page at /reports */}
         <button
           className='day-level-return'
-          // className={`btn-${'primary'} btn-${'sm'}`}
-          // type='button'
           onClick={() => navigate('/report')}
         >
           Return to Dashboard
         </button>
       </div>
-      <button id ='show-filter-btn' onClick={() => setShowFilter(!showFilter)}>
-        { showFilter ? <p> Click to Hide Filter</p> : <p> Click to Show Filter</p>}
+      <button id='show-filter-btn' onClick={() => setShowFilter(!showFilter)}>
+        {showFilter ? (
+          <p> Click to Hide Filter</p>
+        ) : (
+          <p> Click to Show Filter</p>
+        )}
       </button>
-      { showFilter ?  
-          <div className='filter-show'>
-            <div className='filter-items'>
-              <Filter setSearchParam={setSearchParam} />
-            </div>
-          </div>
-       :  
-          <div className='filter-hide'>
+      {showFilter ? (
+        <div className='filter-show'>
+          <div className='filter-items'>
             <Filter setSearchParam={setSearchParam} />
           </div>
-      }
+        </div>
+      ) : (
+        <div className='filter-hide'>
+          <Filter setSearchParam={setSearchParam} />
+        </div>
+      )}
       <main id='day-report-content-wrapper'>
         <div>
           <h3 className='filter-text'>Current Filter: </h3>
@@ -189,16 +254,28 @@ const DayLevelReport = () => {
           columns={columns}
           dataSource={sessions}
           rowKey='id'
-          onChange={(Pagination) => {
-            setSearchParam({
-              _start: (Pagination.current - 1) * 10,
-              _sort: paramObj['_sort'],
-            });
+          onChange={(Pagination, filters) => {
+            if (
+              tbPrevFilter == null ||
+              JSON.stringify(filters) === JSON.stringify(tbPrevFilter)
+            ) {
+              setSearchParam({
+                _start: (Pagination.current - 1) * Pagination.pageSize,
+                _sort: paramObj['_sort'],
+                pageSize: Pagination.pageSize,
+              });
+              if (tbPrevFilter == null) {
+                setTbPrevFilter(filters);
+              }
+            } else {
+              setTbPrevFilter(filters);
+            }
           }}
           pagination={{
-            current: paramObj['_start'] / 10 + 1 || 1,
+            current: paramObj['_start'] / paramObj['pageSize'] + 1,
             showQuickJumper: true,
-            defaultPageSize: 10,
+            showSizeChanger: true,
+            pageSize: paramObj['pageSize'] || 10,
             total: sessionCount,
           }}
         />
@@ -284,16 +361,16 @@ const Filter = ({ setSearchParam }) => {
     if (selectedLs !== '') obj.learning_standard = selectedLs;
     if (selectedClassroom !== '') obj.classroom = selectedClassroom;
     if (selectedStudent !== '') obj.student = selectedStudent;
-    console.log(obj);
     setSearchParam(obj);
   };
 
   return (
     <Form onFinish={handleSubmit}>
-      <select 
+      <select
         className='select'
-        placeholder='Select a grade' 
-        onChange={onGradeChange}>
+        placeholder='Select a grade'
+        onChange={onGradeChange}
+      >
         <option key='empty' value=''>
           Select a grade
         </option>
@@ -369,7 +446,12 @@ const Filter = ({ setSearchParam }) => {
         ))}
       </select>
       <br />
-      <Button type='secondary' className='day-level-submit' htmlType='submit' size='large'>
+      <Button
+        type='secondary'
+        className='day-level-submit'
+        htmlType='submit'
+        size='large'
+      >
         Submit
       </Button>
     </Form>
