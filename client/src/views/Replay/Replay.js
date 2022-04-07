@@ -96,6 +96,17 @@ const Replay = () => {
       const save = await getSave(saveID);
       console.log(save.data.replay);
       setReplay(save.data.replay);
+
+      //set log
+      let data = save.data.replay.map((item, index) => 
+      {return {
+        key: index,
+        blockId: item.blockId,
+        timestamp: item.timestamp,
+        action: item.action
+      }});
+    
+      setLogData(data);
     };
     getReplay();
   }, []);
@@ -169,16 +180,6 @@ const Replay = () => {
       window.Blockly.Xml.domToWorkspace(xml, workspaceRef.current);
       setAction(replay[timelineStates.step].action);
       
-      //update log
-      let data = replay.slice(0, timelineStates.step+1).map((item, index) => 
-      {return {
-        key: index,
-        blockId: item.blockId,
-        timestamp: item.timestamp,
-        action: item.action
-      }});
-    
-      setLogData(data);
     }
   }, [replay, timelineStates, isPlaying, handlePause]);
 
@@ -297,7 +298,10 @@ const Replay = () => {
           >
             <h2 id='logs-title'>Logs</h2>
             <Table
-              size='small'
+              id='replay-log'
+              rowClassName={(record, index) => record.key === timelineStates.step ? 'table-row-dark' :  'table-row-light'}
+              scroll={{y:300}}
+              pagination={false}
               columns={columns}
               dataSource={logData}
             />
