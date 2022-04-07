@@ -74,7 +74,7 @@ export default function LearningStandardModal({
   return (
     <div id='learning-standard-modal'>
       <button id='change-lesson-btn' onClick={showModal}>
-        <p id='test'>Change</p>
+        Change
       </button>
       <Modal
         title={

@@ -237,13 +237,13 @@ const DayLevelReport = () => {
           </div>
         </div>
       ) : (
-        <div className='filter-hide'>
+        <div id='filter-hide'>
           <Filter setSearchParam={setSearchParam} />
         </div>
       )}
       <main id='day-report-content-wrapper'>
         <div>
-          <h3 className='filter-text'>Current Filter: </h3>
+          <h3 id='current-filter-text'>Current Filter: </h3>
           {Object.keys(paramObj).map((key) => (
             <Tag>
               {key === 'grade' ? `${key}(id)` : key}: {paramObj[key]}
@@ -412,7 +412,7 @@ const Filter = ({ setSearchParam }) => {
           </option>
         ))}
       </select>
-      <h3 className='filter-text'>Or</h3>
+      <h3 id='filter-text'>Or</h3>
       <select
         className='select'
         placeholder='Select a classroom'

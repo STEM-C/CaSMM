@@ -50,7 +50,7 @@
 
         #view-day-button {
           height: 6vh;
-          width: 30%;
+          width: 40%;
           font-size: 1.2em;
           font-weight: 600;
           background-color: transparent;
@@ -89,10 +89,14 @@
     margin-left: 10px;
 
     #change-lesson-btn {
-      width: auto;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: fit-content;
       height: 2.5vh;
       font-size: 0.8em;
       font-weight: 600;
+      line-height: 0;
       border: none;
       color: #colors[text-primary];
       background: #colors[quaternary];
@@ -102,10 +106,6 @@
 
       &:hover {
         background: #colors[quinary];
-      }
-      #test {
-        display: flex;
-        justify-content: right;
       }
     }
   }
@@ -151,7 +151,7 @@
   float: left;
   margin-left: 12px;
   position: relative;
-  top: -60px;
+  top: -50px;
 
   &:focus {
     outline: none;
@@ -164,6 +164,34 @@
     &:hover {
       color: #colors[quinary];
       cursor: pointer;
+    }
+  }
+}
+
+@media only screen and (max-width: 915px) { 
+
+  #active-learning-standard-title-container {
+    line-height: 20px;
+    padding-top: 2vh;
+  }
+
+  #home-content-container {
+    #card-btn-container {
+      grid-template-columns: auto;
+      #view-day-card {
+        width: 90%;
+        #view-day-heading {
+          #view-day-button { 
+            width: fit-content;
+          }
+        }
+      }
+    }
+  }
+
+  #display-code-modal {
+    #display-code-btn {
+      width: 40vw;
     }
   }
 }

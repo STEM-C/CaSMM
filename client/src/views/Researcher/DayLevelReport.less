@@ -66,12 +66,16 @@ section {
   margin: 20px 50px;
   padding: 10px 20px;
   border-radius: 30px;
-  font-size: 2.5vh;
+  font-size: 1.8vh;
   font-weight: 500;
   color: #colors[text-primary];
   background-color: #colors[quaternary];
   border: none;
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.377);
+
+  &:hover {
+    background-color: #colors[quinary];
+  }
 }
 
 #day-level-dropdown {
@@ -89,10 +93,6 @@ section {
 
 label {
   display: inline-block;
-}
-
-.filter-btn {
-  background-color: red;
 }
 
 .select {
@@ -116,15 +116,20 @@ label {
     border: solid 2px;
     border-color: #colors[secondary];
     padding: 10px;
+    font-weight: bolder;
   }
 }
 
-.filter-hide {
+#filter-hide {
   display: none;
 }
 
-.filter-text {
+#filter-text {
   color: #000;
+}
+
+#current-filter-text {
+  color: #fff;
 }
 
 #show-filter-btn {
@@ -159,6 +164,10 @@ label {
 }
 
 @media only screen and (max-width: 915px) {
+  #day-level-report-header {
+    line-height: 1em;
+  }
+
   #day-level-return {
     height: 110px;
   }

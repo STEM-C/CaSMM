@@ -66,8 +66,8 @@ const DayLevelReportView = () => {
       <div className='menu-bar'>
         <div id='day-level-report-header'>Day Level - Student Report</div>
         <button
-          id={'day-level-return'}
-          className={`btn-${'primary'} btn-${'sm'}`}
+          id='day-level-return'
+          // className={`btn-${'primary'} btn-${'sm'}`}
           type='button'
           onClick={() => navigate(-1)}
         >

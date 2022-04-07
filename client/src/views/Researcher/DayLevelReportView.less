@@ -50,6 +50,7 @@
     display: flex;
     justify-content: space-between;
 }
+
 section {
     background-color: white;
     text-align: left;
@@ -61,11 +62,12 @@ section {
 }
 
 #day-level-return {
-    height: auto;
+    height: 5vh;
+    width: 14vw;
     margin: 20px 50px;
     padding: 10px 20px;
     border-radius: 30px;
-    font-size: 1vw;
+    font-size: 1em;
     font-weight: 500;
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
      'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
@@ -98,8 +100,16 @@ h2{
 }
 
 @media only screen and (max-width: 915px) {
+    .menu-bar {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
     #day-level-return {
-        height: 110px;
+        margin: 0;
+        height: 4vh;
+        width: 50vw;
     }
 }
 
