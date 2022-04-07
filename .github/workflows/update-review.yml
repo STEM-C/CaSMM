@@ -1,7 +1,7 @@
 name: Update Review App
 on: 
   pull_request:
-    branches: [ test ]
+    branches: [ temp ]
     types: [ synchronize ]
 jobs:
   run:
