@@ -163,7 +163,7 @@ const Replay = () => {
   //handle dynamic playback changes
   useEffect(() => {
     if (replay.length) {
-      if (timelineStates.step === replay.length - 1 && isPlaying) handlePause();
+      if (timelineStates.step >= replay.length - 1 && isPlaying) handlePause();
 
       workspaceRef.current ? workspaceRef.current.clear() : setWorkspace();
       const xml = window.Blockly.Xml.textToDom(replay[timelineStates.step].xml);
