@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState, useReducer } from 'react';
 import '../../DayPanels.less';
 import { compileArduinoCode, handleSave } from '../../Utils/helpers';
-import { message, Spin, Row, Col, Alert } from 'antd';
+import { message, Spin, Row, Col, Alert, Dropdown, Menu } from 'antd';
 import { getSaves } from '../../../../Utils/requests';
 import CodeModal from '../modals/CodeModal';
 import ConsoleModal from '../modals/ConsoleModal';
@@ -25,7 +25,6 @@ export default function StudentCanvas({ day }) {
   const [hoverArduino, setHoverArduino] = useState(false);
   const [hoverCompile, setHoverCompile] = useState(false);
   const [hoverConsole, setHoverConsole] = useState(false);
-  const [hoverPlotter, setHoverPlotter] = useState(false);
   const [showConsole, setShowConsole] = useState(false);
   const [showPlotter, setShowPlotter] = useState(false);
   const [plotData, setPlotData] = useState([]);
@@ -333,6 +332,23 @@ export default function StudentCanvas({ day }) {
     return output + ' ' + new Date(value).toLocaleTimeString(locale);
   };
 
+  const menu = (
+    <Menu>
+      <Menu.Item onClick={handlePlotter}>
+        <PlotterLogo />
+        &nbsp; Show Serial Plotter
+      </Menu.Item>
+      <Menu.Item>
+        <CodeModal
+          title={'Arduino Code'}
+          workspaceRef={workspaceRef.current}
+          setHover={setHoverArduino}
+          hover={hoverArduino}
+        />
+      </Menu.Item>
+    </Menu>
+  );
+
   return (
     <div id='horizontal-container' className='flex flex-column'>
       <div className='flex flex-row'>
@@ -368,7 +384,7 @@ export default function StudentCanvas({ day }) {
                   </Col>
                   <Col flex={'350px'}>
                     <Row>
-                      <Col className='flex flex-row'>
+                      <Col className='flex flex-row' id='icon-align'>
                         <VersionHistoryModal
                           saves={saves}
                           lastAutoSave={lastAutoSave}
@@ -394,7 +410,7 @@ export default function StudentCanvas({ day }) {
                         </button>
                       </Col>
 
-                      <Col className='flex flex-row'>
+                      <Col className='flex flex-row' id='icon-align'>
                         <button
                           onClick={handleUndo}
                           id='link'
@@ -447,13 +463,6 @@ export default function StudentCanvas({ day }) {
                       id='action-btn-container'
                       className='flex space-around'
                     >
-                      <CodeModal
-                        title={'Arduino Code'}
-                        workspaceRef={workspaceRef.current}
-                        setHover={setHoverArduino}
-                        hover={hoverArduino}
-                      />
-
                       <ArduinoLogo
                         setHoverCompile={setHoverCompile}
                         handleCompile={handleCompile}
@@ -476,15 +485,9 @@ export default function StudentCanvas({ day }) {
                           Show Serial Monitor
                         </div>
                       )}
-                      <PlotterLogo
-                        setHoverPlotter={setHoverPlotter}
-                        handlePlotter={handlePlotter}
-                      />
-                      {hoverPlotter && (
-                        <div className='popup ModalCompile'>
-                          Show Serial Plotter
-                        </div>
-                      )}
+                      <Dropdown overlay={menu}>
+                        <i className='fas fa-ellipsis-v'></i>
+                      </Dropdown>
                     </div>
                   </Col>
                 </Row>
