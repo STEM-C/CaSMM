@@ -51,6 +51,7 @@ const Replay = () => {
 
       case 'SetStepValue':
         timeline.step = action.value;
+        checkTimelineStepInBound();
         return {...timeline};
 
       case 'IncrementTimeline':
@@ -299,7 +300,12 @@ const Replay = () => {
             <h2 id='logs-title'>Logs</h2>
             <Table
               id='replay-log'
-              rowClassName={(record, index) => record.key === timelineStates.step ? 'table-row-dark' :  'table-row-light'}
+              rowClassName={(record, index) => "table-row " + (record.key === timelineStates.step ? 'table-row-dark' :  'table-row-light')}
+              onRow={(record, index)=> {
+                return {
+                onClick: () => setStep(record.key)
+                }
+              }}
               scroll={{y:300}}
               pagination={false}
               columns={columns}
