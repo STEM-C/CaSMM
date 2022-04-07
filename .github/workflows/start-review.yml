@@ -1,7 +1,7 @@
 name: Create Review App
 on: 
   pull_request:
-    branches: [ develop ]
+    branches: [ temp ]
     types: [ opened, reopened ]
 jobs:
   run:
