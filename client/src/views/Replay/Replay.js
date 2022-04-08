@@ -11,6 +11,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import NavBar from '../../components/NavBar/NavBar';
 import { Table } from 'antd';
 import { getSave } from '../../Utils/requests';
+import { CSVDownloader } from "react-papaparse";
 
 const Replay = () => {
   const TIME_LINE_SIZE = 25;
@@ -23,6 +24,7 @@ const Replay = () => {
   const navigate = useNavigate();
   const [action, setAction] = useState('');
   const [logData, setLogData] = useState([]);
+  const [logFilename, setLogFilename] = useState('code_replay');
 
   const timelineReducer = (timeline, action) => {
     const checkTimelineStepInBound = () =>{
@@ -108,6 +110,7 @@ const Replay = () => {
       }});
     
       setLogData(data);
+      setLogFilename(`${save.data.student.name}_${save.data.created_at}_code_replay`);
     };
     getReplay();
   }, []);
@@ -297,7 +300,27 @@ const Replay = () => {
             id='bottom-container'
             className='flex flex-column vertical-container overflow-visible'
           >
-            <h2 id='logs-title'>Logs</h2>
+            <div className='flex flex-row space-between'>
+              <h2 id='logs-title'>Logs</h2>
+              <CSVDownloader
+                filename={logFilename}
+                type={"button"}
+                bom={true}
+                data={()=>{
+                  return logData.map(log => {
+                    return {
+                      "key": log.key,
+                      "timestamp": formatMyDate(log.timestamp),
+                      "block id": log.blockId,
+                      "action": log.action
+                    }
+                  });
+                }}
+              >
+                Download to CSV
+              </CSVDownloader>
+            </div>
+            
             <Table
               id='replay-log'
               rowClassName={(record, index) => "table-row " + (record.key === timelineStates.step ? 'table-row-dark' :  'table-row-light')}
