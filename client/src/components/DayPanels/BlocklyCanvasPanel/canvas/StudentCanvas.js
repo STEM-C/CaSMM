@@ -22,7 +22,6 @@ export default function StudentCanvas({ day }) {
   const [hoverSave, setHoverSave] = useState(false);
   const [hoverUndo, setHoverUndo] = useState(false);
   const [hoverRedo, setHoverRedo] = useState(false);
-  const [hoverArduino, setHoverArduino] = useState(false);
   const [hoverCompile, setHoverCompile] = useState(false);
   const [hoverConsole, setHoverConsole] = useState(false);
   const [showConsole, setShowConsole] = useState(false);
@@ -339,12 +338,7 @@ export default function StudentCanvas({ day }) {
         &nbsp; Show Serial Plotter
       </Menu.Item>
       <Menu.Item>
-        <CodeModal
-          title={'Arduino Code'}
-          workspaceRef={workspaceRef.current}
-          setHover={setHoverArduino}
-          hover={hoverArduino}
-        />
+        <CodeModal title={'Arduino Code'} workspaceRef={workspaceRef.current} />
       </Menu.Item>
     </Menu>
   );

@@ -5,8 +5,6 @@ import { getCCWorkspaceToolbox } from '../../../../Utils/requests';
 import { useGlobalState } from '../../../../Utils/userState';
 
 export default function SaveAsModal({
-  hover,
-  setHover,
   workspaceRef,
   studentToolbox,
   visible,
@@ -14,7 +12,8 @@ export default function SaveAsModal({
   day,
   setDay,
   isSandbox,
-  classroomId}) {
+  classroomId,
+}) {
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
   const [value] = useGlobalState('currUser');
@@ -43,7 +42,7 @@ export default function SaveAsModal({
       let localDay = res.data;
       // if we are on sandbox mode, set the current workspace to the saved worksapce
       if (isSandbox) {
-        if(value.role === 'ContentCreator'){
+        if (value.role === 'ContentCreator') {
           const toolboxRes = await getCCWorkspaceToolbox(res.data.id);
           if (toolboxRes.data) {
             message.success('Workspace saved successfully');
@@ -55,9 +54,7 @@ export default function SaveAsModal({
           } else {
             message.error(toolboxRes.err);
           }
-
-        }
-        else if(value.role === 'Mentor'){
+        } else if (value.role === 'Mentor') {
           message.success('Workspace saved successfully');
         }
       }
@@ -68,11 +65,9 @@ export default function SaveAsModal({
 
   return (
     <div>
-      <Menu.Item 
-        id='menu-save'
-        onClick={showModal}>
-          <i className="fa fa-save"></i>
-          <i id='pencil-icon' className='fas fa-pencil-alt'></i>
+      <Menu.Item id='menu-save' onClick={showModal}>
+        <i className='fa fa-save'></i>
+        <i id='pencil-icon' className='fas fa-pencil-alt'></i>
         &nbsp;Save As
       </Menu.Item>
       <Modal
