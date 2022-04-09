@@ -136,7 +136,7 @@ export default function Home({ classroomId, viewing }) {
                         </button>
                         {day.activity_template && (
                           <button
-                            id='dayview-day-button'
+                            id='view-day-button'
                             onClick={() =>
                               openActivityInWorkspace(
                                 day,
