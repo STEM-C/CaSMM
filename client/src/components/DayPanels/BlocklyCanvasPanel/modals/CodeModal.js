@@ -1,11 +1,10 @@
 import { Modal, Button, Typography, Menu } from 'antd';
 import React, { useState } from 'react';
 import { getArduino, getXml } from '../../Utils/helpers';
-import icon from '../Icons/textIcon.json';
 
 export default function CodeModal(props) {
   const [visible, setVisible] = useState(false);
-  const { title, workspaceRef, setHover, hover } = props;
+  const { title, workspaceRef } = props;
   const { Text } = Typography;
 
   const showModal = () => {
@@ -22,19 +21,14 @@ export default function CodeModal(props) {
 
   return (
     <div id='code-modal'>
-       {title === 'XML' ? (
+      {title === 'XML' ? (
         <Menu.Item onClick={showModal}>
-          <i
-            className='far fa-file-code'
-          />
+          <i className='far fa-file-code' />
           &nbsp;Show XML
         </Menu.Item>
-
       ) : (
         <Menu.Item id='show-arduino-icon' onClick={showModal}>
-          <i
-            className='fas fa-code'
-          />
+          <i className='fas fa-code' />
           &nbsp;Show Arduino Code
         </Menu.Item>
       )}

@@ -1,17 +1,19 @@
 import { Button, Modal, Menu } from 'antd';
 import React, { useState } from 'react';
-import { getCCWorkspaces, getClassroomWorkspace } from '../../../../Utils/requests';
+import {
+  getCCWorkspaces,
+  getClassroomWorkspace,
+} from '../../../../Utils/requests';
 
-const LoadWorkspaceModal = ({ hover, setHover, loadSave, classroomId }) => {
+const LoadWorkspaceModal = ({ loadSave, classroomId }) => {
   const [visible, setVisible] = useState(false);
   const [workspaces, setWorkspaces] = useState([]);
 
   const showModal = async () => {
     let res;
-    if(classroomId){
+    if (classroomId) {
       res = await getClassroomWorkspace(classroomId);
-    }
-    else{
+    } else {
       res = await getCCWorkspaces();
     }
     if (res.data) {
@@ -30,10 +32,9 @@ const LoadWorkspaceModal = ({ hover, setHover, loadSave, classroomId }) => {
 
   return (
     <div>
-      <Menu.Item id='menu-save'
-        onClick={showModal}>
-          <i className='flex fas fa-file-upload'></i>
-          &nbsp; Load Workspaces
+      <Menu.Item id='menu-save' onClick={showModal}>
+        <i className='flex fas fa-file-upload'></i>
+        &nbsp; Load Workspaces
       </Menu.Item>
       <Modal
         title='Load From Saved Workspaces'
