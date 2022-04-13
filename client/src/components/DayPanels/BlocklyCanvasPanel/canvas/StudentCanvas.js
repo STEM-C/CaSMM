@@ -82,16 +82,21 @@ export default function StudentCanvas({ day }) {
   };
 
   const pushEvent = (type, blockId = '') => {
+    let bloackType = '';
+    if (blockId !== '') {
+      bloackType = window.Blockly.mainWorkspace.getBlockById(blockId)?.type;
+    }
+
     let xml = window.Blockly.Xml.workspaceToDom(workspaceRef.current);
     let xml_text = window.Blockly.Xml.domToText(xml);
     replayRef.current.push({
       xml: xml_text,
       action: type,
       blockId: blockId,
+      blockType: bloackType,
       timestamp: Date.now(),
       clicks: clicks.current,
     });
-    console.log(replayRef.current);
   };
 
   let blocked = false;
@@ -132,7 +137,6 @@ export default function StudentCanvas({ day }) {
         replayRef.current.pop();
       }
     }
-    console.log(event);
 
     // if event is change, add the detail action type
     if (event.type === 'change' && event.element) {
@@ -205,6 +209,7 @@ export default function StudentCanvas({ day }) {
 
   const handleManualSave = async () => {
     // save workspace then update load save options
+    pushEvent('save');
     const res = await handleSave(day.id, workspaceRef, replayRef.current);
     if (res.err) {
       message.error(res.err);
@@ -215,7 +220,6 @@ export default function StudentCanvas({ day }) {
 
     const savesRes = await getSaves(day.id);
     if (savesRes.data) setSaves(savesRes.data);
-    pushEvent('save');
   };
 
   const handleUndo = () => {

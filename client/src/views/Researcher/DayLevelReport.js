@@ -233,23 +233,15 @@ const DayLevelReport = () => {
       {showFilter ? (
         <div className='filter-show'>
           <div className='filter-items'>
-            <Filter setSearchParam={setSearchParam} />
+            <Filter setSearchParam={setSearchParam} paramObj={paramObj} />
           </div>
         </div>
       ) : (
         <div className='filter-hide'>
-          <Filter setSearchParam={setSearchParam} />
+          <Filter setSearchParam={setSearchParam} paramObj={paramObj} />
         </div>
       )}
       <main id='day-report-content-wrapper'>
-        <div>
-          <h3 className='filter-text'>Current Filter: </h3>
-          {Object.keys(paramObj).map((key) => (
-            <Tag>
-              {key === 'grade' ? `${key}(id)` : key}: {paramObj[key]}
-            </Tag>
-          ))}
-        </div>
         <Table
           columns={columns}
           dataSource={sessions}
@@ -283,7 +275,7 @@ const DayLevelReport = () => {
     </div>
   );
 };
-const Filter = ({ setSearchParam }) => {
+const Filter = ({ setSearchParam, paramObj }) => {
   const [grades, setGrades] = useState([]);
   const [ls, setLs] = useState([]);
   const [units, setUnits] = useState([]);
@@ -365,96 +357,112 @@ const Filter = ({ setSearchParam }) => {
   };
 
   return (
-    <Form onFinish={handleSubmit}>
-      <select
-        className='select'
-        placeholder='Select a grade'
-        onChange={onGradeChange}
-      >
-        <option key='empty' value=''>
-          Select a grade
-        </option>
-        {grades.map((grade) => (
-          <option key={grade.id} value={grade.id}>
-            {grade.name}
+    <>
+      <Form onFinish={handleSubmit}>
+        <select
+          className='select'
+          placeholder='Select a grade'
+          onChange={onGradeChange}
+        >
+          <option key='empty' value=''>
+            Select a grade
           </option>
-        ))}
-      </select>
-      <select
-        className='select'
-        placeholder='Select a unit'
-        disabled={units.length === 0 || selectedClassroom !== ''}
-        onChange={onUnitChange}
-      >
-        <option key='empty' value=''>
-          Select a unit
-        </option>
-        {units.map((unit) => (
-          <option key={unit.id} value={unit.id}>
-            {unit.name}
+          {grades.map((grade) => (
+            <option key={grade.id} value={grade.id}>
+              {grade.name}
+            </option>
+          ))}
+        </select>
+        <select
+          className='select'
+          placeholder='Select a unit'
+          disabled={units.length === 0 || selectedClassroom !== ''}
+          onChange={onUnitChange}
+        >
+          <option key='empty' value=''>
+            Select a unit
           </option>
-        ))}
-      </select>
-      <select
-        className='select'
-        placeholder='Select a lesson'
-        disabled={ls.length === 0}
-        onChange={(e) => {
-          setselectedLs(e.target.value);
-        }}
-      >
-        <option key='empty' value=''>
-          Select a lesson
-        </option>
-        {ls.map((lesson) => (
-          <option key={lesson.id} value={lesson.id}>
-            {lesson.name}
+          {units.map((unit) => (
+            <option key={unit.id} value={unit.id}>
+              {unit.name}
+            </option>
+          ))}
+        </select>
+        <select
+          className='select'
+          placeholder='Select a lesson'
+          disabled={ls.length === 0}
+          onChange={(e) => {
+            setselectedLs(e.target.value);
+          }}
+        >
+          <option key='empty' value=''>
+            Select a lesson
           </option>
-        ))}
-      </select>
-      <h3 className='filter-text'>Or</h3>
-      <select
-        className='select'
-        placeholder='Select a classroom'
-        disabled={classrooms.length === 0 || selectedUnit !== ''}
-        onChange={onClassroomChange}
-      >
-        <option key='empty' value=''>
-          Select a classroom
-        </option>
-        {classrooms.map((classroom) => (
-          <option key={classroom.id} value={classroom.id}>
-            {classroom.name}
+          {ls.map((lesson) => (
+            <option key={lesson.id} value={lesson.id}>
+              {lesson.name}
+            </option>
+          ))}
+        </select>
+        <h3 className='filter-text'>Or</h3>
+        <select
+          className='select'
+          placeholder='Select a classroom'
+          disabled={classrooms.length === 0 || selectedUnit !== ''}
+          onChange={onClassroomChange}
+        >
+          <option key='empty' value=''>
+            Select a classroom
           </option>
-        ))}
-      </select>
-      <select
-        className='select'
-        placeholder='Select a student'
-        disabled={students.length === 0}
-        onChange={(e) => {
-          setselectedStudent(e.target.value);
-        }}
-      >
-        <option key='empty' value=''>
-          Select a student
-        </option>
-        {students.map((stuent) => (
-          <option key={stuent.id} value={stuent.id}>
-            {stuent.name}
+          {classrooms.map((classroom) => (
+            <option key={classroom.id} value={classroom.id}>
+              {classroom.name}
+            </option>
+          ))}
+        </select>
+        <select
+          className='select'
+          placeholder='Select a student'
+          disabled={students.length === 0}
+          onChange={(e) => {
+            setselectedStudent(e.target.value);
+          }}
+        >
+          <option key='empty' value=''>
+            Select a student
           </option>
-        ))}
-      </select>
-      <br />
-      <Button
-        type='secondary'
-        className='day-level-submit'
-        htmlType='submit'
-        size='large'
-      >
-        Submit
-      </Button>
-    </Form>
+          {students.map((stuent) => (
+            <option key={stuent.id} value={stuent.id}>
+              {stuent.name}
+            </option>
+          ))}
+        </select>
+        <br />
+        <Button
+          type='secondary'
+          className='day-level-submit'
+          htmlType='submit'
+          size='large'
+        >
+          Submit
+        </Button>
+      </Form>
+      <div>
+        <h3 className='filter-text' style={{ display: 'inline' }}>
+          Current Filter:{' '}
+        </h3>
+        {Object.keys(paramObj).map((key) =>
+          key === '_start' ? null : key === '_sort' ? null : key ===
+            'pageSize' ? null : (
+            <Tag>
+              {key === 'learning_standard' ? `lesson(id)` : `${key}(id)`}:{' '}
+              {paramObj[key]}
+            </Tag>
+          )
+        )}
+      </div>
+    </>
   );
 };
 
