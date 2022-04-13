@@ -296,9 +296,14 @@ const Replay = () => {
             </button>
           </div>
         </div>
-        <h2 id='action-title'>{`Action ${timelineStates.step + 1}/${
+        <h2 id='action-title'>{`[${timelineStates.step + 1}/${
           replay.length
-        }: ${action}`}</h2>
+        }] Action: ${action}`}</h2>
+        {replay[timelineStates.step]?.blockType !== '' && (
+          <h2 id='action-title'>{`Block Type: ${
+            replay[timelineStates.step]?.blockType
+          }`}</h2>
+        )}
 
         <div className='flex flex-row'>
           <div
