@@ -78,6 +78,9 @@ const Replay = () => {
   const [action, setAction] = useState('');
   const [logData, setLogData] = useState([]);
   const [logFilename, setLogFilename] = useState('code_replay');
+  const [actionFilter, setActionFilter] = useState([]);
+  const [blockTypeFilter, setBlockTypeFilter] = useState([]);
+  const [blockIdFilter, setBlockIdFilter] = useState([]);
 
   const [timelineStates, dispatchTimelineReducer] = useReducer(
     timelineReducer, 
@@ -97,6 +100,20 @@ const Replay = () => {
 
   const formatMyDate = (timestamp, locale = 'en-GB') => {
     return new Date(timestamp).toLocaleTimeString(locale);
+  };
+
+  const makeFilter = (data, category) => {
+    let filter = [];
+    const map = new Map();
+
+    data.forEach((element) => {
+      const name = element[category];
+      if (name && !map.has(name)) {
+        filter.push({ text: name, value: name });
+        map.set(name, true);
+      }
+    });
+    return filter;
   };
 
   useEffect(() => {
@@ -120,6 +137,11 @@ const Replay = () => {
     
       setLogData(data);
       setLogFilename(`${save.data.student.name}_${save.data.created_at}_code_replay`);
+
+      setActionFilter(makeFilter(data, 'action'));
+      setBlockTypeFilter(makeFilter(data, 'blockType'));
+      setBlockIdFilter(makeFilter(data, 'blockId'));
+
     };
     getReplay();
   }, []);
@@ -128,7 +150,7 @@ const Replay = () => {
     {
       title: 'No.',
       dataIndex: 'key',
-      key: 'blockId',
+      key: 'key',
       width: '3%',
       align: 'center',
     },
@@ -150,13 +172,17 @@ const Replay = () => {
       key: 'action',
       width: '3%',
       align: 'center',
+      filters: actionFilter,
+      onFilter: (value, record) => record.action.indexOf(value) === 0
     },
     {
       title: 'Block Type',
       dataIndex: 'blockType',
-      key: 'blockId',
+      key: 'blockType',
       width: '3%',
       align: 'center',
+      filters: blockTypeFilter,
+      onFilter: (value, record) => record.blockType.indexOf(value) === 0
     },
     {
       title: 'Block ID',
@@ -164,6 +190,8 @@ const Replay = () => {
       key: 'blockId',
       width: '3%',
       align: 'center',
+      filters: blockIdFilter,
+      onFilter: (value, record) => record.blockId.indexOf(value) === 0
     },
   ];
 
