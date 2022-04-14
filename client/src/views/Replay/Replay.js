@@ -77,7 +77,8 @@ const Replay = () => {
   const navigate = useNavigate();
   const [action, setAction] = useState('');
   const [logData, setLogData] = useState([]);
-  const [logFilename, setLogFilename] = useState('code_replay');
+  const [csvData, setCsvData] = useState([]);
+  const [csvFilename, setCsvFilename] = useState('code_replay');
   const [actionFilter, setActionFilter] = useState([]);
   const [blockTypeFilter, setBlockTypeFilter] = useState([]);
   const [blockIdFilter, setBlockIdFilter] = useState([]);
@@ -136,7 +137,8 @@ const Replay = () => {
       }});
     
       setLogData(data);
-      setLogFilename(`${save.data.student.name}_${save.data.created_at}_code_replay`);
+      setCsvData(data.slice(0).reverse());
+      setCsvFilename(`${save.data.student.name}_${save.data.created_at}_code_replay`);
 
       setActionFilter(makeFilter(data, 'action'));
       setBlockTypeFilter(makeFilter(data, 'blockType'));
@@ -153,6 +155,7 @@ const Replay = () => {
       key: 'key',
       width: '3%',
       align: 'center',
+      render: (key) => key+1
     },
     {
       title: 'Timestamp',
@@ -173,7 +176,7 @@ const Replay = () => {
       width: '3%',
       align: 'center',
       filters: actionFilter,
-      onFilter: (value, record) => record.action.indexOf(value) === 0
+      onFilter: (value, record) => record.action === value
     },
     {
       title: 'Block Type',
@@ -182,7 +185,7 @@ const Replay = () => {
       width: '3%',
       align: 'center',
       filters: blockTypeFilter,
-      onFilter: (value, record) => record.blockType.indexOf(value) === 0
+      onFilter: (value, record) => record.blockType === value
     },
     {
       title: 'Block ID',
@@ -191,7 +194,7 @@ const Replay = () => {
       width: '3%',
       align: 'center',
       filters: blockIdFilter,
-      onFilter: (value, record) => record.blockId.indexOf(value) === 0
+      onFilter: (value, record) => record.blockId === value
     },
   ];
 
@@ -369,13 +372,13 @@ const Replay = () => {
             <div className='flex flex-row space-between'>
               <h2 id='logs-title'>Logs</h2>
               <CSVDownloader
-                filename={logFilename}
+                filename={csvFilename}
                 type={"button"}
                 bom={true}
                 data={()=>{
-                  return logData.map(log => {
+                  return csvData.map(log => {
                     return {
-                      "No.": log.key,
+                      "No.": log.key+1,
                       "timestamp": formatMyDate(log.timestamp),
                       "action": log.action,
                       "block type": log.blockType,
@@ -400,6 +403,9 @@ const Replay = () => {
               pagination={false}
               columns={columns}
               dataSource={logData}
+              onChange={(pagination, filter, sorter, extra) =>{
+                setCsvData(extra.currentDataSource);
+              }}
             />
           </section>
         </div>
