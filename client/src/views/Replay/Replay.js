@@ -105,6 +105,7 @@ const Replay = () => {
       {return {
         key: index,
         blockId: item.blockId,
+        blockType: item.blockType,
         timestamp: item.timestamp,
         action: item.action
       }});
@@ -131,6 +132,13 @@ const Replay = () => {
     {
       title: 'Block ID',
       dataIndex: 'blockId',
+      key: 'blockId',
+      width: '3%',
+      align: 'center',
+    },
+    {
+      title: 'Block Type',
+      dataIndex: 'blockType',
       key: 'blockId',
       width: '3%',
       align: 'center',
@@ -177,7 +185,7 @@ const Replay = () => {
   //handle dynamic playback changes
   useEffect(() => {
     if (replay.length) {
-      if (timelineStates.step === replay.length - 1 && isPlaying) handlePause();
+      if (timelineStates.step >= replay.length - 1 && isPlaying) handlePause();
 
       workspaceRef.current ? workspaceRef.current.clear() : setWorkspace();
       const xml = window.Blockly.Xml.textToDom(replay[timelineStates.step].xml);
@@ -198,6 +206,10 @@ const Replay = () => {
   const scrollTimelineBackward = () => {
     dispatchTimelineReducer({type: 'DecrementTimeline'});
   }
+
+  const handleGoBack = () => {
+    if (window.confirm('Comfirm going back')) navigate(-1);
+  };
 
   return (
     <main className='container nav-padding'>
@@ -263,7 +275,10 @@ const Replay = () => {
             <button
               disabled={timelineStates.startIndex <= 0}
               onClick={scrollTimelineBackward}
-              > &#8249; </button>
+              >
+              {' '}
+              &#8249;{' '}
+            </button>
             <div id='timeline'>
               {replay.map((item, index) => (
                 <div
@@ -281,7 +296,14 @@ const Replay = () => {
             >&#8250;</button>
           </div>
         </div>
-        <h2 id="action-title">{`Action ${timelineStates.step+1}/${replay.length}: ${action}`}</h2>
+        <h2 id='action-title'>{`[${timelineStates.step + 1}/${
+          replay.length
+        }] Action: ${action}`}</h2>
+        {replay[timelineStates.step]?.blockType !== '' && (
+          <h2 id='action-title'>{`Block Type: ${
+            replay[timelineStates.step]?.blockType
+          }`}</h2>
+        )}
 
         <div className='flex flex-row'>
           <div
@@ -312,6 +334,7 @@ const Replay = () => {
                       "key": log.key,
                       "timestamp": formatMyDate(log.timestamp),
                       "block id": log.blockId,
+                      "block type": log.blockType,
                       "action": log.action
                     }
                   });
