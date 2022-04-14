@@ -82,9 +82,9 @@ export default function StudentCanvas({ day }) {
   };
 
   const pushEvent = (type, blockId = '') => {
-    let bloackType = '';
+    let blockType = '';
     if (blockId !== '') {
-      bloackType = window.Blockly.mainWorkspace.getBlockById(blockId)?.type;
+      blockType = window.Blockly.mainWorkspace.getBlockById(blockId)?.type;
     }
 
     let xml = window.Blockly.Xml.workspaceToDom(workspaceRef.current);
@@ -93,7 +93,7 @@ export default function StudentCanvas({ day }) {
       xml: xml_text,
       action: type,
       blockId: blockId,
-      blockType: bloackType,
+      blockType: blockType,
       timestamp: Date.now(),
       clicks: clicks.current,
     });

@@ -26,6 +26,7 @@ const Replay = () => {
   const [logData, setLogData] = useState([]);
   const [logFilename, setLogFilename] = useState('code_replay');
 
+  
   const timelineReducer = (timeline, action) => {
     const checkTimelineStepInBound = () =>{
       if(timeline.step >= timeline.endIndex){
@@ -97,7 +98,7 @@ const Replay = () => {
   useEffect(() => {
     const getReplay = async () => {
       const save = await getSave(saveID);
-      console.log(save.data.replay);
+      console.log(save.data);
       setReplay(save.data.replay);
 
       //set log
@@ -118,6 +119,13 @@ const Replay = () => {
 
   const columns = [
     {
+      title: 'No.',
+      dataIndex: 'key',
+      key: 'blockId',
+      width: '3%',
+      align: 'center',
+    },
+    {
       title: 'Timestamp',
       dataIndex: 'timestamp',
       key: 'timestamp',
@@ -130,9 +138,9 @@ const Replay = () => {
       render: (timestamp) => formatMyDate(timestamp)
     },
     {
-      title: 'Block ID',
-      dataIndex: 'blockId',
-      key: 'blockId',
+      title: 'Action',
+      dataIndex: 'action',
+      key: 'action',
       width: '3%',
       align: 'center',
     },
@@ -144,9 +152,9 @@ const Replay = () => {
       align: 'center',
     },
     {
-      title: 'Action',
-      dataIndex: 'action',
-      key: 'action',
+      title: 'Block ID',
+      dataIndex: 'blockId',
+      key: 'blockId',
       width: '3%',
       align: 'center',
     },
@@ -200,7 +208,7 @@ const Replay = () => {
   };
 
   const scrollTimelineForward = () => {
-    dispatchTimelineReducer({type: 'IncrementTimeline'});    
+    dispatchTimelineReducer({type: 'IncrementTimeline'});
   }
 
   const scrollTimelineBackward = () => {
@@ -241,6 +249,7 @@ const Replay = () => {
                   onAfterChange={changePlaySpeed}
                   disabled={isPlaying}
                   reverse={true}
+                  tooltipVisible={false}
                 />
                 &#128007;
               </div>
@@ -331,11 +340,11 @@ const Replay = () => {
                 data={()=>{
                   return logData.map(log => {
                     return {
-                      "key": log.key,
+                      "No.": log.key,
                       "timestamp": formatMyDate(log.timestamp),
-                      "block id": log.blockId,
+                      "action": log.action,
                       "block type": log.blockType,
-                      "action": log.action
+                      "block id": log.blockId,
                     }
                   });
                 }}
