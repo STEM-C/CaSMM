@@ -30,7 +30,7 @@
 
     #view-day-card {
       width: 30vw;
-      min-height: 30vh;
+      min-height: 34vh;
       box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.377);
       border-radius: 10px;
       margin: 20px;
@@ -39,29 +39,31 @@
         background-color: #colors[quaternary];
         display: flex;
         align-items: center;
-        height: 6vh;
+        height: 20%;
         border-top-left-radius: 10px;
         border-top-right-radius: 10px;
 
         #view-day-title {
           display: inline;
-          font-size: 1.1em;
-        }
-
-        #view-day-button {
-          height: 6vh;
-          width: 40%;
           font-size: 1.2em;
+          margin-left: 12px;
           font-weight: 600;
-          background-color: transparent;
-          border: none;
-          border-top-left-radius: 10px;
-
-          &:hover {
-            cursor: pointer;
-            background-color: #colors[quinary];
-          }
         }
+
+        // #view-day-button {
+        //   height: 6vh;
+        //   width: 40%;
+        //   font-size: 1.2em;
+        //   font-weight: 600;
+        //   background-color: transparent;
+        //   border: none;
+        //   border-top-left-radius: 10px;
+
+        //   &:hover {
+        //     cursor: pointer;
+        //     background-color: #colors[quinary];
+        //   }
+        // }
       }
 
       #view-day-info {
@@ -72,12 +74,56 @@
         font-size: 1.1em;
         line-height: 1em;
         word-wrap: break-word;
+        height: 50%;
 
         strong {
           font-weight: 500;
           font-size: 1.2;
         }
       }
+
+      #view-day-btn-container {
+        display: flex;
+        justify-content: center;
+        height: 20%;
+        #day-template-btn {
+          margin-right: 10px;
+          width: 12vw;
+          height: 4vh;
+          font-size: 1em;
+          font-weight: 500;
+          border-radius: 30px;
+          border: none;
+          background: #colors[quaternary];
+          color: #colors[text-primary];
+          box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.377);
+          transition: 0.25s;
+          cursor: pointer;
+      
+          &:hover {
+            background-color: #colors[quinary];
+          }
+        }
+
+        #activity-template-btn {
+          width: 12vw;
+          height: 4vh;
+          font-size: 1em;
+          font-weight: 500;
+          border-radius: 30px;
+          border: none;
+          background: #colors[quaternary];
+          color: #colors[text-primary];
+          box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.377);
+          transition: 0.25s;
+          cursor: pointer;
+      
+          &:hover {
+            background-color: #colors[quinary];
+          }
+        }
+      }
+
     }
   }
 
@@ -117,8 +163,8 @@
   right: 10vw;
 
   #display-code-btn {
-    width: 18vw;
-    min-height: 3.5vw;
+    width: 16vw;
+    min-height: 2.5vw;
     font-size: 1em;
     font-weight: 500;
     border-radius: 30px;
@@ -130,7 +176,7 @@
     cursor: pointer;
 
     &:hover {
-      width: 20vw;
+      width: 18vw;
       background-color: #colors[quinary];
     }
   }

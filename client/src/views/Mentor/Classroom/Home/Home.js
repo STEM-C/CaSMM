@@ -126,27 +126,9 @@ export default function Home({ classroomId, viewing }) {
                   {days.map((day) => (
                     <div id='view-day-card' key={day.id}>
                       <div id='view-day-heading'>
-                        <button
-                          id='view-day-button'
-                          onClick={() =>
-                            handleViewDay(day, activeLearningStandard.name)
-                          }
-                        >
-                          Day {day.number} Template
-                        </button>
-                        {day.activity_template && (
-                          <button
-                            id='dayview-day-button'
-                            onClick={() =>
-                              openActivityInWorkspace(
-                                day,
-                                activeLearningStandard.name
-                              )
-                            }
-                          >
-                            Activity Template
-                          </button>
-                        )}
+                       <div id='view-day-title'>
+                          Day {day.number}
+                        </div>
                       </div>
                       <div id='view-day-info'>
                         <p>
@@ -220,6 +202,29 @@ export default function Home({ classroomId, viewing }) {
                             </a>
                           </p>
                         ) : null}
+                      </div>
+                      <div id='view-day-btn-container'>
+                      <button
+                          id='day-template-btn'
+                          onClick={() =>
+                            handleViewDay(day, activeLearningStandard.name)
+                          }
+                        >
+                          Day {day.number} Template
+                        </button>
+                        {day.activity_template && (
+                          <button
+                            id='activity-template-btn'
+                            onClick={() =>
+                              openActivityInWorkspace(
+                                day,
+                                activeLearningStandard.name
+                              )
+                            }
+                          >
+                            Activity Template
+                          </button>
+                        )}
                       </div>
                     </div>
                   ))}

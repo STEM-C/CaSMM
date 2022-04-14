@@ -19,7 +19,7 @@ export default function GroupReport(props) {
           type='button'
           onClick={() => navigate('/report')}
         >
-          Return to DashBoard
+          Return to Dashboard
         </button>
       </div>
     </div>
