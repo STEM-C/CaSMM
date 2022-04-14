@@ -12,9 +12,62 @@ import NavBar from '../../components/NavBar/NavBar';
 import { Table } from 'antd';
 import { getSave } from '../../Utils/requests';
 import { CSVDownloader } from "react-papaparse";
+const TIME_LINE_SIZE = 25;
+
+const timelineReducer = (timeline, action) => {
+  const checkTimelineStepInBound = () =>{
+    if(timeline.step >= timeline.endIndex){
+      let newEnd = Math.min(timeline.length, timeline.step+7);
+      timeline.endIndex = newEnd;
+      timeline.startIndex = newEnd-TIME_LINE_SIZE;
+    }
+    else if(timeline.step < timeline.startIndex){
+      let newStart = Math.max(0, timeline.step-6);
+      timeline.startIndex = newStart;
+      timeline.endIndex = newStart+TIME_LINE_SIZE;
+    }
+  }
+
+  switch (action.type) {
+    case 'IncrementStep':
+      timeline.step  += 1;
+      checkTimelineStepInBound();
+      return {...timeline};
+
+    case 'DecrementStep':
+      timeline.step  -= 1;
+      checkTimelineStepInBound();
+      return {...timeline};
+
+    case 'SetStepValue':
+      timeline.step = action.value;
+      checkTimelineStepInBound();
+      return {...timeline};
+
+    case 'IncrementTimeline':
+      if(timeline.endIndex <= timeline.length){
+        timeline.startIndex += 5;
+        timeline.endIndex = Math.min(timeline.endIndex + 5, timeline.length);
+      }
+      return {...timeline};
+
+    case 'DecrementTimeline':
+      if(timeline.startIndex >= 0){
+        timeline.startIndex = Math.max(timeline.startIndex - 5, 0);
+        timeline.endIndex -= 5;
+      }
+      return {...timeline};
+
+    case 'FetchReplayLength':
+      timeline.length = action.value;
+      return {...timeline};
+
+    default:
+      return timeline;
+  }
+};
 
 const Replay = () => {
-  const TIME_LINE_SIZE = 25;
   const { saveID } = useParams();
   const workspaceRef = useRef(null);
   const [replay, setReplay] = useState([]);
@@ -26,63 +79,14 @@ const Replay = () => {
   const [logData, setLogData] = useState([]);
   const [logFilename, setLogFilename] = useState('code_replay');
 
-  
-  const timelineReducer = (timeline, action) => {
-    const checkTimelineStepInBound = () =>{
-      if(timeline.step >= timeline.endIndex){
-        let newEnd = Math.min(replay.length, timeline.step+7);
-        timeline.endIndex = newEnd;
-        timeline.startIndex = newEnd-TIME_LINE_SIZE;
-      }
-      else if(timeline.step < timeline.startIndex){
-        let newStart = Math.max(0, timeline.step-6);
-        timeline.startIndex = newStart;
-        timeline.endIndex = newStart+TIME_LINE_SIZE;
-      }
-    }
-
-    switch (action.type) {
-      case 'IncrementStep':
-        timeline.step  += 1;
-        checkTimelineStepInBound();
-        return {...timeline};
-
-      case 'DecrementStep':
-        timeline.step  -= 1;
-        checkTimelineStepInBound();
-        return {...timeline};
-
-      case 'SetStepValue':
-        timeline.step = action.value;
-        checkTimelineStepInBound();
-        return {...timeline};
-
-      case 'IncrementTimeline':
-        if(timeline.endIndex <= replay.length){
-          timeline.startIndex += 5;
-          timeline.endIndex = Math.min(timeline.endIndex + 5, replay.length);
-        }
-        return {...timeline};
-
-      case 'DecrementTimeline':
-        if(timeline.startIndex >= 0){
-          timeline.startIndex = Math.max(timeline.startIndex - 5, 0);
-          timeline.endIndex -= 5;
-        }
-        return {...timeline};
-
-      default:
-        return timeline;
-    }
-  };
-
   const [timelineStates, dispatchTimelineReducer] = useReducer(
     timelineReducer, 
     {
       step: 0,
       startIndex: 0,
-      endIndex: TIME_LINE_SIZE
-    });
+      endIndex: TIME_LINE_SIZE,
+      length: 0
+    } );
 
   const setWorkspace = () => {
     workspaceRef.current = window.Blockly.inject('blockly-canvas', {
@@ -98,9 +102,12 @@ const Replay = () => {
   useEffect(() => {
     const getReplay = async () => {
       const save = await getSave(saveID);
-      console.log(save.data);
+      console.log(save.data.replay);
       setReplay(save.data.replay);
 
+      dispatchTimelineReducer({
+        type: 'FetchReplayLength',
+        value: save.data.replay.length});
       //set log
       let data = save.data.replay.map((item, index) => 
       {return {
