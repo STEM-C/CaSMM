@@ -125,7 +125,7 @@ const Replay = () => {
 
       dispatchTimelineReducer({
         type: 'FetchReplayLength',
-        value: save.data.replay.length});
+        value: save.data.replay? save.data.replay.length : 0});
       //set log
       let data = save.data.replay.map((item, index) => 
       {return {
@@ -294,7 +294,7 @@ const Replay = () => {
               <button
                 className='replayButton'
                 onClick={goBack}
-                disabled={timelineStates.step === 0}
+                disabled={timelineStates.step <= 0}
               >
                 &#9198;
               </button>
@@ -312,7 +312,7 @@ const Replay = () => {
               <button
                 className='replayButton'
                 onClick={goForward}
-                disabled={timelineStates.step === replay.length - 1}
+                disabled={timelineStates.step >= replay.length - 1}
               >
                 &#9197;
               </button>
