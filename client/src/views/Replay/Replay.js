@@ -301,7 +301,7 @@ const Replay = () => {
               <button
                 className='replayButton'
                 onClick={isPlaying ? handlePause : handlePlay}
-                disabled={timelineStates.step === replay.length - 1}
+                disabled={timelineStates.step >= replay.length - 1}
               >
                 {isPlaying ? (
                   <span>&#9208;</span>
