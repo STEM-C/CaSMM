@@ -84,7 +84,8 @@ export default function StudentCanvas({ day }) {
   const pushEvent = (type, blockId = '') => {
     let blockType = '';
     if (blockId !== '') {
-      blockType = window.Blockly.mainWorkspace.getBlockById(blockId)?.type;
+      let type = window.Blockly.mainWorkspace.getBlockById(blockId)?.type;
+      type ? blockType = type : blockType = ''; 
     }
 
     let xml = window.Blockly.Xml.workspaceToDom(workspaceRef.current);
