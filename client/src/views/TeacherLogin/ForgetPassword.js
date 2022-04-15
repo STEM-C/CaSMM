@@ -13,7 +13,6 @@ const ForgetPassword = () => {
     setShowSuccessMsg(false);
     setLoading(true);
     const res = await forgetPassword(email);
-    console.log(res);
     if (res.err) {
       message.error(res.err);
     } else {

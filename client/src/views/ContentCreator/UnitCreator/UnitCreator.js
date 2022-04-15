@@ -24,9 +24,7 @@ export default function UnitCreator({ gradeList }) {
   };
 
   const handleSubmit = async (e) => {
-    console.log(e);
     const res = await createUnit(number, name, tek, description, grade);
-    console.log(res);
     if (res.err) {
       message.error('Fail to create a new unit');
     } else {

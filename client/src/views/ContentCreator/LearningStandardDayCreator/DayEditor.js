@@ -39,7 +39,6 @@ export default function ContentCreator({ learningStandard }) {
       message.error(response.err);
     }
     setDay([...days, response.data]);
-    console.log(response);
   };
 
   const removeBasicDay = async (currDay) => {

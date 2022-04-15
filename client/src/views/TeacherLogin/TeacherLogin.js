@@ -29,7 +29,6 @@ export default function TeacherLogin() {
 
     postUser(body)
       .then((response) => {
-        console.log(response.data);
         setUserSession(response.data.jwt, JSON.stringify(response.data.user));
         setLoading(false);
         if (response.data.user.role.name === 'Content Creator') {

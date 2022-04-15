@@ -44,7 +44,6 @@ export default function Home({ classroomId, viewing }) {
             else {
               message.error(daysRes.err);
             }
-            console.log(daysRes.data);
           }
         });
       } else {
