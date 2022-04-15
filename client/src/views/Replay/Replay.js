@@ -236,6 +236,10 @@ const Replay = () => {
       workspaceRef.current ? workspaceRef.current.clear() : setWorkspace();
       const xml = window.Blockly.Xml.textToDom(replay[timelineStates.step].xml);
       window.Blockly.Xml.domToWorkspace(xml, workspaceRef.current);
+      if (replay[timelineStates.step].blockId)
+      window.Blockly.mainWorkspace
+        .getBlockById(replay[timelineStates.step].blockId)
+        ?.select();
       setAction(replay[timelineStates.step].action);
       
     }
