@@ -33,7 +33,6 @@ export default function Workspace({ handleLogout }) {
   }, []);
 
   const handleGoBack = () => {
-    console.log('workspace');
     navigate(-1);
   };
 

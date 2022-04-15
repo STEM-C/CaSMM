@@ -120,7 +120,6 @@ const Replay = () => {
   useEffect(() => {
     const getReplay = async () => {
       const save = await getSave(saveID);
-      console.log(save.data.replay);
       setReplay(save.data.replay);
 
       dispatchTimelineReducer({

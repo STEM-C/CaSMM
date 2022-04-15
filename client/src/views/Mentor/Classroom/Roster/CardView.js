@@ -24,7 +24,7 @@ export default function CardView(props) {
                     </div>
                 </div>
                 <div id='card-button-container' className='flex flex-row'>
-                    <StudentModal student={student} linkBtn={false}/>
+                    <StudentModal student={student} linkBtn={false} getFormattedDate={getFormattedDate}/>
                     <button onClick={() => {
                         onEnrollToggle(student.enrolled.id, !student.enrolled.enrolled)
                     }}>

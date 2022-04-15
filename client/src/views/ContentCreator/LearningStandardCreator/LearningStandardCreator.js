@@ -99,7 +99,6 @@ export default function LearningStandardCreator({
   };
 
   const checkURL = (n) => {
-    console.log(n);
     const regex =
       /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_+.~#?&//=]*)/g;
     if (n.search(regex) === -1) {
