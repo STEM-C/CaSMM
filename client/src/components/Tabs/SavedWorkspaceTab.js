@@ -28,7 +28,6 @@ export default function SavedWorkSpaceTab({searchParams, setSearchParams, classr
           }
             
             setWorkspaceList(wsResponse.data);
-            console.log(wsResponse.data);
         };
         fetchData();
       }, [classroomId]);

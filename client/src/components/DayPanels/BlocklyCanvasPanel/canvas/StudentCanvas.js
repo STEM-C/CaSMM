@@ -22,7 +22,6 @@ export default function StudentCanvas({ day }) {
   const [hoverSave, setHoverSave] = useState(false);
   const [hoverUndo, setHoverUndo] = useState(false);
   const [hoverRedo, setHoverRedo] = useState(false);
-  const [hoverArduino, setHoverArduino] = useState(false);
   const [hoverCompile, setHoverCompile] = useState(false);
   const [hoverConsole, setHoverConsole] = useState(false);
   const [showConsole, setShowConsole] = useState(false);
@@ -83,16 +82,22 @@ export default function StudentCanvas({ day }) {
   };
 
   const pushEvent = (type, blockId = '') => {
+    let blockType = '';
+    if (blockId !== '') {
+      let type = window.Blockly.mainWorkspace.getBlockById(blockId)?.type;
+      type ? blockType = type : blockType = ''; 
+    }
+
     let xml = window.Blockly.Xml.workspaceToDom(workspaceRef.current);
     let xml_text = window.Blockly.Xml.domToText(xml);
     replayRef.current.push({
       xml: xml_text,
       action: type,
       blockId: blockId,
+      blockType: blockType,
       timestamp: Date.now(),
       clicks: clicks.current,
     });
-    console.log(replayRef.current);
   };
 
   let blocked = false;
@@ -133,7 +138,6 @@ export default function StudentCanvas({ day }) {
         replayRef.current.pop();
       }
     }
-    console.log(event);
 
     // if event is change, add the detail action type
     if (event.type === 'change' && event.element) {
@@ -206,6 +210,7 @@ export default function StudentCanvas({ day }) {
 
   const handleManualSave = async () => {
     // save workspace then update load save options
+    pushEvent('save');
     const res = await handleSave(day.id, workspaceRef, replayRef.current);
     if (res.err) {
       message.error(res.err);
@@ -216,7 +221,6 @@ export default function StudentCanvas({ day }) {
 
     const savesRes = await getSaves(day.id);
     if (savesRes.data) setSaves(savesRes.data);
-    pushEvent('save');
   };
 
   const handleUndo = () => {
@@ -339,12 +343,7 @@ export default function StudentCanvas({ day }) {
         &nbsp; Show Serial Plotter
       </Menu.Item>
       <Menu.Item>
-        <CodeModal
-          title={'Arduino Code'}
-          workspaceRef={workspaceRef.current}
-          setHover={setHoverArduino}
-          hover={hoverArduino}
-        />
+        <CodeModal title={'Arduino Code'} workspaceRef={workspaceRef.current} />
       </Menu.Item>
     </Menu>
   );

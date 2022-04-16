@@ -60,7 +60,6 @@ export default function ListView(props) {
                 <Input
                   id='editAnimal'
                   value={chosenCharacter ? chosenCharacter : record.character}
-                  onChange={(e) => console.log(e.target.value)}
                   onClick={() => setPickerVisible(true)}
                 />
                 {pickerVisible && (

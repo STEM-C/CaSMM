@@ -20,12 +20,8 @@ import PlotterLogo from '../Icons/PlotterLogo';
 let plotId = 1;
 
 export default function MentorCanvas({ day, isSandbox, setDay }) {
-  const [hoverXml, setHoverXml] = useState(false);
-  const [hoverLoadWorkspace, setHoverLoadWorkspace] = useState(false);
-  const [hoverSaveAs, setHoverSaveAs] = useState(false);
   const [hoverUndo, setHoverUndo] = useState(false);
   const [hoverRedo, setHoverRedo] = useState(false);
-  const [hoverArduino, setHoverArduino] = useState(false);
   const [hoverCompile, setHoverCompile] = useState(false);
   const [hoverConsole, setHoverConsole] = useState(false);
   const [showSaveAsModal, setShowSaveAsModal] = useState(false);
@@ -205,19 +201,9 @@ export default function MentorCanvas({ day, isSandbox, setDay }) {
         <PlotterLogo />
         &nbsp; Show Serial Plotter
       </Menu.Item>
-      <CodeModal
-        title={'XML'}
-        workspaceRef={workspaceRef.current}
-        setHover={setHoverXml}
-        hover={hoverXml}
-      />
+      <CodeModal title={'XML'} workspaceRef={workspaceRef.current} />
       <Menu.Item>
-        <CodeModal
-          title={'Arduino Code'}
-          workspaceRef={workspaceRef.current}
-          setHover={setHoverArduino}
-          hover={hoverArduino}
-        />
+        <CodeModal title={'Arduino Code'} workspaceRef={workspaceRef.current} />
       </Menu.Item>
     </Menu>
   );
@@ -229,8 +215,6 @@ export default function MentorCanvas({ day, isSandbox, setDay }) {
         &nbsp; Save
       </Menu.Item>
       <SaveAsModal
-        hover={hoverSaveAs}
-        setHover={setHoverSaveAs}
         visible={showSaveAsModal}
         setVisible={setShowSaveAsModal}
         workspaceRef={workspaceRef}
@@ -239,11 +223,7 @@ export default function MentorCanvas({ day, isSandbox, setDay }) {
         isSandbox={isSandbox}
         classroomId={classroomId}
       />
-      <LoadWorkspaceModal
-        hover={hoverLoadWorkspace}
-        setHover={setHoverLoadWorkspace}
-        loadSave={loadSave}
-      />
+      <LoadWorkspaceModal loadSave={loadSave} classroomId={classroomId} />
     </Menu>
   );
 

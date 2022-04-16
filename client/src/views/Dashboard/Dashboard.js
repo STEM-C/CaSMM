@@ -17,7 +17,6 @@ export default function Dashboard() {
     let classroomIds = [];
     getMentor().then((res) => {
       if (res.data) {
-        console.log(res.data);
         res.data.classrooms.forEach((classroom) => {
           classroomIds.push(classroom.id);
         });

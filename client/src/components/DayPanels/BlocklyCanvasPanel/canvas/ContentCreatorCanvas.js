@@ -34,12 +34,8 @@ export default function ContentCreatorCanvas({
   setDay,
   isMentorActivity,
 }) {
-  const [hoverXml, setHoverXml] = useState(false);
-  const [hoverLoadWorkspace, setHoverLoadWorkspace] = useState(false);
-  const [hoverSaveAs, setHoverSaveAs] = useState(false);
   const [hoverUndo, setHoverUndo] = useState(false);
   const [hoverRedo, setHoverRedo] = useState(false);
-  const [hoverArduino, setHoverArduino] = useState(false);
   const [hoverCompile, setHoverCompile] = useState(false);
   const [hoverConsole, setHoverConsole] = useState(false);
   const [showConsole, setShowConsole] = useState(false);
@@ -281,8 +277,6 @@ export default function ContentCreatorCanvas({
         &nbsp; Save
       </Menu.Item>
       <SaveAsModal
-        hover={hoverSaveAs}
-        setHover={setHoverSaveAs}
         visible={showSaveAsModal}
         setVisible={setShowSaveAsModal}
         workspaceRef={workspaceRef}
@@ -291,11 +285,7 @@ export default function ContentCreatorCanvas({
         setDay={setDay}
         isSandbox={isSandbox}
       />
-      <LoadWorkspaceModal
-        hover={hoverLoadWorkspace}
-        setHover={setHoverLoadWorkspace}
-        loadSave={loadSave}
-      />
+      <LoadWorkspaceModal loadSave={loadSave} />
     </Menu>
   );
 
@@ -305,19 +295,9 @@ export default function ContentCreatorCanvas({
         <PlotterLogo />
         &nbsp; Show Serial Plotter
       </Menu.Item>
-      <CodeModal
-        title={'XML'}
-        workspaceRef={workspaceRef.current}
-        setHover={setHoverXml}
-        hover={hoverXml}
-      />
+      <CodeModal title={'XML'} workspaceRef={workspaceRef.current} />
       <Menu.Item>
-        <CodeModal
-          title={'Arduino Code'}
-          workspaceRef={workspaceRef.current}
-          setHover={setHoverArduino}
-          hover={hoverArduino}
-        />
+        <CodeModal title={'Arduino Code'} workspaceRef={workspaceRef.current} />
       </Menu.Item>
     </Menu>
   );

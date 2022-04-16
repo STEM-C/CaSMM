@@ -5,15 +5,68 @@ import React, {
   useRef,
   useState,
 } from 'react';
-import { Slider } from 'antd';
+import { Slider, Col, Row } from 'antd';
 import './Replay.less';
 import { useParams, useNavigate } from 'react-router-dom';
 import NavBar from '../../components/NavBar/NavBar';
 import { Table } from 'antd';
 import { getSave } from '../../Utils/requests';
+import { CSVDownloader } from 'react-papaparse';
+const TIME_LINE_SIZE = 25;
+
+const timelineReducer = (timeline, action) => {
+  const checkTimelineStepInBound = () => {
+    if (timeline.step >= timeline.endIndex) {
+      let newEnd = Math.min(timeline.length, timeline.step + 7);
+      timeline.endIndex = newEnd;
+      timeline.startIndex = newEnd - TIME_LINE_SIZE;
+    } else if (timeline.step < timeline.startIndex) {
+      let newStart = Math.max(0, timeline.step - 6);
+      timeline.startIndex = newStart;
+      timeline.endIndex = newStart + TIME_LINE_SIZE;
+    }
+  };
+
+  switch (action.type) {
+    case 'IncrementStep':
+      timeline.step += 1;
+      checkTimelineStepInBound();
+      return { ...timeline };
+
+    case 'DecrementStep':
+      timeline.step -= 1;
+      checkTimelineStepInBound();
+      return { ...timeline };
+
+    case 'SetStepValue':
+      timeline.step = action.value;
+      checkTimelineStepInBound();
+      return { ...timeline };
+
+    case 'IncrementTimeline':
+      if (timeline.endIndex <= timeline.length) {
+        timeline.startIndex += 5;
+        timeline.endIndex = Math.min(timeline.endIndex + 5, timeline.length);
+      }
+      return { ...timeline };
+
+    case 'DecrementTimeline':
+      if (timeline.startIndex >= 0) {
+        timeline.startIndex = Math.max(timeline.startIndex - 5, 0);
+        timeline.endIndex -= 5;
+      }
+      return { ...timeline };
+
+    case 'FetchReplayLength':
+      timeline.length = action.value;
+      return { ...timeline };
+
+    default:
+      return timeline;
+  }
+};
 
 const Replay = () => {
-  const TIME_LINE_SIZE = 25;
   const { saveID } = useParams();
   const workspaceRef = useRef(null);
   const [replay, setReplay] = useState([]);
@@ -23,53 +76,11 @@ const Replay = () => {
   const navigate = useNavigate();
   const [action, setAction] = useState('');
   const [logData, setLogData] = useState([]);
-
-  const timelineReducer = (timeline, action) => {
-    const checkTimelineStepInBound = () => {
-      if (timeline.step >= timeline.endIndex) {
-        let newEnd = Math.min(replay.length, timeline.step + 7);
-        timeline.endIndex = newEnd;
-        timeline.startIndex = newEnd - TIME_LINE_SIZE;
-      } else if (timeline.step < timeline.startIndex) {
-        let newStart = Math.max(0, timeline.step - 6);
-        timeline.startIndex = newStart;
-        timeline.endIndex = newStart + TIME_LINE_SIZE;
-      }
-    };
-
-    switch (action.type) {
-      case 'IncrementStep':
-        timeline.step += 1;
-        checkTimelineStepInBound();
-        return { ...timeline };
-
-      case 'DecrementStep':
-        timeline.step -= 1;
-        checkTimelineStepInBound();
-        return { ...timeline };
-
-      case 'SetStepValue':
-        timeline.step = action.value;
-        return { ...timeline };
-
-      case 'IncrementTimeline':
-        if (timeline.endIndex <= replay.length) {
-          timeline.startIndex += 5;
-          timeline.endIndex = Math.min(timeline.endIndex + 5, replay.length);
-        }
-        return { ...timeline };
-
-      case 'DecrementTimeline':
-        if (timeline.startIndex >= 0) {
-          timeline.startIndex = Math.max(timeline.startIndex - 5, 0);
-          timeline.endIndex -= 5;
-        }
-        return { ...timeline };
-
-      default:
-        return timeline;
-    }
-  };
+  const [csvData, setCsvData] = useState([]);
+  const [csvFilename, setCsvFilename] = useState('code_replay');
+  const [actionFilter, setActionFilter] = useState([]);
+  const [blockTypeFilter, setBlockTypeFilter] = useState([]);
+  const [blockIdFilter, setBlockIdFilter] = useState([]);
 
   const [timelineStates, dispatchTimelineReducer] = useReducer(
     timelineReducer,
@@ -77,6 +88,7 @@ const Replay = () => {
       step: 0,
       startIndex: 0,
       endIndex: TIME_LINE_SIZE,
+      length: 0,
     }
   );
 
@@ -91,16 +103,62 @@ const Replay = () => {
     return new Date(timestamp).toLocaleTimeString(locale);
   };
 
+  const makeFilter = (data, category) => {
+    let filter = [];
+    const map = new Map();
+
+    data.forEach((element) => {
+      const name = element[category];
+      if (name && !map.has(name)) {
+        filter.push({ text: name, value: name });
+        map.set(name, true);
+      }
+    });
+    return filter;
+  };
+
   useEffect(() => {
     const getReplay = async () => {
       const save = await getSave(saveID);
-      console.log(save.data.replay);
       setReplay(save.data.replay);
+
+      dispatchTimelineReducer({
+        type: 'FetchReplayLength',
+        value: save.data.replay ? save.data.replay.length : 0,
+      });
+      //set log
+      let data = save.data.replay.map((item, index) => {
+        return {
+          key: index,
+          blockId: item.blockId,
+          blockType: item.blockType,
+          timestamp: item.timestamp,
+          action: item.action,
+        };
+      });
+
+      setLogData(data);
+      setCsvData(data.slice(0).reverse());
+      setCsvFilename(
+        `${save.data.student.name}_${save.data.created_at}_code_replay`
+      );
+
+      setActionFilter(makeFilter(data, 'action'));
+      setBlockTypeFilter(makeFilter(data, 'blockType'));
+      setBlockIdFilter(makeFilter(data, 'blockId'));
     };
     getReplay();
   }, []);
 
   const columns = [
+    {
+      title: 'No.',
+      dataIndex: 'key',
+      key: 'key',
+      width: '3%',
+      align: 'center',
+      render: (key) => key + 1,
+    },
     {
       title: 'Timestamp',
       dataIndex: 'timestamp',
@@ -114,18 +172,31 @@ const Replay = () => {
       render: (timestamp) => formatMyDate(timestamp),
     },
     {
-      title: 'Block ID',
-      dataIndex: 'blockId',
-      key: 'blockId',
-      width: '3%',
-      align: 'center',
-    },
-    {
       title: 'Action',
       dataIndex: 'action',
       key: 'action',
       width: '3%',
       align: 'center',
+      filters: actionFilter,
+      onFilter: (value, record) => record.action === value,
+    },
+    {
+      title: 'Block Type',
+      dataIndex: 'blockType',
+      key: 'blockType',
+      width: '3%',
+      align: 'center',
+      filters: blockTypeFilter,
+      onFilter: (value, record) => record.blockType === value,
+    },
+    {
+      title: 'Block ID',
+      dataIndex: 'blockId',
+      key: 'blockId',
+      width: '3%',
+      align: 'center',
+      filters: blockIdFilter,
+      onFilter: (value, record) => record.blockId === value,
     },
   ];
 
@@ -167,24 +238,11 @@ const Replay = () => {
       workspaceRef.current ? workspaceRef.current.clear() : setWorkspace();
       const xml = window.Blockly.Xml.textToDom(replay[timelineStates.step].xml);
       window.Blockly.Xml.domToWorkspace(xml, workspaceRef.current);
-      setAction(replay[timelineStates.step].action);
-
       if (replay[timelineStates.step].blockId)
         window.Blockly.mainWorkspace
           .getBlockById(replay[timelineStates.step].blockId)
           ?.select();
-
-      //update log
-      let data = replay.slice(0, timelineStates.step + 1).map((item, index) => {
-        return {
-          key: index,
-          blockId: item.blockId,
-          timestamp: item.timestamp,
-          action: item.action,
-        };
-      });
-
-      setLogData(data);
+      setAction(replay[timelineStates.step].action);
     }
   }, [replay, timelineStates, isPlaying, handlePause]);
 
@@ -199,6 +257,7 @@ const Replay = () => {
   const scrollTimelineBackward = () => {
     dispatchTimelineReducer({ type: 'DecrementTimeline' });
   };
+
   const handleGoBack = () => {
     if (window.confirm('Comfirm going back')) navigate(-1);
   };
@@ -233,20 +292,21 @@ const Replay = () => {
                   onAfterChange={changePlaySpeed}
                   disabled={isPlaying}
                   reverse={true}
+                  tooltipVisible={false}
                 />
                 &#128007;
               </div>
               <button
                 className='replayButton'
                 onClick={goBack}
-                disabled={timelineStates.step === 0}
+                disabled={timelineStates.step <= 0}
               >
                 &#9198;
               </button>
               <button
                 className='replayButton'
                 onClick={isPlaying ? handlePause : handlePlay}
-                disabled={timelineStates.step === replay.length - 1}
+                disabled={timelineStates.step >= replay.length - 1}
               >
                 {isPlaying ? (
                   <span>&#9208;</span>
@@ -257,7 +317,7 @@ const Replay = () => {
               <button
                 className='replayButton'
                 onClick={goForward}
-                disabled={timelineStates.step === replay.length - 1}
+                disabled={timelineStates.step >= replay.length - 1}
               >
                 &#9197;
               </button>
@@ -296,20 +356,28 @@ const Replay = () => {
             </button>
           </div>
         </div>
-        <h2 id='action-title'>{`Action ${timelineStates.step + 1}/${
-          replay.length
-        }: ${action}`}</h2>
 
         <div className='flex flex-row'>
           <div
             id='bottom-container'
             className='flex flex-column vertical-container overflow-visible'
           >
-            <h1 id='section-header'>Code Replay</h1>
+            <Row id='icon-control-panel'>
+              <Col flex='none' id='section-header'>
+                Code Replay
+              </Col>
+              <Col flex='auto' id='action-title'>
+                {`[${timelineStates.step + 1}/${
+                  replay.length
+                }] Action: ${action}`}
+                {replay[timelineStates.step]?.blockType !== '' && (
+                  <>{`, Block Type: ${
+                    replay[timelineStates.step]?.blockType
+                  }`}</>
+                )}
+              </Col>
+            </Row>
             <div id='blockly-canvas' />
-            {/* <div id="timeline">
-              { replay.map((item, index) => <div className={step === index ? 'current-time' : 'all-times'} key={item.timestamp}>{timeConverter(item.timestamp)}<Marker/></div>)}
-            </div> */}
           </div>
         </div>
         <div className='flex flex-row'>
@@ -317,12 +385,48 @@ const Replay = () => {
             id='bottom-container'
             className='flex flex-column vertical-container overflow-visible'
           >
-            <h2 id='logs-title'>Logs</h2>
+            <div className='flex flex-row space-between'>
+              <h2 id='logs-title'>Logs</h2>
+              <CSVDownloader
+                filename={csvFilename}
+                type={'button'}
+                bom={true}
+                data={() => {
+                  return csvData.map((log) => {
+                    return {
+                      'No.': log.key + 1,
+                      timestamp: formatMyDate(log.timestamp),
+                      action: log.action,
+                      'block type': log.blockType,
+                      'block id': log.blockId,
+                    };
+                  });
+                }}
+              >
+                Download to CSV
+              </CSVDownloader>
+            </div>
+
             <Table
+              id='replay-log'
+              rowClassName={(record, index) =>
+                'table-row ' +
+                (record.key === timelineStates.step
+                  ? 'table-row-dark'
+                  : 'table-row-light')
+              }
+              onRow={(record, index) => {
+                return {
+                  onClick: () => setStep(record.key),
+                };
+              }}
               scroll={{ y: 300 }}
               pagination={false}
               columns={columns}
               dataSource={logData}
+              onChange={(pagination, filter, sorter, extra) => {
+                setCsvData(extra.currentDataSource);
+              }}
             />
           </section>
         </div>

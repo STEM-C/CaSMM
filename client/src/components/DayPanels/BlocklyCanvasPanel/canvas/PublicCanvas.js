@@ -17,10 +17,8 @@ import PlotterLogo from '../Icons/PlotterLogo';
 let plotId = 1;
 
 export default function PublicCanvas({ day, isSandbox }) {
-  const [hoverXml, setHoverXml] = useState(false);
   const [hoverUndo, setHoverUndo] = useState(false);
   const [hoverRedo, setHoverRedo] = useState(false);
-  const [hoverArduino, setHoverArduino] = useState(false);
   const [hoverCompile, setHoverCompile] = useState(false);
   const [hoverConsole, setHoverConsole] = useState(false);
   const [showConsole, setShowConsole] = useState(false);
@@ -149,19 +147,9 @@ export default function PublicCanvas({ day, isSandbox }) {
         <PlotterLogo />
         &nbsp; Show Serial Plotter
       </Menu.Item>
-      <CodeModal
-        title={'XML'}
-        workspaceRef={workspaceRef.current}
-        setHover={setHoverXml}
-        hover={hoverXml}
-      />
+      <CodeModal title={'XML'} workspaceRef={workspaceRef.current} />
       <Menu.Item>
-        <CodeModal
-          title={'Arduino Code'}
-          workspaceRef={workspaceRef.current}
-          setHover={setHoverArduino}
-          hover={hoverArduino}
-        />
+        <CodeModal title={'Arduino Code'} workspaceRef={workspaceRef.current} />
       </Menu.Item>
     </Menu>
   );
