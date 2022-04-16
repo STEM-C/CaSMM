@@ -23,7 +23,7 @@ const BlocklyCanvasPanel = ({ day, isSandbox, setDay }) => {
           day={day}
           setDay={setDay}
           isSandbox={isSandbox}
-          isMentorActivity={!day.selectedToolbox}
+          isMentorActivity={!day.selectedToolbox && !isSandbox}
         />
       );
     default:
