@@ -121,6 +121,18 @@ module.exports = {
     return sanitizeEntity(classroom, { model: strapi.models.classroom });
   },
 
+  async workspaces(ctx) {
+    const { id } = ctx.params;
+    const classroom = await strapi.services.classroom.findOne({id: id});
+    // check if the classroom exists
+    let response;
+    if (classroom) {
+      response = classroom.cc_workspaces;
+    }
+
+    return response;
+  },
+
   /**
    * Join a classroom and create a new student session
    *
@@ -181,10 +193,17 @@ module.exports = {
         });
     }
 
+    // get the selected unit and lesson for the session
+    const { learning_standard } =
+      await strapi.services.selection.findCurrSelection(classroom.id);
+
     // create a new session for the students
     const session = await strapi.services.session.create({
       classroom: classroom.id,
       students,
+      grade: classroom.grade,
+      learning_standard: learning_standard.id,
+      unit: learning_standard.unit,
     });
 
     // update last_logged_in for each student

@@ -3,57 +3,47 @@ import React, { useState, useEffect } from 'react';
 import { Tabs, Table, Popconfirm, message } from 'antd';
 import Navbar from '../../components/NavBar/NavBar';
 import { QuestionCircleOutlined } from '@ant-design/icons';
-
+import SavedWorkSpaceTab from '../../components/Tabs/SavedWorkspaceTab';
 import UnitCreator from './UnitCreator/UnitCreator';
 import LearningStandardDayCreator from './LearningStandardCreator/LearningStandardCreator';
 import {
   getLearningStandardAll,
   deleteLearningStandard,
   getGrades,
-  getCCWorkspaces,
-  deleteCCWorkspace,
 } from '../../Utils/requests';
 import UnitEditor from './UnitEditor/UnitEditor';
 import LessonEditor from './LessonEditor/LessonEditor';
+import { useSearchParams } from 'react-router-dom';
 
 import './ContentCreator.less';
-import { Link } from 'react-router-dom';
 
 const { TabPane } = Tabs;
 
-export default function ContentCreator({ history }) {
+export default function ContentCreator() {
   const [gradeList, setGradeList] = useState([]);
   const [learningStandardList, setLearningStandardList] = useState([]);
-  const [workspaceList, setWorkspaceList] = useState([]);
+  const [searchParams, setSearchParams] = useSearchParams();
+
   const [tab, setTab] = useState(
-    history.location.hash.split('#')[1]
-      ? history.location.hash.split('#')[1]
-      : 'home'
+    searchParams.has('tab') ? searchParams.get('tab') : 'home'
   );
   const [page, setPage] = useState(
-    history.location.hash.split('#')[1]
-      ? parseInt(history.location.hash.split('#')[2])
-      : 1
+    searchParams.has('page') ? parseInt(searchParams.get('page')) : 1
   );
-  const [viewing, setViewing] = useState(
-    parseInt(history.location.hash.split('#')[3])
-  );
+  const [viewing, setViewing] = useState(parseInt(searchParams.get('day')));
 
   useEffect(() => {
     const fetchData = async () => {
-      const [lsResponse, gradeResponse, wsResponse] = await Promise.all([
+      const [lsResponse, gradeResponse] = await Promise.all([
         getLearningStandardAll(),
         getGrades(),
-        getCCWorkspaces(),
       ]);
-      await setLearningStandardList(lsResponse.data);
+      setLearningStandardList(lsResponse.data);
 
-      const grades = await gradeResponse.data;
+      const grades = gradeResponse.data;
       grades.sort((a, b) => (a.id > b.id ? 1 : -1));
       setGradeList(grades);
 
-      await setWorkspaceList(wsResponse.data);
-      console.log(wsResponse.data);
     };
     fetchData();
   }, []);
@@ -80,7 +70,6 @@ export default function ContentCreator({ history }) {
       render: (_, key) => (
         <LessonEditor
           learningStandard={key}
-          history={history}
           linkBtn={true}
           viewing={viewing}
           setViewing={setViewing}
@@ -148,10 +137,11 @@ export default function ContentCreator({ history }) {
             columns={columns}
             dataSource={filterLS(grade)}
             rowClassName='editable-row'
+            rowKey='id'
             onChange={(Pagination) => {
               setViewing(undefined);
               setPage(Pagination.current);
-              history.push(`#${tab}#${Pagination.current}`);
+              setSearchParams({ tab, page: Pagination.current });
             }}
             pagination={{ current: page ? page : 1 }}
           ></Table>
@@ -159,73 +149,6 @@ export default function ContentCreator({ history }) {
       </TabPane>
     );
   };
-
-  const wsColumn = [
-    {
-      title: 'Name',
-      dataIndex: 'name',
-      key: 'name',
-      editable: true,
-      width: '30%',
-      align: 'left',
-      render: (_, key) => key.name,
-    },
-    {
-      title: 'Description',
-      dataIndex: 'description',
-      key: 'description',
-      editable: true,
-      width: '40%',
-      align: 'left',
-      render: (_, key) => key.description,
-    },
-    {
-      title: 'Open Workspace',
-      dataIndex: 'open',
-      key: 'open',
-      editable: false,
-      width: '20%',
-      align: 'left',
-      render: (_, key) => (
-        <Link
-          onClick={() =>
-            localStorage.setItem('sandbox-day', JSON.stringify(key))
-          }
-          to={'/sandbox'}
-        >
-          Open
-        </Link>
-      ),
-    },
-    {
-      title: 'Delete',
-      dataIndex: 'delete',
-      key: 'delete',
-      width: '10%',
-      align: 'right',
-      render: (_, key) => (
-        <Popconfirm
-          title={'Are you sure you want to delete this workspace?'}
-          icon={<QuestionCircleOutlined style={{ color: 'red' }} />}
-          onConfirm={async () => {
-            const res = await deleteCCWorkspace(key.id);
-            if (res.err) {
-              message.error(res.err);
-            } else {
-              setWorkspaceList(
-                workspaceList.filter((ws) => {
-                  return ws.id !== key.id;
-                })
-              );
-              message.success('Delete success');
-            }
-          }}
-        >
-          <button id={'link-btn'}>Delete</button>
-        </Popconfirm>
-      ),
-    },
-  ];
 
   return (
     <div className='container nav-padding'>
@@ -237,7 +160,7 @@ export default function ContentCreator({ history }) {
           setTab(activeKey);
           setPage(1);
           setViewing(undefined);
-          history.push(`#${activeKey}`);
+          setSearchParams({ tab: activeKey });
         }}
         activeKey={tab ? tab : 'home'}
       >
@@ -250,7 +173,6 @@ export default function ContentCreator({ history }) {
               <UnitCreator gradeList={gradeList} />
               <LearningStandardDayCreator
                 setLearningStandardList={setLearningStandardList}
-                history={history}
                 viewing={viewing}
                 setViewing={setViewing}
                 tab={tab}
@@ -261,10 +183,11 @@ export default function ContentCreator({ history }) {
               columns={columns}
               dataSource={learningStandardList}
               rowClassName='editable-row'
+              rowKey='id'
               onChange={(Pagination) => {
                 setViewing(undefined);
                 setPage(Pagination.current);
-                history.push(`#${tab}#${Pagination.current}`);
+                setSearchParams({ tab, page: Pagination.current });
               }}
               pagination={{ current: page ? page : 1 }}
             ></Table>
@@ -276,25 +199,10 @@ export default function ContentCreator({ history }) {
         })}
 
         <TabPane tab='Saved Workspaces' key='workspace'>
-          <div id='page-header'>
-            <h1>Saved Worksapces</h1>
-          </div>
-          <div
-            id='content-creator-table-container'
-            style={{ marginTop: '6.6vh' }}
-          >
-            <Table
-              columns={wsColumn}
-              dataSource={workspaceList}
-              rowClassName='editable-row'
-              onChange={(Pagination) => {
-                setViewing(undefined);
-                setPage(Pagination.current);
-                history.push(`#${tab}#${Pagination.current}`);
-              }}
-              pagination={{ current: page ? page : 1 }}
-            ></Table>
-          </div>
+          <SavedWorkSpaceTab
+            searchParams={searchParams}
+            setSearchParams={setSearchParams}
+          />
         </TabPane>
       </Tabs>
     </div>

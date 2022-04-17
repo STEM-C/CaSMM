@@ -35,20 +35,32 @@
       border-radius: 10px;
       margin: 20px;
 
-      #view-day-title {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        font-size: 1.1em;
-        padding: 15px;
-        height: auto;
+      #view-day-heading {
         background-color: #colors[quaternary];
+        display: flex;
+        align-items: center;
+        height: 6vh;
         border-top-left-radius: 10px;
         border-top-right-radius: 10px;
 
-        &:hover {
-          cursor: pointer;
-          background-color: #colors[quinary];
+        #view-day-title {
+          display: inline;
+          font-size: 1.1em;
+        }
+
+        #view-day-button {
+          height: 6vh;
+          width: 30%;
+          font-size: 1.2em;
+          font-weight: 600;
+          background-color: transparent;
+          border: none;
+          border-top-left-radius: 10px;
+
+          &:hover {
+            cursor: pointer;
+            background-color: #colors[quinary];
+          }
         }
       }
 

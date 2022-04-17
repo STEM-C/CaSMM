@@ -60,7 +60,6 @@ export default function ListView(props) {
                 <Input
                   id='editAnimal'
                   value={chosenCharacter ? chosenCharacter : record.character}
-                  onChange={(e) => console.log(e.target.value)}
                   onClick={() => setPickerVisible(true)}
                 />
                 {pickerVisible && (
@@ -148,7 +147,13 @@ export default function ListView(props) {
       key: 'view',
       width: '10%',
       align: 'right',
-      render: (_, record) => <StudentModal student={record} linkBtn={true} />,
+      render: (_, record) => (
+        <StudentModal
+          student={record}
+          linkBtn={true}
+          getFormattedDate={getFormattedDate}
+        />
+      ),
     },
     {
       title: 'Edit',

@@ -35,7 +35,6 @@ export default function StudentToolboxMenu(props) {
       setStudentToolbox(tempToolBox);
     };
     setUp();
-    console.log(day);
   }, [day, setStudentToolbox, setOpenedToolBoxCategories]);
 
   const handleSearchFilterChange = (value) => {

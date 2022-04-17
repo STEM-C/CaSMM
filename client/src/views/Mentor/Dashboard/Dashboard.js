@@ -6,10 +6,12 @@ import DashboardDisplayCodeModal from './DashboardDisplayCodeModal';
 import MentorSubHeader from '../../../components/MentorSubHeader/MentorSubHeader';
 import NavBar from '../../../components/NavBar/NavBar';
 import { useGlobalState } from '../../../Utils/userState';
+import { useNavigate } from 'react-router-dom';
 
-export default function Dashboard({ history, currUser }) {
+export default function Dashboard() {
   const [classrooms, setClassrooms] = useState([]);
   const [value] = useGlobalState('currUser');
+  const navigate = useNavigate();
 
   useEffect(() => {
     let classroomIds = [];
@@ -23,13 +25,13 @@ export default function Dashboard({ history, currUser }) {
         });
       } else {
         message.error(res.err);
-        history.push('/teacherlogin');
+        navigate('/teacherlogin');
       }
     });
-  }, [history]);
+  }, []);
 
   const handleViewClassroom = (classroomId) => {
-    history.push(`/classroom/${classroomId}`);
+    navigate(`/classroom/${classroomId}`);
   };
 
   return (

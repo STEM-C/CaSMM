@@ -9,13 +9,15 @@ import MentorSubHeader from '../../../../components/MentorSubHeader/MentorSubHea
 import DisplayCodeModal from './DisplayCodeModal';
 import LearningStandardModal from './LearningStandardSelect/LearningStandardModal';
 import { message, Tag } from 'antd';
+import { useNavigate } from 'react-router-dom';
 
-export default function Home(props) {
+export default function Home({ classroomId, viewing }) {
   const [classroom, setClassroom] = useState({});
   const [days, setDays] = useState([]);
   const [gradeId, setGradeId] = useState(null);
   const [activeLearningStandard, setActiveLearningStandard] = useState(null);
-  const { classroomId, history, viewing } = props;
+
+  const navigate = useNavigate();
 
   const SCIENCE = 1;
   const MAKING = 2;
@@ -42,7 +44,6 @@ export default function Home(props) {
             else {
               message.error(daysRes.err);
             }
-            console.log(daysRes.data);
           }
         });
       } else {
@@ -55,11 +56,20 @@ export default function Home(props) {
   const handleViewDay = (day, name) => {
     day.learning_standard_name = name;
     localStorage.setItem('my-day', JSON.stringify(day));
-    history.push('/day');
+    navigate('/day');
+  };
+
+  const openActivityInWorkspace = (day, name) => {
+    day.learning_standard_name = name;
+    day.template = day.activity_template;
+    delete day.id;
+    delete day.activity_template;
+    localStorage.setItem('sandbox-day', JSON.stringify(day));
+    navigate('/sandbox');
   };
 
   const handleBack = () => {
-    history.push('/dashboard');
+    navigate('/dashboard');
   };
 
   const color = [
@@ -90,7 +100,6 @@ export default function Home(props) {
               <div id='active-learning-standard-title-container'>
                 <h3>{`Learning Standard - ${activeLearningStandard.name}`}</h3>
                 <LearningStandardModal
-                  history={history}
                   setActiveLearningStandard={setActiveLearningStandard}
                   classroomId={classroomId}
                   gradeId={gradeId}
@@ -115,12 +124,29 @@ export default function Home(props) {
                 <div id='card-btn-container' className='flex space-between'>
                   {days.map((day) => (
                     <div id='view-day-card' key={day.id}>
-                      <h3
-                        onClick={() =>
-                          handleViewDay(day, activeLearningStandard.name)
-                        }
-                        id='view-day-title'
-                      >{`View Day ${day.number}`}</h3>
+                      <div id='view-day-heading'>
+                        <button
+                          id='view-day-button'
+                          onClick={() =>
+                            handleViewDay(day, activeLearningStandard.name)
+                          }
+                        >
+                          Day {day.number} Template
+                        </button>
+                        {day.activity_template && (
+                          <button
+                            id='view-day-button'
+                            onClick={() =>
+                              openActivityInWorkspace(
+                                day,
+                                activeLearningStandard.name
+                              )
+                            }
+                          >
+                            Activity Template
+                          </button>
+                        )}
+                      </div>
                       <div id='view-day-info'>
                         <p>
                           <strong>TEKS: </strong>
@@ -204,7 +230,6 @@ export default function Home(props) {
               <p>There is currently no active lesson set.</p>
               <p>Click the button below to browse available lessons.</p>
               <LearningStandardModal
-                history={history}
                 setActiveLearningStandard={setActiveLearningStandard}
                 classroomId={classroomId}
                 gradeId={gradeId}

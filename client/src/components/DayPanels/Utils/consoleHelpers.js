@@ -59,7 +59,6 @@ const readUntilClose = async (
     .pipeThrough(new window.TransformStream(new LineBreakTransformer()))
     .getReader();
 
-  console.log('reader opened');
   let string = '';
 
   plotData = [];
@@ -70,7 +69,6 @@ const readUntilClose = async (
       reader.releaseLock();
       break;
     }
-    console.log(value);
     if (type === 'notNewLine') {
       string += value;
       document.getElementById('console-content').innerHTML = string;
@@ -100,7 +98,6 @@ export const writeToPort = async (data) => {
   writer = port.writable.getWriter();
   data += '\n';
   await writer.write(textEncoder.encode(data));
-  console.log(textEncoder.encode(data));
   writer.releaseLock();
 };
 

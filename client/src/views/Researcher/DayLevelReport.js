@@ -1,197 +1,469 @@
-import React, {useEffect, useState} from 'react';
-import { Link } from 'react-router-dom';
-import { Table } from 'antd';
+import React, { useEffect, useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { Table, Button, Tag } from 'antd';
 import './DayLevelReport.less';
-
+import { useSearchParam } from '../../Utils/useSearchParam';
 import NavBar from '../../components/NavBar/NavBar';
+
 import {
-  getAllStudents,
-  getDays,
-  getAllClassrooms,
+  getSessionsWithFilter,
+  getSessionCountWithFilter,
   getGrades,
-  getAllSessions
-} from "../../Utils/requests";
+  getUnit,
+  getGrade,
+  getClassroom,
+} from '../../Utils/requests';
+import Form from 'antd/lib/form/Form';
 
-export default function DayLevelReport() {
+const DayLevelReport = () => {
+  const [sessions, setSessions] = useState([]);
+  const [sessionCount, setSessionCount] = useState(0);
+  const navigate = useNavigate();
+  const { paramObj, setSearchParam } = useSearchParam();
+  const [showFilter, setShowFilter] = useState(false);
+  const [tbNameFilter, setTbNameFilter] = useState([]);
+  const [tbClassroomFilter, setTbClassroomFilter] = useState([]);
+  const [tbGradeFilter, setTbGradeFilter] = useState([]);
+  const [tbUnitFilter, setTbUnitFilter] = useState([]);
+  const [tbLessonFilter, setTbLessonFilter] = useState([]);
+  const [tbPrevFilter, setTbPrevFilter] = useState(null);
 
-  const [classRooms, setClassrooms] = useState([])
-  const [students, setStudents] = useState([])
-  const [grades, setGrades] = useState([])
-  const [days, setDays] = useState([])
-  const [sessions, setSessions] = useState([])
-
-  useEffect(function() {
-
-    async function getAllData() {
-      const studentsP = getAllStudents();
-      const gradesP = getGrades()
-      const classroomsP = getAllClassrooms()
-      const daysP = getDays()
-      const sessionsP = getAllSessions();
-      const [students, grades, classrooms, days, sessions] = await Promise.all([studentsP, gradesP, classroomsP, daysP, sessionsP]);
-
-      const fetchedStudents = students.data.map(student => {
-        var filter = {
-          text: student.name + ' ' + student.id,
-          value: student.name + ' ' + student.id
+  useEffect(() => {
+    const fetchData = async () => {
+      let filter = '';
+      for (const [k, v] of Object.entries(paramObj)) {
+        switch (k) {
+          case '_start':
+            filter += `_start=${v}&`;
+            break;
+          case '_sort':
+            filter += `_sort=${v}&`;
+            break;
+          case 'pageSize':
+            filter += `_limit=${v}&`;
+            break;
+          default:
+            filter += `${k}=${v}&`;
         }
-        return filter
-      })
-      setStudents(fetchedStudents);
+      }
+      const [sessionRes, sessionCountRes] = await Promise.all([
+        getSessionsWithFilter(filter),
+        getSessionCountWithFilter(filter),
+      ]);
+      if (sessionRes.error) {
+        console.error(sessionRes.error);
+      }
+      setSessions(sessionRes.data);
+      setSessionCount(sessionCountRes.data);
 
-      const fetchedGrades = grades.data.map(grade => {
-        console.log("Grade: ", grade)
-        var Grade = {
-          text: grade.id,
-          value: grade.id
+      // set table head filter data
+      makeTbNameFilter(sessionRes.data);
+      setTbClassroomFilter(makeFilter(sessionRes.data, 'classroom'));
+      setTbGradeFilter(makeFilter(sessionRes.data, 'grade'));
+      setTbUnitFilter(makeFilter(sessionRes.data, 'unit'));
+      setTbLessonFilter(makeFilter(sessionRes.data, 'learning_standard'));
+    };
+    if (paramObj['_sort']) fetchData();
+  }, [paramObj]);
+
+  const makeTbNameFilter = (data) => {
+    let filter = [];
+    const map = new Map();
+
+    data.forEach((element) => {
+      const names = element.students.map((student) => student.name);
+      names.forEach((name) => {
+        if (!map.get(name)) {
+          filter.push({ text: name, value: name });
+          map.set(name, true);
         }
-        return Grade
       });
-      setGrades(fetchedGrades)
+    });
+    setTbNameFilter(filter);
+  };
 
-      const classRoomNames = classrooms.data.map(room => {
-        var classRoom = {
-          text: room.name,
-          value: room.name
-        }
-        return classRoom
-      });
-      setClassrooms(classRoomNames)
+  const makeFilter = (data, category) => {
+    let filter = [];
+    const map = new Map();
 
-      const fetchedDays = days.data.map(day => {
-        var Day = {
-          text: day.id,
-          value: day.id
-        }
-        return Day
-      })
-      setDays(fetchedDays)
+    data.forEach((element) => {
+      const name = element[category]?.name;
+      if (name && !map.has(name)) {
+        filter.push({ text: name, value: name });
+        map.set(name, true);
+      }
+    });
+    return filter;
+  };
 
-      const formattedSessions = sessions.data.map(session => {
-        return {
-          ...session, 
-          student: session.students[0].name + ' ' + session.students[0].id, 
-          hasPartners: session.students.length > 1 ? 'Yes' : 'No'}
-      })
-      setSessions(formattedSessions);
+  const formatMyDate = (value, locale = 'en-US') => {
+    let output = new Date(value).toLocaleDateString(locale);
+    return output + ' ' + new Date(value).toLocaleTimeString(locale);
+  };
 
-    }
-    getAllData();
-    
-  }, [])
   const columns = [
     {
-      title: 'ID',
-      dataIndex: 'id',
-      key: 'id',
-      width: '3%',
-      align: 'left',
-      sorter: {
-        compare: (a, b) => (a.name < b.name ? -1 : 1),
-      },
-    },
-    {
       title: 'Student',
-      dataIndex: 'student',
       key: 'student',
-      width: '3%',
+      width: '2%',
       align: 'left',
-      filters: students,
-      onFilter: (value, record) => record.student === value,
+      filters: tbNameFilter,
+      onFilter: (value, key) => {
+        let result = false;
+        key.students.forEach((student) => {
+          if (student.name.indexOf(value) === 0) {
+            result = true;
+            return;
+          }
+        });
+        return result;
+      },
+      render: (_, key) => <div>{key.students[0].name}</div>,
     },
     {
       title: 'Classroom',
+      key: 'classroom',
       dataIndex: ['classroom', 'name'],
-      width: '3%',
-      align: 'right',
-      filters: classRooms,
-      onFilter: (value, record) => record.classroom.name === value,
+      width: '6%',
+      align: 'left',
+      filters: tbClassroomFilter,
+      onFilter: (value, key) => key.classroom?.name.indexOf(value) === 0,
     },
     {
       title: 'Grade',
-      dataIndex: ['classroom', 'grade'],
-      width: '3%',
-      align: 'right',
-      filters: grades,
-      onFilter: (value, record) => record.classroom.grade === value,
+      dataIndex: ['grade', 'name'],
+      key: 'grade',
+      width: '2%',
+      align: 'left',
+      filters: tbGradeFilter,
+      onFilter: (value, key) => key.grade?.name.indexOf(value) === 0,
     },
     {
-      title: 'Day',
-      dataIndex: ['submissions', '0', 'day'],
+      title: 'Unit',
+      dataIndex: ['unit', 'name'],
+      key: 'unit',
+      width: '4%',
+      align: 'left',
+      filters: tbUnitFilter,
+      onFilter: (value, key) => key.unit?.name.indexOf(value) === 0,
+    },
+    {
+      title: 'Lesson',
+      dataIndex: ['learning_standard', 'name'],
+      key: 'unit',
       width: '3%',
-      align: 'right',
-      filters: days,
-      onFilter: (value, record) => {
-        console.log("Day Record: ", record)
-        console.log("Value: ", value)
-        return record.submissions.grade === value
-      },
+      align: 'left',
+      filters: tbLessonFilter,
+      onFilter: (value, key) =>
+        key.learning_standard?.name.indexOf(value) === 0,
     },
     {
       title: 'Session Started',
       dataIndex: 'created_at',
-      key: 'created_at',
-      width: '3%',
+      key: 'sessionStart',
+      width: '4%',
       align: 'left',
-      sorter: {
-        compare: (a, b) => (a.last_logged_in < b.last_logged_in ? -1 : 1),
-      }
-      // render: (_, record) => getFormattedDate(record.last_logged_in),
+      sorter: true,
+      sortOrder: paramObj['_sort'] === 'created_at:DESC' ? 'descend' : 'ascend',
+      sortDirections:
+        paramObj['_sort'] === 'created_at:DESC'
+          ? ['ascend', 'descend', 'ascend']
+          : ['descend', 'ascend', 'descend'],
+      onHeaderCell: () => {
+        return {
+          onClick: () => {
+            const _start = paramObj['_start'];
+            const pageSize = paramObj['pageSize'];
+            const _sort =
+              paramObj['_sort'] === 'created_at:DESC'
+                ? 'created_at:ASC'
+                : 'created_at:DESC';
+            setSearchParam({ _start, _sort, pageSize });
+          },
+        };
+      },
+      render: (_, key) => <div>{formatMyDate(key.created_at)}</div>,
     },
     {
       title: 'Partners',
-      dataIndex: 'hasPartners',
       key: 'hasPartners',
-      width: '3%',
-      align: 'right',
-      filters: [
-        {
-          text: 'Yes',
-          value: 'Yes',
-        },
-        {
-          text: 'No',
-          value: 'No',
-        },
-      ],
-      filterMultiple: false,
-      onFilter: (value, record) => record.hasPartners === value,
+      width: '2%',
+      align: 'left',
+      render: (_, key) => (
+        <div>
+          {key.students
+            .slice(1)
+            .map((student) => student.name)
+            .join(', ')}
+        </div>
+      ),
     },
     {
       title: 'View Report',
       dataIndex: 'enrolled',
       key: 'enrolled',
-      width: '3%',
+      width: '2%',
       align: 'right',
-      render: (_, session) => <Link to={`/daylevel/${session.id}`}>View Report</Link>
+      render: (_, session) => (
+        <Link to={`/daylevel/${session.id}`}>View Report</Link>
+      ),
     },
   ];
-  console.log(sessions);
-  console.log("Students: ", students)
-  return (
-    <div className="container nav-padding">
-      <NavBar />
-      <div className="menu-bar">
-        <div id="day-level-report-header">Day Level - Student Report</div>
-        
-        {/* Menu to return to landing page at /reports */}
-        <Link to={"/report"}>
-          <button
-            id={"day-level-return"}
-            className={`btn-${"primary"} btn-${"sm"}`}
-            type="button"
-          >
-            Return to Reports
-          </button>
-        </Link>
-      </div>
 
-      <main id="content-wrapper">
+  return (
+    <div className='container nav-padding'>
+      <NavBar />
+      <div className='menu-bar'>
+        <div id='day-level-report-header'>Day Level - Student Report</div>
+
+        <button
+          className='day-level-return'
+          onClick={() => navigate('/report')}
+        >
+          Return to Dashboard
+        </button>
+      </div>
+      <button id='show-filter-btn' onClick={() => setShowFilter(!showFilter)}>
+        {showFilter ? (
+          <p> Click to Hide Filter</p>
+        ) : (
+          <p> Click to Show Filter</p>
+        )}
+      </button>
+      {showFilter ? (
+        <div className='filter-show'>
+          <div className='filter-items'>
+            <Filter setSearchParam={setSearchParam} paramObj={paramObj} />
+          </div>
+        </div>
+      ) : (
+        <div className='filter-hide'>
+          <Filter setSearchParam={setSearchParam} paramObj={paramObj} />
+        </div>
+      )}
+      <main id='day-report-content-wrapper'>
         <Table
           columns={columns}
           dataSource={sessions}
+          rowKey='id'
+          onChange={(Pagination, filters) => {
+            if (
+              tbPrevFilter == null ||
+              JSON.stringify(filters) === JSON.stringify(tbPrevFilter)
+            ) {
+              setSearchParam({
+                _start: (Pagination.current - 1) * Pagination.pageSize,
+                _sort: paramObj['_sort'],
+                pageSize: Pagination.pageSize,
+              });
+              if (tbPrevFilter == null) {
+                setTbPrevFilter(filters);
+              }
+            } else {
+              setTbPrevFilter(filters);
+            }
+          }}
+          pagination={{
+            current: paramObj['_start'] / paramObj['pageSize'] + 1,
+            showQuickJumper: true,
+            showSizeChanger: true,
+            pageSize: paramObj['pageSize'] || 10,
+            total: sessionCount,
+          }}
         />
       </main>
     </div>
   );
-}
+};
+const Filter = ({ setSearchParam, paramObj }) => {
+  const [grades, setGrades] = useState([]);
+  const [ls, setLs] = useState([]);
+  const [units, setUnits] = useState([]);
+  const [classrooms, setClassrooms] = useState([]);
+  const [students, setStudents] = useState([]);
+
+  const [selectedGrade, setselectedGrade] = useState('');
+  const [selectedLs, setselectedLs] = useState('');
+  const [selectedUnit, setselectedUnit] = useState('');
+  const [selectedClassroom, setselectedClassroom] = useState('');
+  const [selectedStudent, setselectedStudent] = useState('');
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const gradesRes = await getGrades();
+      if (gradesRes.error) {
+        console.error('Fail to retrive grades');
+      }
+      setGrades(gradesRes.data);
+    };
+    fetchData();
+  }, []);
+
+  const onGradeChange = async (e) => {
+    setselectedUnit('');
+    setselectedLs('');
+    setselectedClassroom('');
+    setselectedStudent('');
+    setClassrooms([]);
+    setLs([]);
+    setStudents([]);
+
+    const grade = e.target.value;
+    if (grade) {
+      setselectedGrade(grade);
+      const gradeRes = await getGrade(grade);
+      setUnits(gradeRes.data.units);
+      setClassrooms(gradeRes.data.classrooms);
+    } else {
+      setselectedGrade('');
+      setUnits([]);
+    }
+  };
+
+  const onUnitChange = async (e) => {
+    setselectedLs('');
+    const unit = e.target.value;
+    if (unit) {
+      setselectedUnit(unit);
+      const unitRes = await getUnit(unit);
+      setLs(unitRes.data.learning_standards);
+    } else {
+      setselectedUnit('');
+      setLs([]);
+    }
+  };
+
+  const onClassroomChange = async (e) => {
+    setselectedStudent('');
+    const classroom = e.target.value;
+    if (classroom) {
+      setselectedClassroom(classroom);
+      const classroomRes = await getClassroom(classroom);
+      setStudents(classroomRes.data.students);
+    } else {
+      setselectedClassroom('');
+      setStudents([]);
+    }
+  };
+
+  const handleSubmit = async () => {
+    let obj = {};
+    if (selectedGrade !== '') obj.grade = selectedGrade;
+    if (selectedUnit !== '') obj.unit = selectedUnit;
+    if (selectedLs !== '') obj.learning_standard = selectedLs;
+    if (selectedClassroom !== '') obj.classroom = selectedClassroom;
+    if (selectedStudent !== '') obj.student = selectedStudent;
+    setSearchParam(obj);
+  };
+
+  return (
+    <>
+      <Form onFinish={handleSubmit}>
+        <select
+          className='select'
+          placeholder='Select a grade'
+          onChange={onGradeChange}
+        >
+          <option key='empty' value=''>
+            Select a grade
+          </option>
+          {grades.map((grade) => (
+            <option key={grade.id} value={grade.id}>
+              {grade.name}
+            </option>
+          ))}
+        </select>
+        <select
+          className='select'
+          placeholder='Select a unit'
+          disabled={units.length === 0 || selectedClassroom !== ''}
+          onChange={onUnitChange}
+        >
+          <option key='empty' value=''>
+            Select a unit
+          </option>
+          {units.map((unit) => (
+            <option key={unit.id} value={unit.id}>
+              {unit.name}
+            </option>
+          ))}
+        </select>
+        <select
+          className='select'
+          placeholder='Select a lesson'
+          disabled={ls.length === 0}
+          onChange={(e) => {
+            setselectedLs(e.target.value);
+          }}
+        >
+          <option key='empty' value=''>
+            Select a lesson
+          </option>
+          {ls.map((lesson) => (
+            <option key={lesson.id} value={lesson.id}>
+              {lesson.name}
+            </option>
+          ))}
+        </select>
+        <h3 className='filter-text'>Or</h3>
+        <select
+          className='select'
+          placeholder='Select a classroom'
+          disabled={classrooms.length === 0 || selectedUnit !== ''}
+          onChange={onClassroomChange}
+        >
+          <option key='empty' value=''>
+            Select a classroom
+          </option>
+          {classrooms.map((classroom) => (
+            <option key={classroom.id} value={classroom.id}>
+              {classroom.name}
+            </option>
+          ))}
+        </select>
+        <select
+          className='select'
+          placeholder='Select a student'
+          disabled={students.length === 0}
+          onChange={(e) => {
+            setselectedStudent(e.target.value);
+          }}
+        >
+          <option key='empty' value=''>
+            Select a student
+          </option>
+          {students.map((stuent) => (
+            <option key={stuent.id} value={stuent.id}>
+              {stuent.name}
+            </option>
+          ))}
+        </select>
+        <br />
+        <Button
+          type='secondary'
+          className='day-level-submit'
+          htmlType='submit'
+          size='large'
+        >
+          Submit
+        </Button>
+      </Form>
+      <div>
+        <h3 className='filter-text' style={{ display: 'inline' }}>
+          Current Filter:{' '}
+        </h3>
+        {Object.keys(paramObj).map((key) =>
+          key === '_start' ? null : key === '_sort' ? null : key ===
+            'pageSize' ? null : (
+            <Tag>
+              {key === 'learning_standard' ? `lesson(id)` : `${key}(id)`}:{' '}
+              {paramObj[key]}
+            </Tag>
+          )
+        )}
+      </div>
+    </>
+  );
+};
+
+export default DayLevelReport;

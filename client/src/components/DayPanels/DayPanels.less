@@ -33,11 +33,12 @@ p {
 }
 
 .popup {
-  color: #colors[text-primary];
-  background-color: #colors[tertiary];
-  padding: 10px;
-  border: 1px solid #colors[secondary];
-  border-radius: 5px;
+  font-size: 12px;
+  color: #colors[text-secondary];
+  background-color: rgb(68, 68, 68);
+  padding: 8px;
+  border: none;
+  border-radius: 4px;
   position: absolute;
   z-index: 1;
 }
@@ -74,15 +75,30 @@ p {
 }
 
 #icon-control-panel {
-  margin-top: 1.2vh;
+  display: flex;
+  align-items: center;
+}
+
+#save-icon-btn {
+  font-size: 24px;
+  color: #colors[primary];
+}
+
+#icon-btn {
+  font-size: 24px;
 }
 
 #action-btn-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  float: right;
+  margin-left: 8px;
   margin-right: 30px;
 
   i {
     color: #colors[primary];
-    font-size: 32px;
+    font-size: 24px;
     padding: 0px 8px;
 
     &:hover {
@@ -91,8 +107,7 @@ p {
   }
 
   svg {
-    width: 32px;
-    height: 32px;
+    height: 24px;
     x: 0px;
     y: 0px;
 
@@ -108,11 +123,16 @@ p {
   }
 }
 
+#icon-align {
+  display: flex;
+  align-items: center;
+}
+
 #description-container {
-  height: 1vh;
+  display: flex;
+  height: auto;
   align-items: center;
   flex: 1;
-  margin-bottom: 1.5vh;
   max-height: 8vh;
   width: 100%;
 
@@ -172,13 +192,6 @@ p {
   margin: auto;
   width: 95%;
   height: 72vh;
-  // position: relative;
-
-  //   transition: min-height 2s;
-
-  //   &.contract {
-  //     min-height: 28vh;
-  //   }
 }
 
 #console-container {
@@ -218,6 +231,9 @@ p {
 }
 
 #section-header {
+  display: flex;
+  justify-content: center;
+  align-items: center;
   background-color: #colors[secondary];
   border-radius: 80px;
   width: 40%;
@@ -227,9 +243,7 @@ p {
   font-weight: bold;
   position: relative;
   top: -10px;
-  top: -10px;
   left: -10px;
-  line-height: 50px;
   text-align: center;
 }
 
@@ -294,27 +308,13 @@ p {
   padding: 0 !important;
   color: #colors[primary];
   text-align: center;
-  margin: 0 5px 0 15px;
+  margin: 0 0 0 12px;
 
   &:focus {
     outline: none;
   }
 
-  i {
-    color: #colors[primary];
-    font-size: 32px;
-
-    &:hover {
-      color: #colors[secondary];
-    }
-  }
-
   &:hover {
-    i {
-      color: #colors[secondary];
-      cursor: pointer;
-    }
-
     color: #colors[secondary];
   }
 }
@@ -372,4 +372,65 @@ p {
   margin: 0.5vh 2rem;
   width: 39rem;
   height: 32px;
+}
+
+#save-dropdown-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #colors[primary];
+
+  #save-dropdown-icon {
+    font-size: 28px;
+  }
+
+  &:hover {
+    color: #colors[secondary];
+  }
+
+} 
+
+
+#menu-save {
+  text-align: left;
+
+  &:hover {
+    cursor: pointer;
+  }
+
+  #pencil-icon {
+    font-size: 8px;
+  }
+
+ }
+
+#redo-undo-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#caret {
+  margin-left: 2px;
+  color: #colors[primary]
+}
+
+#version-save-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#show-arduino-icon {
+  padding-left: 0;
+  margin-left: 0;
+ }
+
+ @media only screen and (max-width: 915px) {
+
+  #section-header {
+    font-size: 2vw;
+    line-height: 2vw;
+  }
+  
 }

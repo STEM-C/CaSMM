@@ -1,11 +1,10 @@
-import { Modal, Button, Input, Form, message } from 'antd';
-import { handleCreatorSaveAsWorkspace } from '../../Utils/helpers';
+import { Modal, Button, Input, Form, message, Menu } from 'antd';
+import { handleSaveAsWorkspace } from '../../Utils/helpers';
 import React, { useState } from 'react';
 import { getCCWorkspaceToolbox } from '../../../../Utils/requests';
+import { useGlobalState } from '../../../../Utils/userState';
 
 export default function SaveAsModal({
-  hover,
-  setHover,
   workspaceRef,
   studentToolbox,
   visible,
@@ -13,9 +12,11 @@ export default function SaveAsModal({
   day,
   setDay,
   isSandbox,
+  classroomId,
 }) {
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
+  const [value] = useGlobalState('currUser');
 
   const showModal = () => {
     setName('');
@@ -28,43 +29,47 @@ export default function SaveAsModal({
   };
 
   const handleSaveAs = async () => {
-    const res = await handleCreatorSaveAsWorkspace(
+    const res = await handleSaveAsWorkspace(
       name,
       description,
       workspaceRef,
-      studentToolbox
+      studentToolbox,
+      classroomId
     );
     if (res.err) {
       message.error(res.err);
     } else {
+      let localDay = res.data;
       // if we are on sandbox mode, set the current workspace to the saved worksapce
       if (isSandbox) {
-        const toolboxRes = await getCCWorkspaceToolbox(res.data.id);
-        if (toolboxRes.data) {
+        if (value.role === 'ContentCreator') {
+          const toolboxRes = await getCCWorkspaceToolbox(res.data.id);
+          if (toolboxRes.data) {
+            message.success('Workspace saved successfully');
+            localDay = {
+              ...localDay,
+              selectedToolbox: toolboxRes.data.toolbox,
+              toolbox: day.toolbox,
+            };
+          } else {
+            message.error(toolboxRes.err);
+          }
+        } else if (value.role === 'Mentor') {
           message.success('Workspace saved successfully');
-          let localDay = {
-            ...res.data,
-            selectedToolbox: toolboxRes.data.toolbox,
-            toolbox: day.toolbox,
-          };
-          setDay(localDay);
-        } else {
-          message.error(toolboxRes.err);
         }
       }
+      setDay(localDay);
       setVisible(false);
     }
   };
 
   return (
-    <div id='link'>
-      <i
-        onClick={showModal}
-        className='flex fas fa-file-download'
-        onMouseEnter={() => setHover(true)}
-        onMouseLeave={() => setHover(false)}
-      />
-      {hover && <div className='popup ModalCompile4'>SaveAs</div>}
+    <div>
+      <Menu.Item id='menu-save' onClick={showModal}>
+        <i className='fa fa-save'></i>
+        <i id='pencil-icon' className='fas fa-pencil-alt'></i>
+        &nbsp;Save As
+      </Menu.Item>
       <Modal
         title='Save As'
         visible={visible}

@@ -2,12 +2,15 @@ import React, { useState } from 'react';
 import { Form, Input, Button, message } from 'antd';
 import { submitBugReport } from '../../Utils/requests';
 import NavBar from '../../components/NavBar/NavBar';
+import { useNavigate } from 'react-router-dom';
 
-const BugReport = ({ history }) => {
+const BugReport = () => {
   const [description, setDescription] = useState('');
   const [steps, setSteps] = useState('');
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
+
+  const navigate = useNavigate();
 
   const handleSubmit = async () => {
     let systemInfo = navigator.userAgent;
@@ -25,7 +28,7 @@ const BugReport = ({ history }) => {
       message.error(res.err);
     } else {
       message.success('Successfully submitted bug report!');
-      history.push('/');
+      navigate('/');
     }
   };
 
@@ -35,7 +38,7 @@ const BugReport = ({ history }) => {
       <div id='forgot-pass-wrapper' style={{ marginTop: '0px' }}>
         <div id='forgot-pass-title'>Report a Bug</div>
         <Form id='forgot-pass-form' onFinish={handleSubmit}>
-          <Form.Item id='form-label' label='Contect name'>
+          <Form.Item id='form-label' label='Contact name'>
             <Input
               onChange={(e) => setName(e.target.value)}
               value={name}
@@ -44,7 +47,7 @@ const BugReport = ({ history }) => {
               required
             />
           </Form.Item>
-          <Form.Item id='form-label' label='Contect Email'>
+          <Form.Item id='form-label' label='Contact Email'>
             <Input
               onChange={(e) => setEmail(e.target.value)}
               value={email}

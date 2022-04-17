@@ -5,4 +5,11 @@
  * to customize this service
  */
 
-module.exports = {};
+module.exports.findCurrSelection = async (classroomId) => {
+  const selection = await strapi
+    .query('selection')
+    .findOne({ current: true, classroom: classroomId, _sort: 'id:desc' }, [
+      'learning_standard',
+    ]);
+  return selection;
+};

@@ -3,9 +3,11 @@ import { getStudentClassroom } from '../../Utils/requests';
 import './Student.less';
 import { message } from 'antd';
 import NavBar from '../../components/NavBar/NavBar';
+import { useNavigate } from 'react-router-dom';
 
-function Student(props) {
+function Student() {
   const [learningStandard, setLearningStandard] = useState({});
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -27,7 +29,7 @@ function Student(props) {
     day.learning_standard_name = learningStandard.name;
     localStorage.setItem('my-day', JSON.stringify(day));
 
-    props.history.push('/workspace');
+    navigate('/workspace');
   };
 
   return (

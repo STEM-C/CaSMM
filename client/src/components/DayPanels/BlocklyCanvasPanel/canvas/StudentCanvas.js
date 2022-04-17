@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState, useReducer } from 'react';
 import '../../DayPanels.less';
 import { compileArduinoCode, handleSave } from '../../Utils/helpers';
-import { message, Spin, Row, Col, Alert } from 'antd';
+import { message, Spin, Row, Col, Alert, Dropdown, Menu } from 'antd';
 import { getSaves } from '../../../../Utils/requests';
 import CodeModal from '../modals/CodeModal';
 import ConsoleModal from '../modals/ConsoleModal';
@@ -14,7 +14,7 @@ import {
 } from '../../Utils/consoleHelpers';
 import ArduinoLogo from '../Icons/ArduinoLogo';
 import PlotterLogo from '../Icons/PlotterLogo';
-import { useHistory } from 'react-router';
+import { useNavigate } from 'react-router-dom';
 
 let plotId = 1;
 
@@ -22,10 +22,8 @@ export default function StudentCanvas({ day }) {
   const [hoverSave, setHoverSave] = useState(false);
   const [hoverUndo, setHoverUndo] = useState(false);
   const [hoverRedo, setHoverRedo] = useState(false);
-  const [hoverArduino, setHoverArduino] = useState(false);
   const [hoverCompile, setHoverCompile] = useState(false);
   const [hoverConsole, setHoverConsole] = useState(false);
-  const [hoverPlotter, setHoverPlotter] = useState(false);
   const [showConsole, setShowConsole] = useState(false);
   const [showPlotter, setShowPlotter] = useState(false);
   const [plotData, setPlotData] = useState([]);
@@ -36,20 +34,19 @@ export default function StudentCanvas({ day }) {
   const [lastSavedTime, setLastSavedTime] = useState(null);
   const [lastAutoSave, setLastAutoSave] = useState(null);
 
-  const [clicks, setClicks] = useState(0);
-  const parser = new DOMParser();
-
   const [forceUpdate] = useReducer((x) => x + 1, 0);
-  const history = useHistory();
+  const navigate = useNavigate();
   const workspaceRef = useRef(null);
   const dayRef = useRef(null);
+
   const replayRef = useRef([]);
-  const undoLength = useRef(0);
+  const clicks = useRef(0);
 
   const setWorkspace = () => {
     workspaceRef.current = window.Blockly.inject('blockly-canvas', {
       toolbox: document.getElementById('toolbox'),
     });
+    window.Blockly.addChangeListener(blocklyEvent);
   };
 
   const loadSave = (selectedSave) => {
@@ -84,72 +81,76 @@ export default function StudentCanvas({ day }) {
     }
   };
 
-  const parseXML = (xml) => {
-    const xmlData = {
-      blocks: {},
-      categories: {},
-    };
-    let xmlDoc = parser.parseFromString(xml, 'text/xml');
-    console.log(xmlDoc);
-    const xmlBlocks = xmlDoc.querySelectorAll('block');
-    for (const block of xmlBlocks) {
-      const blockType = block.getAttribute('type');
-      if (xmlData.blocks[blockType]) {
-        xmlData.blocks[blockType].count++;
-      } else {
-        xmlData.blocks[blockType] = {
-          count: 1,
-          deleted: 0,
-        };
-      }
+  const pushEvent = (type, blockId = '') => {
+    let blockType = '';
+    if (blockId !== '') {
+      let type = window.Blockly.mainWorkspace.getBlockById(blockId)?.type;
+      type ? blockType = type : blockType = ''; 
     }
-    return xmlData;
+
+    let xml = window.Blockly.Xml.workspaceToDom(workspaceRef.current);
+    let xml_text = window.Blockly.Xml.domToText(xml);
+    replayRef.current.push({
+      xml: xml_text,
+      action: type,
+      blockId: blockId,
+      blockType: blockType,
+      timestamp: Date.now(),
+      clicks: clicks.current,
+    });
   };
-  const diffObjects = (currentObj, previousObj) => {
-    const currentKeys = Object.keys(currentObj);
-    const prevKeys = Object.keys(previousObj);
-    // deleted all of one type of block
-    if (prevKeys.length > currentKeys.length) {
-      for (let key of prevKeys) {
-        if (currentKeys.indexOf(key) === -1) {
-          console.log('deleted all of one block');
-          currentObj[key] = {
-            count: 0,
-            deleted: previousObj[key].deleted + 1,
-          };
-        }
-      }
+
+  let blocked = false;
+  const blocklyEvent = (event) => {
+    // if it is a click event, add click
+    if (
+      (event.type === 'ui' && event.element === 'click') ||
+      event.element === 'selected'
+    ) {
+      clicks.current++;
     }
-    for (let key of currentKeys) {
-      if (key in previousObj) {
-        if (currentObj[key].count < previousObj[key].count) {
-          currentObj[key].deleted = previousObj[key].deleted + 1;
-          console.log('a block was deleted');
-        }
-        if (currentObj[key].deleted < previousObj[key].deleted) {
-          console.log('a block was reintroduced');
-          currentObj[key] = {
-            count: 1,
-            deleted: previousObj[key].deleted,
-          };
-        }
+
+    // if it is other ui events or create events or is [undo, redo], return
+    if (event.type === 'ui' || !event.recordUndo) {
+      return;
+    }
+
+    // if event is in timeout, return
+    if (event.type === 'change' && blocked) {
+      return;
+    }
+
+    // if the event is change field value, only accept the latest change
+    if (
+      event.type === 'change' &&
+      event.element === 'field' &&
+      replayRef.current.length > 1 &&
+      replayRef.current[replayRef.current.length - 1].action ===
+        'change field' &&
+      replayRef.current[replayRef.current.length - 1].blockId === event.blockId
+    ) {
+      replayRef.current.pop();
+    }
+
+    // event delete always comes after a move, ignore the move
+    if (event.type === 'delete') {
+      if (replayRef.current[replayRef.current.length - 1].action === 'move') {
+        replayRef.current.pop();
       }
     }
 
-    return currentObj;
-  };
-  const handleClick = () => {
-    setClicks(clicks + 1);
-    console.log('Clicks: ', clicks);
-  };
-  const compareXML = (
-    { blocks: currentBlocks },
-    { blocks: previousBlocks }
-  ) => {
-    const blocks = diffObjects(currentBlocks, previousBlocks);
-    return {
-      blocks,
-    };
+    // if event is change, add the detail action type
+    if (event.type === 'change' && event.element) {
+      pushEvent(`${event.type} ${event.element}`, event.blockId);
+    } else {
+      pushEvent(event.type, event.blockId);
+    }
+
+    // timeout for half a second
+    blocked = true;
+    setTimeout(() => {
+      blocked = false;
+    }, 500);
   };
 
   useEffect(() => {
@@ -167,40 +168,10 @@ export default function StudentCanvas({ day }) {
         }
       }
     }, 60000);
-    let replaySaveInterval = setInterval(async () => {
-      if (
-        workspaceRef.current &&
-        workspaceRef.current.undoStack_.length !== undoLength.current
-      ) {
-        undoLength.current = workspaceRef.current.undoStack_.length;
-        let xml = window.Blockly.Xml.workspaceToDom(workspaceRef.current);
-        let xml_text = window.Blockly.Xml.domToText(xml);
-        const xmlData = parseXML(xml_text);
-        let previousData;
-        let finalData;
-        // XML replay starts empty, check to make sure there's at least 2 there
-        if (replayRef.current.length > 1) {
-          previousData = replayRef.current[replayRef.current.length - 1];
-          finalData = compareXML(xmlData, previousData.xmlData);
-        }
-        const replay = {
-          xml: xml_text,
-          timestamp: Date.now(),
-          xmlData: finalData || xmlData,
-          clicks: clicks,
-        };
-        replayRef.current.push(replay);
-        console.log(replayRef.current);
-      }
-    }, 1000);
+
     // clean up - saves workspace and removes blockly div from DOM
     return async () => {
       clearInterval(autosaveInterval);
-      clearInterval(replaySaveInterval);
-      if (dayRef.current && workspaceRef.current)
-        await handleSave(dayRef.current.id, workspaceRef, replayRef.current);
-      if (workspaceRef.current) workspaceRef.current.dispose();
-      dayRef.current = null;
     };
   }, []);
 
@@ -230,6 +201,7 @@ export default function StudentCanvas({ day }) {
           window.Blockly.Xml.domToWorkspace(xml, workspaceRef.current);
         }
 
+        pushEvent('load workspace');
         workspaceRef.current.clearUndo();
       }
     };
@@ -238,6 +210,7 @@ export default function StudentCanvas({ day }) {
 
   const handleManualSave = async () => {
     // save workspace then update load save options
+    pushEvent('save');
     const res = await handleSave(day.id, workspaceRef, replayRef.current);
     if (res.err) {
       message.error(res.err);
@@ -251,13 +224,17 @@ export default function StudentCanvas({ day }) {
   };
 
   const handleUndo = () => {
-    if (workspaceRef.current.undoStack_.length > 0)
+    if (workspaceRef.current.undoStack_.length > 0) {
       workspaceRef.current.undo(false);
+      pushEvent('undo');
+    }
   };
 
   const handleRedo = () => {
-    if (workspaceRef.current.redoStack_.length > 0)
+    if (workspaceRef.current.redoStack_.length > 0) {
       workspaceRef.current.undo(true);
+      pushEvent('redo');
+    }
   };
 
   const handleConsole = async () => {
@@ -276,6 +253,7 @@ export default function StudentCanvas({ day }) {
       }
       setConnectionOpen(true);
       setShowConsole(true);
+      pushEvent('show serial monitor');
     }
     // if serial monitor is shown, close the connection
     else {
@@ -308,6 +286,7 @@ export default function StudentCanvas({ day }) {
       }
       setConnectionOpen(true);
       setShowPlotter(true);
+      pushEvent('show serial plotter');
     } else {
       plotId = 1;
       if (connectionOpen) {
@@ -339,6 +318,7 @@ export default function StudentCanvas({ day }) {
         day,
         true
       );
+      pushEvent('compile');
     }
   };
 
@@ -348,24 +328,25 @@ export default function StudentCanvas({ day }) {
         'All unsaved progress will be lost. Do you still want to go back?'
       )
     )
-      history.goBack();
+      navigate(-1);
   };
 
-  const getFormattedDate = (dt) => {
-    const d = new Date(Date.parse(dt));
-    const day = d.getDate();
-    const month = d.getMonth() + 1;
-    const year = d.getFullYear();
-    let hrs = d.getHours();
-    const ampm = hrs >= 12 ? 'PM' : 'AM';
-    hrs = hrs % 12;
-    hrs = hrs ? hrs : 12;
-    let min = d.getMinutes();
-    min = min < 10 ? '0' + min : min;
-    let sec = d.getSeconds();
-    sec = sec < 10 ? '0' + sec : sec;
-    return `${month}/${day}/${year}, ${hrs}:${min}:${sec} ${ampm}`;
+  const getFormattedDate = (value, locale = 'en-US') => {
+    let output = new Date(value).toLocaleDateString(locale);
+    return output + ' ' + new Date(value).toLocaleTimeString(locale);
   };
+
+  const menu = (
+    <Menu>
+      <Menu.Item onClick={handlePlotter}>
+        <PlotterLogo />
+        &nbsp; Show Serial Plotter
+      </Menu.Item>
+      <Menu.Item>
+        <CodeModal title={'Arduino Code'} workspaceRef={workspaceRef.current} />
+      </Menu.Item>
+    </Menu>
+  );
 
   return (
     <div id='horizontal-container' className='flex flex-column'>
@@ -402,13 +383,14 @@ export default function StudentCanvas({ day }) {
                   </Col>
                   <Col flex={'350px'}>
                     <Row>
-                      <Col className='flex flex-row'>
+                      <Col className='flex flex-row' id='icon-align'>
                         <VersionHistoryModal
                           saves={saves}
                           lastAutoSave={lastAutoSave}
                           defaultTemplate={day}
                           getFormattedDate={getFormattedDate}
                           loadSave={loadSave}
+                          pushEvent={pushEvent}
                         />
                         <button
                           onClick={handleManualSave}
@@ -427,7 +409,7 @@ export default function StudentCanvas({ day }) {
                         </button>
                       </Col>
 
-                      <Col className='flex flex-row'>
+                      <Col className='flex flex-row' id='icon-align'>
                         <button
                           onClick={handleUndo}
                           id='link'
@@ -480,13 +462,6 @@ export default function StudentCanvas({ day }) {
                       id='action-btn-container'
                       className='flex space-around'
                     >
-                      <CodeModal
-                        title={'Arduino Code'}
-                        workspaceRef={workspaceRef.current}
-                        setHover={setHoverArduino}
-                        hover={hoverArduino}
-                      />
-
                       <ArduinoLogo
                         setHoverCompile={setHoverCompile}
                         handleCompile={handleCompile}
@@ -509,21 +484,15 @@ export default function StudentCanvas({ day }) {
                           Show Serial Monitor
                         </div>
                       )}
-                      <PlotterLogo
-                        setHoverPlotter={setHoverPlotter}
-                        handlePlotter={handlePlotter}
-                      />
-                      {hoverPlotter && (
-                        <div className='popup ModalCompile'>
-                          Show Serial Plotter
-                        </div>
-                      )}
+                      <Dropdown overlay={menu}>
+                        <i className='fas fa-ellipsis-v'></i>
+                      </Dropdown>
                     </div>
                   </Col>
                 </Row>
               </Col>
             </Row>
-            <div id='blockly-canvas' onClick={handleClick} />
+            <div id='blockly-canvas' />
           </Spin>
         </div>
 

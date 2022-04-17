@@ -2,10 +2,11 @@ import React, { useEffect, useRef, useState, useReducer } from 'react';
 import '../../DayPanels.less';
 import {
   compileArduinoCode,
+  handleCreatorSaveActivity,
   handleCreatorSaveDay,
-  handleCreatorUpdateWorkspace,
+  handleUpdateWorkspace,
 } from '../../Utils/helpers';
-import { message, Spin, Row, Col, Alert } from 'antd';
+import { message, Spin, Row, Col, Alert, Dropdown, Menu } from 'antd';
 import CodeModal from '../modals/CodeModal';
 import SaveAsModal from '../modals/SaveAsModal';
 import ConsoleModal from '../modals/ConsoleModal';
@@ -23,21 +24,20 @@ import {
 } from '../../../../Utils/requests';
 import ArduinoLogo from '../Icons/ArduinoLogo';
 import PlotterLogo from '../Icons/PlotterLogo';
-import { useHistory } from 'react-router';
+import { useNavigate } from 'react-router-dom';
 
 let plotId = 1;
 
-export default function ContentCreatorCanvas({ day, isSandbox, setDay }) {
-  const [hoverXml, setHoverXml] = useState(false);
-  const [hoverLoadWorkspace, setHoverLoadWorkspace] = useState(false);
-  const [hoverSave, setHoverSave] = useState(false);
-  const [hoverSaveAs, setHoverSaveAs] = useState(false);
+export default function ContentCreatorCanvas({
+  day,
+  isSandbox,
+  setDay,
+  isMentorActivity,
+}) {
   const [hoverUndo, setHoverUndo] = useState(false);
   const [hoverRedo, setHoverRedo] = useState(false);
-  const [hoverArduino, setHoverArduino] = useState(false);
   const [hoverCompile, setHoverCompile] = useState(false);
   const [hoverConsole, setHoverConsole] = useState(false);
-  const [hoverPlotter, setHoverPlotter] = useState(false);
   const [showConsole, setShowConsole] = useState(false);
   const [showPlotter, setShowPlotter] = useState(false);
   const [showSaveAsModal, setShowSaveAsModal] = useState(false);
@@ -48,7 +48,7 @@ export default function ContentCreatorCanvas({ day, isSandbox, setDay }) {
   const [studentToolbox, setStudentToolbox] = useState([]);
   const [openedToolBoxCategories, setOpenedToolBoxCategories] = useState([]);
 
-  const history = useHistory();
+  const navigate = useNavigate();
   const [forceUpdate] = useReducer((x) => x + 1, 0);
   const workspaceRef = useRef(null);
   const dayRef = useRef(null);
@@ -116,7 +116,7 @@ export default function ContentCreatorCanvas({ day, isSandbox, setDay }) {
         'All unsaved progress will be lost. Do you still want to go back?'
       )
     )
-      history.goBack();
+      navigate(-1);
   };
 
   useEffect(() => {
@@ -125,7 +125,10 @@ export default function ContentCreatorCanvas({ day, isSandbox, setDay }) {
       dayRef.current = day;
       if (!workspaceRef.current && day && Object.keys(day).length !== 0) {
         setWorkspace();
-        let xml = window.Blockly.Xml.textToDom(day.template);
+
+        let xml = isMentorActivity
+          ? window.Blockly.Xml.textToDom(day.activity_template)
+          : window.Blockly.Xml.textToDom(day.template);
         window.Blockly.Xml.domToWorkspace(xml, workspaceRef.current);
         workspaceRef.current.clearUndo();
       }
@@ -134,8 +137,8 @@ export default function ContentCreatorCanvas({ day, isSandbox, setDay }) {
   }, [day, isSandbox]);
 
   const handleCreatorSave = async () => {
-    // Save day
-    if (!isSandbox) {
+    // Save day template
+    if (!isSandbox && !isMentorActivity) {
       const res = await handleCreatorSaveDay(
         day.id,
         workspaceRef,
@@ -144,12 +147,20 @@ export default function ContentCreatorCanvas({ day, isSandbox, setDay }) {
       if (res.err) {
         message.error(res.err);
       } else {
-        message.success('Day saved successfully');
+        message.success('Day Template saved successfully');
+      }
+    } else if (!isSandbox && isMentorActivity) {
+      // Save activity template
+      const res = await handleCreatorSaveActivity(day.id, workspaceRef);
+      if (res.err) {
+        message.error(res.err);
+      } else {
+        message.success('Activity template saved successfully');
       }
     } else {
       // if we already have the workspace in the db, just update it.
       if (day && day.id) {
-        const updateRes = await handleCreatorUpdateWorkspace(
+        const updateRes = await handleUpdateWorkspace(
           day.id,
           workspaceRef,
           studentToolbox
@@ -259,6 +270,38 @@ export default function ContentCreatorCanvas({ day, isSandbox, setDay }) {
     }
   };
 
+  const menu = (
+    <Menu>
+      <Menu.Item id='menu-save' onClick={handleCreatorSave}>
+        <i className='fa fa-save' />
+        &nbsp; Save
+      </Menu.Item>
+      <SaveAsModal
+        visible={showSaveAsModal}
+        setVisible={setShowSaveAsModal}
+        workspaceRef={workspaceRef}
+        studentToolbox={studentToolbox}
+        day={day}
+        setDay={setDay}
+        isSandbox={isSandbox}
+      />
+      <LoadWorkspaceModal loadSave={loadSave} />
+    </Menu>
+  );
+
+  const menuShow = (
+    <Menu>
+      <Menu.Item onClick={handlePlotter}>
+        <PlotterLogo />
+        &nbsp; Show Serial Plotter
+      </Menu.Item>
+      <CodeModal title={'XML'} workspaceRef={workspaceRef.current} />
+      <Menu.Item>
+        <CodeModal title={'Arduino Code'} workspaceRef={workspaceRef.current} />
+      </Menu.Item>
+    </Menu>
+  );
+
   return (
     <div id='horizontal-container' className='flex flex-column'>
       <div className='flex flex-row'>
@@ -275,7 +318,9 @@ export default function ContentCreatorCanvas({ day, isSandbox, setDay }) {
             <Row id='icon-control-panel'>
               <Col flex='none' id='section-header'>
                 {day.learning_standard_name
-                  ? `${day.learning_standard_name} - Day ${day.number}`
+                  ? `${day.learning_standard_name} - Day ${day.number} - ${
+                      isMentorActivity ? 'Activity' : 'Day'
+                    } Template`
                   : day.name
                   ? `Workspace: ${day.name}`
                   : 'New Workspace!'}
@@ -294,39 +339,17 @@ export default function ContentCreatorCanvas({ day, isSandbox, setDay }) {
                   <Col flex='auto' />
                   <Row>
                     <Col className='flex flex-row'>
-                      <LoadWorkspaceModal
-                        hover={hoverLoadWorkspace}
-                        setHover={setHoverLoadWorkspace}
-                        loadSave={loadSave}
-                      />
-                      <button
-                        onClick={handleCreatorSave}
-                        id='link'
-                        className='flex flex-column'
+                      <Col
+                        className='flex flex-row'
+                        id='save-dropdown-container'
                       >
-                        <i
-                          id='icon-btn'
-                          className='fa fa-save'
-                          onMouseEnter={() => setHoverSave(true)}
-                          onMouseLeave={() => setHoverSave(false)}
-                        />
-                        {hoverSave && (
-                          <div className='popup ModalCompile4'>Save</div>
-                        )}
-                      </button>
-                      <SaveAsModal
-                        hover={hoverSaveAs}
-                        setHover={setHoverSaveAs}
-                        visible={showSaveAsModal}
-                        setVisible={setShowSaveAsModal}
-                        workspaceRef={workspaceRef}
-                        studentToolbox={studentToolbox}
-                        day={day}
-                        setDay={setDay}
-                        isSandbox={isSandbox}
-                      />
+                        <Dropdown overlay={menu}>
+                          <i id='save-icon-btn' className='fa fa-save' />
+                        </Dropdown>
+                        <i className='fas fa-angle-down' id='caret'></i>
+                      </Col>
                     </Col>
-                    <Col className='flex flex-row'>
+                    <Col className='flex flex-row' id='redo-undo-container'>
                       <button
                         onClick={handleUndo}
                         id='link'
@@ -377,19 +400,6 @@ export default function ContentCreatorCanvas({ day, isSandbox, setDay }) {
                         id='action-btn-container'
                         className='flex space-around'
                       >
-                        <CodeModal
-                          title={'XML'}
-                          workspaceRef={workspaceRef.current}
-                          setHover={setHoverXml}
-                          hover={hoverXml}
-                        />
-                        <CodeModal
-                          title={'Arduino Code'}
-                          workspaceRef={workspaceRef.current}
-                          setHover={setHoverArduino}
-                          hover={hoverArduino}
-                        />
-
                         <ArduinoLogo
                           setHoverCompile={setHoverCompile}
                           handleCompile={handleCompile}
@@ -412,15 +422,9 @@ export default function ContentCreatorCanvas({ day, isSandbox, setDay }) {
                             Show Serial Monitor
                           </div>
                         )}
-                        <PlotterLogo
-                          setHoverPlotter={setHoverPlotter}
-                          handlePlotter={handlePlotter}
-                        />
-                        {hoverPlotter && (
-                          <div className='popup ModalCompile'>
-                            Show Serial Plotter
-                          </div>
-                        )}
+                        <Dropdown overlay={menuShow}>
+                          <i className='fas fa-ellipsis-v'></i>
+                        </Dropdown>
                       </div>
                     </Col>
                   </Row>
@@ -430,13 +434,15 @@ export default function ContentCreatorCanvas({ day, isSandbox, setDay }) {
             <div id='blockly-canvas' />
           </Spin>
         </div>
-        <StudentToolboxMenu
-          day={day}
-          studentToolbox={studentToolbox}
-          setStudentToolbox={setStudentToolbox}
-          openedToolBoxCategories={openedToolBoxCategories}
-          setOpenedToolBoxCategories={setOpenedToolBoxCategories}
-        />
+        {!isMentorActivity && (
+          <StudentToolboxMenu
+            day={day}
+            studentToolbox={studentToolbox}
+            setStudentToolbox={setStudentToolbox}
+            openedToolBoxCategories={openedToolBoxCategories}
+            setOpenedToolBoxCategories={setOpenedToolBoxCategories}
+          />
+        )}
         <ConsoleModal
           show={showConsole}
           connectionOpen={connectionOpen}

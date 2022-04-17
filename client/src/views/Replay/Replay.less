@@ -1,23 +1,82 @@
 @import '../../assets/style.less';
 
+#timeline-container {
+  display: flex;
+  justify-content: center;
+}
+
 #timeline {
-  height: 2px;
-  background: purple;
-  position: absolute;
+  height: 1px;
+  background: rgb(255, 255, 255);
+  margin: 60px 20px;
   width: 100%;
-  bottom: 15px;
   display: flex;
   align-items: center;
   justify-content: space-around;
+  font-size: 13px;
 }
 
-.marker {
-  border-radius: 50%;
-  height: 10px;
-  width: 10px;
-  background: red;
+.current-time {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: bold;
+  color: #colors[quaternary];
+  background-color: #colors[primary];
+  transform: rotate(45deg);
+  width: auto;
+  height: 19px;
+  border-radius: 10px;
+}
+
+.all-times {
+  color: white;
+  background-color: #colors[primary];
+  transform: rotate(45deg);
+  &:hover {
+    cursor: pointer;
+  }
 }
 
 #description-container {
   border-radius: 10px;
+  top: 10px;
+}
+
+#logs-title {
+  font-size: 18px;
+}
+
+.playspeed-slider {
+  width: 100px;
+  .ant-slider-rail,
+  .ant-slider-track {
+    &,
+    &:hover {
+      background-color: #colors[secondary] !important;
+    }
+  }
+}
+
+#action-title{
+  color: rgb(19, 18, 18);
+  font-size: larger;
+  font-weight: 600;
+}
+
+#replay-log{
+
+  tbody > tr > td {
+    background: none;
+  }
+  .table-row {
+    cursor: pointer;
+  }
+  .table-row-light {
+    background-color: #ffffff;
+  }
+  .table-row-dark {
+    background-color: #cecece;
+  }
+
 }

@@ -10,14 +10,15 @@ import MentorSubHeader from '../../../../components/MentorSubHeader/MentorSubHea
 import ListView from './ListView';
 import CardView from './CardView';
 import { Form, message } from 'antd';
+import { useNavigate } from 'react-router-dom';
 
-export default function Roster(props) {
+export default function Roster({ classroomId }) {
   const [form] = Form.useForm();
   const [studentData, setStudentData] = useState([]);
   const [editingKey, setEditingKey] = useState('');
   const [listView, setListView] = useState(true);
   const [classroom, setClassroom] = useState({});
-  const { classroomId, history } = props;
+  const navigate = useNavigate();
 
   useEffect(() => {
     let data = [];
@@ -34,9 +35,7 @@ export default function Roster(props) {
               id: student.id,
               enrolled: student.enrolled,
             },
-            last_logged_in: student.last_logged_in
-              ? cleanDatetime(student.last_logged_in)
-              : null,
+            last_logged_in: student.last_logged_in,
           });
         });
         setStudentData(data);
@@ -46,22 +45,10 @@ export default function Roster(props) {
     });
   }, [classroomId]);
 
-  const cleanDatetime = (dt) => {
-    const date = new Date(Date.parse(dt));
-    return date;
-  };
-
-  const getFormattedDate = (d) => {
-    if (d) {
-      const day = d.getDate();
-      const month = d.getMonth() + 1;
-      let hrs = d.getHours();
-      const ampm = hrs >= 12 ? 'PM' : 'AM';
-      hrs = hrs % 12;
-      hrs = hrs ? hrs : 12;
-      let min = d.getMinutes();
-      min = min < 10 ? '0' + min : min;
-      return `${month}/${day} ${hrs}:${min} ${ampm}`;
+  const getFormattedDate = (value, locale = 'en-US') => {
+    if (value) {
+      let output = new Date(value).toLocaleDateString(locale);
+      return output + ' ' + new Date(value).toLocaleTimeString(locale);
     } else {
       return 'N/A';
     }
@@ -83,9 +70,7 @@ export default function Roster(props) {
           id: updatedStudent.id,
           enrolled: updatedStudent.enrolled,
         },
-        last_logged_in: updatedStudent.last_logged_in
-          ? cleanDatetime(updatedStudent.last_logged_in)
-          : null,
+        last_logged_in: updatedStudent.last_logged_in,
       };
       setStudentData(newStudentData);
       message.success(
@@ -107,9 +92,7 @@ export default function Roster(props) {
           id: student.id,
           enrolled: student.enrolled,
         },
-        last_logged_in: student.last_logged_in
-          ? cleanDatetime(student.last_logged_in)
-          : null,
+        last_logged_in: student.last_logged_in,
       })
     );
     setStudentData(newStudentData);
@@ -180,7 +163,7 @@ export default function Roster(props) {
   };
 
   const handleBack = () => {
-    history.push('/dashboard');
+    navigate('/dashboard');
   };
 
   return (
@@ -189,7 +172,7 @@ export default function Roster(props) {
         <i className='fa fa-arrow-left' aria-hidden='true' />
       </button>
       <MentorSubHeader
-        title={'Your Students:'}
+        title={'Your Students'}
         addStudentsToTable={addStudentsToTable}
         addUserActive={true}
         classroomId={classroomId}

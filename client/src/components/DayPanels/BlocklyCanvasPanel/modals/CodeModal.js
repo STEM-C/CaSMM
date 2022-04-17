@@ -1,11 +1,10 @@
-import { Modal, Button, Typography } from 'antd';
+import { Modal, Button, Typography, Menu } from 'antd';
 import React, { useState } from 'react';
 import { getArduino, getXml } from '../../Utils/helpers';
-import icon from '../Icons/textIcon.json';
 
 export default function CodeModal(props) {
   const [visible, setVisible] = useState(false);
-  const { title, workspaceRef, setHover, hover } = props;
+  const { title, workspaceRef } = props;
   const { Text } = Typography;
 
   const showModal = () => {
@@ -23,34 +22,16 @@ export default function CodeModal(props) {
   return (
     <div id='code-modal'>
       {title === 'XML' ? (
-        <i
-          onClick={showModal}
-          id='link'
-          className='fa fa-code hvr-info'
-          onMouseEnter={() => setHover(true)}
-          onMouseLeave={() => setHover(false)}
-        />
+        <Menu.Item onClick={showModal}>
+          <i className='far fa-file-code' />
+          &nbsp;Show XML
+        </Menu.Item>
       ) : (
-        <svg
-          xmlns='http://www.w3.org/2000/svg'
-          className='hvr-info'
-          viewBox='0 0 172 172'
-          onClick={showModal}
-          onMouseEnter={() => setHover(true)}
-          onMouseLeave={() => setHover(false)}
-        >
-          <g>
-            <path d={icon.path}></path>
-          </g>
-        </svg>
+        <Menu.Item id='show-arduino-icon' onClick={showModal}>
+          <i className='fas fa-code' />
+          &nbsp;Show Arduino Code
+        </Menu.Item>
       )}
-
-      {hover &&
-        (title === 'XML' ? (
-          <div className='popup ModalCompile2'>Show XML</div>
-        ) : (
-          <div className='popup ModalCompile3'>Show Arduino Code</div>
-        ))}
       <Modal
         title={title}
         visible={visible}

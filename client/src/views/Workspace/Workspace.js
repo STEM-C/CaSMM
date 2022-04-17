@@ -3,13 +3,14 @@ import { getDayToolbox } from '../../Utils/requests.js';
 import BlocklyCanvasPanel from '../../components/DayPanels/BlocklyCanvasPanel/BlocklyCanvasPanel';
 import { message } from 'antd';
 import NavBar from '../../components/NavBar/NavBar';
+import { useNavigate } from 'react-router-dom';
 
-export default function Workspace(props) {
+export default function Workspace({ handleLogout }) {
   const [day, setDay] = useState({});
-  const { handleLogout, history } = props;
 
   useEffect(() => {
     const localDay = JSON.parse(localStorage.getItem('my-day'));
+    const navigate = useNavigate();
 
     if (localDay) {
       if (localDay.toolbox) {
@@ -27,13 +28,12 @@ export default function Workspace(props) {
         });
       }
     } else {
-      history.goBack();
+      navigate(-1);
     }
-  }, [history]);
+  }, []);
 
   const handleGoBack = () => {
-    console.log('workspace');
-    history.goBack();
+    navigate(-1);
   };
 
   return (
