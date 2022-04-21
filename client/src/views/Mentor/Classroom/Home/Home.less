@@ -30,40 +30,27 @@
 
     #view-day-card {
       width: 30vw;
-      min-height: 34vh;
+      height: auto;
       box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.377);
       border-radius: 10px;
       margin: 20px;
+      overflow: auto;
 
       #view-day-heading {
         background-color: #colors[quaternary];
         display: flex;
         align-items: center;
-        height: 20%;
+        justify-content: center;
+        height: 8vh;
         border-top-left-radius: 10px;
         border-top-right-radius: 10px;
 
         #view-day-title {
           display: inline;
-          font-size: 1.2em;
+          font-size: 1.6em;
           margin-left: 12px;
           font-weight: 600;
         }
-
-        // #view-day-button {
-        //   height: 6vh;
-        //   width: 40%;
-        //   font-size: 1.2em;
-        //   font-weight: 600;
-        //   background-color: transparent;
-        //   border: none;
-        //   border-top-left-radius: 10px;
-
-        //   &:hover {
-        //     cursor: pointer;
-        //     background-color: #colors[quinary];
-        //   }
-        // }
       }
 
       #view-day-info {
@@ -74,7 +61,7 @@
         font-size: 1.1em;
         line-height: 1em;
         word-wrap: break-word;
-        height: 50%;
+        min-height: 30vh;
 
         strong {
           font-weight: 500;
@@ -85,8 +72,10 @@
       #view-day-btn-container {
         display: flex;
         justify-content: center;
-        height: 20%;
+        height: 6vh;
         #day-template-btn {
+          position: relative;
+          bottom: 0;
           margin-right: 10px;
           width: 12vw;
           height: 4vh;

@@ -54,7 +54,8 @@ const DayLevelReportView = () => {
     if (session.saves?.length) {
       const latestSave = session.saves[session.saves.length - 1];
       return (
-        <Link id='replay-btn' className='btn' to={`/replay/${latestSave.id}`}>
+        <Link id='replay-btn' className='btn' to={`/replay/${id}`}>
+           {/* <Link id='replay-btn' className='btn' to={`/replay/${id}/${latestSave.id}`}></Link> */}
           View Code Replay
         </Link>
       );

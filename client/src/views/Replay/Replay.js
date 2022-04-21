@@ -5,12 +5,12 @@ import React, {
   useRef,
   useState,
 } from 'react';
-import { Slider } from 'antd';
+import { Slider, Switch } from 'antd';
 import './Replay.less';
 import { useParams, useNavigate } from 'react-router-dom';
 import NavBar from '../../components/NavBar/NavBar';
 import { Table } from 'antd';
-import { getSave } from '../../Utils/requests';
+import { getSave, getSession } from '../../Utils/requests';
 
 const Replay = () => {
   const { saveID } = useParams();
@@ -22,6 +22,11 @@ const Replay = () => {
   const [playSpeed, setPlaySpeed] = useState(500);
   const navigate = useNavigate();
   const [action, setAction] = useState('');
+  const [student, setStudent] = useState('');
+  const [className, setClassName] = useState('');
+  const [lesson, setLesson] = useState('');
+  const [session, setSession] = useState('');
+  const [isToggle, setIsToggle] = useState(true);
 
   const reducer = (state, action) => {
     switch (action.type) {
@@ -50,12 +55,36 @@ const Replay = () => {
   };
 
   useEffect(() => {
-    const getReplay = async () => {
-      const save = await getSave(saveID);
-      console.log(save.data.replay);
-      setReplay(save.data.replay);
+    // const getReplay = async () => {
+    //   const save = await getSave(saveID);
+    //   console.log(save.data.replay);
+    //   setReplay(save.data.replay);
+    // };
+    // getReplay();
+
+
+    const getData = async () => {
+      const session = await getSession(saveID);
+      setSession(session.data);
+      console.log(session.data);
+
+      const fetchedStudents = session.data.students[0].name;
+      setStudent(fetchedStudents);
+
+      const fetchedClassroomNames = session.data.classroom.name;
+      setClassName(fetchedClassroomNames);
+
+      const fetchedLesson = session.data.learning_standard.name;
+      setLesson(fetchedLesson);
+
+      if (session.data.saves?.length) {
+        const latestSave = session.data.saves[session.data.saves.length - 1];
+        const save = await getSave(latestSave.id);
+        // console.log(save.data.replay);
+        setReplay(save.data.replay);
+      }
     };
-    getReplay();
+    getData();
   }, []);
 
   // const dataSource = [
@@ -123,6 +152,11 @@ const Replay = () => {
     setIsPlaying(false);
   }, [playbackRef]);
 
+  function onChange(checked) {
+    console.log(`switch to ${checked}`);
+    setIsToggle(checked);
+  }
+
   //handle dynamic playback changes
   useEffect(() => {
     if (replay.length) {
@@ -148,6 +182,14 @@ const Replay = () => {
       <NavBar />
       <div id='horizontal-container' className='flex flex-column'>
         <div id='top-container' className='flex flex-column vertical-container'>
+          <div className='flex' id='toggle'>
+            <Switch defaultChecked checkedChildren='Show' unCheckedChildren='Hide' onChange={onChange} />
+          </div>
+          <div className='flex flex-column' id='replay-heading'>
+            <h1>{className}</h1>
+            <h2>{lesson}</h2>
+            <h2 className={isToggle ? 'show-name' : 'hide-name'}>{student}</h2>
+          </div>
           <div
             id='description-container'
             className='flex flex-row space-between card'
@@ -156,13 +198,12 @@ const Replay = () => {
               <button
                 onClick={handleGoBack}
                 id='link'
-                className='flex flex-column'
               >
                 <i id='icon-btn' className='fa fa-arrow-left' />
               </button>
             </div>
             <div className='flex flex-row'>
-              <div className='flex flex-row'>
+              <div className='flex flex-row' id='slider'>
                 &#128034;
                 <Slider
                   className='playspeed-slider'
@@ -217,7 +258,6 @@ const Replay = () => {
             </div>
           </div>
         </div>
-        <h2>{`Action: ${action}`}</h2>
 
         <div className='flex flex-row'>
           <div
@@ -225,7 +265,9 @@ const Replay = () => {
             className='flex flex-column vertical-container overflow-visible'
           >
             <h1 id='section-header'>Code Replay</h1>
-            <div id='blockly-canvas' />
+            <div id='blockly-canvas'>
+              <h2 id='action'>{`Action: ${action}`}</h2>
+            </div>
             {/* <div id="timeline">
               { replay.map((item, index) => <div className={step === index ? 'current-time' : 'all-times'} key={item.timestamp}>{timeConverter(item.timestamp)}<Marker/></div>)}
             </div> */}

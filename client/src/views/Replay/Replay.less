@@ -1,5 +1,21 @@
 @import '../../assets/style.less';
 
+#replay-heading {
+  margin-bottom: 10px;
+
+  h1, h2 {
+    margin: 0;
+    color: white;
+  }
+
+  .hide-name {
+    display: none;
+  }
+  
+  .show-name {
+  }
+}
+
 #timeline-container {
   display: flex;
   justify-content: center;
@@ -39,12 +55,36 @@
 }
 
 #description-container {
+  display: flex;
+  align-items: center;
   border-radius: 10px;
   top: 10px;
 }
 
 #logs-title {
   font-size: 18px;
+}
+
+#toggle {
+  width: 100%; 
+  margin-bottom: 20px;
+  justify-content: flex-end;
+  .ant-switch {
+    border: solid 1px;
+    border-color: white;
+  }
+}
+
+
+#action {
+  position: absolute;
+  top: 14px;
+  right: 50px;
+  font-size: 1.2em;
+}
+
+#slider {
+  margin-right: 10px; 
 }
 
 .playspeed-slider {
