@@ -13,6 +13,9 @@ module.exports = {
         proxy: {
             enabled: true,
             clientPath: './public/client',
+        },
+        parser: {
+            jsonLimit: '10mb'
         }
         // logger: {
         //     // dev + prod

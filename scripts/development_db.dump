@@ -4175,6 +4175,20 @@ SELECT pg_catalog.setval('public.teacher_workspaces_id_seq', 1, false);
 
 
 --
+-- Name: teacher_workspaces__blocks_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.teacher_workspaces__blocks_id_seq', 1, false);
+
+
+--
+-- Name: teacher_workspaces_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.teacher_workspaces_id_seq', 1, false);
+
+
+--
 -- Name: teachers_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 

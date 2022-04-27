@@ -4,7 +4,6 @@
 
 Cloud-based programming interface
 
-![Review](https://github.com/STEM-C/CaSMM/workflows/Review/badge.svg)
 ![Deploy Staging](https://github.com/STEM-C/CaSMM/workflows/Deploy%20Staging/badge.svg)
 ![Deploy Production](https://github.com/STEM-C/CaSMM/workflows/Deploy%20Production/badge.svg)
 
@@ -17,7 +16,7 @@ Cloud-based programming interface
 
 ### `server`
 
-[server](/server#server) is the web server and application server. It is powered by [Node](https://nodejs.org/en/) and [Strapi](https://strapi.io/documentation/v3.x/getting-started/introduction.html).
+[server](/server#server) is the web server and application server. It is powered by [Node](https://nodejs.org/en/) and [Strapi](https://docs-v3.strapi.io/developer-docs/latest/getting-started/introduction.html).
 
 ### `compile`
 
@@ -57,9 +56,7 @@ The development environment is composed of five servers. The first one is run wi
 
 1. Install [docker](https://docs.docker.com/get-docker/)
 
-   > If you do not meet these [requirements](https://docs.docker.com/toolbox/toolbox_install_windows/) docker desktop will not initialize properly. There are some unofficial modifications, however, we recommend installing the docker [toolbox](https://docs.docker.com/toolbox/toolbox_install_windows/) 
-
-3. Run `docker-compose up` from `/`
+2. Run `docker-compose up` from `/`
 
    > Grant permission to the **scripts** and **server** directories if you are prompted
    
@@ -100,7 +97,7 @@ All three components of the application have their own dependencies managed in t
 
 ### Strapi
 
-This is by far the largest and most important dependency we have. Staying up to date with its [releases](https://github.com/strapi/strapi/releases) is important for bug/security fixes and new features. When it comes to actually upgrading Strapi make sure to follow the [migration guides](https://strapi.io/documentation/developer-docs/latest/migration-guide/#instructions)!
+This is by far the largest and most important dependency we have. Staying up to date with its [releases](https://github.com/strapi/strapi/releases) is important for bug/security fixes and new features. When it comes to actually upgrading Strapi make sure to follow the [migration guides](https://docs-v3.strapi.io/developer-docs/latest/update-migration-guides/migration-guides.html#v3-guides)!
 
 <br/>
 
