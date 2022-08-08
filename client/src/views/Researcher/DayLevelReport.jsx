@@ -150,7 +150,7 @@ const DayLevelReport = () => {
     {
       title: 'Lesson',
       dataIndex: ['learning_standard', 'name'],
-      key: 'learning_standard',
+      key: 'unit',
       width: '3%',
       align: 'left',
       filters: tbLessonFilter,
