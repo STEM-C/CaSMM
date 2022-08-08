@@ -30,7 +30,8 @@
   "scripts": {
     "start": "vite",
     "start-build": "http-server build -p 3000",
-    "build": "craco build",
+    "build": "vite build",
+    "serve": "vite serve",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
