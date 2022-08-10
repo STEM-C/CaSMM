@@ -229,7 +229,7 @@ export default function AddStudents(props) {
             header: true,
             transformHeader: function (h) {
               let header = h.toLowerCase().trim();
-              if (header === 'student')
+              if (header === 'student' || header === ['student name'])
                 header = 'name';
               return header;
             },
