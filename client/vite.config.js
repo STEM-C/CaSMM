@@ -24,6 +24,7 @@ export default defineConfig({
       },
     },
   },
+  base:"/client",
   plugins: [react()],
   server: {
     port: 3000,
