@@ -26,6 +26,8 @@ module.exports = (strapi) => {
 
         if (
           reqPath === '/favicon.ico' ||
+          reqPath.startsWith('/lib') ||
+          reqPath.startsWith('/assets') ||
           reqPath.startsWith('/admin') ||
           reqPath.startsWith('/client') ||
           refererUrl.startsWith('/admin') ||
