@@ -1,4 +1,5 @@
 FROM strapi/base
+FROM node:14-alpine
 
 WORKDIR /usr/src/app/client
 COPY ./client/package.json .
