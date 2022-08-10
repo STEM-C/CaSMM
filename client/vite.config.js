@@ -1,6 +1,7 @@
 import react from "@vitejs/plugin-react"
 import { defineConfig } from "vite"
-export default defineConfig(({ command, mode, ssrBuild }) => {
+
+export default defineConfig(({ command }) => {
   const isBuild = command === "build"
   return {
     css: {
@@ -39,4 +40,4 @@ export default defineConfig(({ command, mode, ssrBuild }) => {
       outDir: "build",
     },
   }
-});
+})
