@@ -26,6 +26,7 @@ export default defineConfig(({ command }) => {
         },
       },
     },
+    //in build mode, the output will be copoied to server/puiblic/client
     base: isBuild ? "/client/" : "/",
     plugins: [react()],
     server: {
