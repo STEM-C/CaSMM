@@ -1,0 +1,32 @@
+{
+  "kind": "collectionType",
+  "collectionName": "learning_components",
+  "info": {
+    "singularName": "learning-component",
+    "pluralName": "learning-components",
+    "displayName": "Learning-component",
+    "name": "learning-component"
+  },
+  "options": {
+    "increments": true,
+    "timestamps": true,
+    "draftAndPublish": true
+  },
+  "attributes": {
+    "type": {
+      "type": "string"
+    },
+    "days": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::day.day",
+      "inversedBy": "learning_components"
+    },
+    "learning_component_type": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::learning-component-type.learning-component-type",
+      "inversedBy": "learning_components"
+    }
+  }
+}

@@ -1,0 +1,39 @@
+{
+  "kind": "collectionType",
+  "collectionName": "cc_workspaces",
+  "info": {
+    "singularName": "cc-workspace",
+    "pluralName": "cc-workspaces",
+    "displayName": "Cc-workspace",
+    "name": "cc-workspace"
+  },
+  "options": {
+    "increments": true,
+    "timestamps": true,
+    "draftAndPublish": true
+  },
+  "attributes": {
+    "name": {
+      "type": "string",
+      "required": true
+    },
+    "description": {
+      "type": "text"
+    },
+    "template": {
+      "type": "text",
+      "required": true
+    },
+    "blocks": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::block.block"
+    },
+    "classroom": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::classroom.classroom",
+      "inversedBy": "cc_workspaces"
+    }
+  }
+}

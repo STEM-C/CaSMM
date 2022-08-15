@@ -1,0 +1,66 @@
+{
+  "kind": "collectionType",
+  "collectionName": "classrooms",
+  "info": {
+    "singularName": "classroom",
+    "pluralName": "classrooms",
+    "displayName": "Classroom",
+    "name": "classroom"
+  },
+  "options": {
+    "increments": true,
+    "timestamps": true,
+    "draftAndPublish": false
+  },
+  "attributes": {
+    "name": {
+      "type": "string"
+    },
+    "school": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::school.school",
+      "inversedBy": "classrooms"
+    },
+    "sessions": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::session.session",
+      "mappedBy": "classroom"
+    },
+    "mentors": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::mentor.mentor",
+      "mappedBy": "classrooms"
+    },
+    "students": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::student.student",
+      "mappedBy": "classroom"
+    },
+    "code": {
+      "type": "string",
+      "required": true
+    },
+    "grade": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::grade.grade",
+      "inversedBy": "classrooms"
+    },
+    "selections": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::selection.selection",
+      "mappedBy": "classroom"
+    },
+    "cc_workspaces": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::cc-workspace.cc-workspace",
+      "mappedBy": "classroom"
+    }
+  }
+}

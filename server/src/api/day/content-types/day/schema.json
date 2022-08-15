@@ -1,0 +1,56 @@
+{
+  "kind": "collectionType",
+  "collectionName": "days",
+  "info": {
+    "singularName": "day",
+    "pluralName": "days",
+    "displayName": "Day",
+    "name": "day"
+  },
+  "options": {
+    "increments": true,
+    "timestamps": true,
+    "draftAndPublish": false
+  },
+  "attributes": {
+    "learning_standard": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::learning-standard.learning-standard",
+      "inversedBy": "days"
+    },
+    "number": {
+      "type": "biginteger",
+      "required": true
+    },
+    "template": {
+      "type": "text",
+      "required": true
+    },
+    "blocks": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::block.block"
+    },
+    "description": {
+      "type": "text"
+    },
+    "TekS": {
+      "type": "string"
+    },
+    "link": {
+      "type": "string",
+      "required": false
+    },
+    "learning_components": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::learning-component.learning-component",
+      "mappedBy": "days"
+    },
+    "activity_template": {
+      "type": "text",
+      "required": false
+    }
+  }
+}
