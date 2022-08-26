@@ -20,7 +20,7 @@ module.exports = {
         gzip: {
             enabled: true,
             options: {
-                br: { threshold: 100 },
+                br: { threshold: 100, [zlib.constants.BROTLI_PARAM_QUALITY]: 6 },
             }
         }
         // logger: {
