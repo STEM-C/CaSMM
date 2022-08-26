@@ -20,7 +20,7 @@ module.exports = {
         gzip: {
             enabled: true,
             options: {
-              br: false
+                br: { threshold: 100 },
             }
         }
         // logger: {
