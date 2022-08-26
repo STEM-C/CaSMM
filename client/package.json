@@ -19,7 +19,6 @@
     "react-papaparse": "^3.17.1",
     "react-router-dom": "^6.3.0",
     "recharts": "^2.1.13",
-    "util": "^0.12.4",
     "vite": "^3.0.9",
     "yarn": "^1.22.10"
   },
