@@ -6,6 +6,7 @@ const redisUrlParse = require('redis-url-parse')
 
 // Connect to a local redis instance locally, and the Heroku-provided URL in production
 const REDIS_URL = process.env.REDIS_URL || 'redis://compile_queue:6379'
+const { host, port, password } = redisUrlParse(REDIS_URL);
 const bullOptions = REDIS_URL.includes('rediss://')
   ? {
       redis: {
