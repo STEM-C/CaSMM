@@ -4,6 +4,8 @@ import { Table, Button, Tag } from 'antd';
 import './DayLevelReport.less';
 import { useSearchParam } from '../../Utils/useSearchParam';
 import NavBar from '../../components/NavBar/NavBar';
+import { CSVDownloader } from 'react-papaparse';
+
 
 import {
   getSessionsWithFilter,
@@ -17,6 +19,7 @@ import Form from 'antd/lib/form/Form';
 
 const DayLevelReport = () => {
   const [sessions, setSessions] = useState([]);
+  const [csvData, setCsvData] = useState([]);
   const [sessionCount, setSessionCount] = useState(0);
   const navigate = useNavigate();
   const { paramObj, setSearchParam } = useSearchParam();
@@ -56,6 +59,20 @@ const DayLevelReport = () => {
       setSessions(sessionRes.data);
       setSessionCount(sessionCountRes.data);
 
+      let csvData = sessionRes.data;
+
+      if(tbPrevFilter != null){
+        // console.log(Object.entries(tbPrevFilter));
+        Object.entries(tbPrevFilter).forEach((property)=> {
+          if(property[1] != null){
+            let set = new Set(property[1]);
+            csvData = csvData.filter(item => set.has(item[property[0]]?.name))
+          }
+        })
+      }
+      console.log(csvData);
+      setCsvData(csvData);
+
       // set table head filter data
       makeTbNameFilter(sessionRes.data);
       setTbClassroomFilter(makeFilter(sessionRes.data, 'classroom'));
@@ -64,7 +81,7 @@ const DayLevelReport = () => {
       setTbLessonFilter(makeFilter(sessionRes.data, 'learning_standard'));
     };
     if (paramObj['_sort']) fetchData();
-  }, [paramObj]);
+  }, [paramObj, tbPrevFilter]);
 
   const makeTbNameFilter = (data) => {
     let filter = [];
@@ -215,13 +232,36 @@ const DayLevelReport = () => {
       <NavBar />
       <div className='menu-bar'>
         <div id='day-level-report-header'>Day Level - Student Report</div>
+        <div id='day-level-button-group'>
 
-        <button
-          className='day-level-return'
-          onClick={() => navigate('/report')}
-        >
-          Return to Dashboard
-        </button>
+        <CSVDownloader
+            className='day-level-button'
+            filename="sessions"
+            type={'button'}
+            bom={true}
+            data={() => {
+              return csvData.map((session) => {
+                return {
+                  'Student': session.students[0].name,
+                  'Classroom': session.classroom?.name,
+                  'Grade': session.grade?.name,
+                  'Unit': session.unit?.name,
+                  'Lesson': session.learning_standard?.name,
+                  'Session Started': formatMyDate(session.created_at),
+                  'Partners': session.students.slice(1).map((student) => student.name).join(', ')
+                };
+              });
+            }}
+          >
+            Download to CSV
+          </CSVDownloader>
+          <button
+            className='day-level-button'
+            onClick={() => navigate('/report')}
+          >
+            Return to Dashboard
+          </button>
+        </div>
       </div>
       <button id='show-filter-btn' onClick={() => setShowFilter(!showFilter)}>
         {showFilter ? (
@@ -246,7 +286,8 @@ const DayLevelReport = () => {
           columns={columns}
           dataSource={sessions}
           rowKey='id'
-          onChange={(Pagination, filters) => {
+          onChange={(Pagination, filters, sorter, extra) => {
+            // console.log(filters);
             if (
               tbPrevFilter == null ||
               JSON.stringify(filters) === JSON.stringify(tbPrevFilter)
@@ -262,6 +303,7 @@ const DayLevelReport = () => {
             } else {
               setTbPrevFilter(filters);
             }
+            setCsvData(extra.currentDataSource);
           }}
           pagination={{
             current: paramObj['_start'] / paramObj['pageSize'] + 1,
