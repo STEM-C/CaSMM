@@ -1,0 +1,56 @@
+{
+  "kind": "collectionType",
+  "collectionName": "sessions",
+  "info": {
+    "singularName": "session",
+    "pluralName": "sessions",
+    "displayName": "Session",
+    "name": "session"
+  },
+  "options": {
+    "increments": true,
+    "timestamps": true,
+    "draftAndPublish": false
+  },
+  "attributes": {
+    "classroom": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::classroom.classroom",
+      "inversedBy": "sessions"
+    },
+    "students": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::student.student",
+      "mappedBy": "sessions"
+    },
+    "submissions": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::submission.submission",
+      "mappedBy": "session"
+    },
+    "saves": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::save.save",
+      "mappedBy": "session"
+    },
+    "unit": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::unit.unit"
+    },
+    "grade": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::grade.grade"
+    },
+    "learning_standard": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::learning-standard.learning-standard"
+    }
+  }
+}

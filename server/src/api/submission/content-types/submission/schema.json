@@ -1,0 +1,65 @@
+{
+  "kind": "collectionType",
+  "collectionName": "submissions",
+  "info": {
+    "singularName": "submission",
+    "pluralName": "submissions",
+    "displayName": "Submission",
+    "name": "submission"
+  },
+  "options": {
+    "increments": true,
+    "timestamps": true
+  },
+  "attributes": {
+    "status": {
+      "type": "string",
+      "default": "WAITING",
+      "required": true
+    },
+    "workspace": {
+      "type": "text",
+      "required": true
+    },
+    "success": {
+      "type": "boolean",
+      "required": false
+    },
+    "hex": {
+      "type": "text"
+    },
+    "stdout": {
+      "type": "text"
+    },
+    "stderr": {
+      "type": "text"
+    },
+    "board": {
+      "type": "string",
+      "required": true
+    },
+    "sketch": {
+      "type": "text",
+      "required": true
+    },
+    "sandbox": {
+      "type": "boolean",
+      "default": false,
+      "required": true
+    },
+    "session": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::session.session",
+      "inversedBy": "submissions"
+    },
+    "day": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::day.day"
+    },
+    "job_id": {
+      "type": "biginteger"
+    }
+  }
+}

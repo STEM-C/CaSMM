@@ -1,0 +1,32 @@
+{
+  "kind": "collectionType",
+  "collectionName": "selections",
+  "info": {
+    "singularName": "selection",
+    "pluralName": "selections",
+    "displayName": "Selection",
+    "name": "selection"
+  },
+  "options": {
+    "increments": true,
+    "timestamps": true
+  },
+  "attributes": {
+    "classroom": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::classroom.classroom",
+      "inversedBy": "selections"
+    },
+    "learning_standard": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::learning-standard.learning-standard"
+    },
+    "current": {
+      "type": "boolean",
+      "default": true,
+      "required": true
+    }
+  }
+}

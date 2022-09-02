@@ -1,0 +1,52 @@
+module.exports = {
+  routes: [
+    {
+      method: 'GET',
+      path: '/days',
+      handler: 'day.find',
+      config: { policies: [] }
+    },
+    {
+      method: 'GET',
+      path: '/days/:id',
+      handler: 'day.findOne',
+      config: { policies: [] }
+    },
+    {
+      method: 'GET',
+      path: '/days/toolbox/:id',
+      handler: 'day.toolbox',
+      config: { policies: [] }
+    },
+    {
+      method: 'POST',
+      path: '/days',
+      handler: 'day.create',
+      config: { policies: [] }
+    },
+    {
+      method: 'PUT',
+      path: '/days/template/:id',
+      handler: 'day.templateUpdate',
+      config: { policies: [] }
+    },
+    {
+      method: 'PUT',
+      path: '/days/activity_template/:id',
+      handler: 'day.activityTemplateUpdate',
+      config: { policies: [] }
+    },
+    {
+      method: 'PUT',
+      path: '/days/:id',
+      handler: 'day.update',
+      config: { policies: [] }
+    },
+    {
+      method: 'DELETE',
+      path: '/days/:id',
+      handler: 'day.delete',
+      config: { policies: [] }
+    }
+  ]
+}

@@ -1,0 +1,47 @@
+{
+  "kind": "collectionType",
+  "collectionName": "learning_standards",
+  "info": {
+    "singularName": "learning-standard",
+    "pluralName": "learning-standards",
+    "displayName": "Learning-standard",
+    "name": "learning-standard"
+  },
+  "options": {
+    "increments": true,
+    "timestamps": true,
+    "draftAndPublish": false
+  },
+  "attributes": {
+    "number": {
+      "type": "decimal",
+      "required": true
+    },
+    "name": {
+      "type": "string",
+      "required": true
+    },
+    "expectations": {
+      "type": "text"
+    },
+    "days": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::day.day",
+      "mappedBy": "learning_standard"
+    },
+    "unit": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::unit.unit",
+      "inversedBy": "learning_standards"
+    },
+    "teks": {
+      "type": "string",
+      "unique": true
+    },
+    "link": {
+      "type": "string"
+    }
+  }
+}

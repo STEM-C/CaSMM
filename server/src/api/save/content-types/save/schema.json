@@ -1,0 +1,40 @@
+{
+  "kind": "collectionType",
+  "collectionName": "saves",
+  "info": {
+    "singularName": "save",
+    "pluralName": "saves",
+    "displayName": "Save",
+    "name": "save"
+  },
+  "options": {
+    "increments": true,
+    "timestamps": true,
+    "draftAndPublish": false
+  },
+  "attributes": {
+    "day": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::day.day"
+    },
+    "student": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::student.student"
+    },
+    "workspace": {
+      "type": "text",
+      "required": true
+    },
+    "replay": {
+      "type": "json"
+    },
+    "session": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::session.session",
+      "inversedBy": "saves"
+    }
+  }
+}

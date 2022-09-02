@@ -1,0 +1,26 @@
+{
+  "kind": "collectionType",
+  "collectionName": "learning_component_types",
+  "info": {
+    "singularName": "learning-component-type",
+    "pluralName": "learning-component-types",
+    "displayName": "Learning-component-type",
+    "name": "learning-component-type"
+  },
+  "options": {
+    "increments": true,
+    "timestamps": true,
+    "draftAndPublish": true
+  },
+  "attributes": {
+    "name": {
+      "type": "string"
+    },
+    "learning_components": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::learning-component.learning-component",
+      "mappedBy": "learning_component_type"
+    }
+  }
+}

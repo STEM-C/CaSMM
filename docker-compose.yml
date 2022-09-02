@@ -3,7 +3,7 @@ version: '3'
 services:
   server:
     container_name: casmm-server-dev
-    image: strapi/strapi
+    image: naskio/strapi
     restart: always
     environment: 
       - DATABASE_HOST=db

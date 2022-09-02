@@ -1,0 +1,42 @@
+{
+  "kind": "collectionType",
+  "collectionName": "units",
+  "info": {
+    "singularName": "unit",
+    "pluralName": "units",
+    "displayName": "Unit",
+    "name": "unit"
+  },
+  "options": {
+    "increments": true,
+    "timestamps": true
+  },
+  "attributes": {
+    "grade": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::grade.grade",
+      "inversedBy": "units"
+    },
+    "name": {
+      "type": "string",
+      "required": true
+    },
+    "teks_id": {
+      "type": "string"
+    },
+    "teks_description": {
+      "type": "text"
+    },
+    "number": {
+      "type": "integer",
+      "required": true
+    },
+    "learning_standards": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::learning-standard.learning-standard",
+      "mappedBy": "unit"
+    }
+  }
+}

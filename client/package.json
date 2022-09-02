@@ -22,7 +22,6 @@
     "react-router-dom": "6.2.1",
     "react-scripts": "^4.0.3",
     "recharts": "^2.1.5",
-    "strapi-provider-email-nodemailer": "^3.6.8",
     "util": "^0.12.4",
     "yarn": "^1.22.10"
   },

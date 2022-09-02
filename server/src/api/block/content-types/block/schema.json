@@ -1,0 +1,35 @@
+{
+  "kind": "collectionType",
+  "connection": "default",
+  "collectionName": "blocks",
+  "info": {
+    "singularName": "block",
+    "pluralName": "blocks",
+    "displayName": "Block",
+    "name": "block"
+  },
+  "options": {
+    "increments": true,
+    "timestamps": true,
+    "draftAndPublish": false
+  },
+  "attributes": {
+    "name": {
+      "type": "string",
+      "required": true,
+      "unique": true
+    },
+    "description": {
+      "type": "text"
+    },
+    "blocks_category": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::blocks-category.blocks-category",
+      "inversedBy": "blocks"
+    },
+    "image_url": {
+      "type": "string"
+    }
+  }
+}
