@@ -16,6 +16,12 @@ module.exports = {
         },
         parser: {
             jsonLimit: '10mb'
+        },
+        gzip: {
+            enabled: true,
+            options: {
+              br: false
+            }
         }
         // logger: {
         //     // dev + prod
