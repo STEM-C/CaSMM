@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="casmm-icon" href="/favicon.ico" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#000000" />
+    <meta
+      name="description"
+      content="Computation and Science Modeling through Making"
+    />
+    <link rel="apple-touch-icon" href="/logo192.png" />
+    <!--
+      manifest.json provides metadata used when your web app is installed on a
+      user's mobile device or desktop. See https://developers.google.com/web/fundamentals/web-app-manifest/
+    -->
+    <link rel="manifest" href="/manifest.json" />
+    <link rel="preload" as="script" href="/lib/blockly_compressed.js">
+    <link rel="preload" as="script" href="/lib/avrgirl-arduino.global.js">
+    <link rel="preload" as="script" href="/lib/blocks_compressed.js">
+    <link rel="preload" as="script" href="/lib/javascript_compressed.js">
+    <link rel="preload" as="script" href="/lib/en.js">
+    <title>CaSMM</title>
+    <!--libraries for style-->
+    <link
+      rel="stylesheet"
+      href="https://use.fontawesome.com/releases/v5.9.0/css/all.css"
+    />
+    <!-- libraries for blockly -->
+    <!-- depreciated comes first as the other files may depend on it-->
+    <script src="/lib/depreciated.js"></script>
+    <script src="/lib/blockly_compressed.js"></script>
+    <script src="/lib/blocks_compressed.js"></script>
+    <script src="/lib/en.js"></script>
+    <!-- here are the libraries to get code from the blocks -->
+    <script src="/lib/arduino_compressed.js"></script>
+    <script src="/lib/javascript_compressed.js"></script>
+    <script src="/lib/avrgirl-arduino.global.js"></script>
+    <script>
+      const global = globalThis
+    </script>
+  </head>
+  <body>
+    <noscript>You need to enable JavaScript to run this app.</noscript>
+    <div id="root"></div>
+    <script type="module" src="./src/index.jsx"></script>
+  </body>
+</html>

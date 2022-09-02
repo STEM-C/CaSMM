@@ -2,24 +2,24 @@ import React from 'react';
 import { Route, Routes } from 'react-router-dom';
 import PrivateRoute from './Utils/PrivateRoute';
 
-import Home from './views/Home/Home';
 import About from './views/About/About';
-import Dashboard from './views/Mentor/Dashboard/Dashboard';
-import Student from './views/Student/Student';
-import NotFound from './views/NotFound';
-import StudentLogin from './views/StudentLogin/StudentLogin';
 import BlocklyPage from './views/BlocklyPage/BlocklyPage';
-import Classroom from './views/Mentor/Classroom/Classroom';
-import TeacherLogin from './views/TeacherLogin/TeacherLogin';
-import ContentCreator from './views/ContentCreator/ContentCreator';
-import ForgetPassword from './views/TeacherLogin/ForgetPassword';
-import ResetPassword from './views/TeacherLogin/ResetPassword';
 import BugReport from './views/BugReport/BugReport';
-import Report from './views/Researcher/Report';
+import ContentCreator from './views/ContentCreator/ContentCreator';
+import Home from './views/Home/Home';
+import Classroom from './views/Mentor/Classroom/Classroom';
+import Dashboard from './views/Mentor/Dashboard/Dashboard';
+import NotFound from './views/NotFound';
+import Replay from './views/Replay/Replay';
 import DayLevelReport from './views/Researcher/DayLevelReport';
 import DayLevelReportView from './views/Researcher/DayLevelReportView';
 import GroupReport from './views/Researcher/GroupReport';
-import Replay from './views/Replay/Replay';
+import Report from './views/Researcher/Report';
+import Student from './views/Student/Student';
+import StudentLogin from './views/StudentLogin/StudentLogin';
+import ForgetPassword from './views/TeacherLogin/ForgetPassword';
+import ResetPassword from './views/TeacherLogin/ResetPassword';
+import TeacherLogin from './views/TeacherLogin/TeacherLogin';
 
 const App = () => {
   return (
