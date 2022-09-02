@@ -19,6 +19,15 @@ module.exports = () => ({
       },
     },
   },
+  "users-permissions": {
+    config: {
+      jwtSecret:
+        process.env.JWT_SECRET || "58cb969b-bb0e-4492-9d8f-1306100e1f90",
+      jwt: {
+        expiresIn: "7d",
+      },
+    },
+  },
   sentry: {
     config: {
       dsn: process.env.SENTRY_DNS || "",
