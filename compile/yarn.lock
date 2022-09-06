@@ -614,6 +614,11 @@ redis-parser@^3.0.0:
   dependencies:
     redis-errors "^1.0.0"
 
+redis-url-parse@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/redis-url-parse/-/redis-url-parse-2.0.0.tgz#26807183d2b64252774b6271db3f8d3eb0e12bca"
+  integrity sha512-ppb4k1YDElELUtmQaltSKouvju/hJATg3i0Lz8qVfdOMkb5AgzjMpJw/AzIybD/KDo0w+3CUef85GbMNPj+k2A==
+
 rimraf@^3.0.0:
   version "3.0.2"
   resolved "https://registry.yarnpkg.com/rimraf/-/rimraf-3.0.2.tgz#f1a5402ba6220ad52cc1282bac1ae3aa49fd061a"
