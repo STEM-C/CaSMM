@@ -1,16 +1,15 @@
-import React from 'react';
-import { render } from 'react-dom';
-import './index.less';
+import { createRoot } from 'react-dom/client'
+import { BrowserRouter } from 'react-router-dom'
 import App from './App';
-import { BrowserRouter } from 'react-router-dom';
+import './index.less';
 import * as serviceWorker from './serviceWorker';
 
-render(
+const container = document.getElementById("root")
+createRoot(container).render(
   <BrowserRouter>
     <App />
-  </BrowserRouter>,
-  document.getElementById('root')
-);
+  </BrowserRouter>
+)
 
 // If you want your app to work offline and load faster, you can change
 // unregister() to register() below. Note this comes with some pitfalls.
