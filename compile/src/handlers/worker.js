@@ -20,9 +20,7 @@ module.exports.start = id => {
   compileLog(`Started worker ${id}`)
 
   // Connect to the named queue
-  const compile_queue = new Queue("submissions", REDIS_URL, {
-    redis: { tls: { rejectUnauthorized: false, requestCert: true } },
-  })
+  const compile_queue = new Queue("submissions", REDIS_URL)
 
   // start processing jobs from the submission queue
   compile_queue.process(maxJobsPerWorker, processJob)
