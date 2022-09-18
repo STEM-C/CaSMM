@@ -15,7 +15,7 @@ module.exports.init = () => {
   compileLog("Starting compile cluster")
 }
 const redisConfig = REDIS_URL.startsWith("rediss://")
-  ? { tls: { rejectUnauthorized: false } }
+  ? { redis: { tls: { rejectUnauthorized: false } } }
   : {}
 module.exports.start = id => {
   // Signal worked started
