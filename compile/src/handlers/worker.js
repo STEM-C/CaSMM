@@ -14,15 +14,15 @@ module.exports.init = () => {
   // starting up the service
   compileLog("Starting compile cluster")
 }
-
+const redisConfig = REDIS_URL.startsWith("rediss://")
+  ? { redis: { tls: { rejectUnauthorized: false } } }
+  : {}
 module.exports.start = id => {
   // Signal worked started
   compileLog(`Started worker ${id}`)
 
   // Connect to the named queue
-  const compile_queue = new Queue("submissions", REDIS_URL, {
-    redis: { tls: { rejectUnauthorized: false, requestCert: true } },
-  })
+  const compile_queue = new Queue("submissions", REDIS_URL, redisConfig)
 
   // start processing jobs from the submission queue
   compile_queue.process(maxJobsPerWorker, processJob)
