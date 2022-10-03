@@ -23,7 +23,7 @@ const bullOptions = REDIS_URL.includes("rediss://")
 // The maximum number of jobs each worker should process at once
 // Each job is CPU-intensive, so this value should not be too high
 const maxJobsPerWorker = process.env.JOB_CONCURRENCY || 1
-compileLog(bullOptions)
+compileLog(JSON.stringify(bullOptions))
 module.exports.init = () => {
   // starting up the service
   compileLog("Starting compile cluster")
@@ -36,7 +36,7 @@ module.exports.start = id => {
   // Connect to the named queue
   const compile_queue = new Queue("submissions", bullOptions)
   compile_queue.on("error", err => {
-    compileLog(err)
+    compileLog(JSON.stringify(err)
   })
   // start processing jobs from the submission queue
   compile_queue.process(maxJobsPerWorker, processJob)
