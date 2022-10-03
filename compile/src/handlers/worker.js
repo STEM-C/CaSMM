@@ -36,7 +36,7 @@ module.exports.start = id => {
   // Connect to the named queue
   const compile_queue = new Queue("submissions", bullOptions)
   compile_queue.on("error", err => {
-    compileLog(JSON.stringify(err)
+    compileLog(JSON.stringify(err))
   })
   // start processing jobs from the submission queue
   compile_queue.process(maxJobsPerWorker, processJob)
