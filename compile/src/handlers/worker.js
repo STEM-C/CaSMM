@@ -14,8 +14,7 @@ const bullOptions = REDIS_URL.includes("rediss://")
         host,
         password,
         tls: {
-          rejectUnauthorized: false,
-          requestCert: true,
+          rejectUnauthorized: false
         },
       },
     }
