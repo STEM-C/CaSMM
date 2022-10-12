@@ -16,7 +16,7 @@
     "knex": "0.21.18",
     "pg": "^8.7.1",
     "redis-url-parse": "^2.0.0",
-    "sharp": "^0.29.3",
+    "sharp": "^0.30.5",
     "strapi": "3.6.7",
     "strapi-admin": "3.6.7",
     "strapi-connector-bookshelf": "3.6.7",
