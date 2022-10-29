@@ -1,9 +1,9 @@
 import { message } from 'antd';
-import NavBar from '../../components/NavBar/NavBar';
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import NavBar from '../../components/NavBar/NavBar';
 import { postUser, setUserSession } from '../../Utils/AuthRequests';
 import './TeacherLogin.less';
-import { useNavigate } from 'react-router-dom';
 
 const useFormInput = (initialValue) => {
   const [value, setValue] = useState(initialValue);
