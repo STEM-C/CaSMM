@@ -1,9 +1,7 @@
+import loadable from '@loadable/component';
 import React from 'react';
 import { Route, Routes } from 'react-router-dom';
 import PrivateRoute from './Utils/PrivateRoute';
-
-import About from './views/About/About';
-import BlocklyPage from './views/BlocklyPage/BlocklyPage';
 import BugReport from './views/BugReport/BugReport';
 import ContentCreator from './views/ContentCreator/ContentCreator';
 import Home from './views/Home/Home';
@@ -20,6 +18,8 @@ import StudentLogin from './views/StudentLogin/StudentLogin';
 import ForgetPassword from './views/TeacherLogin/ForgetPassword';
 import ResetPassword from './views/TeacherLogin/ResetPassword';
 import TeacherLogin from './views/TeacherLogin/TeacherLogin';
+const About = loadable(() => import('./views/About/About'))
+const BlocklyPage = loadable(() => import('./views/BlocklyPage/BlocklyPage'));
 
 const App = () => {
   return (
