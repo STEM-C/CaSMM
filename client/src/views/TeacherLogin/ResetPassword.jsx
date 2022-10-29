@@ -36,7 +36,7 @@ const ResetPassword = () => {
       <NavBar />
       <div id='reset-pass-wrapper'>
         <div id='reset-pass-title'>Reset Password</div>
-        <Form id='reset-pass-form' onFinish={handleSubmit}>
+        <Form id='reset-pass-form' onFinish={handleSubmit} layout="vertical">
           <Form.Item id='form-label' label='New Password'>
             <Input
               onChange={(e) => setPassword(e.target.value)}

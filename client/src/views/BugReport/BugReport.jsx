@@ -3,6 +3,7 @@ import { Form, Input, Button, message } from 'antd';
 import { submitBugReport } from '../../Utils/requests';
 import NavBar from '../../components/NavBar/NavBar';
 import { useNavigate } from 'react-router-dom';
+import "./BugReport.less";
 
 const BugReport = () => {
   const [description, setDescription] = useState('');
@@ -35,9 +36,9 @@ const BugReport = () => {
   return (
     <div className='container nav-padding'>
       <NavBar />
-      <div id='forgot-pass-wrapper' style={{ marginTop: '0px' }}>
-        <div id='forgot-pass-title'>Report a Bug</div>
-        <Form id='forgot-pass-form' onFinish={handleSubmit}>
+      <div id='bug-report-wrapper' style={{ marginTop: '0px' }}>
+        <div id='bug-report-title'>Report a Bug</div>
+        <Form id='bug-report-form' onFinish={handleSubmit}>
           <Form.Item id='form-label' label='Contact name'>
             <Input
               onChange={(e) => setName(e.target.value)}
