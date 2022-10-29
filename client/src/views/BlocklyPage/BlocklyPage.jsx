@@ -1,15 +1,13 @@
+import { message } from 'antd';
 import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import BlocklyCanvasPanel from '../../components/DayPanels/BlocklyCanvasPanel/BlocklyCanvasPanel';
 import NavBar from '../../components/NavBar/NavBar';
 import {
-  getDayToolbox,
-  getDayToolboxAll,
-  getCCWorkspaceToolbox,
+  getCCWorkspaceToolbox, getDayToolbox,
+  getDayToolboxAll
 } from '../../Utils/requests';
-import { useNavigate } from 'react-router-dom';
 import { useGlobalState } from '../../Utils/userState';
-
-import { message } from 'antd';
 
 export default function BlocklyPage({ isSandbox }) {
   const [value] = useGlobalState('currUser');
