@@ -22,7 +22,7 @@ export default function AddStudents({ classroomId, addStudentsToTable }) {
   const reformatName = n => {
     // check "Last, First" / "Last, First Middle"
     let name = parseFullName(n)
-    if (name.firstName && name.lastName) {
+    if (name.first && name.last) {
       return `${name.first} ${name.last[0]}.`
     }
     // if (n.search('^([A-Za-z]+),\\s*([A-Za-z]+)\\s*([A-Za-z]+)') !== -1) {
