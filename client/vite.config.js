@@ -4,6 +4,9 @@ import { defineConfig } from "vite"
 const base = process.env.PUBLIC_URL ?? "/"
 
 export default defineConfig({
+  optimizeDeps: {
+    disabled: false,
+  },
   css: {
     preprocessorOptions: {
       less: {
@@ -39,5 +42,6 @@ export default defineConfig({
   },
   build: {
     outDir: "build",
+    commonjsOptions: { include: [] },
   },
 })
