@@ -1,73 +1,73 @@
-import React, { useState, useEffect } from 'react';
-import { Button, List, Card, Modal, Form, message } from 'antd';
+import { Button, Card, Form, List, message, Modal } from "antd"
+import React, { useEffect, useState } from "react"
+import { useSearchParams } from "react-router-dom"
 import {
   createDay,
   deleteDay,
   getLearningStandardDays,
-} from '../../../Utils/requests';
-import DayDetailModal from './components/DayDetailModal';
-import './DayEditor.less';
-import { useSearchParams } from 'react-router-dom';
+} from "../../../Utils/requests"
+import DayDetailModal from "./components/DayDetailModal"
+import "./DayEditor.less"
 
 const DayEditor = ({ learningStandard, viewing, setViewing, page, tab }) => {
-  const [visible, setVisible] = useState(false);
-  const [dayDetailsVisible, setDayDetailsVisible] = useState(false);
-  const [days, setDays] = useState([]);
-  const [selectDay, setSelectDay] = useState('');
+  const [visible, setVisible] = useState(false)
+  const [dayDetailsVisible, setDayDetailsVisible] = useState(false)
+  const [days, setDays] = useState([])
+  const [selectDay, setSelectDay] = useState("")
   // eslint-disable-next-line
-  const [_, setSearchParams] = useSearchParams();
+  const [_, setSearchParams] = useSearchParams()
 
-  const showDayDetailsModal = async (dayObj) => {
-    setDayDetailsVisible(true);
-    setSelectDay(dayObj);
-  };
+  const showDayDetailsModal = async dayObj => {
+    setDayDetailsVisible(true)
+    setSelectDay(dayObj)
+  }
 
   useEffect(() => {
     const getSavedDay = async () => {
       if (viewing && viewing === learningStandard.id) {
-        const getDayAll = await getLearningStandardDays(viewing);
-        const myDays = getDayAll.data;
-        myDays.sort((a, b) => (a.number > b.number ? 1 : -1));
-        setDays([...myDays]);
-        setVisible(true);
+        const getDayAll = await getLearningStandardDays(viewing)
+        const myDays = getDayAll.data
+        myDays.sort((a, b) => (a.number > b.number ? 1 : -1))
+        setDays([...myDays])
+        setVisible(true)
       }
-    };
-    getSavedDay();
-  }, [viewing, learningStandard.id]);
+    }
+    getSavedDay()
+  }, [viewing, learningStandard.id])
 
   const addBasicDay = async () => {
-    let newDay = 1;
+    let newDay = 1
     if (days.length !== 0) {
-      newDay = parseInt(days[days.length - 1].number) + 1;
+      newDay = parseInt(days[days.length - 1].number) + 1
     }
 
-    const response = await createDay(newDay, learningStandard.id);
+    const response = await createDay(newDay, learningStandard.id)
     if (response.err) {
-      message.error(response.err);
+      message.error(response.err)
     }
-    setDays([...days, response.data]);
-  };
+    setDays([...days, response.data])
+  }
 
-  const removeBasicDay = async (currDay) => {
+  const removeBasicDay = async currDay => {
     if (window.confirm(`Deleting Day ${currDay.number}`)) {
-      const response = await deleteDay(currDay.id);
+      const response = await deleteDay(currDay.id)
       if (response.err) {
-        message.error(response.err);
+        message.error(response.err)
       }
 
-      const getDayAll = await getLearningStandardDays(learningStandard.id);
+      const getDayAll = await getLearningStandardDays(learningStandard.id)
       if (getDayAll.err) {
-        message.error(getDayAll.err);
+        message.error(getDayAll.err)
       }
-      setDays([...getDayAll.data]);
+      setDays([...getDayAll.data])
     }
-  };
+  }
 
   const handleCancel = () => {
-    setVisible(false);
-    setViewing(undefined);
-    setSearchParams({ tab, page });
-  };
+    setVisible(false)
+    setViewing(undefined)
+    setSearchParams({ tab, page })
+  }
 
   return (
     <div>
@@ -76,30 +76,30 @@ const DayEditor = ({ learningStandard, viewing, setViewing, page, tab }) => {
         visible={visible}
         onCancel={handleCancel}
         footer={null}
-        size='large'
+        size="large"
       >
-        <div className='list-position'>
+        <div className="list-position">
           {days.length > 0 ? (
             <div>
-              <p id='day-editor-subtitle'>
+              <p id="day-editor-subtitle">
                 Click on a <strong>Day</strong> to edit details and workspace
               </p>
               <List
                 grid={{ gutter: 16, column: 3 }}
-                style={{ marginTop: '2vh' }}
+                style={{ marginTop: "2vh" }}
                 dataSource={days}
-                renderItem={(item) => (
+                renderItem={item => (
                   <List.Item>
                     <Card
-                      id='card-day'
+                      id="card-day"
                       key={item.id}
-                      title={'Day ' + item.number}
-                      hoverable='true'
-                      style={item.description ? { background: '#a6ffb3' } : {}}
+                      title={"Day " + item.number}
+                      hoverable="true"
+                      style={item.description ? { background: "#a6ffb3" } : {}}
                       onClick={() => showDayDetailsModal(item)}
                     />
                     <span
-                      className='delete-btn'
+                      className="delete-btn"
                       onClick={() => removeBasicDay(item)}
                     >
                       &times;
@@ -111,32 +111,32 @@ const DayEditor = ({ learningStandard, viewing, setViewing, page, tab }) => {
           ) : null}
           <div>
             <Form
-              id='add-day'
+              id="add-day"
               wrapperCol={{
                 span: 14,
               }}
-              layout='horizontal'
-              size='default'
+              layout="horizontal"
+              size="default"
             >
               <Form.Item
                 wrapperCol={{
                   offset: 8,
                   span: 16,
                 }}
-                style={{ marginBottom: '0px' }}
+                style={{ marginBottom: "0px" }}
               >
                 <Button
                   onClick={addBasicDay}
-                  type='primary'
-                  size='large'
-                  className='content-creator-button'
+                  type="primary"
+                  size="large"
+                  className="content-creator-button"
                 >
                   Add Day
                 </Button>
                 <Button
                   onClick={handleCancel}
-                  size='large'
-                  className='content-creator-button'
+                  size="large"
+                  className="content-creator-button"
                 >
                   Cancel
                 </Button>
@@ -157,7 +157,7 @@ const DayEditor = ({ learningStandard, viewing, setViewing, page, tab }) => {
         />
       )}
     </div>
-  );
-};
+  )
+}
 
-export default DayEditor;
+export default DayEditor
