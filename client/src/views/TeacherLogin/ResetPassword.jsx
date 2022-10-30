@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { resetPassword } from '../../Utils/requests';
 import NavBar from '../../components/NavBar/NavBar';
+import "./TeacherLogin.less";
 
 const ResetPassword = () => {
   const [password, setPassword] = useState('');
@@ -35,7 +36,7 @@ const ResetPassword = () => {
       <NavBar />
       <div id='reset-pass-wrapper'>
         <div id='reset-pass-title'>Reset Password</div>
-        <Form id='reset-pass-form' onFinish={handleSubmit}>
+        <Form id='reset-pass-form' onFinish={handleSubmit} layout="vertical">
           <Form.Item id='form-label' label='New Password'>
             <Input
               onChange={(e) => setPassword(e.target.value)}

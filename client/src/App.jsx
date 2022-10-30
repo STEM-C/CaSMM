@@ -1,25 +1,26 @@
+import loadable from '@loadable/component';
 import React from 'react';
 import { Route, Routes } from 'react-router-dom';
 import PrivateRoute from './Utils/PrivateRoute';
-
-import About from './views/About/About';
 import BlocklyPage from './views/BlocklyPage/BlocklyPage';
-import BugReport from './views/BugReport/BugReport';
 import ContentCreator from './views/ContentCreator/ContentCreator';
 import Home from './views/Home/Home';
-import Classroom from './views/Mentor/Classroom/Classroom';
-import Dashboard from './views/Mentor/Dashboard/Dashboard';
-import NotFound from './views/NotFound';
 import Replay from './views/Replay/Replay';
 import DayLevelReport from './views/Researcher/DayLevelReport';
 import DayLevelReportView from './views/Researcher/DayLevelReportView';
 import GroupReport from './views/Researcher/GroupReport';
 import Report from './views/Researcher/Report';
 import Student from './views/Student/Student';
-import StudentLogin from './views/StudentLogin/StudentLogin';
 import ForgetPassword from './views/TeacherLogin/ForgetPassword';
-import ResetPassword from './views/TeacherLogin/ResetPassword';
-import TeacherLogin from './views/TeacherLogin/TeacherLogin';
+//lazy loaded components
+const About = loadable(() => import('./views/About/About'))
+const NotFound = loadable(() => import('./views/NotFound'))
+const TeacherLogin = loadable(() => import('./views/TeacherLogin/TeacherLogin'))
+const StudentLogin = loadable(() => import('./views/StudentLogin/StudentLogin'))
+const BugReport = loadable(() => import('./views/BugReport/BugReport'))
+const ResetPassword = loadable(() => import('./views/TeacherLogin/ResetPassword'))
+const Dashboard = loadable(() => import('./views/Mentor/Dashboard/Dashboard'))
+const Classroom = loadable(() => import('./views/Mentor/Classroom/Classroom'))
 
 const App = () => {
   return (
@@ -114,7 +115,7 @@ const App = () => {
           }
         />
         <Route path='/bugreport' element={<BugReport />} />
-        <Route element={NotFound} />
+        <Route path='*' element={<NotFound/>} />
       </Routes>
     </div>
   );

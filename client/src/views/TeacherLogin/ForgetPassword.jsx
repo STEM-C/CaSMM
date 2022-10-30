@@ -1,7 +1,8 @@
-import { Form, Input, Button, message, Alert } from 'antd';
-import React, { useState, useEffect } from 'react';
-import { forgetPassword } from '../../Utils/requests';
+import { Alert, Button, Form, Input, message } from 'antd';
+import React, { useEffect, useState } from 'react';
 import NavBar from '../../components/NavBar/NavBar';
+import { forgetPassword } from '../../Utils/requests';
+import "./TeacherLogin.less"
 
 const ForgetPassword = () => {
   const [email, setEmail] = useState('');
