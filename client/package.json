@@ -42,6 +42,7 @@
     ]
   },
   "devDependencies": {
-    "@types/w3c-web-serial": "^1.0.3"
+    "@types/w3c-web-serial": "^1.0.3",
+    "parse-full-name": "^1.2.6"
   }
 }
