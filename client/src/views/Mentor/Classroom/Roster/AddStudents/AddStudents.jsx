@@ -16,7 +16,7 @@ export default function AddStudents({ classroomId, addStudentsToTable }) {
 
   const nameIsFormatted = n => {
     let name = parseFullName(n)
-    return name.first && name.last
+    return Boolean(name.first && name.last)
   }
 
   const reformatName = n => {
