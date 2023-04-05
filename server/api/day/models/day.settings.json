@@ -32,6 +32,9 @@
     "TekS": {
       "type": "string"
     },
+    "images": {
+      "type": "text"
+    },
     "link": {
       "type": "string",
       "required": false

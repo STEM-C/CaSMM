@@ -7,6 +7,7 @@ import {
 } from '../../../../Utils/requests';
 import MentorSubHeader from '../../../../components/MentorSubHeader/MentorSubHeader';
 import DisplayCodeModal from './DisplayCodeModal';
+import DisplayDiagramModal from './DisplayDiagramModal';
 import LearningStandardModal from './LearningStandardSelect/LearningStandardModal';
 import { message, Tag } from 'antd';
 import { useNavigate } from 'react-router-dom';
@@ -219,6 +220,11 @@ export default function Home({ classroomId, viewing }) {
                             </a>
                           </p>
                         ) : null}
+                      </div>
+                      <div id='display-diagram-modal'>
+                        <p>
+                          <DisplayDiagramModal image={day.images} />
+                        </p>
                       </div>
                     </div>
                   ))}

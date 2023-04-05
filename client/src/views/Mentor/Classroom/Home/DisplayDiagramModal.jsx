@@ -2,9 +2,10 @@ import {Modal, Button} from 'antd';
 import React, {useState} from "react";
 import './Home.less'
 
-export default function DisplayCodeModal(props) {
+export default function DisplayDiagramModal(props) {
     const [visible, setVisible] = useState(false);
-    const {code} = props;
+    const {image} = props;
+    
 
     const showModal = () => {
         setVisible(true)
@@ -17,12 +18,18 @@ export default function DisplayCodeModal(props) {
     const handleOk = () => {
         setVisible(false)
     };
+    const links = image.split('\n');
+    let items = [];
+    for (let i = 0; i< links.length; i++){
+       items.push(<img src={links[i]} display="block" position="relative" alt="" width="auto" height="300"/>);
+    }
 
     return (
-        <div id='display-code-modal'>
-            <button id='display-code-btn' onClick={showModal}>Click to display join code</button>
+        <div id='display-diagram-modal'>
+            <button id='display-code-btn'
+             onClick={showModal}>Click to display diagrams</button>
             <Modal
-                title={'Join Code'}
+                title={'Diagrams'}
                 visible={visible}
                 onCancel={handleCancel}
                 width='50vw'
@@ -32,7 +39,9 @@ export default function DisplayCodeModal(props) {
                     </Button>,
                 ]}
             >
-                <div id="code-display-text">{code}</div>
+                <div id="code-display-text">
+                {items} 
+                </div>
             </Modal>
         </div>
     );

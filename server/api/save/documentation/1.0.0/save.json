@@ -622,6 +622,9 @@
               "TekS": {
                 "type": "string"
               },
+              "images": {
+                "type": "string"
+              },
               "link": {
                 "type": "string"
               },

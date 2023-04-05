@@ -23,7 +23,9 @@ const DayDetailModal = ({
   viewing,
 }) => {
   const [description, setDescription] = useState("")
+  //const [template, setTemplate] = useState("")
   const [TekS, setTekS] = useState("")
+  const [images, setImages] = useState("")
   const [link, setLink] = useState("")
 
   const [scienceComponents, setScienceComponents] = useState([])
@@ -42,7 +44,9 @@ const DayDetailModal = ({
         return
       }
       setDescription(response.data.description)
+      //setTemplate(response.data.template)
       setTekS(response.data.TekS)
+      setImages(response.data.images)
       setLink(response.data.link)
       setLinkError(false)
       const science = response.data.learning_components
@@ -112,7 +116,9 @@ const DayDetailModal = ({
     const res = await updateDayDetails(
       selectDay.id,
       description,
+      //template,
       TekS,
+      images,
       link,
       scienceComponents,
       makingComponents,
@@ -167,6 +173,14 @@ const DayDetailModal = ({
             placeholder="Enter description"
           ></Input.TextArea>
         </Form.Item>
+        {/* <Form.Item id="form-label" label="Student Template">
+          <Input
+            onChange={e => setTemplate(e.target.value)}
+            value={template}
+            //className="input"
+            placeholder="Enter code template"
+          ></Input>
+        </Form.Item> */}
         <Form.Item id="form-label" label="TekS">
           <Input
             onChange={e => setTekS(e.target.value)}
@@ -175,6 +189,14 @@ const DayDetailModal = ({
             required
             placeholder="Enter tekS"
           ></Input>
+        </Form.Item>
+        <Form.Item id="form-label" label="Images">
+          <Input.TextArea
+            onChange={e => setImages(e.target.value)}
+            value={images}
+            className="input"
+            placeholder="Enter image URL"
+          ></Input.TextArea>
         </Form.Item>
         <h3 id="subtitle">Lesson Learning Components</h3>
         <Form.Item id="form-label" label="Science Component">

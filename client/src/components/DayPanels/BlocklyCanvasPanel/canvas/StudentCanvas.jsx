@@ -6,6 +6,7 @@ import { getSaves } from '../../../../Utils/requests';
 import CodeModal from '../modals/CodeModal';
 import ConsoleModal from '../modals/ConsoleModal';
 import PlotterModal from '../modals/PlotterModal';
+import DisplayDiagramModal from '../modals/DisplayDiagramModal'
 import VersionHistoryModal from '../modals/VersionHistoryModal';
 import {
   connectToPort,
@@ -13,6 +14,7 @@ import {
   handleOpenConnection,
 } from '../../Utils/consoleHelpers';
 import ArduinoLogo from '../Icons/ArduinoLogo';
+import ImagesLogo from '../Icons/ImagesLogo';
 import PlotterLogo from '../Icons/PlotterLogo';
 import { useNavigate } from 'react-router-dom';
 
@@ -23,6 +25,7 @@ export default function StudentCanvas({ day }) {
   const [hoverUndo, setHoverUndo] = useState(false);
   const [hoverRedo, setHoverRedo] = useState(false);
   const [hoverCompile, setHoverCompile] = useState(false);
+  const [hoverImage, setHoverImage] = useState(false);
   const [hoverConsole, setHoverConsole] = useState(false);
   const [showConsole, setShowConsole] = useState(false);
   const [showPlotter, setShowPlotter] = useState(false);
@@ -296,7 +299,13 @@ export default function StudentCanvas({ day }) {
       setShowPlotter(false);
     }
   };
+  // const handleImage = async() => {
+  //   message.warning(
+  //     'test'
+  //   );
 
+  //   DisplayDiagramModal(day.images)
+  // }
   const handleCompile = async () => {
     if (showConsole || showPlotter) {
       message.warning(
@@ -471,7 +480,27 @@ export default function StudentCanvas({ day }) {
                           Upload to Arduino
                         </div>
                       )}
+                      
+                      {/* <ImagesLogo
+                      setHoverImage={setHoverImage}
+                      handleImage={handleImage}
+                      />
+                      {hoverImage && (
+                        <div className='popup ModalCompile'>
+                          Show images
+                        </div>
+                      )} */}
 
+                    <Col>
+                    <DisplayDiagramModal
+                      image={day.images}
+                    />
+                    </Col>
+                    {/* {hoverImage && (
+                        <div className='popup ModalCompile'>
+                          Show images
+                        </div>
+                      )} */}
                       <i
                         onClick={() => handleConsole()}
                         className='fas fa-terminal hvr-info'
@@ -508,7 +537,7 @@ export default function StudentCanvas({ day }) {
           plotData={plotData}
           setPlotData={setPlotData}
           plotId={plotId}
-        />
+        />          
       </div>
 
       {/* This xml is for the blocks' menu we will provide. Here are examples on how to include categories and subcategories */}
