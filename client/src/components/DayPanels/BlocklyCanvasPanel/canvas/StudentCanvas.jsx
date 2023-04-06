@@ -14,7 +14,6 @@ import {
   handleOpenConnection,
 } from '../../Utils/consoleHelpers';
 import ArduinoLogo from '../Icons/ArduinoLogo';
-import ImagesLogo from '../Icons/ImagesLogo';
 import PlotterLogo from '../Icons/PlotterLogo';
 import { useNavigate } from 'react-router-dom';
 
@@ -299,13 +298,6 @@ export default function StudentCanvas({ day }) {
       setShowPlotter(false);
     }
   };
-  // const handleImage = async() => {
-  //   message.warning(
-  //     'test'
-  //   );
-
-  //   DisplayDiagramModal(day.images)
-  // }
   const handleCompile = async () => {
     if (showConsole || showPlotter) {
       message.warning(
@@ -480,27 +472,9 @@ export default function StudentCanvas({ day }) {
                           Upload to Arduino
                         </div>
                       )}
-                      
-                      {/* <ImagesLogo
-                      setHoverImage={setHoverImage}
-                      handleImage={handleImage}
-                      />
-                      {hoverImage && (
-                        <div className='popup ModalCompile'>
-                          Show images
-                        </div>
-                      )} */}
-
-                    <Col>
                     <DisplayDiagramModal
                       image={day.images}
                     />
-                    </Col>
-                    {/* {hoverImage && (
-                        <div className='popup ModalCompile'>
-                          Show images
-                        </div>
-                      )} */}
                       <i
                         onClick={() => handleConsole()}
                         className='fas fa-terminal hvr-info'

@@ -1,14 +1,20 @@
 import {Modal, Button} from 'antd';
 import React, {useState} from "react";
 
+
 export default function DisplayDiagramModal(props) {
     const [visible, setVisible] = useState(false);
     const {image} = props;
-    
+    const [hover, setHover] = useState(false);
     const showModal = () => {
         setVisible(true)
     };
-
+    const onHover = () => {
+        setHover(true);
+      };
+      const onLeave = () => {
+        setHover(false);
+      };
     const handleCancel = () => {
         setVisible(false)
     };
@@ -16,22 +22,29 @@ export default function DisplayDiagramModal(props) {
     const handleOk = () => {
         setVisible(false)
     };
-    
-    const links = image.split('\n');
-    let items = [];
-    for (let i = 0; i< links.length; i++){
-       items.push(<img src={links[i]} display="block" position="relative" alt="" width="auto" height="300"/>);
-    }
-    return (
-        <div id='display-diagram-modal'>
 
-            <Button id='link'>
-            
+    const links = new String(image);
+    let items = links.split('\n');
+    let entries = [];
+    for (let i = 0; i< items.length; i++){
+       entries.push(<img src={items[i]} display="block" position="relative" alt="" width="auto" height="300"/>);
+    }    let width = entries.length * 700
+    return (
+        <div id='display-diagram-modal'
+        
+        onMouseEnter={onHover}
+            onMouseLeave={onLeave}>
+            {hover ? <div className='popup ModalCompile'>
+                          Diagrams
+                        </div> :  ""
+                      }
+            <Button id='link'
+            >
+
             <svg width="25" height="20px" viewBox="0 -3 20 20" version="1.1"
              fill='none'
               onClick={showModal}
                xmlns="http://www.w3.org/2000/svg">
-
           <defs>
       </defs>
           <g id="image" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
@@ -49,7 +62,7 @@ export default function DisplayDiagramModal(props) {
                 title={'Diagrams'}
                 visible={visible}
                 onCancel={handleCancel}
-                width='auto'
+                width={width}
                 footer={[
                     <Button key="ok" type="primary" onClick={handleOk}>
                         OK
@@ -57,7 +70,7 @@ export default function DisplayDiagramModal(props) {
                 ]}
             >
                 <div id="code-display-text">
-                {items} 
+                {entries} 
                 </div>
             </Modal>
         </div>

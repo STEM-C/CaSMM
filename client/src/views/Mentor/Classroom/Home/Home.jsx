@@ -222,9 +222,8 @@ export default function Home({ classroomId, viewing }) {
                         ) : null}
                       </div>
                       <div id='display-diagram-modal'>
-                        <p>
-                          <DisplayDiagramModal image={day.images} />
-                        </p>
+                          <DisplayDiagramModal image={day.images} 
+                          />
                       </div>
                     </div>
                   ))}

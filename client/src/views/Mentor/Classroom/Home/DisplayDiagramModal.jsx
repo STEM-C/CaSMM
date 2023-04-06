@@ -18,12 +18,16 @@ export default function DisplayDiagramModal(props) {
     const handleOk = () => {
         setVisible(false)
     };
-    const links = image.split('\n');
-    let items = [];
-    for (let i = 0; i< links.length; i++){
-       items.push(<img src={links[i]} display="block" position="relative" alt="" width="auto" height="300"/>);
+    const links = new String(image);
+    let items = links.split('\n');
+    let entries = [];
+    for (let i = 0; i< items.length; i++){
+        if (items[i] == '\n'){
+            continue;
+        }
+       entries.push(<img src={items[i]} display="block" position="relative" alt="" width="auto" height="300"/>);
     }
-
+    let width = entries.length * 700
     return (
         <div id='display-diagram-modal'>
             <button id='display-code-btn'
@@ -32,7 +36,7 @@ export default function DisplayDiagramModal(props) {
                 title={'Diagrams'}
                 visible={visible}
                 onCancel={handleCancel}
-                width='50vw'
+                width={width}
                 footer={[
                     <Button key="ok" type="primary" onClick={handleOk}>
                         OK
@@ -40,7 +44,7 @@ export default function DisplayDiagramModal(props) {
                 ]}
             >
                 <div id="code-display-text">
-                {items} 
+                {entries} 
                 </div>
             </Modal>
         </div>
