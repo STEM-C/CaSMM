@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "@loadable/component": "^5.15.2",
+    "antd": "^5.4.0",
     "cross-env": "^7.0.3",
     "emoji-picker-react": "^3.6.1",
     "http-server": "^0.12.3",
