@@ -1,4 +1,4 @@
-import react from "@vitejs/plugin-react"
+import react from "@vitejs/plugin-react-swc"
 import { defineConfig } from "vite"
 
 const base = process.env.PUBLIC_URL ?? "/"

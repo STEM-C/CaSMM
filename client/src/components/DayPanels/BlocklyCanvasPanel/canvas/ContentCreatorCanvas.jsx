@@ -13,6 +13,7 @@ import ConsoleModal from '../modals/ConsoleModal';
 import PlotterModal from '../modals/PlotterModal';
 import StudentToolboxMenu from '../modals/StudentToolboxMenu';
 import LoadWorkspaceModal from '../modals/LoadWorkspaceModal';
+import DisplayDiagramModal from '../modals/DisplayDiagramModal'
 import {
   connectToPort,
   handleCloseConnection,
@@ -409,7 +410,9 @@ export default function ContentCreatorCanvas({
                             Upload to Arduino
                           </div>
                         )}
-
+                  <DisplayDiagramModal
+                      image={day.images}
+                    />
                         <i
                           onClick={() => handleConsole()}
                           className='fas fa-terminal hvr-info'
