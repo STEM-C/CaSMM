@@ -155,7 +155,7 @@ export default function StudentToolboxMenu(props) {
         <img
           height='95%'
           width='95%'
-          src={process.env.PUBLIC_URL + block.image_url}
+          src={block.image_url}
           alt={block.name}
         />
       );

@@ -844,6 +844,9 @@
           "TekS": {
             "type": "string"
           },
+          "images": {
+            "type": "string"
+          },
           "link": {
             "type": "string"
           },
@@ -911,6 +914,9 @@
             "type": "string"
           },
           "TekS": {
+            "type": "string"
+          },
+          "images": {
             "type": "string"
           },
           "link": {

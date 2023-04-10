@@ -21,6 +21,7 @@ module.exports = {
     // validate the request
     const {
       description,
+      images,
       TekS,
       link,
       scienceComponents,
@@ -104,7 +105,7 @@ module.exports = {
 
     const updatedDay = await strapi.services.day.update(
       { id },
-      { description, TekS, link, learning_components: dayComponents }
+      { description, images, TekS, link, learning_components: dayComponents }
     );
     return sanitizeEntity(updatedDay, { model: strapi.models.day });
   },

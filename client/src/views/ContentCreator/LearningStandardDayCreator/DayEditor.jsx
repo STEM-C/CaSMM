@@ -1,101 +1,101 @@
-import React, { useState } from 'react';
-import { Button, List, Card, Modal, Form, message } from 'antd';
+import { Button, Card, Form, List, message, Modal } from "antd"
+import React, { useState } from "react"
+import { useNavigate } from "react-router-dom"
 import {
   createDay,
   deleteDay,
-  getDayToolboxAll,
   getDayToolbox,
+  getDayToolboxAll,
   getLearningStandard,
-} from '../../../Utils/requests';
-import './DayEditor.less';
-import { useNavigate } from 'react-router-dom';
+} from "../../../Utils/requests"
+import "./DayEditor.less"
 
 export default function ContentCreator({ learningStandard }) {
-  const [visible, setVisible] = useState(false);
-  const [days, setDay] = useState([]);
+  const [visible, setVisible] = useState(false)
+  const [days, setDay] = useState([])
 
-  const navigate = useNavigate();
+  const navigate = useNavigate()
 
   const handleCancel = () => {
-    setVisible(false);
-  };
+    setVisible(false)
+  }
 
   const showModal = async () => {
-    const lsResponse = await getLearningStandard(learningStandard.id);
-    const myDays = lsResponse.data.days;
-    myDays.sort((a, b) => (a.number > b.number ? 1 : -1));
-    setDay([...myDays]);
-    setVisible(true);
-  };
+    const lsResponse = await getLearningStandard(learningStandard.id)
+    const myDays = lsResponse.data.days
+    myDays.sort((a, b) => (a.number > b.number ? 1 : -1))
+    setDay([...myDays])
+    setVisible(true)
+  }
 
   const addBasicDay = async () => {
-    let newDay = 1;
+    let newDay = 1
     if (days.length !== 0) {
-      newDay = parseInt(days[days.length - 1].number) + 1;
+      newDay = parseInt(days[days.length - 1].number) + 1
     }
 
-    const response = await createDay(newDay, learningStandard.id);
+    const response = await createDay(newDay, learningStandard.id)
     if (response.err) {
-      message.error(response.err);
+      message.error(response.err)
     }
-    setDay([...days, response.data]);
-  };
+    setDay([...days, response.data])
+  }
 
-  const removeBasicDay = async (currDay) => {
+  const removeBasicDay = async currDay => {
     if (window.confirm(`Deleting Day ${currDay.number}`)) {
-      const response = await deleteDay(currDay.id);
+      const response = await deleteDay(currDay.id)
       if (response.err) {
-        message.error(response.err);
+        message.error(response.err)
       }
 
-      const lsResponse = await getLearningStandard(learningStandard.id);
+      const lsResponse = await getLearningStandard(learningStandard.id)
       if (lsResponse.err) {
-        message.error(lsResponse.err);
+        message.error(lsResponse.err)
       }
-      setDay([...lsResponse.data.days]);
+      setDay([...lsResponse.data.days])
     }
-  };
+  }
 
-  const handleViewDay = async (day) => {
-    const allToolBoxRes = await getDayToolboxAll();
-    const selectedToolBoxRes = await getDayToolbox(day.id);
-    day.selectedToolbox = selectedToolBoxRes.data.toolbox;
-    day.toolbox = allToolBoxRes.data.toolbox;
+  const handleViewDay = async day => {
+    const allToolBoxRes = await getDayToolboxAll()
+    const selectedToolBoxRes = await getDayToolbox(day.id)
+    day.selectedToolbox = selectedToolBoxRes.data.toolbox
+    day.toolbox = allToolBoxRes.data.toolbox
 
-    day.learning_standard_name = learningStandard.name;
-    localStorage.setItem('my-day', JSON.stringify(day));
-    navigate('/day');
-  };
+    day.learning_standard_name = learningStandard.name
+    localStorage.setItem("my-day", JSON.stringify(day))
+    navigate("/day")
+  }
 
   return (
     <div>
-      <button id='link-btn' onClick={showModal}>
+      <button id="link-btn" onClick={showModal}>
         {learningStandard.name}
       </button>
 
       <Modal
         title={learningStandard.name}
-        visible={visible}
+        open={visible}
         onCancel={handleCancel}
         onOk={handleCancel}
-        size='large'
+        size="large"
       >
-        <div className='list-position'>
+        <div className="list-position">
           {days.length > 0 ? (
             <List
               grid={{ gutter: 16, column: 3 }}
               dataSource={days}
-              renderItem={(item) => (
+              renderItem={item => (
                 <List.Item>
                   <Card
-                    id='card-day'
+                    id="card-day"
                     key={item.id}
-                    title={'Day ' + item.number}
-                    hoverable='true'
+                    title={"Day " + item.number}
+                    hoverable={true}
                     onClick={() => handleViewDay(item)}
                   />
                   <span
-                    className='delete-btn'
+                    className="delete-btn"
                     onClick={() => removeBasicDay(item)}
                   >
                     &times;
@@ -106,14 +106,14 @@ export default function ContentCreator({ learningStandard }) {
           ) : null}
           <div>
             <Form
-              id='add-day'
+              id="add-day"
               wrapperCol={{
                 span: 14,
               }}
-              layout='horizontal'
-              size='default'
+              layout="horizontal"
+              size="default"
             >
-              <Button onClick={addBasicDay} type='primary'>
+              <Button onClick={addBasicDay} type="primary">
                 Add Day
               </Button>
             </Form>
@@ -121,5 +121,5 @@ export default function ContentCreator({ learningStandard }) {
         </div>
       </Modal>
     </div>
-  );
+  )
 }

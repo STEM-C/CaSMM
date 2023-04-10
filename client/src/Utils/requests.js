@@ -455,7 +455,9 @@ export const updateLearningStandard = async (
 export const updateDayDetails = async (
   id,
   description,
+  //template,
   TekS,
+  images,
   link,
   scienceComponents,
   makingComponents,
@@ -466,7 +468,9 @@ export const updateDayDetails = async (
     path: `${server}/days/${id}`,
     data: {
       description,
+      //template,
       TekS,
+      images,
       link,
       scienceComponents,
       makingComponents,
