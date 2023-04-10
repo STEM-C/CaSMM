@@ -27,11 +27,14 @@ export default function DisplayDiagramModal(props) {
     let items = links.split('\n');
     let entries = [];
     for (let i = 0; i< items.length; i++){
-       entries.push(<img src={items[i]} display="block" position="relative" alt="" width="auto" height="300"/>);
-    }    let width = entries.length * 700
+       if (items[i] == "" || items[i] == " "){
+        continue;
+       }
+        entries.push(<img src={items[i]} display="block" position="relative" alt="" width="auto" height="300"/>);
+    }   
+    let width = entries.length * 700
     return (
         <div id='display-diagram-modal'
-        
         onMouseEnter={onHover}
             onMouseLeave={onLeave}>
             {hover ? <div className='popup ModalCompile'>
@@ -41,7 +44,7 @@ export default function DisplayDiagramModal(props) {
             <Button id='link'
             >
 
-            <svg width="25" height="20px" viewBox="0 -3 20 20" version="1.1"
+            <svg width="25" height="20px" viewBox="0 -3.8 20 20" version="1.1"
              fill='none'
               onClick={showModal}
                xmlns="http://www.w3.org/2000/svg">
