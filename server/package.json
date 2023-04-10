@@ -13,7 +13,7 @@
   "dependencies": {
     "bull": "^4.10.0",
     "dotenv": "^10.0.0",
-    "knex": "0.21.18",
+    "knex": "2.4.0",
     "pg": "^8.10.0",
     "redis-url-parse": "^2.0.0",
     "sharp": "^0.31.3",
