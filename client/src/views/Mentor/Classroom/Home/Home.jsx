@@ -7,6 +7,7 @@ import {
 } from '../../../../Utils/requests';
 import MentorSubHeader from '../../../../components/MentorSubHeader/MentorSubHeader';
 import DisplayCodeModal from './DisplayCodeModal';
+import MentorDayDetailModal from './MentorDayDetailModal';
 import LearningStandardModal from './LearningStandardSelect/LearningStandardModal';
 import { message, Tag } from 'antd';
 import { useNavigate } from 'react-router-dom';
@@ -16,7 +17,7 @@ export default function Home({ classroomId, viewing }) {
   const [days, setDays] = useState([]);
   const [gradeId, setGradeId] = useState(null);
   const [activeLearningStandard, setActiveLearningStandard] = useState(null);
-
+  const [dayDetailsVisible, setDayDetailsVisible] = useState(false)
   const navigate = useNavigate();
 
   const SCIENCE = 1;
@@ -55,8 +56,8 @@ export default function Home({ classroomId, viewing }) {
 
   const handleViewDay = (day, name) => {
     day.learning_standard_name = name;
-    localStorage.setItem('my-day', JSON.stringify(day));
-    navigate('/day');
+    localStorage.setItem('sandbox-day', JSON.stringify(day));
+    navigate('/sandbox');
   };
 
   const openActivityInWorkspace = (day, name) => {
@@ -108,7 +109,7 @@ export default function Home({ classroomId, viewing }) {
                 />
               </div>
               <p id='learning-standard-expectations'>{`Expectations: ${activeLearningStandard.expectations}`}</p>
-              {activeLearningStandard.link ? (
+             {activeLearningStandard.link ? (
                 <p>
                   Addtional resources to the lesson:{' '}
                   <a
@@ -124,18 +125,24 @@ export default function Home({ classroomId, viewing }) {
                 <div id='card-btn-container' className='flex space-between'>
                   {days.map((day) => (
                     <div id='view-day-card' key={day.id}>
-                      <div id='view-day-heading'>
+                      <div id='day-title'>
+                       Day {day.number}
+                       </div>
+                      <div id='view-day-heading' style={{display: "flex"}}>
+                        
                         <button
                           id='view-day-button'
+                          style={{marginRight: "auto"}}
                           onClick={() =>
                             handleViewDay(day, activeLearningStandard.name)
                           }
                         >
-                          Day {day.number} Template
+                          Student Template
                         </button>
                         {day.activity_template && (
                           <button
                             id='view-day-button'
+                            style={{marginRight: "200px"}}
                             onClick={() =>
                               openActivityInWorkspace(
                                 day,
@@ -143,9 +150,17 @@ export default function Home({ classroomId, viewing }) {
                               )
                             }
                           >
-                            Activity Template
+                            Mentor Template
                           </button>
                         )}
+                        <MentorDayDetailModal
+                          learningStandard={activeLearningStandard}
+                          selectDay={day}
+                          dayDetailsVisible={false}
+                          setDayDetailsVisible={false}
+                          setDays={setDays}
+                          viewing={false}
+                        />
                       </div>
                       <div id='view-day-info'>
                         <p>
@@ -157,7 +172,7 @@ export default function Home({ classroomId, viewing }) {
                           {day.description}
                         </p>
                         <p>
-                          <strong>Science Components: </strong>
+                          <strong>Classroom Materials: </strong>
                           {day.learning_components
                             .filter(
                               (component) =>
@@ -175,7 +190,7 @@ export default function Home({ classroomId, viewing }) {
                             })}
                         </p>
                         <p>
-                          <strong>Making Components: </strong>
+                          <strong>Student Materials: </strong>
                           {day.learning_components
                             .filter(
                               (component) =>
@@ -193,7 +208,7 @@ export default function Home({ classroomId, viewing }) {
                             })}
                         </p>
                         <p>
-                          <strong>Computation Components: </strong>
+                          <strong>Arduino Components: </strong>
                           {day.learning_components
                             .filter(
                               (component) =>

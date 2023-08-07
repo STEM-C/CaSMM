@@ -83,6 +83,19 @@ export const getDayToolboxAll = async () =>
     error: 'Toolbox could not be retrieved.',
   });
 
+// export cost getDayActivities = async () =>
+//   makeRequest({
+//     method: GET,
+//     path: `${server}/days/`
+//   })
+
+// export const getLearningStandardDays = async (lsId) =>
+//   makeRequest({
+//     method: GET,
+//     path: `${server}/days?learning_standard.id=${lsId}`,
+//     auth: true,
+//     error: 'Day cannot be retrived',
+//   });
 export const getDayToolbox = async (id) =>
   makeRequest({
     method: GET,
@@ -335,6 +348,7 @@ export const updateActivityTemplate = async (id, workspace) =>
     path: `${server}/days/activity_template/${id}`,
     data: {
       activity_template: workspace,
+      //blocks: blocksList,
     },
     auth: true,
     error: 'Failed to update the activity template for the day',
@@ -455,7 +469,8 @@ export const updateLearningStandard = async (
 export const updateDayDetails = async (
   id,
   description,
-  //template,
+  // template,
+  // activity_template,
   TekS,
   images,
   link,
@@ -468,7 +483,8 @@ export const updateDayDetails = async (
     path: `${server}/days/${id}`,
     data: {
       description,
-      //template,
+      // template,
+      // activity_template,
       TekS,
       images,
       link,
@@ -486,6 +502,14 @@ export const getLearningStandardDays = async (lsId) =>
     path: `${server}/days?learning_standard.id=${lsId}`,
     auth: true,
     error: 'Day cannot be retrived',
+  });
+
+  export const getDayActivities = async (lsId) =>
+  makeRequest({
+    method: GET,
+    path: `${server}/cc-workspaces?days.id=${lsId}`,
+    auth: true,
+    error: 'Activities cannot be retrieved',
   });
 
 export const getDay = async (id) =>

@@ -36,12 +36,13 @@
       margin: 20px;
 
       #view-day-heading {
-        background-color: #colors[quaternary];
-        display: flex;
+        background-color: rgb(233, 233, 233);
+        //rgb(233, 233, 233)
+        display: inherit;
         align-items: center;
-        height: 6vh;
-        border-top-left-radius: 10px;
-        border-top-right-radius: 10px;
+        height: 4vh;
+        border-top-left-radius: 0px;
+        border-top-right-radius: 0px;
 
         #view-day-title {
           display: inline;
@@ -49,21 +50,35 @@
         }
 
         #view-day-button {
-          height: 6vh;
+          height: 4vh;
           width: 30%;
           font-size: 1.2em;
-          font-weight: 600;
+          font-weight: 450;
           background-color: transparent;
+          color: black;
           border: none;
-          border-top-left-radius: 10px;
+
+          // border-top-left-radius: 10px;
+          // border-top-right-radius: 10px;
 
           &:hover {
             cursor: pointer;
-            background-color: #colors[quinary];
+            background-color: rgb(215, 215, 215);
           }
         }
       }
-
+      #day-title {
+        background-color: rgb(204, 153, 255);
+        color: black;
+        //display: flex;
+        align-items: left;
+        height: 3vh;
+        border-top-left-radius: 10px;
+        border-top-right-radius: 10px;
+        font-size: 1.3em;
+        font-weight: 400;
+        line-height: 1.3em;
+      }
       #view-day-info {
         display: flex;
         flex-direction: column;
