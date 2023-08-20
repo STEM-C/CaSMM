@@ -16,7 +16,12 @@ const BlocklyCanvasPanel = ({ day, isSandbox, setDay }) => {
     case 'Student':
       return <StudentCanvas day={day} />;
     case 'Mentor':
-      return <MentorCanvas day={day} setDay={setDay} isSandbox={isSandbox} />;
+      return <MentorCanvas 
+      day={day}
+      setDay={setDay}
+      isSandbox={isSandbox}
+      isMentorActivity={!day.selectedToolbox && !isSandbox}
+      />;
     case 'ContentCreator':
       return (
         <ContentCreatorCanvas

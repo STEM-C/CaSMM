@@ -43,7 +43,7 @@ function Student() {
           {learningStandard.days ? (
             learningStandard.days
               .sort((day1, day2) => day1.number - day2.number)
-              .map((day) => (
+              .map((day) => ( 
                 <div
                   key={day.id}
                   id='list-item-wrapper'

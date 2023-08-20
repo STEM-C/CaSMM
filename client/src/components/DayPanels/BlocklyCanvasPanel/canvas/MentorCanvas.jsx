@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState, useReducer } from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../../DayPanels.less';
-import { compileArduinoCode, handleUpdateWorkspace } from '../../Utils/helpers';
+import { compileArduinoCode, handleUpdateWorkspace,  handleCreatorSaveDay, handleCreatorSaveActivity } from '../../Utils/helpers';
 import { message, Spin, Row, Col, Alert, Menu, Dropdown } from 'antd';
 import CodeModal from '../modals/CodeModal';
 import ConsoleModal from '../modals/ConsoleModal';
@@ -9,6 +9,7 @@ import PlotterModal from '../modals/PlotterModal';
 import LoadWorkspaceModal from '../modals/LoadWorkspaceModal';
 import SaveAsModal from '../modals/SaveAsModal';
 import DisplayDiagramModal from '../modals/DisplayDiagramModal'
+import StudentToolboxMenu from '../modals/StudentToolboxMenu';
 import {
   connectToPort,
   handleCloseConnection,
@@ -20,7 +21,7 @@ import PlotterLogo from '../Icons/PlotterLogo';
 
 let plotId = 1;
 
-export default function MentorCanvas({ day, isSandbox, setDay }) {
+export default function MentorCanvas({ day, isSandbox, setDay,  isMentorActivity }) {
   const [hoverUndo, setHoverUndo] = useState(false);
   const [hoverRedo, setHoverRedo] = useState(false);
   const [hoverCompile, setHoverCompile] = useState(false);
@@ -33,7 +34,8 @@ export default function MentorCanvas({ day, isSandbox, setDay }) {
   const [selectedCompile, setSelectedCompile] = useState(false);
   const [compileError, setCompileError] = useState('');
   const [classroomId, setClassroomId] = useState('');
-
+  const [studentToolbox, setStudentToolbox] = useState([]);
+  const [openedToolBoxCategories, setOpenedToolBoxCategories] = useState([]);
   const [forceUpdate] = useReducer((x) => x + 1, 0);
   const workspaceRef = useRef(null);
   const dayRef = useRef(null);
@@ -53,11 +55,14 @@ export default function MentorCanvas({ day, isSandbox, setDay }) {
       dayRef.current = day;
       if (!workspaceRef.current && day && Object.keys(day).length !== 0) {
         setWorkspace();
-        if (day.template) {
-          let xml = window.Blockly.Xml.textToDom(day.template);
-          window.Blockly.Xml.domToWorkspace(xml, workspaceRef.current);
-        }
-
+        // if (day.template) {
+        //   let xml = window.Blockly.Xml.textToDom(day.template);
+        //   window.Blockly.Xml.domToWorkspace(xml, workspaceRef.current);
+        // }
+        let xml = isMentorActivity
+        ? window.Blockly.Xml.textToDom(day.activity_template)
+        : window.Blockly.Xml.textToDom(day.template);
+      window.Blockly.Xml.domToWorkspace(xml, workspaceRef.current);
         workspaceRef.current.clearUndo();
       }
     };
@@ -76,6 +81,25 @@ export default function MentorCanvas({ day, isSandbox, setDay }) {
     } else {
       message.error(res.err);
       return false;
+    }
+
+    if (!isSandbox) {
+      const toolboxRes = await getCCWorkspaceToolbox(workspaceId);
+      if (toolboxRes.data) {
+        let tempCategories = [],
+          tempToolBox = [];
+        toolboxRes.data.toolbox &&
+          toolboxRes.data.toolbox.forEach(([category, blocks]) => {
+            tempCategories.push(category);
+            tempToolBox = [
+              ...tempToolBox,
+              ...blocks.map((block) => block.name),
+            ];
+          });
+
+        setOpenedToolBoxCategories(tempCategories);
+        setStudentToolbox(tempToolBox);
+      }
     }
   };
 
@@ -195,7 +219,48 @@ export default function MentorCanvas({ day, isSandbox, setDay }) {
     )
       navigate(-1);
   };
+  const handleCreatorSave = async () => {
+    // Save day template
 
+    if (!isSandbox && !isMentorActivity) {
+      const res = await handleCreatorSaveDay(
+        day.id,
+        workspaceRef,
+        studentToolbox
+      );
+      if (res.err) {
+        message.error(res.err);
+      } else {
+        message.success('Day Template saved successfully');
+      }
+    } else if (!isSandbox && isMentorActivity) {
+      // Save activity template
+      const res = await handleCreatorSaveActivity(day.id, workspaceRef);
+      if (res.err) {
+        message.error(res.err);
+      } else {
+        message.success('Activity template saved successfully');
+      }
+    } else {
+      // if we already have the workspace in the db, just update it.
+      if (day && day.id) {
+        const updateRes = await handleUpdateWorkspace(
+          day.id,
+          workspaceRef,
+          studentToolbox
+        );
+        if (updateRes.err) {
+          message.error(updateRes.err);
+        } else {
+          message.success('Workspace saved successfully');
+        }
+      }
+      // else create a new workspace and update local storage
+      else {
+        setShowSaveAsModal(true);
+      }
+    }
+  };
   const menu = (
     <Menu>
       <Menu.Item onClick={handlePlotter}>
@@ -211,9 +276,9 @@ export default function MentorCanvas({ day, isSandbox, setDay }) {
 
   const menuSave = (
     <Menu>
-      <Menu.Item id='menu-save' onClick={handleSave}>
+      <Menu.Item id='menu-save' onClick={handleCreatorSave}>
         <i className='fa fa-save' />
-        &nbsp; Save
+        &nbsp; Save to template
       </Menu.Item>
       <SaveAsModal
         visible={showSaveAsModal}
@@ -262,7 +327,7 @@ export default function MentorCanvas({ day, isSandbox, setDay }) {
                   </Col>
                   <Col flex='auto' />
                   <Row id='right-icon-container'>
-                    {isSandbox ? (
+                    {!isSandbox ? (
                       <Col
                         className='flex flex-row'
                         id='save-dropdown-container'
@@ -359,7 +424,16 @@ export default function MentorCanvas({ day, isSandbox, setDay }) {
             </Row>
             <div id='blockly-canvas' />
           </Spin>
-        </div>
+          </div>
+           {!isSandbox && !isMentorActivity && (
+          <StudentToolboxMenu
+            day={day}
+            studentToolbox={studentToolbox}
+            setStudentToolbox={setStudentToolbox}
+            openedToolBoxCategories={openedToolBoxCategories}
+            setOpenedToolBoxCategories={setOpenedToolBoxCategories}
+          />
+          )}
         <ConsoleModal
           show={showConsole}
           connectionOpen={connectionOpen}

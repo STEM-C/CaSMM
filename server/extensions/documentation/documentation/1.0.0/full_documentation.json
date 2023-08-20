@@ -14,7 +14,7 @@
       "name": "Apache 2.0",
       "url": "https://www.apache.org/licenses/LICENSE-2.0.html"
     },
-    "x-generation-date": "04/05/2023 1:02:25 AM"
+    "x-generation-date": "07/14/2023 3:29:35 PM"
   },
   "x-strapi-config": {
     "path": "/documentation",
@@ -11879,10 +11879,76 @@
           "id": {
             "type": "string"
           },
+          "days": {
+            "required": [
+              "id",
+              "number",
+              "template"
+            ],
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "learning_standard": {
+                "type": "string"
+              },
+              "number": {
+                "type": "integer"
+              },
+              "template": {
+                "type": "string"
+              },
+              "activities": {
+                "type": "integer"
+              },
+              "blocks": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "description": {
+                "type": "string"
+              },
+              "cc_workspaces": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "TekS": {
+                "type": "string"
+              },
+              "images": {
+                "type": "string"
+              },
+              "link": {
+                "type": "string"
+              },
+              "learning_components": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "activity_template": {
+                "type": "string"
+              },
+              "created_by": {
+                "type": "string"
+              },
+              "updated_by": {
+                "type": "string"
+              }
+            }
+          },
           "name": {
             "type": "string"
           },
           "description": {
+            "type": "string"
+          },
+          "images": {
             "type": "string"
           },
           "template": {
@@ -11900,10 +11966,16 @@
           "template"
         ],
         "properties": {
+          "days": {
+            "type": "string"
+          },
           "name": {
             "type": "string"
           },
           "description": {
+            "type": "string"
+          },
+          "images": {
             "type": "string"
           },
           "template": {
@@ -12285,6 +12357,9 @@
           "template": {
             "type": "string"
           },
+          "activities": {
+            "type": "integer"
+          },
           "blocks": {
             "type": "array",
             "items": {
@@ -12319,6 +12394,54 @@
           },
           "description": {
             "type": "string"
+          },
+          "cc_workspaces": {
+            "type": "array",
+            "items": {
+              "required": [
+                "id",
+                "name",
+                "template"
+              ],
+              "properties": {
+                "id": {
+                  "type": "string"
+                },
+                "days": {
+                  "type": "string"
+                },
+                "name": {
+                  "type": "string"
+                },
+                "description": {
+                  "type": "string"
+                },
+                "images": {
+                  "type": "string"
+                },
+                "template": {
+                  "type": "string"
+                },
+                "blocks": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "classroom": {
+                  "type": "string"
+                },
+                "published_at": {
+                  "type": "string"
+                },
+                "created_by": {
+                  "type": "string"
+                },
+                "updated_by": {
+                  "type": "string"
+                }
+              }
+            }
           },
           "TekS": {
             "type": "string"
@@ -12383,6 +12506,9 @@
           "template": {
             "type": "string"
           },
+          "activities": {
+            "type": "integer"
+          },
           "blocks": {
             "type": "array",
             "items": {
@@ -12391,6 +12517,12 @@
           },
           "description": {
             "type": "string"
+          },
+          "cc_workspaces": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
           },
           "TekS": {
             "type": "string"
@@ -12670,6 +12802,9 @@
                 "template": {
                   "type": "string"
                 },
+                "activities": {
+                  "type": "integer"
+                },
                 "blocks": {
                   "type": "array",
                   "items": {
@@ -12678,6 +12813,12 @@
                 },
                 "description": {
                   "type": "string"
+                },
+                "cc_workspaces": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
                 },
                 "TekS": {
                   "type": "string"
@@ -12806,6 +12947,9 @@
                 "template": {
                   "type": "string"
                 },
+                "activities": {
+                  "type": "integer"
+                },
                 "blocks": {
                   "type": "array",
                   "items": {
@@ -12814,6 +12958,12 @@
                 },
                 "description": {
                   "type": "string"
+                },
+                "cc_workspaces": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
                 },
                 "TekS": {
                   "type": "string"
@@ -13143,6 +13293,9 @@
               "template": {
                 "type": "string"
               },
+              "activities": {
+                "type": "integer"
+              },
               "blocks": {
                 "type": "array",
                 "items": {
@@ -13151,6 +13304,12 @@
               },
               "description": {
                 "type": "string"
+              },
+              "cc_workspaces": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
               },
               "TekS": {
                 "type": "string"
@@ -14220,6 +14379,9 @@
               "template": {
                 "type": "string"
               },
+              "activities": {
+                "type": "integer"
+              },
               "blocks": {
                 "type": "array",
                 "items": {
@@ -14228,6 +14390,12 @@
               },
               "description": {
                 "type": "string"
+              },
+              "cc_workspaces": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
               },
               "TekS": {
                 "type": "string"
