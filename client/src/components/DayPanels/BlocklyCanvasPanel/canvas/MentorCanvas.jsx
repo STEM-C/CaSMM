@@ -401,6 +401,9 @@ export default function MentorCanvas({ day, isSandbox, setDay,  isMentorActivity
                     <DisplayDiagramModal
                       image={day.images}
                     />
+                    <DisplayDiagramModal
+                      image={day.images}
+                    />
                         <i
                           onClick={() => handleConsole()}
                           className='fas fa-terminal hvr-info'
