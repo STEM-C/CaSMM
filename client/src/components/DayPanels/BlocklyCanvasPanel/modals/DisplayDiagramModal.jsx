@@ -46,9 +46,8 @@ export default function DisplayDiagramModal(props) {
           <g
             id="image"
             stroke="none"
-            stroke-width="1"
             fill="none"
-            fill-rule="evenodd"
+            fillRule="evenodd"
           >
             <g
               id="Dribbble-Light-Preview"
@@ -78,7 +77,9 @@ export default function DisplayDiagramModal(props) {
       >
         <div id="code-display-text">
           {items.map(src => (
+            
             <img
+            key={src}
               src={src}
               display="block"
               position="relative"
