@@ -473,7 +473,6 @@ export const updateDayDetails = async (
   // activity_template,
   TekS,
   images,
-  images,
   link,
   scienceComponents,
   makingComponents,
