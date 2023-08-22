@@ -276,8 +276,8 @@ export default function MentorCanvas({ day, isSandbox, setDay,  isMentorActivity
 
   const menuSave = (
     <Menu>
-      <Menu.Item id='menu-save' onClick={handleCreatorSave}>
-        <i className='fa fa-save' />
+      <Menu.Item id='menu-save' onClick={handleCreatorSave} key='test'>
+        <i className='fa fa-save'/>
         &nbsp; Save to template
       </Menu.Item>
       <SaveAsModal

@@ -15,8 +15,8 @@
     "react-hooks-global-state": "^2.1.0",
     "react-papaparse": "^3.17.1",
     "react-router-dom": "^6.9.0",
-    "recharts": "^2.5.0",
     "vite": "^4.2.0",
+    "recharts": "^2.5.0",
     "yarn": "^1.22.10"
   },
   "scripts": {

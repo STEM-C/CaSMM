@@ -142,7 +142,7 @@ export default function Home({ classroomId, viewing }) {
                         {day.activity_template && (
                           <button
                             id='view-day-button'
-                            style={{marginRight: "200px"}}
+                            style={{marginRight: "auto"}}
                             onClick={() =>
                               openActivityInWorkspace(
                                 day,
@@ -153,7 +153,7 @@ export default function Home({ classroomId, viewing }) {
                             Mentor Template
                           </button>
                         )}
-                        <MentorDayDetailModal
+                        <MentorDayDetailModal 
                           learningStandard={activeLearningStandard}
                           selectDay={day}
                           dayDetailsVisible={false}
