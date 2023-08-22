@@ -149,10 +149,11 @@ const MentorDayDetailModal = ({
     //setOpen(true)
 };
   return (
-    <div id="mentoredit" style={{display: "flex"}}>
-    <Button id="link"      
-    onClick={showModal} style={{width: '25px', marginLeft: "auto"}} >
-<svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 512 512">
+    <div id="mentoredit">
+    <Button id="view-day-button"      
+    onClick={showModal} style={{width: '40px',marginRight: "auto"}} >
+<svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 512 512"
+>
 <g
             id="link"
             stroke="none"
