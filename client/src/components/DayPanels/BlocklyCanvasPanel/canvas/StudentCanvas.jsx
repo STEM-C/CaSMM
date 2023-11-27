@@ -6,7 +6,7 @@ import { getSaves } from '../../../../Utils/requests';
 import CodeModal from '../modals/CodeModal';
 import ConsoleModal from '../modals/ConsoleModal';
 import PlotterModal from '../modals/PlotterModal';
-import DisplayDiagramModal from '../modals/DisplayDiagramModal'
+import DisplayDiagramModal from '../modals/DisplayDiagramModal';
 import VersionHistoryModal from '../modals/VersionHistoryModal';
 import {
   connectToPort,
@@ -230,6 +230,11 @@ export default function StudentCanvas({ day }) {
       workspaceRef.current.undo(false);
       pushEvent('undo');
     }
+
+    //inject
+    // let xmltest = '<xml xmlns="http://www.w3.org/1999/xhtml"><block type="text" id="Urj`oNlZUZ+5owTe)u?!" x="212" y="122"><field name="TEXT">test</field></block></xml>);'
+    // let dom = Blockly.Xml.textToDom(xmltest);
+    // Blockly.Xml.domToWorkspace(dom, workspaceRef.current);
   };
 
   const handleRedo = () => {

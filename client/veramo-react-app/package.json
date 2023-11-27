@@ -1,0 +1,68 @@
+{
+  "name": "veramo-react-app",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "@craco/craco": "^7.1.0",
+    "@ethersproject/shims": "^5.7.0",
+    "@sinonjs/text-encoding": "^0.7.2",
+    "@testing-library/jest-dom": "^5.17.0",
+    "@testing-library/react": "^13.4.0",
+    "@testing-library/user-event": "^13.5.0",
+    "@types/jest": "^27.5.2",
+    "@types/node": "^16.18.61",
+    "@types/react": "^18.2.37",
+    "@types/react-dom": "^18.2.15",
+    "@veramo/core": "^5.5.3",
+    "@veramo/data-store": "^5.5.3",
+    "@veramo/did-manager": "^5.5.3",
+    "@veramo/did-provider-ethr": "^5.5.3",
+    "@veramo/did-resolver": "^5.5.3",
+    "@veramo/key-manager": "^5.5.3",
+    "@veramo/kms-local": "^5.5.3",
+    "babel-preset-react-native": "^4.0.1",
+    "cross-fetch": "^4.0.0",
+    "crypto-browserify": "^3.12.0",
+    "ethr-did-resolver": "^10.0.0",
+    "expo-sqlite": "^11.6.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-native": "^0.72.7",
+    "react-native-get-random-values": "^1.9.0",
+    "react-native-web": "^0.19.9",
+    "react-scripts": "5.0.1",
+    "stream-browserify": "^3.0.0",
+    "typescript": "^4.9.5",
+    "upgrade": "^1.1.0",
+    "web-did-resolver": "^2.0.27",
+    "web-vitals": "^2.1.4"
+  },
+  "scripts": {
+    "start": "set PORT=3006 && craco start",
+    "build": "craco build",
+    "test": "craco test",
+    "eject": "react-scripts eject"
+  },
+  "eslintConfig": {
+    "extends": [
+      "react-app",
+      "react-app/jest"
+    ]
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "devDependencies": {
+    "@babel/plugin-syntax-import-assertions": "^7.23.3",
+    "babel-plugin-rewrite-require": "^1.14.5"
+  }
+}

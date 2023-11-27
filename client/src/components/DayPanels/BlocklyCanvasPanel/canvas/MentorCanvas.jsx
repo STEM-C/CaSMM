@@ -289,8 +289,7 @@ export default function MentorCanvas({ day, isSandbox, setDay,  isMentorActivity
         isSandbox={isSandbox}
         classroomId={classroomId}
       />
-      <LoadWorkspaceModal loadSave={loadSave} classroomId={classroomId} />
-    </Menu>
+      </Menu>
   );
 
   return (
@@ -401,6 +400,10 @@ export default function MentorCanvas({ day, isSandbox, setDay,  isMentorActivity
                     <DisplayDiagramModal
                       image={day.images}
                     />
+                    
+      <LoadWorkspaceModal loadSave={loadSave} classroomId={classroomId} workspaceRef={workspaceRef} />
+    
+                    
                         <i
                           onClick={() => handleConsole()}
                           className='fas fa-terminal hvr-info'

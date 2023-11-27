@@ -1,4 +1,6 @@
+/* global __DEV__ */
 'use strict';
+
 
 /**
  * Module dependencies

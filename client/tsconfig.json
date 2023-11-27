@@ -1,0 +1,13 @@
+{
+    "compilerOptions": {
+      "preserveConstEnums": true,
+      "strict": true,
+      "target": "esnext",
+      "module": "es6",
+      "allowJs": true,
+      "rootDir": "./",
+      "moduleResolution": "node",
+      "esModuleInterop": true,
+      "downlevelIteration": true
+    }
+  }

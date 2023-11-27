@@ -527,7 +527,7 @@ export const forgetPassword = async (email) =>
     data: {
       email,
     },
-    error: 'cannot retrive data from the provided email',
+    error: 'cannot retrieve data from the provided email',
   });
 
 export const resetPassword = async (code, password, passwordConfirmation) =>

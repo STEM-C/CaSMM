@@ -21,7 +21,6 @@ export default function DisplayDiagramModal(props) {
   const handleOk = () => {
     setVisible(false)
   }
-
   const links = new String(image)
   let items = links.split("\n").filter(item => item != "" || item != " ")
   let width = items.length * 700

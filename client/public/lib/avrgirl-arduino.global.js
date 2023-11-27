@@ -9307,7 +9307,7 @@ window["AvrgirlArduino"] =
                 exports.selectSeries = filterSeries;
                 exports.wrapSync = asyncify;
 
-                Object.defineProperty(exports, '__esModule', { value: true });
+                //Object.defineProperty(exports, '__esModule', { value: true });
 
             })));
 
