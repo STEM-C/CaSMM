@@ -12,6 +12,7 @@ import NavBar from '../../components/NavBar/NavBar';
 import { Table } from 'antd';
 import { getSave } from '../../Utils/requests';
 import { CSVDownloader } from 'react-papaparse';
+import { getArduino, getXml } from '../../components/DayPanels/Utils/helpers.js';
 const TIME_LINE_SIZE = 25;
 
 const timelineReducer = (timeline, action) => {
@@ -399,6 +400,7 @@ const Replay = () => {
                       action: log.action,
                       'block type': log.blockType,
                       'block id': log.blockId,
+                      'arduino code': getArduino(workspaceRef.current, false),
                     };
                   });
                 }}
