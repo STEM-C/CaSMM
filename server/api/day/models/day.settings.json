@@ -27,10 +27,12 @@
       "collection": "block"
     },
     "description": {
-      "type": "text"
+      "type": "text",
+      "required":false
     },
     "TekS": {
-      "type": "string"
+      "type": "string",
+      "required": false
     },
     "images": {
       "type": "text"

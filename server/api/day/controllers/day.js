@@ -28,11 +28,11 @@ module.exports = {
       makingComponents,
       computationComponents,
     } = ctx.request.body;
-    if (!TekS || !description)
-      return ctx.badRequest('A description, Teks must be provided!', {
-        id: 'day.update.body.invalid',
-        error: 'ValidationError',
-      });
+    //if (!TekS || !description)
+      //return ctx.badRequest('A description, Teks must be provided!', {
+        //id: 'day.update.body.invalid',
+        //error: 'ValidationError',
+      //});
 
     // array to store new component
     let dayComponents = [];

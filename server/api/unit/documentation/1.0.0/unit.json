@@ -617,7 +617,8 @@
       },
       "NewUnit": {
         "required": [
-          "name"
+          "name",
+          "number"
         ],
         "properties": {
           "grade": {
