@@ -174,7 +174,7 @@ export default function LearningStandardCreator({
           <Form.Item label="Description">
             <Input.TextArea
               rows={3}
-              required
+              
               onChange={e => {
                 setDescription(e.target.value)
               }}
@@ -187,7 +187,7 @@ export default function LearningStandardCreator({
               onChange={e => {
                 setTeks(e.target.value)
               }}
-              required
+              
               value={teks}
               placeholder="Enter lesson Teks"
             />

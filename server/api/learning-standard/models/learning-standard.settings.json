@@ -32,7 +32,7 @@
     },
     "teks": {
       "type": "string",
-      "unique": true
+      "unique": false
     },
     "link": {
       "type": "string"

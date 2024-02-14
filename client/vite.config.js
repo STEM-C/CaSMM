@@ -2,6 +2,7 @@ import react from "@vitejs/plugin-react-swc"
 import { defineConfig } from "vite"
 
 const base = process.env.PUBLIC_URL ?? "/"
+console.log(base);
 
 export default defineConfig({
   css: {
