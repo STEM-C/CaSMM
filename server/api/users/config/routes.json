@@ -1,0 +1,12 @@
+{
+ "routes": [
+     {
+        "method": "POST",
+        "path": "/users",
+        "handler": "users.create",   
+        "config": {
+        "policies": []
+        }
+    }
+    ]
+}

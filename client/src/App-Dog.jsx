@@ -16,7 +16,7 @@ import GroupReport from './views/Researcher/GroupReport';
 import Report from './views/Researcher/Report';
 import Student from './views/Student/Student';
 import StudentLogin from './views/StudentLogin/StudentLogin';
-import CreateAccount from './views/TeacherLogin/CreateAccount'; 
+import CreateAccount from 
 import ForgetPassword from './views/TeacherLogin/ForgetPassword';
 import ResetPassword from './views/TeacherLogin/ResetPassword';
 import TeacherLogin from './views/TeacherLogin/TeacherLogin';

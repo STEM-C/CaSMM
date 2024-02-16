@@ -2,6 +2,7 @@ import { message } from 'antd';
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import NavBar from '../../components/NavBar/NavBar';
+import { CreateAccount } from '../../Utils/requests';
 import { postUser, setUserSession } from '../../Utils/AuthRequests';
 import './TeacherLogin.less';
 
@@ -17,17 +18,20 @@ const useFormInput = (initialValue) => {
   };
 };
 
-export default function TeacherLogin() {
+export default function AccountCreate() {
   const email = useFormInput('');
   const password = useFormInput('');
+  const role = useFormInput('');
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
   const handleLogin = () => {
     setLoading(true);
-    let body = { identifier: email.value, password: password.value };
+    let body = { email: email.value, password: password.value, role: role.value };
+    let body2 = {identifier: email.value, password: password.value};
 
-    postUser(body)
+    CreateAccount(body);
+    postUser(body2)
       .then((response) => {
         setUserSession(response.data.jwt, JSON.stringify(response.data.user));
         setLoading(false);
@@ -55,7 +59,7 @@ export default function TeacherLogin() {
             if (e.key === 'Enter') handleLogin();
           }}
         >
-          <div id='box-title'>User Login</div>
+          <div id='box-title'>Create Account</div>
           <input
             type='email'
             {...email}
@@ -68,18 +72,44 @@ export default function TeacherLogin() {
             placeholder='Password'
             autoComplete='current-password'
           />
-          <p id='forgot-password' onClick={() => navigate('/forgot-password')}>
-            Forgot Password?
-          </p>
-          <p id= 'create-account' onClick={() => navigate('/create-account')}>
-            Create Account!
-          </p>
+          <input
+            type='password'
+            {...password}
+            placeholder='Confirm Password'
+            autoComplete='current-password2'
+          />
+          
+
+          <input
+            type="Radio"
+            name="Role"
+            value="Classroom Manager"
+            /> Mentor <br 
+            />
+        
+         <input
+            type="Radio"
+            name="Role"
+            value="Researcher"
+            /> Researcher <br />
+        
+        <input
+            type="Radio"
+            name="Role"
+            value="Teacher"
+            /> Teacher <br />
+        
+
+
           <input
             type='button'
-            value={loading ? 'Loading...' : 'Login'}
+            value={loading ? 'Loading...' : 'Create Account'}
             onClick={handleLogin}
             disabled={loading}
           />
+          
+
+
         </form>
       </div>
     </div>
