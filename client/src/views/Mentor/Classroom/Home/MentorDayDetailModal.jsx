@@ -185,7 +185,7 @@ const MentorDayDetailModal = ({
           <Input.TextArea
             onChange={e => setDescription(e.target.value)}
             value={description}
-            required
+            
             placeholder="Enter description"
           ></Input.TextArea>
         </Form.Item>
@@ -195,7 +195,7 @@ const MentorDayDetailModal = ({
             onChange={e => setTekS(e.target.value)}
             value={TekS}
             className="input"
-            required
+            
             placeholder="Enter tekS"
           ></Input>
         </Form.Item>

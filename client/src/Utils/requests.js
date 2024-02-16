@@ -483,8 +483,8 @@ export const updateDayDetails = async (
     path: `${server}/days/${id}`,
     data: {
       description,
-      // template,
-      // activity_template,
+      //template,
+      //activity_template,
       TekS,
       images,
       link,

@@ -20,6 +20,7 @@ import ForgetPassword from './views/TeacherLogin/ForgetPassword';
 import ResetPassword from './views/TeacherLogin/ResetPassword';
 import TeacherLogin from './views/TeacherLogin/TeacherLogin';
 
+
 const App = () => {
   return (
     <div>

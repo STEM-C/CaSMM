@@ -20,7 +20,8 @@
       "required": true
     },
     "expectations": {
-      "type": "text"
+      "type": "text",
+      "required": false
     },
     "days": {
       "via": "learning_standard",
@@ -32,7 +33,8 @@
     },
     "teks": {
       "type": "string",
-      "unique": true
+      "unique": false,
+      "required": false
     },
     "link": {
       "type": "string"

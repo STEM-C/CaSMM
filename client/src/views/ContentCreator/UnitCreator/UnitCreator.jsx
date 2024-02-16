@@ -89,9 +89,10 @@ export default function UnitCreator({ gradeList }) {
               type="number"
               value={number}
               placeholder="Enter unit number"
+              required
               min={1}
               max={15}
-              required
+              
             />
           </Form.Item>
           <Form.Item id="form-label" label="Description">
@@ -100,7 +101,7 @@ export default function UnitCreator({ gradeList }) {
               onChange={e => setDescription(e.target.value)}
               value={description}
               placeholder="Enter unit description"
-              required
+              
             />
           </Form.Item>
           <Form.Item id="form-label" label="TekS">
@@ -108,7 +109,7 @@ export default function UnitCreator({ gradeList }) {
               onChange={e => setTek(e.target.value)}
               value={tek}
               placeholder="Enter unit Teks"
-              required
+             
             />
           </Form.Item>
           <Form.Item
