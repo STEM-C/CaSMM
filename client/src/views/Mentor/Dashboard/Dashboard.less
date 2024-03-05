@@ -8,7 +8,40 @@
   margin-bottom: 3%;
   text-align: left;
   padding-top: 20px;
+  align-items: center
+
+
+  
 }
+
+.new-button[type='button'] {
+  background: darken(#colors[tertiary], 30%);
+  width: 25%;
+  display: block;
+  margin: 0 auto;
+  border: 2px solid;
+  border-color: #colors[secondary];
+  padding: 9px 35px;
+  outline: none;
+  color: #colors[text-primary];
+  background-color: #colors[quaternary];
+  font-size: 1.2em;
+  font-weight: 500;
+  text-align: center;
+  border-radius: 30px;
+  cursor: pointer;
+  transition: 0.25s;
+  position: absolute;
+  margin: 3.33vh auto auto;
+  transform: translateX(272%);
+  
+
+  &:hover {
+    background-color: #colors[quinary];
+    color: #colors[text-primary];
+  }
+}
+
 
 #classrooms-container {
   margin: 6vh auto 4vh auto;
@@ -83,6 +116,8 @@
       line-height: 1.6vw;
     }
   }
+
+
 
   #card-right-content-container {
     display: flex;

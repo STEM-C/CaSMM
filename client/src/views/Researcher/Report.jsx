@@ -1,10 +1,11 @@
 import NavBar from '../../components/NavBar/NavBar';
 import RouteButton from '../../components/RouteButton/RouteButton';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import './Report.less';
 
 export default function Report(props) {
+
   return (
     <div className='container nav-padding'>
       <NavBar />

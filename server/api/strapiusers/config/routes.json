@@ -1,0 +1,12 @@
+{
+    "routes": [
+      {
+        "method": "GET",
+        "path": "/strapiusers/super-admin",
+        "handler": "strapiusers.findSuperAdmins",
+        "config": {
+          "policies": []
+        }
+      }
+    ]
+    }

@@ -3,6 +3,7 @@ import { Link, useParams, useNavigate } from 'react-router-dom';
 import NavBar from '../../components/NavBar/NavBar';
 import { getSession } from '../../Utils/requests';
 import './DayLevelReportView.less';
+import { confirmRedirect } from '../../App';
 
 const DayLevelReportView = () => {
   const { id } = useParams();
@@ -12,7 +13,7 @@ const DayLevelReportView = () => {
   const [className, setClassName] = useState([]);
   const [clicks, setClicks] = useState(0);
   const navigate = useNavigate();
-
+  confirmRedirect();
   useEffect(function () {
     const getData = async () => {
       const session = await getSession(id);

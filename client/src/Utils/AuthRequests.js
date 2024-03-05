@@ -9,6 +9,17 @@ export const postUser = async (body) => {
   return response;
 };
 
+export const regUser = async (body) => {
+  const response = await axios.post(`${server}/auth/local/register`, body); 
+    //username: 'testuser',
+    //email: 'tu@mail.com',
+    //password: '123456',
+  
+  return response;
+};
+
+
+
 // return token from session storage
 export const getToken = () => {
   return sessionStorage.getItem('token') || null;
@@ -26,4 +37,20 @@ export const setUserSession = (jwt, user) => {
   sessionStorage.setItem('token', jwt);
   sessionStorage.setItem('user', user);
   setUserState(getCurrUser());
+};
+
+export const getSupers = async () => {
+  const response = await axios.get(`${server}/strapiusers/super-admin`);
+
+  return response;
+};
+
+export const getConfirmed = async () => {
+  var thisUser = JSON.parse(sessionStorage.getItem('user'));
+  return thisUser.confirmed;
+};
+
+export const getMyRole = async () => {
+  var thisUser = JSON.parse(sessionStorage.getItem('user'));
+  return thisUser.role;
 };

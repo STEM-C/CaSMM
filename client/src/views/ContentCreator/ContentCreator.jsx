@@ -13,16 +13,27 @@ import {
 } from '../../Utils/requests';
 import UnitEditor from './UnitEditor/UnitEditor';
 import LessonEditor from './LessonEditor/LessonEditor';
-import { useSearchParams } from 'react-router-dom';
-
+import { useSearchParams, useNavigate } from 'react-router-dom';
+import { getMyRole } from '../../Utils/AuthRequests';
+import { confirmRedirect } from '../../App';
 import './ContentCreator.less';
 
 const { TabPane } = Tabs;
 
 export default function ContentCreator() {
+  const navigate = useNavigate();
   const [gradeList, setGradeList] = useState([]);
   const [learningStandardList, setLearningStandardList] = useState([]);
   const [searchParams, setSearchParams] = useSearchParams();
+  confirmRedirect()
+ 
+  getMyRole()
+    .then(value => {
+      //console.log("Role: ", value);
+      if (value.name == 'Researcher') {
+        navigate('/report');
+      };
+    }); 
 
   const [tab, setTab] = useState(
     searchParams.has('tab') ? searchParams.get('tab') : 'home'
@@ -33,6 +44,7 @@ export default function ContentCreator() {
   const [viewing, setViewing] = useState(parseInt(searchParams.get('day')));
 
   useEffect(() => {
+
     const fetchData = async () => {
       const [lsResponse, gradeResponse] = await Promise.all([
         getLearningStandardAll(),

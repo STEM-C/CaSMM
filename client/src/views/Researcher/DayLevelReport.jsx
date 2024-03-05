@@ -14,6 +14,7 @@ import {
   getClassroom,
 } from '../../Utils/requests';
 import Form from 'antd/lib/form/Form';
+import { confirmRedirect } from '../../App';
 
 const DayLevelReport = () => {
   const [sessions, setSessions] = useState([]);
@@ -27,6 +28,7 @@ const DayLevelReport = () => {
   const [tbUnitFilter, setTbUnitFilter] = useState([]);
   const [tbLessonFilter, setTbLessonFilter] = useState([]);
   const [tbPrevFilter, setTbPrevFilter] = useState(null);
+  confirmRedirect();
 
   useEffect(() => {
     const fetchData = async () => {

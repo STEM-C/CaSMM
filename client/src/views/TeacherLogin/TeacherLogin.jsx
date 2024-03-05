@@ -38,6 +38,9 @@ export default function TeacherLogin() {
         } else {
           navigate('/dashboard');
         }
+        if (!response.data.user.confirmed) {
+          navigate('/sorry');
+        }
       })
       .catch((error) => {
         setLoading(false);

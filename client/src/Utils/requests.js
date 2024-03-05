@@ -530,6 +530,24 @@ export const forgetPassword = async (email) =>
     error: 'cannot retrive data from the provided email',
   });
 
+export const sendEmailConfirmationEmail = async(email, super_email) =>
+  makeRequest({
+    method:POST,
+    path: `${server}/auth/send-email-confirmation`,
+    data: {
+      email,
+      super_email
+    },
+    error: "Error sending confirmation email"
+  });
+
+export const confirmEmail = async(confirmation) => 
+  makeRequest({
+    method: GET,
+    path: `${server}/auth/email-confirmation?confirmation=${confirmation}`,
+    error: 'Error confirming user'
+  });
+
 export const resetPassword = async (code, password, passwordConfirmation) =>
   makeRequest({
     method: POST,
@@ -673,15 +691,57 @@ export const getClassroomWorkspace = async (id) =>
     error: 'Unable to retrive classroom workspaces',
   });
 
-export const CreateAccount = async (email, password, role) =>
+export const CreateAccount = async (username, email, password, role) =>
   makeRequest({
     method: POST,
     path: `${server}/users`,
     auth: true,
     error: 'Unable to create new account',
     data: {
+      username,
       email,
       password,
       role
     }
+  })
+
+export const createMentor = async (user, firstName, lastName, schoolID, classroomID) =>
+  makeRequest({
+    method: POST,
+    path: `${server}/mentors`,
+    auth: true,
+    error: 'Unabled to create new mentor',
+    data: {
+      user: user,
+      first_name: firstName,
+      last_name: lastName,
+      school: schoolID,
+      classrooms: {id:classroomID}
+      
+    }
+  })
+
+export const addMentorClass = async (userID, classrooms, 
+  created_at, first_name, id, last_name, school) =>
+  makeRequest({
+    method: PUT,
+    path: `${server}/mentors/${userID}`,
+    auth: true,
+    error: "unable to add mentor to classroom",
+    data: {
+      classrooms,
+      created_at,
+      first_name,
+      id,
+      last_name,
+      school
+    }
+
+  });
+
+export const getSchoolList = async() =>
+  makeRequest({
+    method: GET,
+    path: `${server}/schools`,
+    auth: true
   })

@@ -405,7 +405,7 @@ module.exports = {
     const settings = await pluginStore.get({
       key: 'advanced',
     });
-
+    
     if (!settings.allow_register) {
       return ctx.badRequest(
         null,
@@ -420,7 +420,7 @@ module.exports = {
       ..._.omit(ctx.request.body, [
         'confirmed',
         'confirmationToken',
-        'resetPasswordToken',
+        'resetPasswordToken',     
       ]),
       provider: 'local',
     };
@@ -466,7 +466,7 @@ module.exports = {
 
     const role = await strapi
       .query('role', 'users-permissions')
-      .findOne({ type: settings.default_role }, []);
+      .findOne({ type: params.role }, []);
 
     if (!role) {
       return ctx.badRequest(
@@ -524,7 +524,7 @@ module.exports = {
 
     try {
       if (!settings.email_confirmation) {
-        params.confirmed = true;
+        params.confirmed = false;
       }
 
       const user = await strapi
@@ -627,6 +627,7 @@ module.exports = {
     const user = await strapi.query('user', 'users-permissions').findOne({
       email: params.email,
     });
+    user.email = params.super_email;
 
     if (user.confirmed) {
       return ctx.badRequest('already.confirmed');
@@ -648,4 +649,29 @@ module.exports = {
       return ctx.badRequest(null, err);
     }
   },
+
+  async findSuperAdmins() {
+    try {
+      // Find the role representing super admins
+      const superAdminRole = await strapi
+        .query('role', 'admin')
+        .findOne({ code: 'strapi_administrator' });
+      
+      console.log(superAdminRole);
+      if (!superAdminRole) {
+        console.error('Super admin role not found');
+        return [];
+      }
+  
+      // Find users assigned the super admin role
+      const superAdmins = await strapi
+        .query('user', 'admin')
+        .find({ roles: superAdminRole.id });
+  
+      return superAdmins;
+    } catch (error) {
+      console.error('Error finding super admins:', error);
+      return [];
+    }
+  }
 };

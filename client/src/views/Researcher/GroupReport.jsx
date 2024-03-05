@@ -2,9 +2,11 @@ import NavBar from '../../components/NavBar/NavBar';
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import './GroupReport.less';
+import { confirmRedirect } from '../../App';
 
 export default function GroupReport(props) {
   const navigate = useNavigate();
+  confirmRedirect();
   return (
     <div className='container nav-padding'>
       <NavBar />

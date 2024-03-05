@@ -10,6 +10,7 @@ import { useNavigate } from 'react-router-dom';
 
 export default function Dashboard() {
   const [classrooms, setClassrooms] = useState([]);
+  const [loading, setLoading] = useState(false);
   const [value] = useGlobalState('currUser');
   const navigate = useNavigate();
 
@@ -24,9 +25,14 @@ export default function Dashboard() {
           setClassrooms(classrooms);
         });
       } else {
-        message.error(res.err);
+        //message.error(res.err);
+        if (res.err == "Your classroom manager information could not be retrieved.") {
+          navigate("/mentor-register");
+        }
+        else {
         navigate('/teacherlogin');
-      }
+        };
+      };
     });
   }, []);
 
@@ -34,11 +40,22 @@ export default function Dashboard() {
     navigate(`/classroom/${classroomId}`);
   };
 
+  const handleLogin = () => {
+    navigate('/add-mentor');
+  };
+
   return (
     <div className='container nav-padding'>
       <NavBar />
       <div id='main-header'>Welcome {value.name}</div>
-      <MentorSubHeader title={'Your Classrooms'}></MentorSubHeader>
+      <MentorSubHeader title={'Your Classrooms'}>
+      </MentorSubHeader>
+      <input
+        type="button"
+        className="new-button"
+        value={loading ? "Loading..." : "Add Class"}
+        onClick={handleLogin}
+      />
       <div id='classrooms-container'>
         <div id='dashboard-card-container'>
           {classrooms.map((classroom) => (

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Route, Routes } from 'react-router-dom';
+import { Route, Routes, useNavigate } from 'react-router-dom';
 import PrivateRoute from './Utils/PrivateRoute';
 import About from './views/About/About';
 import BlocklyPage from './views/BlocklyPage/BlocklyPage';
@@ -20,9 +20,25 @@ import CreateAccount from './views/TeacherLogin/CreateAccount';
 import ForgetPassword from './views/TeacherLogin/ForgetPassword';
 import ResetPassword from './views/TeacherLogin/ResetPassword';
 import TeacherLogin from './views/TeacherLogin/TeacherLogin';
+import Sorry from './views/TeacherLogin/Sorry';
+import ConfirmEmail from './views/TeacherLogin/ConfirmEmail';
+import { getConfirmed } from './Utils/AuthRequests';
+import MentorRegister from './views/Mentor/Dashboard/MentorRegister';
+import AddMentor from './views/Mentor/Dashboard/AddMentor';
+
+export function confirmRedirect () {
+  const navigate = useNavigate();
+  getConfirmed()
+  .then(value => {
+    if (!value){
+      navigate('/sorry');
+    };
+  });
+}
 
 
 const App = () => {
+
   return (
     <div>
       <Routes>
@@ -34,7 +50,13 @@ const App = () => {
         <Route path='/reset-password' element={<ResetPassword />} />
         <Route path='/login' element={<StudentLogin />} />
         <Route path='/replay/:saveID' element={<Replay />} />
+        <Route path='/confirm-email' element = {<ConfirmEmail />} />
         <Route path='/sandbox' element={<BlocklyPage isSandbox={true} />} />
+        <Route path='/sorry' element={<Sorry />} />
+        <Route path='/mentor-register' element={<PrivateRoute>
+          <MentorRegister /></PrivateRoute>} />
+        <Route path='/add-mentor' element={<PrivateRoute>
+          <AddMentor /></PrivateRoute>} />
         <Route
           path='/report'
           element={
