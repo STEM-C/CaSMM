@@ -18,7 +18,7 @@ module.exports = {
 
     // validate the request
     const { name, expectations, teks } = ctx.request.body;
-    if (!name)
+    if (!expectations || !name || !teks)
       return ctx.badRequest('A name, teks and expectations must be provided!', {
         id: 'Learning-standard.update.body.invalid',
         error: 'ValidationError',
