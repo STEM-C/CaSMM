@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import NavBar from '../../../components/NavBar/NavBar';
 import { getMentor, getSchoolList, addMentorClass } from '../../../Utils/requests';
 import '../../TeacherLogin/TeacherLogin.less';
+import { confirmRedirect } from '../../../App';
 
 //import { findSuperAdmins } from '../../../../server/extensions/users-permissions/controllers/Auth';
 
@@ -21,6 +22,7 @@ const useFormInput = (initialValue) => {
 };
 
 export default function AddMentor() {
+  confirmRedirect();
   const username = useFormInput('');
   const email = useFormInput('');
   const [school, setSchool] = useState("");

@@ -32,6 +32,9 @@ export default function ContentCreator() {
       //console.log("Role: ", value);
       if (value.name == 'Researcher') {
         navigate('/report');
+      }
+      else if (value.name == 'Classroom Manager') {
+        navigate('/dashboard')
       };
     }); 
 
