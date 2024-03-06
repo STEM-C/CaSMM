@@ -44,13 +44,13 @@ export default function AddMentor() {
       try {
         getMentor()
         .then(response => {
-          console.log(response);
+          //console.log(response);
           setMyID(response.data.id);
           const tempClassList = [];
           for (var i=0; i < response.data.classrooms.length; i++){
             tempClassList.push(response.data.classrooms[i].id);
           }
-          console.log(tempClassList);
+          //console.log(tempClassList);
           setMyClassrooms(tempClassList);
           setSchool(response.data.school.id);
           setSchoolName(response.data.school.name);
@@ -69,7 +69,7 @@ export default function AddMentor() {
       const fetchClassroomList = async () => {
         try {
           const response = await getSchoolList();
-          console.log(response);
+          //console.log(response);
           const classroomData = response.data[school-1].classrooms.map(item => ({ id: item.id, name: item.name }))
           setClassroomList(classroomData);
           const newClassroomListToPass = [];

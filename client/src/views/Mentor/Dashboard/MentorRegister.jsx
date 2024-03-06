@@ -69,10 +69,10 @@ export default function MentorRegister() {
       const fetchClassroomList = async () => {
         try {
           const response = await getSchoolList();
-          console.log(response);
+          //console.log(response);
           const classroomData = response.data[school-1].classrooms.map(item => ({ id: item.id, name: item.name }))
           setClassroomList(classroomData);
-          console.log(classroomData);
+          //console.log(classroomData);
         } catch (error) {
           console.error('Error fetching classroom list:', error);
         }
@@ -84,11 +84,6 @@ export default function MentorRegister() {
       setClassroomList([]);
     }
   }, [school]);
-
-
-  console.log(SchoolList);
-
- 
 
 
   const handleLogin = () => {
