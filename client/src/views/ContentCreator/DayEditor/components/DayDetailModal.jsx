@@ -169,7 +169,7 @@ const DayDetailModal = ({
           <Input.TextArea
             onChange={e => setDescription(e.target.value)}
             value={description}
-            //required
+            required
             placeholder="Enter description"
           ></Input.TextArea>
         </Form.Item>
@@ -186,7 +186,7 @@ const DayDetailModal = ({
             onChange={e => setTekS(e.target.value)}
             value={TekS}
             className="input"
-            //required
+            required
             placeholder="Enter tekS"
           ></Input>
         </Form.Item>

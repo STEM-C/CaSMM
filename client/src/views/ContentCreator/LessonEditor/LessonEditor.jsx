@@ -115,7 +115,7 @@ export default function LessonEditor({
               onChange={e => setDescription(e.target.value)}
               value={description}
               rows={3}
-              //required
+              required
               placeholder="Enter lesson description"
             />
           </Form.Item>
@@ -123,7 +123,7 @@ export default function LessonEditor({
             <Input
               onChange={e => setTeks(e.target.value)}
               value={teks}
-              //required
+              required
               placeholder="Enter lesson teks"
             />
           </Form.Item>
