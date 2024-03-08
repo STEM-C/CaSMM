@@ -35,9 +35,8 @@ module.exports = {
     if (
       !strapi.services.validator.isPositiveInt(number) ||
       !strapi.services.validator.isPositiveInt(gradeId) ||
-      !teks_id ||
-      !name ||
-      !teks_description
+      //!teks_id ||
+      !name 
     )
       return ctx.badRequest(
         'A grade, name, teks_description must be provided! Number and Teks_id must be positive interger! ',
