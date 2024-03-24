@@ -48,7 +48,7 @@ export default function BlocklyPage({ isSandbox }) {
       // else show toolbox based on the day we are viewing
       else {
         const localDay = JSON.parse(localStorage.getItem("my-day"))
-
+        
         if (localDay) {
           if (localDay.toolbox) {
             setDay(localDay)

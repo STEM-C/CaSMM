@@ -23,12 +23,20 @@
       "type": "text",
       "required": true
     },
+    "multi_template": {
+      "via": "days",
+      "collection": "cc-workspace"
+    },
+    "multi_template_mentor": {
+      "via": "days_mentor",
+      "collection": "cc-workspace"
+    },
     "blocks": {
       "collection": "block"
     },
     "description": {
       "type": "text",
-      "required":false
+      "required": false
     },
     "TekS": {
       "type": "string",

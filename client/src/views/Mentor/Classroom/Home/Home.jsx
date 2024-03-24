@@ -11,11 +11,16 @@ import MentorDayDetailModal from './MentorDayDetailModal';
 import LearningStandardModal from './LearningStandardSelect/LearningStandardModal';
 import { message, Tag } from 'antd';
 import { useNavigate } from 'react-router-dom';
+import MentorSandbox from './MentorSandboxModal';
+import MentorSandboxMentor from './MentorSandboxModalMentor';
 
 export default function Home({ classroomId, viewing }) {
   const [classroom, setClassroom] = useState({});
   const [days, setDays] = useState([]);
   const [gradeId, setGradeId] = useState(null);
+  const [myDayLOL, setMyDayLOL] = useState(0);
+  const [sandboxVisible, setSandboxVisible] = useState(false);
+  const [sandboxVisibleMentor, setSandboxVisibleMentor] = useState(false);
   const [activeLearningStandard, setActiveLearningStandard] = useState(null);
   const [dayDetailsVisible, setDayDetailsVisible] = useState(false)
   const navigate = useNavigate();
@@ -54,9 +59,22 @@ export default function Home({ classroomId, viewing }) {
     fetchData();
   }, [classroomId]);
 
+  const handleViewMentorSandbox = (day) => {
+    //console.log("howdy howdy");
+    setMyDayLOL(day.id)
+    setSandboxVisible(true);
+  };
+
+  const handleViewMentorSandboxMentor = (day) => {
+    setMyDayLOL(day.id);
+    setSandboxVisibleMentor(true);
+  };
+
   const handleViewDay = (day, name) => {
     day.learning_standard_name = name;
+    day.template = day.multi_template[0].template
     localStorage.setItem('sandbox-day', JSON.stringify(day));
+    localStorage.setItem("sandbox", true)
     navigate('/sandbox');
   };
 
@@ -133,9 +151,7 @@ export default function Home({ classroomId, viewing }) {
                         <button
                           id='view-day-button'
                           style={{marginRight: "auto"}}
-                          onClick={() =>
-                            handleViewDay(day, activeLearningStandard.name)
-                          }
+                          onClick={() => handleViewMentorSandbox(day)}
                         >
                           Student Template
                         </button>
@@ -144,15 +160,28 @@ export default function Home({ classroomId, viewing }) {
                             id='view-day-button'
                             style={{marginRight: "auto"}}
                             onClick={() =>
-                              openActivityInWorkspace(
-                                day,
-                                activeLearningStandard.name
-                              )
+                              handleViewMentorSandboxMentor(day)
                             }
                           >
                             Mentor Template
                           </button>
                         )}
+                        {sandboxVisible ? (
+                          <MentorSandbox
+                            thisDay={myDayLOL}
+                            viewing={sandboxVisible}
+                            setViewing={setSandboxVisible}
+                            learningStandard={activeLearningStandard}
+                            />
+                          ) : null}
+                        {sandboxVisibleMentor ? (
+                          <MentorSandboxMentor
+                            thisDay={myDayLOL}
+                            viewing={sandboxVisibleMentor}
+                            setViewing={setSandboxVisibleMentor}
+                            learningStandard={activeLearningStandard}
+                            />
+                          ) : null}
                         <MentorDayDetailModal 
                           learningStandard={activeLearningStandard}
                           selectDay={day}
@@ -255,6 +284,7 @@ export default function Home({ classroomId, viewing }) {
           )}
         </div>
       </div>
+
     </div>
   );
 }

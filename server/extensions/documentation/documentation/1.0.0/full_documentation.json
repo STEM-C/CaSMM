@@ -14,7 +14,7 @@
       "name": "Apache 2.0",
       "url": "https://www.apache.org/licenses/LICENSE-2.0.html"
     },
-    "x-generation-date": "03/07/2024 10:41:07 PM"
+    "x-generation-date": "03/24/2024 5:10:27 PM"
   },
   "x-strapi-config": {
     "path": "/documentation",
@@ -1672,6 +1672,89 @@
         ]
       }
     },
+    "/cc-workspaces/mentor-activity/{id}": {
+      "put": {
+        "deprecated": false,
+        "description": "Update a record",
+        "responses": {
+          "200": {
+            "description": "response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "foo": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "unexpected error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "summary": "",
+        "tags": [
+          "Cc-workspace"
+        ],
+        "requestBody": {
+          "description": "",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "properties": {
+                  "foo": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "",
+            "deprecated": false,
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ]
+      }
+    },
     "/classroom-managers/me": {
       "get": {
         "deprecated": false,
@@ -3165,6 +3248,172 @@
       }
     },
     "/days/activity_template/{id}": {
+      "put": {
+        "deprecated": false,
+        "description": "Update a record",
+        "responses": {
+          "200": {
+            "description": "response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "foo": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "unexpected error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "summary": "",
+        "tags": [
+          "Day"
+        ],
+        "requestBody": {
+          "description": "",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "properties": {
+                  "foo": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "",
+            "deprecated": false,
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ]
+      }
+    },
+    "/days/multi/{id}": {
+      "put": {
+        "deprecated": false,
+        "description": "Update a record",
+        "responses": {
+          "200": {
+            "description": "response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "foo": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "unexpected error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "summary": "",
+        "tags": [
+          "Day"
+        ],
+        "requestBody": {
+          "description": "",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "properties": {
+                  "foo": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "",
+            "deprecated": false,
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ]
+      }
+    },
+    "/days/multi-mentor/{id}": {
       "put": {
         "deprecated": false,
         "description": "Update a record",
@@ -12002,6 +12251,144 @@
           "template": {
             "type": "string"
           },
+          "days": {
+            "type": "array",
+            "items": {
+              "required": [
+                "id",
+                "number",
+                "template"
+              ],
+              "properties": {
+                "id": {
+                  "type": "string"
+                },
+                "learning_standard": {
+                  "type": "string"
+                },
+                "number": {
+                  "type": "integer"
+                },
+                "template": {
+                  "type": "string"
+                },
+                "multi_template": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "multi_template_mentor": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "blocks": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "description": {
+                  "type": "string"
+                },
+                "TekS": {
+                  "type": "string"
+                },
+                "images": {
+                  "type": "string"
+                },
+                "link": {
+                  "type": "string"
+                },
+                "learning_components": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "activity_template": {
+                  "type": "string"
+                },
+                "created_by": {
+                  "type": "string"
+                },
+                "updated_by": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "days_mentor": {
+            "type": "array",
+            "items": {
+              "required": [
+                "id",
+                "number",
+                "template"
+              ],
+              "properties": {
+                "id": {
+                  "type": "string"
+                },
+                "learning_standard": {
+                  "type": "string"
+                },
+                "number": {
+                  "type": "integer"
+                },
+                "template": {
+                  "type": "string"
+                },
+                "multi_template": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "multi_template_mentor": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "blocks": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "description": {
+                  "type": "string"
+                },
+                "TekS": {
+                  "type": "string"
+                },
+                "images": {
+                  "type": "string"
+                },
+                "link": {
+                  "type": "string"
+                },
+                "learning_components": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "activity_template": {
+                  "type": "string"
+                },
+                "created_by": {
+                  "type": "string"
+                },
+                "updated_by": {
+                  "type": "string"
+                }
+              }
+            }
+          },
           "published_at": {
             "type": "string",
             "format": "date-time"
@@ -12031,6 +12418,18 @@
           },
           "classroom": {
             "type": "string"
+          },
+          "days": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "days_mentor": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
           },
           "published_at": {
             "type": "string",
@@ -12399,6 +12798,114 @@
           "template": {
             "type": "string"
           },
+          "multi_template": {
+            "type": "array",
+            "items": {
+              "required": [
+                "id",
+                "name",
+                "template"
+              ],
+              "properties": {
+                "id": {
+                  "type": "string"
+                },
+                "name": {
+                  "type": "string"
+                },
+                "description": {
+                  "type": "string"
+                },
+                "template": {
+                  "type": "string"
+                },
+                "blocks": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "classroom": {
+                  "type": "string"
+                },
+                "days": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "days_mentor": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "published_at": {
+                  "type": "string"
+                },
+                "created_by": {
+                  "type": "string"
+                },
+                "updated_by": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "multi_template_mentor": {
+            "type": "array",
+            "items": {
+              "required": [
+                "id",
+                "name",
+                "template"
+              ],
+              "properties": {
+                "id": {
+                  "type": "string"
+                },
+                "name": {
+                  "type": "string"
+                },
+                "description": {
+                  "type": "string"
+                },
+                "template": {
+                  "type": "string"
+                },
+                "blocks": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "classroom": {
+                  "type": "string"
+                },
+                "days": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "days_mentor": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "published_at": {
+                  "type": "string"
+                },
+                "created_by": {
+                  "type": "string"
+                },
+                "updated_by": {
+                  "type": "string"
+                }
+              }
+            }
+          },
           "blocks": {
             "type": "array",
             "items": {
@@ -12496,6 +13003,18 @@
           },
           "template": {
             "type": "string"
+          },
+          "multi_template": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "multi_template_mentor": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
           },
           "blocks": {
             "type": "array",
@@ -12784,6 +13303,18 @@
                 "template": {
                   "type": "string"
                 },
+                "multi_template": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "multi_template_mentor": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                },
                 "blocks": {
                   "type": "array",
                   "items": {
@@ -12919,6 +13450,18 @@
                 },
                 "template": {
                   "type": "string"
+                },
+                "multi_template": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "multi_template_mentor": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
                 },
                 "blocks": {
                   "type": "array",
@@ -13256,6 +13799,18 @@
               },
               "template": {
                 "type": "string"
+              },
+              "multi_template": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "multi_template_mentor": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
               },
               "blocks": {
                 "type": "array",
@@ -14333,6 +14888,18 @@
               },
               "template": {
                 "type": "string"
+              },
+              "multi_template": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "multi_template_mentor": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
               },
               "blocks": {
                 "type": "array",

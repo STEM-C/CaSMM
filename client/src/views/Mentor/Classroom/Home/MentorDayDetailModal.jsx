@@ -10,6 +10,8 @@ import {
 } from "../../../../Utils/requests"
 import "../../../../../../client/src/views/ContentCreator/DayEditor/DayEditor.less"
 import DayComponentTags from "../../../../../../client/src/views/ContentCreator/DayEditor/components/DayComponentTags"
+import MentorDayTemplates from "./MentorDayTemplatesModal"
+import MentorDayTemplatesMentor from "./MentorDayTemplatesModalMentor"
 
 const SCIENCE = 1
 const MAKING = 2
@@ -21,6 +23,7 @@ const MentorDayDetailModal = ({
   setDays,
   open,
 }) => {
+  const mylearningStandard = learningStandard
   const [description, setDescription] = useState("")
   const [template, setTemplate] = useState("")
   const [activity_template, setActivityTemplate] = useState("")
@@ -35,10 +38,25 @@ const MentorDayDetailModal = ({
   const [linkError, setLinkError] = useState(false)
   const [submitButton, setSubmitButton] = useState(0)
   const navigate = useNavigate()
+  const [myDayLOL, setMyDayLOL] = useState("")
+
+  const [dayTemplates, setDayTemplatesvisible] = useState(false)
+  const [dayTemplatesMentor, setDayTemplatesMentorVisible] = useState(false)
+
+  const showDayTemplatesModal = () => {
+    //console.log("howdy world");
+    setDayTemplatesvisible(true);
+  }
+
+  const showDayTemplatesMentorModal = () => {
+    //console.log("howdy mentor world")
+    setDayTemplatesMentorVisible(true)
+  }
 
   useEffect(() => {
     const showDayDetailsModal = async () => {
       const response = await getDay(selectDay.id)
+      setMyDayLOL(response.data.id)
       if (response.err) {
         message.error(response.err)
         return
@@ -83,14 +101,18 @@ const MentorDayDetailModal = ({
     return n
   }
 
-  const handleViewDayTemplate = async day => {
+  const handleViewDayTemplate = async (day, index, sandbox) => {
     const allToolBoxRes = await getDayToolboxAll()
     const selectedToolBoxRes = await getDayToolbox(day.id)
     day.selectedToolbox = selectedToolBoxRes.data.toolbox
     day.toolbox = allToolBoxRes.data.toolbox
-
+    day.template = day.multi_template[index].template
+    console.log(day)
     day.learning_standard_name = learningStandard.name
     localStorage.setItem("my-day", JSON.stringify(day))
+    localStorage.setItem("multi_number", parseInt(index) )
+    localStorage.setItem("sandbox", sandbox)
+
     navigate("/day")
   }
 
@@ -268,11 +290,11 @@ const MentorDayDetailModal = ({
             span: 30,
           }}
         >
-          <button id="save--set-day-btn" onClick={() => setSubmitButton(1)}>
-            Edit Student Template
+          <button id="save--set-day-btn" onClick={showDayTemplatesModal}>
+            Edit Student Template(s)
           </button>
-          <button id="save-set-activity-btn" onClick={() => setSubmitButton(2)}>
-            Edit Mentor Template
+          <button id="save-set-activity-btn" onClick={showDayTemplatesMentorModal}>
+            Edit Mentor Template(s)
             <br />
             
           </button>
@@ -296,6 +318,22 @@ const MentorDayDetailModal = ({
         </Form.Item>
       </Form>
     </Modal>
+    {dayTemplates ? (
+      <MentorDayTemplates
+        thisDay={myDayLOL}
+        viewing={dayTemplates}
+        setViewing={setDayTemplatesvisible}
+        learningStandard={mylearningStandard}
+      />
+    ) : null}
+    {dayTemplatesMentor ? (
+      <MentorDayTemplatesMentor
+        thisDay={myDayLOL}
+        viewing={dayTemplatesMentor}
+        setViewing={setDayTemplatesMentorVisible}
+        learningStandard={mylearningStandard}
+        />
+      ) : null}
     </div>
   )
 }

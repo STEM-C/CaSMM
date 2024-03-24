@@ -58,6 +58,22 @@
     },
     {
       "method": "PUT",
+      "path": "/days/multi/:id",
+      "handler": "day.multiupdate",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "PUT",
+      "path": "/days/multi-mentor/:id",
+      "handler": "day.multimentorupdate",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "PUT",
       "path": "/days/:id",
       "handler": "day.update",
       "config": {

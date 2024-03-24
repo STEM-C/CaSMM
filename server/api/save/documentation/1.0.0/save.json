@@ -610,6 +610,18 @@
               "template": {
                 "type": "string"
               },
+              "multi_template": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "multi_template_mentor": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
               "blocks": {
                 "type": "array",
                 "items": {

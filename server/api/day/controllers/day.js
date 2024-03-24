@@ -110,6 +110,33 @@ module.exports = {
     return sanitizeEntity(updatedDay, { model: strapi.models.day });
   },
 
+  async multiupdate(ctx) {
+    // find the day
+    const { id } = ctx.params;
+    let day = await strapi.services.day.findOne({ id: id });
+    if (!day)
+      return ctx.notFound(
+        'The student id provided does not correspond to a valid student!',
+        { id: 'day.id.invalid', error: 'ValidationError' }
+      );
+    day.multi_template = ctx.request.body.multi_template;
+    const updatedDay = await strapi.services.day.update({ id: id }, day);
+    return sanitizeEntity(updatedDay, { model: strapi.models.day });
+  },
+  async multimentorupdate(ctx) {
+    // find the day
+    const { id } = ctx.params;
+    let day = await strapi.services.day.findOne({ id: id });
+    if (!day)
+      return ctx.notFound(
+        'The student id provided does not correspond to a valid student!',
+        { id: 'day.id.invalid', error: 'ValidationError' }
+      );
+    day.multi_template_mentor = ctx.request.body.multi_template_mentor;
+    const updatedDay = await strapi.services.day.update({ id: id }, day);
+    return sanitizeEntity(updatedDay, { model: strapi.models.day });
+  },
+
   // Update day template and block list
   async templateUpdate(ctx) {
     // find the day

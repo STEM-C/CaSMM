@@ -4,7 +4,9 @@ import {
   compileArduinoCode,
   handleCreatorSaveActivity,
   handleCreatorSaveDay,
+  handleCreatorSaveMultiDay,
   handleUpdateWorkspace,
+  handleCreatorSaveMultiDayMentor,
 } from '../../Utils/helpers';
 import { message, Spin, Row, Col, Alert, Dropdown, Menu } from 'antd';
 import CodeModal from '../modals/CodeModal';
@@ -35,6 +37,7 @@ export default function ContentCreatorCanvas({
   setDay,
   isMentorActivity,
 }) {
+  const multi_day_number = parseInt(localStorage.multi_number)
   const [hoverUndo, setHoverUndo] = useState(false);
   const [hoverRedo, setHoverRedo] = useState(false);
   const [hoverCompile, setHoverCompile] = useState(false);
@@ -53,7 +56,7 @@ export default function ContentCreatorCanvas({
   const [forceUpdate] = useReducer((x) => x + 1, 0);
   const workspaceRef = useRef(null);
   const dayRef = useRef(null);
-
+  //console.log("local storage in canvas: ", localStorage)
   const setWorkspace = () => {
     workspaceRef.current = window.Blockly.inject('blockly-canvas', {
       toolbox: document.getElementById('toolbox'),
@@ -140,19 +143,20 @@ export default function ContentCreatorCanvas({
   const handleCreatorSave = async () => {
     // Save day template
     if (!isSandbox && !isMentorActivity) {
-      const res = await handleCreatorSaveDay(
-        day.id,
+      const res = await handleCreatorSaveMultiDay(
+        day.multi_template[multi_day_number].id,
         workspaceRef,
         studentToolbox
       );
       if (res.err) {
         message.error(res.err);
       } else {
-        message.success('Day Template saved successfully');
+        message.success('Template saved successfully');
       }
     } else if (!isSandbox && isMentorActivity) {
       // Save activity template
-      const res = await handleCreatorSaveActivity(day.id, workspaceRef);
+      const res = await handleCreatorSaveMultiDayMentor(day.multi_template_mentor[multi_day_number].id,
+         workspaceRef);
       if (res.err) {
         message.error(res.err);
       } else {
@@ -321,7 +325,7 @@ export default function ContentCreatorCanvas({
                 {day.learning_standard_name
                   ? `${day.learning_standard_name} - Day ${day.number} - ${
                       isMentorActivity ? 'Activity' : 'Day'
-                    } Template`
+                    } Template #${multi_day_number+1}`
                   : day.name
                   ? `Workspace: ${day.name}`
                   : 'New Workspace!'}

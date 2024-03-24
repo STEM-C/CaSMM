@@ -21,7 +21,7 @@
       "path": "/cc-workspaces/:id",
       "handler": "cc-workspace.findOne",
       "config": {
-        "policies": ["isContentCreatorOrHasClassroom"]
+        "policies": []
       }
     },
     {
@@ -37,7 +37,7 @@
       "path": "/cc-workspaces",
       "handler": "cc-workspace.create",
       "config": {
-        "policies": ["isContentCreatorOrHasClassroom"]
+        "policies": []
       }
     },
     {
@@ -45,7 +45,15 @@
       "path": "/cc-workspaces/:id",
       "handler": "cc-workspace.update",
       "config": {
-        "policies": ["isContentCreatorOrHasClassroom"]
+        "policies": []
+      }
+    },
+    {
+      "method": "PUT",
+      "path": "/cc-workspaces/mentor-activity/:id",
+      "handler": "cc-workspace.activityUpdate",
+      "config": {
+        "policies": []
       }
     },
     {

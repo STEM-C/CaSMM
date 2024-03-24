@@ -10,6 +10,8 @@ import {
 } from "../../../../Utils/requests"
 import "../DayEditor.less"
 import DayComponentTags from "./DayComponentTags"
+import DayTemplates from "./DayTemplatesModal"
+import DayTemplatesMentor from "./DayTemplatesModalMentor"
 
 const SCIENCE = 1
 const MAKING = 2
@@ -22,6 +24,8 @@ const DayDetailModal = ({
   setDays,
   viewing,
 }) => {
+  const myLearningStandard = learningStandard;
+  //console.log("howdy");
   const [description, setDescription] = useState("")
   //const [template, setTemplate] = useState("")
   const [TekS, setTekS] = useState("")
@@ -35,10 +39,26 @@ const DayDetailModal = ({
   const [linkError, setLinkError] = useState(false)
   const [submitButton, setSubmitButton] = useState(0)
   const navigate = useNavigate()
+  const [myDayLOL, setMyDayLOL] = useState("")
+
+  const [dayTemplates, setDayTemplatesvisible] = useState(false)
+  const [dayTemplatesMentor, setDayTemplatesMentorVisible] = useState(false)
+
+  const showDayTemplatesModal = () => {
+    //console.log("howdy world");
+    setDayTemplatesvisible(true);
+  }
+
+  const showDayTemplatesMentorModal = () => {
+    //console.log("howdy mentor world")
+    setDayTemplatesMentorVisible(true)
+  }
 
   useEffect(() => {
     const showDayDetailsModal = async () => {
       const response = await getDay(selectDay.id)
+      setMyDayLOL(response.data.id)
+      localStorage.setItem("day-number", response.data.number)
       if (response.err) {
         message.error(response.err)
         return
@@ -89,6 +109,7 @@ const DayDetailModal = ({
     day.toolbox = allToolBoxRes.data.toolbox
 
     day.learning_standard_name = learningStandard.name
+
     localStorage.setItem("my-day", JSON.stringify(day))
     navigate("/day")
   }
@@ -128,6 +149,7 @@ const DayDetailModal = ({
       message.error(res.err)
     } else {
       message.success("Successfully saved day")
+      //console.log("save response: ", res.data)
       // just save the form
       if (submitButton === 0) {
         const getDayAll = await getLearningStandardDays(viewing)
@@ -144,6 +166,7 @@ const DayDetailModal = ({
       }
     }
   }
+
 
   return (
     <Modal
@@ -243,15 +266,15 @@ const DayDetailModal = ({
             span: 30,
           }}
         >
-          <button id="save--set-day-btn" onClick={() => setSubmitButton(1)}>
-            Save and Set
+          <button id="save--set-day-btn" onClick={showDayTemplatesModal}>
+            Show Day
             <br />
-            Day Template
+            Template(s)
           </button>
-          <button id="save-set-activity-btn" onClick={() => setSubmitButton(2)}>
-            Save and Set
+          <button id="save-set-activity-btn" onClick={showDayTemplatesMentorModal}>
+            Show Activity
             <br />
-            Activity Template
+            Template(s)
           </button>
         </Form.Item>
         <Form.Item
@@ -279,7 +302,25 @@ const DayDetailModal = ({
           </Button>
         </Form.Item>
       </Form>
+      {dayTemplates ? (
+      <DayTemplates
+        thisDay={myDayLOL}
+        viewing={dayTemplates}
+        setViewing={setDayTemplatesvisible}
+        learningStandard={myLearningStandard}
+      />
+    ) : null}
+      {dayTemplatesMentor ? (
+      <DayTemplatesMentor
+        thisDay={myDayLOL}
+        viewing={dayTemplatesMentor}
+        setViewing={setDayTemplatesMentorVisible}
+        learningStandard={myLearningStandard}
+        />
+      ) : null}
     </Modal>
+
+
   )
 }
 

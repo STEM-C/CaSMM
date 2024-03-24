@@ -29,6 +29,7 @@ const DayEditor = ({ learningStandard, viewing, setViewing, page, tab }) => {
         const myDays = getDayAll.data
         myDays.sort((a, b) => (a.number > b.number ? 1 : -1))
         setDays([...myDays])
+        //console.log("relevant dataa: ", myDays)
         setVisible(true)
       }
     }

@@ -466,10 +466,38 @@ export const updateLearningStandard = async (
     error: 'Failed to update unit',
   });
 
+export const updateDayMultiTemplateDetails = async (
+  id,
+  multi_template
+) =>
+  makeRequest({
+    method: PUT,
+    path: `${server}/days/multi/${id}`,
+    data: {
+      multi_template
+    },
+    auth: true,
+    error: "failed to update with new multi template"
+  })
+
+  export const updateDayMultiTemplateMentorDetails = async (
+    id,
+    multi_template_mentor
+  ) =>
+    makeRequest({
+      method: PUT,
+      path: `${server}/days/multi-mentor/${id}`,
+      data: {
+        multi_template_mentor
+      },
+      auth: true,
+      error: "failed to update with new multi template"
+    })
+
 export const updateDayDetails = async (
   id,
   description,
-  // template,
+  //template,
   // activity_template,
   TekS,
   images,
@@ -675,6 +703,18 @@ export const updateCCWorkspace = async (id, template, blocks) =>
     },
     error: 'Unable to create cc workspace',
   });
+
+export const updateCCWorkspaceActivityTemplate = async (id, template) =>
+  makeRequest({
+    method: PUT,
+    path: `${server}/cc-workspaces/mentor-activity/${id}`,
+    auth: true,
+    data: {
+      template
+    },
+    error: 'unable to update mentor cc workspace'
+  })
+
 export const deleteCCWorkspace = async (id) =>
   makeRequest({
     method: DELETE,

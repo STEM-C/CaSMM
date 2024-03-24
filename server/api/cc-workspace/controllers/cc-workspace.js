@@ -78,6 +78,26 @@ module.exports = {
     });
   },
 
+  async activityUpdate(ctx) {
+    const { id } = ctx.params;
+    let workspace = await strapi.services['cc-workspace'].findOne({ id: id });
+    if (!workspace)
+      return ctx.notFound('Invalid workspace id', {
+        id: 'cc-workspace.id.invalid',
+        error: 'ValidationError',
+      });
+
+    // update template and blocks
+    workspace.template = ctx.request.body.template;
+    const updatedWorkspace = await strapi.services['cc-workspace'].update(
+      { id: id },
+      workspace
+    );
+    return sanitizeEntity(updatedWorkspace, {
+      model: strapi.models['cc-workspace'],
+    });
+  },
+
   async toolbox(ctx) {
     const { id } = ctx.params;
 

@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState, useReducer } from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../../DayPanels.less';
-import { compileArduinoCode, handleUpdateWorkspace,  handleCreatorSaveDay, handleCreatorSaveActivity } from '../../Utils/helpers';
+import { compileArduinoCode, handleUpdateWorkspace, handleCreatorSaveMultiDayMentor,  handleCreatorSaveDay, handleCreatorSaveMultiDay,handleCreatorSaveActivity } from '../../Utils/helpers';
 import { message, Spin, Row, Col, Alert, Menu, Dropdown } from 'antd';
 import CodeModal from '../modals/CodeModal';
 import ConsoleModal from '../modals/ConsoleModal';
@@ -22,6 +22,7 @@ import PlotterLogo from '../Icons/PlotterLogo';
 let plotId = 1;
 
 export default function MentorCanvas({ day, isSandbox, setDay,  isMentorActivity }) {
+  const multi_day_number = parseInt(localStorage.multi_number)
   const [hoverUndo, setHoverUndo] = useState(false);
   const [hoverRedo, setHoverRedo] = useState(false);
   const [hoverCompile, setHoverCompile] = useState(false);
@@ -106,7 +107,8 @@ export default function MentorCanvas({ day, isSandbox, setDay,  isMentorActivity
   const handleSave = async () => {
     // if we already have the workspace in the db, just update it.
     if (day && day.id) {
-      const updateRes = await handleUpdateWorkspace(day.id, workspaceRef);
+      const updateRes = await handleCreatorSaveMultiDayMentor(day.multi_template[multi_day_number].id,
+         workspaceRef);
       if (updateRes.err) {
         message.error(updateRes.err);
       } else {
@@ -223,11 +225,9 @@ export default function MentorCanvas({ day, isSandbox, setDay,  isMentorActivity
     // Save day template
 
     if (!isSandbox && !isMentorActivity) {
-      const res = await handleCreatorSaveDay(
-        day.id,
+      const res = await handleCreatorSaveMultiDay(day.multi_template[multi_day_number].id,
         workspaceRef,
-        studentToolbox
-      );
+        studentToolbox);
       if (res.err) {
         message.error(res.err);
       } else {
@@ -235,7 +235,8 @@ export default function MentorCanvas({ day, isSandbox, setDay,  isMentorActivity
       }
     } else if (!isSandbox && isMentorActivity) {
       // Save activity template
-      const res = await handleCreatorSaveActivity(day.id, workspaceRef);
+      const res = await handleCreatorSaveMultiDayMentor(day.multi_template_mentor[multi_day_number].id,
+         workspaceRef);
       if (res.err) {
         message.error(res.err);
       } else {

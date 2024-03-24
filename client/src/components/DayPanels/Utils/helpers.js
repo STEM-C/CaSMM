@@ -5,6 +5,7 @@ import {
   updateDayTemplate,
   createCCWorkspace,
   updateCCWorkspace,
+  updateCCWorkspaceActivityTemplate,
   updateActivityTemplate,
 } from '../../../Utils/requests';
 import { message } from 'antd';
@@ -197,6 +198,20 @@ export const handleCreatorSaveDay = async (dayId, workspaceRef, blocksList) => {
   let xml_text = window.Blockly.Xml.domToText(xml);
 
   return await updateDayTemplate(dayId, xml_text, blocksList);
+};
+
+export const handleCreatorSaveMultiDay = async (dayId, workspaceRef, blocksList, multiRef) => {
+  let xml = window.Blockly.Xml.workspaceToDom(workspaceRef.current);
+  let xml_text = window.Blockly.Xml.domToText(xml);
+
+  return await updateCCWorkspace(dayId, xml_text, blocksList);
+};
+
+export const handleCreatorSaveMultiDayMentor = async (dayId, workspaceRef) => {
+  let xml = window.Blockly.Xml.workspaceToDom(workspaceRef.current);
+  let xml_text = window.Blockly.Xml.domToText(xml);
+
+  return await updateCCWorkspaceActivityTemplate(dayId, xml_text);
 };
 
 export const handleCreatorSaveActivity = async (dayId, workspaceRef) => {
