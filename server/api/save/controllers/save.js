@@ -13,7 +13,7 @@ module.exports = {
     const allSaves = await strapi.services.save.find({ student: ids, day });
 
     const saves = {
-      current: allSaves.find((save) => save.session.id === session),
+      current: allSaves.filter((save) => save.session.id == session),
       past: allSaves.filter((save) => save.session.id !== session),
     };
 
@@ -30,7 +30,7 @@ module.exports = {
 
     // ensure the request has the right number of params
     const params = Object.keys(ctx.request.body).length;
-    if (params !== 3)
+    if (params !== 4)
       return ctx.badRequest('Invalid number of params!', {
         id: 'Save.create.body.invalid',
         error: 'ValidationError',
@@ -38,7 +38,7 @@ module.exports = {
 
     // validate the request
     // at somept validate the xml...could lead to bad things...
-    const { day, workspace, replay } = ctx.request.body;
+    const { day, workspace, replay, daydayID } = ctx.request.body;
     if (!strapi.services.validator.isInt(day) || !workspace)
       return ctx.badRequest('A day and workspace must be provided!', {
         id: 'Save.create.body.invalid',
@@ -65,14 +65,29 @@ module.exports = {
 
     // create a student saves map
     const studentSaves = {};
-    saves.forEach((save) => (studentSaves[save.student.id] = save.id));
+    const moreStudentSaves = [];
+    saves.sort((a, b) => a.daydayID - b.daydayID);
+    saves.forEach((save) => { 
+      moreStudentSaves.push(save.id);
+      studentSaves[save.student.id] = moreStudentSaves
+    });
+    //console.log('student saves', saves);
+    //console.log('ids: ', ids);
+    //console.log('student saves ids:', studentSaves)
+    
 
     // create/update a save for each student(s)
     return await Promise.all(
       ids.map((id) => {
         // save exists, update
-        const saveId = studentSaves[id];
-        if (saveId)
+        var saveId = 0;
+        if ((saves.find((save) => save.daydayID == daydayID))) {
+          saveId = studentSaves[id][daydayID];
+        };
+
+        //console.log('random id thing: ', id)
+        //console.log(saveId);
+        if (saveId != 0)
           return strapi.services.save.update(
             { id: saveId },
             { workspace, replay }
@@ -85,6 +100,7 @@ module.exports = {
           workspace,
           session,
           replay,
+          daydayID
         });
       })
     );

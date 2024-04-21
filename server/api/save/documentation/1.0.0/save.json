@@ -746,6 +746,9 @@
                 "type": "string"
               }
             }
+          },
+          "daydayID": {
+            "type": "integer"
           }
         }
       },
@@ -768,6 +771,9 @@
           },
           "session": {
             "type": "string"
+          },
+          "daydayID": {
+            "type": "integer"
           },
           "created_by": {
             "type": "string"

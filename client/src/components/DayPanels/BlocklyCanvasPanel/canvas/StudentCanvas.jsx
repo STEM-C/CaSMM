@@ -20,6 +20,8 @@ import { useNavigate } from 'react-router-dom';
 let plotId = 1;
 
 export default function StudentCanvas({ day }) {
+  const multi_day_number = parseInt(localStorage.multi_number)
+  //console.log('local storage', localStorage)
   const [hoverSave, setHoverSave] = useState(false);
   const [hoverUndo, setHoverUndo] = useState(false);
   const [hoverRedo, setHoverRedo] = useState(false);
@@ -58,9 +60,9 @@ export default function StudentCanvas({ day }) {
         if (lastAutoSave && selectedSave === -2) {
           toLoad = lastAutoSave.workspace;
           setLastSavedTime(getFormattedDate(lastAutoSave.updated_at));
-        } else if (saves.current && saves.current.id === selectedSave) {
-          toLoad = saves.current.workspace;
-          setLastSavedTime(getFormattedDate(saves.current.updated_at));
+        } else if (saves.current[multi_day_number] && saves.current[multi_day_number].id === selectedSave) {
+          toLoad = saves.current[multi_day_number].workspace;
+          setLastSavedTime(getFormattedDate(saves.current[multi_day_number].updated_at));
         } else {
           const s = saves.past.find((save) => save.id === selectedSave);
           if (s) {
@@ -157,12 +159,14 @@ export default function StudentCanvas({ day }) {
 
   useEffect(() => {
     // automatically save workspace every min
+    //saves.current.sort((a,b) => a.daydayID - b.daydayID)
     let autosaveInterval = setInterval(async () => {
       if (workspaceRef.current && dayRef.current) {
         const res = await handleSave(
           dayRef.current.id,
           workspaceRef,
-          replayRef.current
+          replayRef.current,
+          multi_day_number
         );
         if (res.data) {
           setLastAutoSave(res.data[0]);
@@ -187,7 +191,9 @@ export default function StudentCanvas({ day }) {
         let onLoadSave = null;
         const res = await getSaves(day.id);
         if (res.data) {
-          if (res.data.current) onLoadSave = res.data.current;
+          //console.log(res.data);
+          if (res.data.current) onLoadSave = res.data.current.find((save) => save.daydayID == multi_day_number);
+          //console.log('onloadsave: ', onLoadSave);
           setSaves(res.data);
         } else {
           console.log(res.err);
@@ -213,7 +219,7 @@ export default function StudentCanvas({ day }) {
   const handleManualSave = async () => {
     // save workspace then update load save options
     pushEvent('save');
-    const res = await handleSave(day.id, workspaceRef, replayRef.current);
+    const res = await handleSave(day.id, workspaceRef, replayRef.current, multi_day_number);
     if (res.err) {
       message.error(res.err);
     } else {
@@ -364,7 +370,7 @@ export default function StudentCanvas({ day }) {
           >
             <Row id='icon-control-panel'>
               <Col flex='none' id='section-header'>
-                {day.learning_standard_name}
+                {day.learning_standard_name} - Day {day.number} Template {multi_day_number + 1}
               </Col>
               <Col flex='auto'>
                 <Row align='middle' justify='end' id='description-container'>
@@ -392,6 +398,7 @@ export default function StudentCanvas({ day }) {
                           getFormattedDate={getFormattedDate}
                           loadSave={loadSave}
                           pushEvent={pushEvent}
+                          daydayID={multi_day_number}
                         />
                         <button
                           onClick={handleManualSave}

@@ -27,6 +27,9 @@
     "session": {
       "via": "saves",
       "model": "session"
+    },
+    "daydayID": {
+      "type": "integer"
     }
   }
 }

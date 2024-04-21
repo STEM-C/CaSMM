@@ -187,10 +187,10 @@ const flashArduino = async (response, setSelectedCompile, setCompileError) => {
 };
 
 // save current workspace
-export const handleSave = async (dayId, workspaceRef, replay) => {
+export const handleSave = async (dayId, workspaceRef, replay, daydayID) => {
   let xml = window.Blockly.Xml.workspaceToDom(workspaceRef.current);
   let xml_text = window.Blockly.Xml.domToText(xml);
-  return await saveWorkspace(dayId, xml_text, replay);
+  return await saveWorkspace(dayId, xml_text, replay, daydayID);
 };
 
 export const handleCreatorSaveDay = async (dayId, workspaceRef, blocksList) => {

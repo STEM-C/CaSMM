@@ -4,9 +4,11 @@ import '../../DayPanels.less';
 
 export default function VersionHistoryModal(props) {
   const [visible, setVisible] = useState(false);
-  const { saves, loadSave, lastAutoSave, getFormattedDate, pushEvent } = props;
+  const { saves, loadSave, lastAutoSave, getFormattedDate, pushEvent, daydayID } = props;
 
   const showModal = () => {
+    //console.log(saves.current[daydayID]);
+    saves.current.sort((a,b) => a.daydayID - b.daydayID)
     setVisible(true);
   };
 
@@ -66,14 +68,14 @@ export default function VersionHistoryModal(props) {
           {
             // Active save option
             saves.current ? (
-              <li value={saves.current.id} key={saves.current.id}>
+              <li value={saves.current[daydayID]?.id} key={saves.current[daydayID]?.id}>
                 <div id='history-item'>
                   <div id='item-content'>
                     Active save from{' '}
-                    {getFormattedDate(saves.current.updated_at)}
+                    {getFormattedDate(saves.current[daydayID]?.updated_at)}
                   </div>
                   <div id='item-content'>
-                    <Button onClick={() => handleSelected(saves.current.id)}>
+                    <Button onClick={() => handleSelected(saves.current[daydayID]?.id)}>
                       Restore this save
                     </Button>
                   </div>
