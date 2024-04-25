@@ -25,6 +25,10 @@ const DayLevelReportView = () => {
       });
       //console.log(getArduinoXML(session.data.saves[session.data.saves.length - 1].workspace, workspaceRef.current))
       updateSessionArduino(session.data.id, getArduinoXML(session.data.saves[session.data.saves.length - 1].workspace, workspaceRef.current))
+      .catch(error => {
+        console.log(error)
+      });
+      workspaceRef.current.dispose();
       setSession(session.data);
 
       const fetchedStudents = session.data.students[0].name;
