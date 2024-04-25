@@ -35,6 +35,9 @@
     },
     "learning_standard": {
       "model": "learning-standard"
+    },
+    "arduino": {
+      "type": "text"
     }
   }
 }

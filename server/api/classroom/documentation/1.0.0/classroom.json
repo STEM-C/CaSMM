@@ -865,6 +865,9 @@
                 "learning_standard": {
                   "type": "string"
                 },
+                "arduino": {
+                  "type": "string"
+                },
                 "created_by": {
                   "type": "string"
                 },
