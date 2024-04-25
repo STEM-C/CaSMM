@@ -8,6 +8,7 @@ import {
   updateActivityTemplate,
 } from '../../../Utils/requests';
 import { message } from 'antd';
+import { useRef } from 'react';
 
 const AvrboyArduino = window.AvrgirlArduino;
 
@@ -44,6 +45,14 @@ export const getArduino = (workspaceRef, shouldAlert = true) => {
   let code = window.Blockly.Arduino.workspaceToCode(workspaceRef);
   if (shouldAlert) alert(code);
   return code;
+};
+
+export const getArduinoXML = (xml_text, workspaceRef) => {
+  window.Blockly.Arduino.INFINITE_LOOP_TRAP = null;
+  let dom = window.Blockly.Xml.textToDom(xml_text);
+  let workspace = window.Blockly.Xml.domToWorkspace(dom, workspaceRef);
+  let code = window.Blockly.Arduino.workspaceToCode(workspace)
+  return code
 };
 
 let intervalId;
@@ -238,3 +247,4 @@ export const handleUpdateWorkspace = async (id, workspaceRef, blocksList) => {
 
   return await updateCCWorkspace(id, xml_text, blocksList);
 };
+
