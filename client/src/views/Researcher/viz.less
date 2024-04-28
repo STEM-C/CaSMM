@@ -1,0 +1,555 @@
+@import '../../assets/style.less';
+
+.container {
+  background-color: #colors[primary];
+  height: 100%;
+  min-height: 100vh;
+  width: 100%;
+  min-width: 100vw;
+  text-align: center;
+}
+
+#content-wrapper {
+  margin: 12vh auto 8vh auto;
+  display: inline-block;
+}
+
+#box {
+  width: 300px;
+  padding: 40px 20px;
+  background-color: #colors[tertiary];
+  text-align: center;
+  border-radius: 15px;
+  border: 4px solid;
+  border-color: #colors[secondary];
+}
+
+#box-title {
+  background-color: #colors[secondary];
+  border-radius: 80px;
+  width: 80%;
+  min-height: 8%;
+  color: #colors[text-secondary];
+  font-size: 1.5em;
+  font-weight: bold;
+  position: relative;
+  top: -60px;
+  left: -40px;
+  line-height: 50px;
+  text-align: center;
+}
+
+#box input[type='text'],
+#box input[type='email'],
+#box input[type='password'] {
+  display: block;
+  background: none;
+  margin: 20px auto 0px;
+  border: 2px solid;
+  border-color: #colors[secondary];
+  padding: 14px 10px;
+  width: 200px;
+  outline: none;
+  color: #colors[text-primary];
+  border-radius: 8px;
+  transition: 0.25s;
+}
+
+#box input[type='text']:focus,
+#box input[type='email']:focus,
+#box input[type='password']:focus {
+  width: 220px;
+}
+
+#box input[type='button'] {
+  background: darken(#colors[tertiary], 30%);
+  width: 80%;
+  display: block;
+  margin: 0 auto;
+  border: 2px solid;
+  border-color: #colors[secondary];
+  padding: 14px 40px;
+  outline: none;
+  color: #colors[text-primary];
+  background-color: #colors[quaternary];
+  font-size: 1.2em;
+  font-weight: 500;
+  border-radius: 30px;
+  cursor: pointer;
+  transition: 0.25s;
+  position: relative;
+  bottom: -65px;
+
+  &:hover {
+    background-color: #colors[quinary];
+    color: #colors[text-primary];
+  }
+}
+
+#box #forgot-password {
+  margin-top: 10px;
+  margin-bottom: 0px;
+  float: none;
+  
+
+  &:hover {
+    cursor: pointer;
+  }
+}
+#box #create-account {
+  margin-top: 15px;
+  margin-bottom: 0px;
+  float: none;
+  
+
+  &:hover {
+    cursor: pointer;
+  }
+}
+
+//ForgetPassword
+
+#forgot-pass-wrapper {
+  margin: 12vh auto 8vh auto;
+  display: inline-block;
+}
+
+#forgot-pass-title {
+  background-color: #colors[secondary];
+  border-radius: 80px;
+  width: 80%;
+  min-height: 8%;
+  color: #colors[text-secondary];
+  font-size: 1.4em;
+  font-weight: bold;
+  position: relative;
+  top: 25px;
+  left: -40px;
+  line-height: 50px;
+  text-align: center;
+}
+
+#forgot-pass-form {
+  width: 400px;
+  padding: 40px 20px;
+  background-color: #colors[tertiary];
+  text-align: center;
+  border-radius: 15px;
+  border: 4px solid;
+  border-color: #colors[secondary];
+
+  input,
+  textarea {
+    display: block;
+    background: none;
+    margin: 20px auto 0px;
+    border: 2px solid;
+    border-color: #colors[secondary];
+    padding: 14px 10px;
+    width: 300px;
+    outline: none;
+    color: #colors[text-primary];
+    border-radius: 8px;
+    transition: 0.25s;
+  }
+
+  .ant-btn-primary {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #colors[quaternary];
+    width: 50%;
+    // display: block;
+    margin: 0 auto;
+    border: 2px solid;
+    border-color: #colors[secondary];
+    padding: 14px 40px;
+    outline: none;
+    color: #colors[text-primary];
+    font-size: 1.2em;
+    font-weight: 500;
+    border-radius: 30px;
+    position: relative;
+    bottom: -90px;
+
+    &:hover {
+      background-color: #colors[quinary];
+    }
+  }
+}
+
+//ResetPassword
+
+#reset-pass-wrapper {
+  margin: 12vh auto 8vh auto;
+  display: inline-block;
+}
+
+#reset-pass-title {
+  background-color: #colors[secondary];
+  border-radius: 80px;
+  width: 80%;
+  min-height: 8%;
+  color: #colors[text-secondary];
+  font-size: 1.4em;
+  font-weight: bold;
+  position: relative;
+  top: 25px;
+  left: -40px;
+  line-height: 50px;
+  text-align: center;
+}
+
+#reset-pass-form {
+  width: 400px;
+  padding: 40px 20px;
+  background-color: #colors[tertiary];
+  text-align: center;
+  border-radius: 15px;
+  border: 4px solid;
+  border-color: #colors[secondary];
+
+  input[type='password'] {
+    display: block;
+    background: none;
+    margin: 20px auto 0px;
+    border: 2px solid;
+    border-color: #colors[secondary];
+    padding: 14px 10px;
+    width: 300px;
+    outline: none;
+    color: #colors[text-primary];
+    border-radius: 8px;
+    transition: 0.25s;
+  }
+
+  .ant-btn-primary {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #colors[quaternary];
+    width: 50%;
+    // display: block;
+    margin: 0 auto;
+    border: 2px solid;
+    border-color: #colors[secondary];
+    padding: 14px 40px;
+    outline: none;
+    color: #colors[text-primary];
+    font-size: 1.2em;
+    font-weight: 500;
+    border-radius: 30px;
+    position: relative;
+    bottom: -90px;
+
+    &:hover {
+      background-color: #colors[quinary];
+    }
+  }
+}
+
+#forgot-pass-form {
+  width: 400px;
+  padding: 40px 20px;
+  background-color: #colors[tertiary];
+  text-align: center;
+  border-radius: 15px;
+  border: 4px solid;
+  border-color: #colors[secondary];
+
+  input[type='email'] {
+        display: block;
+        background: none;
+        margin: 20px auto 0px;
+        border: 2px solid;
+        border-color: #colors[secondary];
+        padding: 14px 10px;
+        width: 300px;
+        outline: none;
+        color: #colors[text-primary];
+        border-radius: 8px;
+        transition: 0.25s;
+  }
+
+  .ant-btn-primary {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #colors[quaternary];
+    width: 50%;
+    // display: block;
+    margin: 0 auto;
+    border: 2px solid;
+    border-color: #colors[secondary];
+    padding: 14px 40px;
+    outline: none;
+    color: #colors[text-primary];
+    font-size: 1.2em;
+    font-weight: 500;
+    border-radius: 30px;
+    position: relative;
+    bottom: -90px;
+
+    &:hover {
+      background-color: #colors[quinary];
+    }
+  }
+
+  
+}
+
+
+//ResetPassword
+
+#reset-pass-wrapper {
+  margin: 12vh auto 8vh auto;
+  display: inline-block;
+}
+
+#reset-pass-title {
+  background-color: #colors[secondary];
+  border-radius: 80px;
+  width: 80%;
+  min-height: 8%;
+  color: #colors[text-secondary];
+  font-size: 1.4em;
+  font-weight: bold;
+  position: relative;
+  top: 25px;
+  left: -40px;
+  line-height: 50px;
+  text-align: center;
+}
+
+#reset-pass-form {
+  width: 400px;
+  padding: 40px 20px;
+  background-color: #colors[tertiary];
+  text-align: center;
+  border-radius: 15px;
+  border: 4px solid;
+  border-color: #colors[secondary];
+
+  input[type='password'] {
+        display: block;
+        background: none;
+        margin: 20px auto 0px;
+        border: 2px solid;
+        border-color: #colors[secondary];
+        padding: 14px 10px;
+        width: 300px;
+        outline: none;
+        color: #colors[text-primary];
+        border-radius: 8px;
+        transition: 0.25s;
+  }
+
+  .ant-btn-primary {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #colors[quaternary];
+    width: 50%;
+    // display: block;
+    margin: 0 auto;
+    border: 2px solid;
+    border-color: #colors[secondary];
+    padding: 14px 40px;
+    outline: none;
+    color: #colors[text-primary];
+    font-size: 1.2em;
+    font-weight: 500;
+    border-radius: 30px;
+    position: relative;
+    bottom: -90px;
+
+    &:hover {
+      background-color: #colors[quinary];
+    }
+  }
+
+}
+
+//CreateAccount
+.container {
+  background-color: #colors[primary];
+  height: 100%;
+  min-height: 100vh;
+  width: 100%;
+  min-width: 100vw;
+  text-align: center;
+}
+
+#create-account-wrapper {
+  margin: 12vh auto 8vh auto;
+  display: inline-block;
+}
+
+#create-account-box {
+  width: 300px;
+  padding: 40px 20px;
+  background-color: #colors[tertiary];
+  text-align: center;
+  border-radius: 15px;
+  border: 4px solid;
+  border-color: #colors[secondary];
+}
+
+#create-account-box-title {
+  background-color: #colors[secondary];
+  border-radius: 80px;
+  width: 80%;
+  min-height: 8%;
+  color: #colors[text-secondary];
+  font-size: 1.5em;
+  font-weight: bold;
+  position: relative;
+  top: -60px;
+  left: -40px;
+  line-height: 50px;
+  text-align: center;
+}
+
+#box input[type='text'],
+#box input[type='email'],
+#box input[type='password'] {
+  display: block;
+  background: none;
+  margin: 20px auto 0px;
+  border: 2px solid;
+  border-color: #colors[secondary];
+  padding: 14px 10px;
+  width: 200px;
+  outline: none;
+  color: #colors[text-primary];
+  border-radius: 8px;
+  transition: 0.25s;
+}
+
+#box input[type='text']:focus,
+#box input[type='email']:focus,
+#box input[type='password']:focus {
+  width: 220px;
+}
+#box input[type='radio']:focus{
+  size: 100px;
+  bottom: 200px
+}
+
+#box input[type='button'] {
+  background: darken(#colors[tertiary], 30%);
+  width: 80%;
+  display: block;
+  margin: 0 auto;
+  border: 2px solid;
+  border-color: #colors[secondary];
+  padding: 14px 40px;
+  outline: none;
+  color: #colors[text-primary];
+  background-color: #colors[quaternary];
+  font-size: 1.2em;
+  font-weight: 500;
+  border-radius: 30px;
+  cursor: pointer;
+  transition: 0.25s;
+  position: relative;
+  bottom: -65px;
+
+  &:hover {
+    background-color: #colors[quinary];
+    color: #colors[text-primary];
+  }
+}
+
+
+//MentorRegister
+.container {
+  background-color: #colors[primary];
+  height: 100%;
+  min-height: 100vh;
+  width: 100%;
+  min-width: 100vw;
+  text-align: center;
+}
+
+#create-account-wrapper {
+  margin: 12vh auto 8vh auto;
+  display: inline-block;
+}
+
+#create-account-box {
+  width: 300px;
+  padding: 40px 20px;
+  background-color: #colors[tertiary];
+  text-align: center;
+  border-radius: 15px;
+  border: 4px solid;
+  border-color: #colors[secondary];
+}
+
+#create-account-box-title {
+  background-color: #colors[secondary];
+  border-radius: 80px;
+  width: 80%;
+  min-height: 8%;
+  color: #colors[text-secondary];
+  font-size: 1.5em;
+  font-weight: bold;
+  position: relative;
+  top: -60px;
+  left: -40px;
+  line-height: 50px;
+  text-align: center;
+}
+
+#box input[type='text'],
+#box input[type='email'],
+#box input[type='password'] {
+  display: block;
+  background: none;
+  margin: 0px auto 0px;
+  border: 2px solid;
+  border-color: #colors[secondary];
+  padding: 14px 10px;
+  width: 200px;
+  outline: none;
+  color: #colors[text-primary];
+  border-radius: 8px;
+  transition: 0.25s;
+}
+
+#box input[type='text']:focus,
+#box input[type='email']:focus,
+#box input[type='password']:focus {
+  width: 220px;
+}
+#box input[type='radio']:focus{
+  size: 100px;
+  bottom: 200px
+}
+
+#box input[type='button'] {
+  background: darken(#colors[tertiary], 30%);
+  width: 80%;
+  display: block;
+  margin: 0 auto;
+  border: 2px solid;
+  border-color: #colors[secondary];
+  padding: 14px 40px;
+  outline: none;
+  color: #colors[text-primary];
+  background-color: #colors[quaternary];
+  font-size: 1.2em;
+  font-weight: 500;
+  text-align: center;
+  border-radius: 30px;
+  cursor: pointer;
+  transition: 0.25s;
+  position: relative;
+  bottom: -65px;
+
+  &:hover {
+    background-color: #colors[quinary];
+    color: #colors[text-primary];
+  }
+}
