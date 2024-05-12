@@ -12,8 +12,8 @@ module.exports = {
     const {id} = ctx.params;
     const {arduino} = ctx.request.body;
     const session = await strapi.services.session.findOne({ id });
-    console.log(session)
-    console.log(arduino)
+    //console.log(session)
+    //console.log(arduino)
     session.arduino = arduino;
     const updatedSession = await strapi.services.session.update({id}, session);
     return updatedSession
