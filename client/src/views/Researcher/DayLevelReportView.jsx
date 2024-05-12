@@ -28,7 +28,7 @@ const DayLevelReportView = () => {
       .catch(error => {
         console.log(error)
       });
-      //workspaceRef.current.dispose();
+      workspaceRef.current.dispose();
       setSession(session.data);
 
       const fetchedStudents = session.data.students[0].name;
