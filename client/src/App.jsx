@@ -25,6 +25,7 @@ import ConfirmEmail from './views/TeacherLogin/ConfirmEmail';
 import { getConfirmed } from './Utils/AuthRequests';
 import MentorRegister from './views/Mentor/Dashboard/MentorRegister';
 import AddMentor from './views/Mentor/Dashboard/AddMentor';
+import CodeViz from './views/Researcher/viz';
 
 export function confirmRedirect () {
   const navigate = useNavigate();
@@ -57,6 +58,8 @@ const App = () => {
           <MentorRegister /></PrivateRoute>} />
         <Route path='/add-mentor' element={<PrivateRoute>
           <AddMentor /></PrivateRoute>} />
+        <Route path='/viz' element={<PrivateRoute>
+          <CodeViz /></PrivateRoute>} />
         <Route
           path='/report'
           element={

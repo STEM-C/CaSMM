@@ -574,13 +574,14 @@ module.exports = {
       strapi.plugins['users-permissions'].services;
 
     if (_.isEmpty(confirmationToken)) {
-      return ctx.badRequest('token.invalid');
+      return ctx.badRequest('token.invalid; empty');
     }
 
-    const user = await userService.fetch({ confirmationToken }, []);
+    const user2 = await userService.fetch({ confirmationToken }, []);
+    const user = await strapi.query('user', 'users-permissions').findOne({confirmationToken: confirmationToken});
 
     if (!user) {
-      return ctx.badRequest('token.invalid');
+      return ctx.badRequest('token.invalid, no match');
     }
 
     await userService.edit(

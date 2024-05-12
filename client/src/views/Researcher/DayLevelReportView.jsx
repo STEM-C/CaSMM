@@ -1,9 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { Link, useParams, useNavigate } from 'react-router-dom';
 import NavBar from '../../components/NavBar/NavBar';
-import { getSession } from '../../Utils/requests';
+import { getSession, updateSessionArduino } from '../../Utils/requests';
 import './DayLevelReportView.less';
 import { confirmRedirect } from '../../App';
+import { getArduinoXML } from '../../components/DayPanels/Utils/helpers';
 
 const DayLevelReportView = () => {
   const { id } = useParams();
@@ -13,10 +14,21 @@ const DayLevelReportView = () => {
   const [className, setClassName] = useState([]);
   const [clicks, setClicks] = useState(0);
   const navigate = useNavigate();
+  const workspaceRef = useRef(null);
   confirmRedirect();
   useEffect(function () {
     const getData = async () => {
       const session = await getSession(id);
+      workspaceRef.current = window.Blockly.inject('root', {
+        toolbox: document.getElementById('toolbox'),
+        readOnly: true,
+      });
+      //console.log(getArduinoXML(session.data.saves[session.data.saves.length - 1].workspace, workspaceRef.current))
+      updateSessionArduino(session.data.id, getArduinoXML(session.data.saves[session.data.saves.length - 1].workspace, workspaceRef.current))
+      .catch(error => {
+        console.log(error)
+      });
+      //workspaceRef.current.dispose();
       setSession(session.data);
 
       const fetchedStudents = session.data.students[0].name;
@@ -35,6 +47,8 @@ const DayLevelReportView = () => {
       setClicks(fetchedClicks);
     };
     getData();
+
+
   }, []);
 
   const timeConverter = (timestamp) => {

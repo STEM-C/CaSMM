@@ -41,6 +41,14 @@
       }
     },
     {
+      "method": "PUT",
+      "path": "/sessions/arduino/:id",
+      "handler": "session.arduinoUpdate",
+      "config": {
+        "policies": []
+      }
+    },
+    {
       "method": "DELETE",
       "path": "/sessions/:id",
       "handler": "session.delete",

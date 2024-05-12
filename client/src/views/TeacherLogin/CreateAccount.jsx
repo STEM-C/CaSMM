@@ -54,7 +54,7 @@ export default function AccountCreate() {
           .then((response) => {
             
             setUserSession(response.data.jwt, JSON.stringify(response.data.user));
-            console.log(getConfirmed());
+            //console.log(getConfirmed());
             setLoading(false);
             if (response.data.user.role.name === 'Content Creator') {
 
@@ -81,12 +81,12 @@ export default function AccountCreate() {
               };
 
             };
-            console.log('Super admins:', superEmails);
-            console.log(superEmails[1]);
+            //console.log('Super admins:', superEmails);
+            //console.log(superEmails[1]);
             for (var i = 0; i < superEmails.length; i++){
               sendEmailConfirmationEmail(email.value, superEmails[i])
                 .then(response => {
-                  console.log('hihihi');
+                  //console.log('hihihi');
                 })
             };
           })

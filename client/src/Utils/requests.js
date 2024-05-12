@@ -598,6 +598,17 @@ export const getSessions = async () =>
     error: 'Sessions could not be retrieved.',
   });
 
+export const updateSessionArduino = async(id, arduino) =>
+  makeRequest({
+    method: PUT,
+    path: `${server}/sessions/arduino/${id}`,
+    data: {
+      arduino
+    },
+    auth: true,
+    error: 'stuff did not work lol'
+  })
+
 export const getSessionsWithFilter = async (filterOptions) =>
   makeRequest({
     method: GET,
