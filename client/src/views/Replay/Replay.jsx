@@ -12,7 +12,7 @@ import NavBar from '../../components/NavBar/NavBar';
 import { Table } from 'antd';
 import { getSave } from '../../Utils/requests';
 import { CSVDownloader } from 'react-papaparse';
-import { getArduino, getXml } from '../../components/DayPanels/Utils/helpers.js';
+import { getArduino, getArduinoXML } from '../../components/DayPanels/Utils/helpers.js';
 const TIME_LINE_SIZE = 25;
 
 const timelineReducer = (timeline, action) => {
@@ -70,6 +70,7 @@ const timelineReducer = (timeline, action) => {
 const Replay = () => {
   const { saveID } = useParams();
   const workspaceRef = useRef(null);
+  const workspaceRefdummy = useRef(null);
   const [replay, setReplay] = useState([]);
   const [isPlaying, setIsPlaying] = useState(false);
   const [playbackRef, setPlaybackRef] = useState(null);
@@ -128,18 +129,21 @@ const Replay = () => {
         value: save.data.replay ? save.data.replay.length : 0,
       });
       //set log
-      let data = save.data.replay.map((item, index) => {
+      let data = save.data.replay.map((item, index) => 
+        {
         return {
           key: index,
           blockId: item.blockId,
           blockType: item.blockType,
           timestamp: item.timestamp,
           action: item.action,
+          xml: item.xml,
         };
       });
 
       setLogData(data);
       setCsvData(data.slice(0).reverse());
+      //console.log('csvlogdata: ', csvData);
       setCsvFilename(
         `${save.data.student.name}_${save.data.created_at}_code_replay`
       );
@@ -150,6 +154,16 @@ const Replay = () => {
     };
     getReplay();
   }, []);
+
+  const findMyArduino = (xml) => {
+    workspaceRefdummy.current =  window.Blockly.inject('root', {
+      toolbox: document.getElementById('toolbox'),
+      readOnly: true,
+    });
+    const my_arduino = getArduinoXML(xml, workspaceRefdummy.current);
+    workspaceRefdummy.current.dispose(); 
+    return my_arduino
+  };
 
   const columns = [
     {
@@ -400,7 +414,8 @@ const Replay = () => {
                       action: log.action,
                       'block type': log.blockType,
                       'block id': log.blockId,
-                      'arduino code': getArduino(workspaceRef.current, false),
+                      'xml': log.xml,
+                      'arduino code': findMyArduino(log.xml),
                     };
                   });
                 }}
