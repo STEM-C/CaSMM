@@ -607,7 +607,18 @@ export const updateSessionArduino = async(id, arduino) =>
     },
     auth: true,
     error: 'stuff did not work lol'
-  })
+  });
+
+  export const updateSessionMultiArduino = async(id, arduino) =>
+    makeRequest({
+      method: PUT,
+      path: `${server}/sessions/multi-arduino/${id}`,
+      data: {
+        arduino
+      },
+      auth: true,
+      error: 'stuff did not work lol'
+    });
 
 export const getSessionsWithFilter = async (filterOptions) =>
   makeRequest({

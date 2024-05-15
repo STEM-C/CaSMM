@@ -19,6 +19,14 @@ module.exports = {
     return updatedSession
 
   },  
+  async arduinoMultiUpdate(ctx) {
+    const {id} = ctx.params;
+    const {arduino} = ctx.request.body;
+    const session = await strapi.services.session.findOne({ id });
+    session.multi_arduino = arduino;
+    const updatedSession = await strapi.services.session.update({id}, session )
+    return updatedSession;
+  },
   async findOne(ctx) {
     // Extract the ID from the request parameters
     const { id } = ctx.params;

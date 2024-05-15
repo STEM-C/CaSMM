@@ -38,6 +38,9 @@
     },
     "arduino": {
       "type": "text"
+    },
+    "multi_arduino": {
+      "type": "json"
     }
   }
 }

@@ -597,6 +597,9 @@
               "arduino": {
                 "type": "string"
               },
+              "multi_arduino": {
+                "type": "object"
+              },
               "created_by": {
                 "type": "string"
               },

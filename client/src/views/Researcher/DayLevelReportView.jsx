@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { Link, useParams, useNavigate } from 'react-router-dom';
 import NavBar from '../../components/NavBar/NavBar';
-import { getSession, updateSessionArduino } from '../../Utils/requests';
+import { getSession, updateSessionArduino, updateSessionMultiArduino } from '../../Utils/requests';
 import './DayLevelReportView.less';
 import { confirmRedirect } from '../../App';
 import { getArduinoXML } from '../../components/DayPanels/Utils/helpers';
@@ -9,12 +9,15 @@ import { getArduinoXML } from '../../components/DayPanels/Utils/helpers';
 const DayLevelReportView = () => {
   const { id } = useParams();
   const [session, setSession] = useState({});
+  const [uniqueSession, setUniqueSession] = useState({})
   const [studentName, setStudentsName] = useState([]);
   const [studentPartner, setStudentsPartner] = useState([]);
   const [className, setClassName] = useState([]);
   const [clicks, setClicks] = useState(0);
   const navigate = useNavigate();
   const workspaceRef = useRef(null);
+  var arduino_array = [];
+  var arduino_array_2 = [];
   confirmRedirect();
   useEffect(function () {
     const getData = async () => {
@@ -23,11 +26,33 @@ const DayLevelReportView = () => {
         toolbox: document.getElementById('toolbox'),
         readOnly: true,
       });
+      console.log(session.data);
+      for (var i = 0; i<session.data.saves.length; i++) {
+        if (!arduino_array.find(save => save.workspace === session.data.saves[session.data.saves.length - i -1].workspace)){
+          arduino_array.push(session.data.saves[session.data.saves.length - i-1])
+        }
+
+      } 
+
+
+      for (var i = 0; i<arduino_array.length; i++) {
+        arduino_array_2.push(getArduinoXML(arduino_array[i].workspace, workspaceRef.current))
+      }
+      setUniqueSession(arduino_array.reverse());
       //console.log(getArduinoXML(session.data.saves[session.data.saves.length - 1].workspace, workspaceRef.current))
-      updateSessionArduino(session.data.id, getArduinoXML(session.data.saves[session.data.saves.length - 1].workspace, workspaceRef.current))
-      .catch(error => {
-        console.log(error)
-      });
+      if (session.data.saves.length > 0) {
+        //updateSessionArduino(session.data.id, getArduinoXML(session.data.saves[session.data.saves.length - 1].workspace, workspaceRef.current))
+        //.catch(error => {
+          //workspaceRef.current.dispose();
+          //console.log(error)
+        //});
+        updateSessionMultiArduino(session.data.id, arduino_array_2)
+        .catch(error => {
+          workspaceRef.current.dispose();
+          console.log(error)
+        });
+      }
+      
       workspaceRef.current.dispose();
       setSession(session.data);
 
@@ -66,9 +91,9 @@ const DayLevelReportView = () => {
   };
 
   const showReplayButton = () => {
-    if (session.saves?.length) {
-      const latestSave = session.saves[session.saves.length - 1];
-      return session.saves.map((save,index) =>
+    if (uniqueSession.length) {
+      const latestSave = uniqueSession[0];
+      return uniqueSession.map((save,index) =>
         <Link id='replay-btn' className='btn' to={`/replay/${save.id}`}>
           View Code Replay #{index + 1}
         </Link>

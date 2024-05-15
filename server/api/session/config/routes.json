@@ -49,6 +49,14 @@
       }
     },
     {
+      "method": "PUT",
+      "path": "/sessions/multi-arduino/:id",
+      "handler": "session.arduinoMultiUpdate",
+      "config": {
+        "policies": []
+      }
+    },
+    {
       "method": "DELETE",
       "path": "/sessions/:id",
       "handler": "session.delete",

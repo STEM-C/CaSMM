@@ -46,7 +46,7 @@ const DayTemplates = ({ thisDay, viewing, setViewing, learningStandard  }) => {
 
         }
         else if ((response.data.multi_template.length == 0)) {
-          console.log('hello')
+          //console.log('hello')
           createCCWorkspace(`Day ${response.data.id} Template ${1} `, '', `${response.data.template}`, [], '')
           .then(creation => {
             updateDayMultiTemplateDetails(response.data.id, creation.data)
