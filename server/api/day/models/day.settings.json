@@ -23,6 +23,10 @@
       "type": "text",
       "required": true
     },
+    "template_code": {
+      "type": "text",
+      "required": false
+    },
     "blocks": {
       "collection": "block"
     },

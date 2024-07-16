@@ -624,6 +624,9 @@
               "template": {
                 "type": "string"
               },
+              "template_code": {
+                "type": "string"
+              },
               "blocks": {
                 "type": "array",
                 "items": {

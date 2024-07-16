@@ -26,6 +26,7 @@ import { getConfirmed } from './Utils/AuthRequests';
 import MentorRegister from './views/Mentor/Dashboard/MentorRegister';
 import AddMentor from './views/Mentor/Dashboard/AddMentor';
 import CodeViz from './views/Researcher/viz';
+import CodeDayz from './views/Researcher/dayz';
 
 export function confirmRedirect () {
   const navigate = useNavigate();
@@ -60,6 +61,8 @@ const App = () => {
           <AddMentor /></PrivateRoute>} />
         <Route path='/viz' element={<PrivateRoute>
           <CodeViz /></PrivateRoute>} />
+        <Route path='/dayz' element={<PrivateRoute>
+          <CodeDayz /></PrivateRoute>} />
         <Route
           path='/report'
           element={

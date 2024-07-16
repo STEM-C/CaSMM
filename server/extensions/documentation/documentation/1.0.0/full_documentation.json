@@ -14,7 +14,7 @@
       "name": "Apache 2.0",
       "url": "https://www.apache.org/licenses/LICENSE-2.0.html"
     },
-    "x-generation-date": "05/15/2024 9:33:55 PM"
+    "x-generation-date": "07/16/2024 9:34:18 PM"
   },
   "x-strapi-config": {
     "path": "/documentation",
@@ -3067,6 +3067,89 @@
         "tags": [
           "Day"
         ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "",
+            "deprecated": false,
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ]
+      }
+    },
+    "/days/arduino/{id}": {
+      "put": {
+        "deprecated": false,
+        "description": "Update a record",
+        "responses": {
+          "200": {
+            "description": "response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "foo": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "unexpected error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "summary": "",
+        "tags": [
+          "Day"
+        ],
+        "requestBody": {
+          "description": "",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "properties": {
+                  "foo": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
         "parameters": [
           {
             "name": "id",
@@ -12485,6 +12568,9 @@
           "template": {
             "type": "string"
           },
+          "template_code": {
+            "type": "string"
+          },
           "blocks": {
             "type": "array",
             "items": {
@@ -12581,6 +12667,9 @@
             "type": "integer"
           },
           "template": {
+            "type": "string"
+          },
+          "template_code": {
             "type": "string"
           },
           "blocks": {
@@ -12870,6 +12959,9 @@
                 "template": {
                   "type": "string"
                 },
+                "template_code": {
+                  "type": "string"
+                },
                 "blocks": {
                   "type": "array",
                   "items": {
@@ -13004,6 +13096,9 @@
                   "type": "integer"
                 },
                 "template": {
+                  "type": "string"
+                },
+                "template_code": {
                   "type": "string"
                 },
                 "blocks": {
@@ -13341,6 +13436,9 @@
                 "type": "integer"
               },
               "template": {
+                "type": "string"
+              },
+              "template_code": {
                 "type": "string"
               },
               "blocks": {
@@ -14433,6 +14531,9 @@
                 "type": "integer"
               },
               "template": {
+                "type": "string"
+              },
+              "template_code": {
                 "type": "string"
               },
               "blocks": {

@@ -5,6 +5,7 @@ import {
   handleCreatorSaveActivity,
   handleCreatorSaveDay,
   handleUpdateWorkspace,
+  getArduino,
 } from '../../Utils/helpers';
 import { message, Spin, Row, Col, Alert, Dropdown, Menu } from 'antd';
 import CodeModal from '../modals/CodeModal';
@@ -124,6 +125,7 @@ export default function ContentCreatorCanvas({
     // once the day state is set, set the workspace and save
     const setUp = async () => {
       dayRef.current = day;
+
       if (!workspaceRef.current && day && Object.keys(day).length !== 0) {
         setWorkspace();
 
@@ -133,9 +135,14 @@ export default function ContentCreatorCanvas({
         window.Blockly.Xml.domToWorkspace(xml, workspaceRef.current);
         workspaceRef.current.clearUndo();
       }
+      const my_arduino = getArduino(workspaceRef.current, false);
+      console.log(my_arduino);
     };
     setUp();
+    
+    
   }, [day, isSandbox]);
+
 
   const handleCreatorSave = async () => {
     // Save day template

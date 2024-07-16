@@ -578,7 +578,18 @@ export const updateSessionArduino = async(id, arduino) =>
     },
     auth: true,
     error: 'stuff did not work lol'
-  })
+  });
+
+  export const updateDayArduino = async(id, arduino) =>
+    makeRequest({
+      method: PUT,
+      path: `${server}/days/arduino/${id}`,
+      data: {
+        arduino
+      },
+      auth: true,
+      error: 'stuff did not work lol'
+    });
 
 export const getSessionsWithFilter = async (filterOptions) =>
   makeRequest({

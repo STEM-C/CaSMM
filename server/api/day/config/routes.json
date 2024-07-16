@@ -33,6 +33,14 @@
       }
     },
     {
+      "method": "PUT",
+      "path": "/days/arduino/:id",
+      "handler": "day.arduinoUpdate",
+      "config": {
+        "policies": []
+      }
+    },
+    {
       "method": "POST",
       "path": "/days",
       "handler": "day.create",

@@ -110,6 +110,18 @@ module.exports = {
     return sanitizeEntity(updatedDay, { model: strapi.models.day });
   },
 
+  async arduinoUpdate(ctx) {
+    const {id} = ctx.params;
+    const {arduino} = ctx.request.body;
+    const day = await strapi.services.day.findOne({ id });
+    //console.log(session)
+    //console.log(arduino)
+    day.template_code = arduino;
+    const updatedDay = await strapi.services.day.update({id}, day);
+    return updatedDay
+
+  },  
+
   // Update day template and block list
   async templateUpdate(ctx) {
     // find the day
