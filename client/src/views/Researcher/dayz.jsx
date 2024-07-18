@@ -32,32 +32,32 @@ export default function CodeDayz() {
     getDay(parseInt(rID.value))
       .then((response) => {
         //console.log(response)
-        workspaceRef.current = window.Blockly.inject('blockly-box', {
-            toolbox: document.getElementById('toolbox'),
-            readOnly: true,
-          });
         if (workspaceRef.current) {
             workspaceRef.current.dispose()
         };
 
-        if (response.data === '') {
-          workspaceRef.current.dispose();  
-          message.error('No workspace associated with ID');
-          updateDayArduino(parseInt(rID.value), getArduinoXML(response.data.template, workspaceRef.current))
-          .catch(error => {
-              console.log(error)
+        workspaceRef.current = window.Blockly.inject('blockly-box', {
+            toolbox: document.getElementById('toolbox'),
+            readOnly: true,
           });
+
+
+        if (!response.data) {
+
+          message.error('No workspace associated with ID');
           setLoading(false);  
+          workspaceRef.current.dispose();  
         }
         else {
             setLoading(false);
             //console.log(response.data.template);
-            workspaceRef.current.dispose();
+
             //console.log(getArduinoXML(response.data.template, workspaceRef.current));
             updateDayArduino(parseInt(rID.value), getArduinoXML(response.data.template, workspaceRef.current))
                 .catch(error => {
                     console.log(error)
                 });
+            workspaceRef.current.dispose();
         }
 
 
@@ -65,15 +65,10 @@ export default function CodeDayz() {
       .catch((error) => {
         message.error('Please enter a valid workspace ID');
         console.log(error);
+        setLoading(false);
         if (workspaceRef.current) {
             workspaceRef.current.dispose()
         };
-        updateDayArduino(parseInt(rID.value), getArduinoXML(response.data.template, workspaceRef.current))
-        .catch(error => {
-            console.log(error)
-        });
-        setLoading(false);
-        workspaceRef.current.dispose();
 
       });
   };
