@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState, useReducer } from 'react';
+import React, { useEffect, useRef, useState, useReducer,  } from 'react';
 import '../../DayPanels.less';
 import { compileArduinoCode, handleSave } from '../../Utils/helpers';
 import { message, Spin, Row, Col, Alert, Dropdown, Menu } from 'antd';
@@ -15,7 +15,9 @@ import {
 } from '../../Utils/consoleHelpers';
 import ArduinoLogo from '../Icons/ArduinoLogo';
 import PlotterLogo from '../Icons/PlotterLogo';
-import { useNavigate } from 'react-router-dom';
+import CheckMark from '../Icons/CheckMark';
+import { useNavigate, useLocation } from 'react-router-dom';
+import { getDayToolboxAll, getDayToolbox } from '../../../../Utils/requests';
 
 let plotId = 1;
 
@@ -26,6 +28,8 @@ export default function StudentCanvas({ day }) {
   const [hoverUndo, setHoverUndo] = useState(false);
   const [hoverRedo, setHoverRedo] = useState(false);
   const [hoverCompile, setHoverCompile] = useState(false);
+  const [checkProceed, setCheckProceed]=useState(false);
+  const [hoverCheck, setHoverCheck] = useState(false);
   const [hoverImage, setHoverImage] = useState(false);
   const [hoverConsole, setHoverConsole] = useState(false);
   const [showConsole, setShowConsole] = useState(false);
@@ -41,6 +45,8 @@ export default function StudentCanvas({ day }) {
   const [forceUpdate] = useReducer((x) => x + 1, 0);
   const navigate = useNavigate();
   const workspaceRef = useRef(null);
+  const location = useLocation();
+  const previousLocation = useRef(location);
   const dayRef = useRef(null);
 
   const replayRef = useRef([]);
@@ -194,6 +200,12 @@ export default function StudentCanvas({ day }) {
           //console.log(res.data);
           if (res.data.current) onLoadSave = res.data.current.find((save) => save.daydayID == multi_day_number);
           //console.log('onloadsave: ', onLoadSave);
+
+          for (var i=0;i<res.data.past.length;i++){
+            if (res.data.past[i].daydayID != multi_day_number){
+              res.data.past.splice(i, 1)
+            }
+          }
           setSaves(res.data);
         } else {
           console.log(res.err);
@@ -330,18 +342,41 @@ export default function StudentCanvas({ day }) {
   };
 
   const handleGoBack = () => {
+
     if (
       window.confirm(
         'All unsaved progress will be lost. Do you still want to go back?'
       )
     )
-      navigate(-1);
+      if (localStorage.check == 'true' && parseInt(localStorage.multi_number) != 0) {
+        handleClickCheck(JSON.parse(localStorage['my-day']), parseInt(localStorage.multi_number) - 1,0)
+      }
+      else {
+        navigate('/student');
+      }
   };
 
   const getFormattedDate = (value, locale = 'en-US') => {
     let output = new Date(value).toLocaleDateString(locale);
     return output + ' ' + new Date(value).toLocaleTimeString(locale);
   };
+
+  const handleClickCheck = async (day, index, dosave) => {
+    localStorage.check = true;
+    if (dosave == 1) handleManualSave()
+    const allToolBoxRes = await getDayToolboxAll()
+    const selectedToolBoxRes = await getDayToolbox(day.id)
+    day.selectedToolbox = selectedToolBoxRes.data.toolbox
+    day.toolbox = allToolBoxRes.data.toolbox
+    console.log(parseInt(localStorage.multi_number)+1)
+    day.template = day.multi_template[index].template
+    //console.log(day)
+    //day.learning_standard_name = learningStandard.name
+    localStorage.setItem("my-day", JSON.stringify(day))
+    localStorage.setItem("multi_number", parseInt(index) )
+    window.location.reload();
+    navigate("/workspace")
+  }
 
   const menu = (
     <Menu>
@@ -464,6 +499,15 @@ export default function StudentCanvas({ day }) {
                         </button>
                       </Col>
                     </Row>
+                  </Col>
+                  <Col id='check-mark'>
+                    <CheckMark 
+                      setHoverCheck={setHoverCheck}
+                      handleCheck={() => handleClickCheck(JSON.parse(localStorage['my-day']), parseInt(localStorage.multi_number) + 1, 1)}
+                    />
+                    {hoverCheck && <div className='popup ModalCompile'>
+                          Complete and Next
+                        </div>}
                   </Col>
                   <Col flex={'180px'}>
                     <div

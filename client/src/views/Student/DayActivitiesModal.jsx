@@ -111,7 +111,7 @@ const DayActivities = ({ thisDay,  viewing, setViewing, learningStandard  }) => 
     day.learning_standard_name = learningStandard.name
     localStorage.setItem("my-day", JSON.stringify(day))
     localStorage.setItem("multi_number", parseInt(index) )
-
+    localStorage.check = false;
     navigate("/workspace")
   }
 
