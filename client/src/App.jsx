@@ -27,6 +27,7 @@ import MentorRegister from './views/Mentor/Dashboard/MentorRegister';
 import AddMentor from './views/Mentor/Dashboard/AddMentor';
 import CodeViz from './views/Researcher/viz';
 import CodeDayz from './views/Researcher/dayz';
+import Form from './views/Student/form';
 
 export function confirmRedirect () {
   const navigate = useNavigate();
@@ -111,6 +112,11 @@ const App = () => {
             </PrivateRoute>
           }
         />
+        <Route 
+          path='/form'
+          element={<PrivateRoute><Form/></PrivateRoute>}
+          />
+
         <Route
           path='/classroom/:id'
           element={

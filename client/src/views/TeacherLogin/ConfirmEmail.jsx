@@ -7,6 +7,7 @@ import "./Sorry.less";
 export default function ConfirmEmail() {
     const search = useLocation().search;
     const code = new URLSearchParams(search).get('confirmation');
+    //console.log(code)
     confirmEmail(code)
         .then((response) => {
             console.log(response);

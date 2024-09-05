@@ -32,6 +32,10 @@ function Student() {
     navigate('/workspace');
   };
 
+  const goToForm = () => {
+    navigate('/form')
+  }
+
   return (
     <div className='container nav-padding'>
       <NavBar />
@@ -40,6 +44,7 @@ function Student() {
           <div>Select your Day</div>
         </div>
         <ul>
+          <div id='list-item-wrapper' onClick={() => goToForm()}> Click here to go to the student form!</div>
           {learningStandard.days ? (
             learningStandard.days
               .sort((day1, day2) => day1.number - day2.number)

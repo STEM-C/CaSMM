@@ -43,9 +43,12 @@
       "collection": "selection"
     },
     "cc_workspaces": {
-      "via": "classroom",
       "private": true,
+      "via": "classroom",
       "collection": "cc-workspace"
+    },
+    "form": {
+      "type": "string"
     }
   }
 }

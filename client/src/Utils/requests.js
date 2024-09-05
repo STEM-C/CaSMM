@@ -767,3 +767,13 @@ export const getSchoolList = async() =>
     path: `${server}/schools`,
     auth: true
   })
+
+  export const updateClassroom = async(id, formcode) => 
+      makeRequest({
+        method: PUT,
+        path: `${server}/classrooms/${id}`,
+        auth: true,
+        data: {
+          form: formcode
+        }
+      })

@@ -152,6 +152,43 @@
   }
 }
 
+#display-form-modal {
+  position: absolute;
+  margin-top: 10px;
+  right: 10vw;
+
+  #display-form-btn {
+    width: 18vw;
+    min-height: 3.5vw;
+    margin-right:400px;
+    font-size: 1em;
+    font-weight: 500;
+    border-radius: 30px;
+    border: none;
+    background: #colors[quaternary];
+    color: #colors[text-primary];
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.377);
+    transition: 0.25s;
+    cursor: pointer;
+
+    &:hover {
+      width: 20vw;
+      background-color: #colors[quinary];
+    }
+  }
+}
+#textbox {
+  height: 100px;
+  width:500px;
+  justify-content: center;
+  margin-left:125px;
+  display:flex;
+  align-items: center;
+  padding:10px;
+  margin-bottom: 5px;
+  font-size:20px;
+}
+
 #code-display-text {
   display: flex;
   justify-content: center;

@@ -11,6 +11,7 @@ import MentorDayDetailModal from './MentorDayDetailModal';
 import LearningStandardModal from './LearningStandardSelect/LearningStandardModal';
 import { message, Tag } from 'antd';
 import { useNavigate } from 'react-router-dom';
+import DisplayFormModal from './DisplayFormModal';
 
 export default function Home({ classroomId, viewing }) {
   const [classroom, setClassroom] = useState({});
@@ -92,6 +93,7 @@ export default function Home({ classroomId, viewing }) {
       <button id='home-back-btn' onClick={handleBack}>
         <i className='fa fa-arrow-left' aria-hidden='true' />
       </button>
+      <DisplayFormModal classroom={classroom}/>
       <DisplayCodeModal code={classroom.code} />
       <MentorSubHeader title={classroom.name}></MentorSubHeader>
       <div id='home-content-container'>
