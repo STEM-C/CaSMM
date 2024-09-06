@@ -53,7 +53,7 @@ export default function CodeDayz() {
             //console.log(response.data.template);
 
             //console.log(getArduinoXML(response.data.template, workspaceRef.current));
-            updateDayArduino(parseInt(rID.value), getArduinoXML(response.data.template, workspaceRef.current))
+            updateDayArduino(parseInt(rID.value), getArduinoXML(response.data.template, workspaceRef.current), getArduinoXML(response.data.activity_template, workspaceRef.current))
                 .catch(error => {
                     console.log(error)
                 });

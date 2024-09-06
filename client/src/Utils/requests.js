@@ -580,12 +580,13 @@ export const updateSessionArduino = async(id, arduino) =>
     error: 'stuff did not work lol'
   });
 
-  export const updateDayArduino = async(id, arduino) =>
+  export const updateDayArduino = async(id, arduino,arduinoanswer) =>
     makeRequest({
       method: PUT,
       path: `${server}/days/arduino/${id}`,
       data: {
-        arduino
+        arduino,
+        arduinoanswer
       },
       auth: true,
       error: 'stuff did not work lol'

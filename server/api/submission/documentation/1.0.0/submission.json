@@ -627,6 +627,9 @@
               "template_code": {
                 "type": "string"
               },
+              "template_code_answer": {
+                "type": "string"
+              },
               "blocks": {
                 "type": "array",
                 "items": {

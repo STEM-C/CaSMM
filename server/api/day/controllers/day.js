@@ -112,11 +112,12 @@ module.exports = {
 
   async arduinoUpdate(ctx) {
     const {id} = ctx.params;
-    const {arduino} = ctx.request.body;
+    const {arduino, arduinoanswer} = ctx.request.body;
     const day = await strapi.services.day.findOne({ id });
     //console.log(session)
     //console.log(arduino)
     day.template_code = arduino;
+    day.template_code_answer = arduinoanswer;
     const updatedDay = await strapi.services.day.update({id}, day);
     return updatedDay
 
