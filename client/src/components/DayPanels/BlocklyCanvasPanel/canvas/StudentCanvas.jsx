@@ -16,6 +16,8 @@ import {
 import ArduinoLogo from '../Icons/ArduinoLogo';
 import PlotterLogo from '../Icons/PlotterLogo';
 import { useNavigate } from 'react-router-dom';
+import ScreenRecorder from '../../../../ScreenRecorder';
+import ScreenRecorderWithChunks from '../../../../ScreenRecorderWithChunks';
 
 let plotId = 1;
 
@@ -157,6 +159,7 @@ export default function StudentCanvas({ day }) {
 
   useEffect(() => {
     // automatically save workspace every min
+    //localStorage.studentID = student
     let autosaveInterval = setInterval(async () => {
       if (workspaceRef.current && dayRef.current) {
         const res = await handleSave(
@@ -189,6 +192,8 @@ export default function StudentCanvas({ day }) {
         if (res.data) {
           if (res.data.current) onLoadSave = res.data.current;
           setSaves(res.data);
+          localStorage.studentID = res.data.past[res.data.past.length - 1].student.id;
+          localStorage.studentName = res.data.past[res.data.past.length-1].student.name
         } else {
           console.log(res.err);
         }
@@ -208,6 +213,7 @@ export default function StudentCanvas({ day }) {
       }
     };
     setUp();
+
   }, [day]);
 
   const handleManualSave = async () => {
@@ -351,6 +357,7 @@ export default function StudentCanvas({ day }) {
 
   return (
     <div id='horizontal-container' className='flex flex-column'>
+      <ScreenRecorderWithChunks />
       <div className='flex flex-row'>
         <div
           id='bottom-container'

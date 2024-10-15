@@ -49,6 +49,14 @@
       }
     },
     {
+      "method": "PUT",
+      "path": "/students/:id/addvideo",
+      "handler": "student.addVideo",
+      "config": {
+        "policies" : []
+      }
+    },
+    {
       "method": "DELETE",
       "path": "/students/:id",
       "handler": "student.delete",

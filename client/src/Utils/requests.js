@@ -777,4 +777,14 @@ export const getSchoolList = async() =>
         data: {
           form: formcode
         }
-      })
+      });
+  export const addVideo = async(id, video) => 
+    makeRequest({
+      method: PUT,
+      path: `${server}/students/${id}/addvideo`,
+      auth: true,
+      data: {
+        video: video
+      }
+    });
+  

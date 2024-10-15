@@ -87,5 +87,20 @@ module.exports = {
         )
 
         return strapi.services.student.create(ctx.request.body)
+    },
+
+    async addVideo(ctx) {
+        const {video} = ctx.request.body;
+        const {id} = ctx.params;
+        let student = await strapi.services.student.findOne({id: id})
+        if (student) {
+            video.name = `${student.name + student.updated_at}.mp4`
+            //console.log(video.name)
+            student.recordings[student.recordings.length + 1] = video
+            //student.recordings[student.recordings.length].name = `${student.name + student.updated_at}.mp4`
+            //console.log(student.recordings)
+        }
+        const updatedStudent = strapi.services.student.update({id}, student)
+        return updatedStudent
     }
 }
