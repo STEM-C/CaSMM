@@ -13,8 +13,6 @@
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-hooks-global-state": "^2.1.0",
-    "react-media-library": "^2.0.3",
-    "react-media-recorder": "^1.7.1",
     "react-papaparse": "^3.17.1",
     "react-router-dom": "^6.9.0",
     "recharts": "^2.5.0",

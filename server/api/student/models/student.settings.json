@@ -2,13 +2,11 @@
   "kind": "collectionType",
   "collectionName": "students",
   "info": {
-    "name": "Student",
-    "description": ""
+    "name": "Student"
   },
   "options": {
     "increments": true,
-    "timestamps": true,
-    "draftAndPublish": false
+    "timestamps": true
   },
   "attributes": {
     "name": {
@@ -34,18 +32,6 @@
     },
     "last_logged_in": {
       "type": "datetime"
-    },
-    "recordings": {
-      "collection": "file",
-      "via": "related",
-      "allowedTypes": [
-        "images",
-        "files",
-        "videos"
-      ],
-      "plugin": "upload",
-      "required": false,
-      "pluginOptions": {}
     }
   }
 }

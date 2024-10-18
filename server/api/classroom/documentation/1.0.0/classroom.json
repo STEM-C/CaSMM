@@ -946,12 +946,6 @@
                 "last_logged_in": {
                   "type": "string"
                 },
-                "recordings": {
-                  "type": "array",
-                  "items": {
-                    "type": "string"
-                  }
-                },
                 "created_by": {
                   "type": "string"
                 },
