@@ -18,6 +18,14 @@ module.exports = () => ({
       defaultReplyTo: 'no-reply@casmm.org',
     },
   },
+  upload: {
+    config: {
+      provider: 'local',
+      providerOptions: {
+        //sizeLimit: 1000000, // Set the size limit for uploads (in bytes)
+      },
+    },
+  },
   sentry: {
     dsn: process.env.SENTRY_DNS || '',
     integrations: [new Sentry.Integrations.Http({ tracing: true })],
