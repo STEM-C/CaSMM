@@ -9,6 +9,7 @@ COPY ./client .
 RUN PUBLIC_URL=/client yarn build
 
 WORKDIR /usr/src/app
+RUN npm install strapi-plugin-upload
 COPY ./server/package.json .
 COPY ./server/yarn.lock .
 RUN yarn install
