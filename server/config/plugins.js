@@ -23,4 +23,21 @@ module.exports = () => ({
     integrations: [new Sentry.Integrations.Http({ tracing: true })],
     tracesSampleRate: 1.0,
   },
+  upload: {
+    config: {
+      provider: 'local', // or another provider like 'aws-s3'
+      providerOptions: {
+        //sizeLimit: 1000000, // Set a file size limit in bytes (optional)
+        // Additional provider-specific configuration, e.g., AWS S3 credentials
+        local: {
+          path: './public/uploads',
+          keepExtensions: true, // Preserve file extensions during upload
+        },
+      },
+      actionOptions: {
+        upload: {},
+        delete: {},
+      },
+    },
+  },
 });
