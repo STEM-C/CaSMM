@@ -44,6 +44,7 @@ const ScreenRecorderWithChunks = () => {
       localStorage.isRecording = 'true';
     } catch (error) {
       console.error("Error accessing screen recording:", error);
+      window.location.reload();
     }
   };
 
