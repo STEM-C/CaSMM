@@ -23,7 +23,7 @@ const ScreenRecorderWithChunks = () => {
         const newStream = await navigator.mediaDevices.getDisplayMedia({ video: true });
         setStream(newStream);
 
-        const recorder = new MediaRecorder(newStream);
+        const recorder = new MediaRecorder(newStream, {videoBitsPerSecond:2000});
         recorder.ondataavailable = (event) => {
           if (event.data.size > 0) {
             setRecordingChunks((prevChunks) => [...prevChunks, event.data]);
