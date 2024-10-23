@@ -32,7 +32,7 @@ module.exports = {
         // dev
          cors: {
              enabled: true,
-             origin: ['http://www.casmm.org']
+             origin: ['http://www.casmm.org/api']
          },
     },
 }
