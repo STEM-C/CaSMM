@@ -22,7 +22,7 @@ module.exports = {
             options: {
               br: false
             }
-        }
+        },
         // logger: {
         //     // dev + prod
         //     level: debug + info,
@@ -30,9 +30,9 @@ module.exports = {
         // }
         
         // dev
-        // cors: {
-        //     enabled: true,
-        //     origin: ['http://localhost:3000', 'http://localhost:1337']
-        // },
+         cors: {
+             enabled: true,
+             origin: ['http://www.casmm.org']
+         },
     },
 }
