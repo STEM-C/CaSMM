@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { ReactMediaRecorder, useReactMediaRecorder } from "react-media-recorder";
 import { addVideo } from "./Utils/requests";
+import { getMe } from "./Utils/requests";
 
 const ScreenRecorder = ({ onRecordingComplete }) => {
   const {

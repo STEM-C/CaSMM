@@ -788,3 +788,10 @@ export const getSchoolList = async() =>
       }
     });
   
+
+    export const getMe = async() => 
+      makeRequest({
+        method: GET,
+        path: `${server}/students/me`,
+        auth: true,
+      });

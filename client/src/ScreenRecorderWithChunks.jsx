@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { addVideo } from './Utils/requests';
 import { server } from './Utils/hosts';
+import { getMe } from './Utils/requests';
 
 const ScreenRecorderWithChunks = () => {
   const [mediaRecorder, setMediaRecorder] = useState(null);
@@ -67,7 +68,9 @@ const ScreenRecorderWithChunks = () => {
     //console.log(blob)
 
     //console.log(formattedDate);
-    formData.append('files', blob, `${localStorage.studentName} at ${formattedDate}.mp4`);
+    const thisStudent = await getMe();
+    console.log(thisStudent)
+    formData.append('files', blob, `${thisStudent.data['students'][0]['name']} at ${formattedDate}.mp4`);
     //console.log(formData)
 
     try {
@@ -78,7 +81,8 @@ const ScreenRecorderWithChunks = () => {
 
       const result = await response.json();
       //console.log("Upload successful:", result);
-      addVideo(parseInt(localStorage.studentID), result[0]);
+
+      addVideo(parseInt(thisStudent.data['students'][0]['id']), result[0]);
     } catch (error) {
       console.error("Error uploading the recording:", error);
     }
@@ -123,18 +127,18 @@ const ScreenRecorderWithChunks = () => {
 
     return () => clearInterval(intervalId); // Cleanup on component unmount
   }, [isRecording]);
-  useEffect(() => {
-    setTimeout(() => {
-      setTimerD(parseInt(timerd) + 1)
+  //useEffect(() => {
+    //setTimeout(() => {
+      //setTimerD(parseInt(timerd) + 1)
 
       //console.log('howdy')
       //console.log(isRecording)
-      if (localStorage.isRecording == 'false' && timerd != 0) {
-        console.log('false')
-        window.location.reload()
-      }
-    }, 10000)
-  }, [timerd])
+     // if (localStorage.isRecording == 'false' && timerd != 0) {
+      //  console.log('false')
+     //   window.location.reload()
+    //  }
+   // }, 10000)
+  //}, [timerd])
   return (
     <div></div>
   );
