@@ -32,8 +32,8 @@ module.exports = {
         // dev
          cors: {
              enabled: true,
-             origin: [ 'http://localhost:1337', 'http://localhost:3000'],
-             headers: '*'
+             origin: [ 'https://casmm.org', 'http://localhost:1337', 'http://localhost:3000'],
+             headers: '*',
          },
     },
 }
