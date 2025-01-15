@@ -53,7 +53,7 @@ const App = () => {
         <Route path='/reset-password' element={<ResetPassword />} />
         <Route path='/login' element={<StudentLogin />} />
         <Route path='/replay/:saveID' element={<Replay />} />
-        <Route path='/confirm-email' element = {<ConfirmEmail />} />
+        <Route path='/confirm-email/:confirmationCode' element = {<ConfirmEmail />} />
         <Route path='/sandbox' element={<BlocklyPage isSandbox={true} />} />
         <Route path='/sorry' element={<Sorry />} />
         <Route path='/mentor-register' element={<PrivateRoute>

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useParams } from 'react-router-dom';
 import { confirmEmail } from '../../Utils/requests';
 import NavBar from '../../components/NavBar/NavBar';
 import './Sorry.less';
@@ -8,9 +8,9 @@ import './Sorry.less';
 export default function ConfirmEmail() {
     const search = useLocation().search;
     const [code, setCode] = useState(null);
+    const {confirmationCode} = useParams();
     useEffect(() => {
-      const queryParams = new URLSearchParams(search);
-      const confirmationCode = queryParams.get('confirmation');
+
       setCode(confirmationCode);  // Store the code in state
       //console.log(confirmationCode);  // Debug: Check if the code is extracted correctly
 
