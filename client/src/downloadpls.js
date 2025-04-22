@@ -6,7 +6,7 @@ const path = require('path');
 const strapiUrl = 'http://casmm.org/api'; // Replace with your Strapi URL
 const outputDir = './downloads'; // Change to your desired directory
 const headers = {
-            'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZHMiOls4NDRdLCJzZXNzaW9uIjo1NjA2LCJjbGFzc3Jvb20iOjMyLCJpc1N0dWRlbnQiOnRydWUsImlhdCI6MTcyOTc5NTE2MywiZXhwIjoxNzMyMzg3MTYzfQ.pJ8Twrld8IwUCP78JhV4o8BmPo2_qUQWPzL4FQGgkM4',
+            'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTQsImlhdCI6MTc0Mzc4MzgxNywiZXhwIjoxNzQ2Mzc1ODE3fQ.rkJ113O4lc0X8VRnR3WdWwvwDTEXlFWt5-6OWL2hNak',
             
 };
 
@@ -18,7 +18,7 @@ if (!fs.existsSync(outputDir)) {
 async function fetchFiles(page = 2) {
     //const response = await axios.get(`${strapiUrl}/upload/files?page=${page}?pagesize=100`, { headers});
     var responseset = []
-    for (var i = 700; i<800; i++){
+    for (var i = 9637; i<10259; i++){
         try {
             console.log(i)
             response = await axios.get(`${strapiUrl}/upload/files/${i}`, { headers});
